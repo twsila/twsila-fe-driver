@@ -16,4 +16,5 @@ void main() async {
       child: Phoenix(child: MyApp()),
       supportedLocales: const [ARABIC_LOCAL, ENGLISH_LOCAL],
       path: ASSET_PATH_LOCALISATIONS));
+  //"first commit"
 }
