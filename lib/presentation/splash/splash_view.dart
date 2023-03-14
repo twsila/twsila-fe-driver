@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
 import '../../utils/resources/assets_manager.dart';
@@ -28,13 +29,12 @@ class _SplashViewState extends State<SplashView> {
           if (isUserLoggedIn)
             {
               // navigate to main screen
-              Navigator.pushReplacementNamed(context, Routes.mainRoute)
+              Navigator.pushReplacementNamed(context, Routes.categoriesRoute)
             }
           else
             {
               // Navigate to Login Screen
               Navigator.pushReplacementNamed(context, Routes.loginRoute)
-              // Navigator.pushReplacementNamed(context, Routes.categoriesRoute)
             }
         });
   }
@@ -67,6 +67,10 @@ class _SplashViewState extends State<SplashView> {
                   ),
                   Text(
                     'app_title_ar'.tr(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),  Text(
+                    AppStrings.driverLabel.tr(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),

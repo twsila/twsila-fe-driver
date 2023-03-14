@@ -56,6 +56,7 @@ class AppStrings {
   static const String phoneVerification = "phone_verification";
   static const String enterOtpHint = "enter_otp_hint";
   static const String sendOtpAgainHint = "send_otp_again_hint";
+  static const String driverLabel = "driver_label";
 
   // error handler
   static const String badRequestError = "bad_request_error";

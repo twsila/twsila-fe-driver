@@ -32,6 +32,7 @@ const $LoginObject = _$LoginObjectTearOff();
 /// @nodoc
 mixin _$LoginObject {
   String get countryCode => throw _privateConstructorUsedError;
+
   String get phoneNumber => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -44,6 +45,7 @@ abstract class $LoginObjectCopyWith<$Res> {
   factory $LoginObjectCopyWith(
           LoginObject value, $Res Function(LoginObject) then) =
       _$LoginObjectCopyWithImpl<$Res>;
+
   $Res call({String countryCode, String phoneNumber});
 }
 
@@ -52,6 +54,7 @@ class _$LoginObjectCopyWithImpl<$Res> implements $LoginObjectCopyWith<$Res> {
   _$LoginObjectCopyWithImpl(this._value, this._then);
 
   final LoginObject _value;
+
   // ignore: unused_field
   final $Res Function(LoginObject) _then;
 
@@ -79,6 +82,7 @@ abstract class _$LoginObjectCopyWith<$Res>
   factory _$LoginObjectCopyWith(
           _LoginObject value, $Res Function(_LoginObject) then) =
       __$LoginObjectCopyWithImpl<$Res>;
+
   @override
   $Res call({String countryCode, String phoneNumber});
 }
@@ -154,8 +158,10 @@ abstract class _LoginObject implements LoginObject {
 
   @override
   String get countryCode;
+
   @override
   String get phoneNumber;
+
   @override
   @JsonKey(ignore: true)
   _$LoginObjectCopyWith<_LoginObject> get copyWith =>
@@ -172,7 +178,7 @@ class _$RegisterObjectTearOff {
       String mobileNumber,
       String email,
       String password,
-      String profilePicture) {
+      String profilePicture ,String profilePicture2) {
     return _RegisterObject(
       userName,
       countryMobileCode,
@@ -180,6 +186,7 @@ class _$RegisterObjectTearOff {
       email,
       password,
       profilePicture,
+      profilePicture2,
     );
   }
 }
@@ -190,11 +197,18 @@ const $RegisterObject = _$RegisterObjectTearOff();
 /// @nodoc
 mixin _$RegisterObject {
   String get userName => throw _privateConstructorUsedError;
+
   String get countryMobileCode => throw _privateConstructorUsedError;
+
   String get mobileNumber => throw _privateConstructorUsedError;
+
   String get email => throw _privateConstructorUsedError;
+
   String get password => throw _privateConstructorUsedError;
+
   String get profilePicture => throw _privateConstructorUsedError;
+
+  String get profilePicture2  => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RegisterObjectCopyWith<RegisterObject> get copyWith =>
@@ -206,13 +220,14 @@ abstract class $RegisterObjectCopyWith<$Res> {
   factory $RegisterObjectCopyWith(
           RegisterObject value, $Res Function(RegisterObject) then) =
       _$RegisterObjectCopyWithImpl<$Res>;
+
   $Res call(
       {String userName,
       String countryMobileCode,
       String mobileNumber,
       String email,
       String password,
-      String profilePicture});
+      String profilePicture, String profilePicture2});
 }
 
 /// @nodoc
@@ -221,6 +236,7 @@ class _$RegisterObjectCopyWithImpl<$Res>
   _$RegisterObjectCopyWithImpl(this._value, this._then);
 
   final RegisterObject _value;
+
   // ignore: unused_field
   final $Res Function(RegisterObject) _then;
 
@@ -232,6 +248,7 @@ class _$RegisterObjectCopyWithImpl<$Res>
     Object? email = freezed,
     Object? password = freezed,
     Object? profilePicture = freezed,
+    Object? profilePicture2 = freezed,
   }) {
     return _then(_value.copyWith(
       userName: userName == freezed
@@ -268,6 +285,7 @@ abstract class _$RegisterObjectCopyWith<$Res>
   factory _$RegisterObjectCopyWith(
           _RegisterObject value, $Res Function(_RegisterObject) then) =
       __$RegisterObjectCopyWithImpl<$Res>;
+
   @override
   $Res call(
       {String userName,
@@ -275,7 +293,7 @@ abstract class _$RegisterObjectCopyWith<$Res>
       String mobileNumber,
       String email,
       String password,
-      String profilePicture});
+      String profilePicture,String profilePicture2});
 }
 
 /// @nodoc
@@ -297,6 +315,7 @@ class __$RegisterObjectCopyWithImpl<$Res>
     Object? email = freezed,
     Object? password = freezed,
     Object? profilePicture = freezed,
+    Object? profilePicture2 = freezed,
   }) {
     return _then(_RegisterObject(
       userName == freezed
@@ -323,6 +342,10 @@ class __$RegisterObjectCopyWithImpl<$Res>
           ? _value.profilePicture
           : profilePicture // ignore: cast_nullable_to_non_nullable
               as String,
+      profilePicture2 == freezed
+          ? _value.profilePicture2
+          : profilePicture2 // ignore: cast_nullable_to_non_nullable
+      as String,
     ));
   }
 }
@@ -331,7 +354,7 @@ class __$RegisterObjectCopyWithImpl<$Res>
 
 class _$_RegisterObject implements _RegisterObject {
   _$_RegisterObject(this.userName, this.countryMobileCode, this.mobileNumber,
-      this.email, this.password, this.profilePicture);
+      this.email, this.password, this.profilePicture, this.profilePicture2);
 
   @override
   final String userName;
@@ -345,6 +368,8 @@ class _$_RegisterObject implements _RegisterObject {
   final String password;
   @override
   final String profilePicture;
+  @override
+  final String profilePicture2;
 
   @override
   String toString() {
@@ -375,7 +400,8 @@ class _$_RegisterObject implements _RegisterObject {
       const DeepCollectionEquality().hash(mobileNumber),
       const DeepCollectionEquality().hash(email),
       const DeepCollectionEquality().hash(password),
-      const DeepCollectionEquality().hash(profilePicture));
+      const DeepCollectionEquality().hash(profilePicture),
+      const DeepCollectionEquality().hash(profilePicture2));
 
   @JsonKey(ignore: true)
   @override
@@ -390,20 +416,30 @@ abstract class _RegisterObject implements RegisterObject {
       String mobileNumber,
       String email,
       String password,
-      String profilePicture) = _$_RegisterObject;
+      String profilePicture,
+      String profilePicture2) = _$_RegisterObject;
 
   @override
   String get userName;
+
   @override
   String get countryMobileCode;
+
   @override
   String get mobileNumber;
+
   @override
   String get email;
+
   @override
   String get password;
+
   @override
   String get profilePicture;
+
+  @override
+  String get profilePicture2;
+
   @override
   @JsonKey(ignore: true)
   _$RegisterObjectCopyWith<_RegisterObject> get copyWith =>

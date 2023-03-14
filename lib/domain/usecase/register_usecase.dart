@@ -16,23 +16,37 @@ class RegisterUseCase
   Future<Either<Failure, Authentication>> execute(
       RegisterUseCaseInput input) async {
     return await _repository.register(RegisterRequest(
-        input.userName,
-        input.countryMobileCode,
-        input.mobileNumber,
-        input.email,
-        input.password,
-        input.profilePicture));
+        input.serviceType,
+        input.serviceTypeCapacity,
+        input.plateNumber,
+        input.carBrandAndModel,
+        input.notes,
+        input.carDocumentImage,
+        input.carOwnerLicenseImage,
+        input.carOwnerIdentityCardImage,
+        input.carDriverIdentityCardImage));
   }
 }
 
 class RegisterUseCaseInput {
-  String userName;
-  String countryMobileCode;
-  String mobileNumber;
-  String email;
-  String password;
-  String profilePicture;
+  String serviceType;
+  String serviceTypeCapacity;
+  int plateNumber;
+  String carBrandAndModel;
+  String notes;
+  String carDocumentImage;
+  String carOwnerLicenseImage;
+  String carOwnerIdentityCardImage;
+  String carDriverIdentityCardImage;
 
-  RegisterUseCaseInput(this.userName, this.countryMobileCode, this.mobileNumber,
-      this.email, this.password, this.profilePicture);
+  RegisterUseCaseInput(
+      this.serviceType,
+      this.serviceTypeCapacity,
+      this.plateNumber,
+      this.carBrandAndModel,
+      this.notes,
+      this.carDocumentImage,
+      this.carOwnerLicenseImage,
+      this.carOwnerIdentityCardImage,
+      this.carDriverIdentityCardImage);
 }

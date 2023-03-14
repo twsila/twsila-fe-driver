@@ -146,14 +146,15 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
             TextFormField(
               style: Theme.of(context)
                   .textTheme
-                  .headline5!
+                  .labelLarge!
                   .copyWith(color: widget.textColor ?? ColorManager.primary),
               obscureText: widget.obscureText,
               textAlign: widget.textAlign ?? TextAlign.start,
               maxLength: widget.maxLength,
               cursorColor: widget.hintTextColor ?? ColorManager.lightGrey,
               textInputAction: widget.textInputAction,
-              enabled: widget.enabled, maxLines: widget.maxLines,
+              enabled: widget.enabled,
+              maxLines: widget.maxLines,
               focusNode: _myFocusNode,
               controller: _textController,
               keyboardType: widget.keyboardType,

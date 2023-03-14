@@ -120,6 +120,7 @@
   "phone_verification": "تحقق من رقم الجوال",
   "enter_otp_hint": "ادخل كود التحقق بالاسفل",
   "send_otp_again_hint": "ارسل كود التحقق مرة اخرة",
-  "wrong_otp": "خطا فى الكود"
+  "wrong_otp": "خطا فى الكود",
+  "driver_label": "نسخة السائق"
 
 }

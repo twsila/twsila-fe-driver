@@ -137,6 +137,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.1"
+  change_app_package_name:
+    dependency: "direct dev"
+    description:
+      name: change_app_package_name
+      sha256: f9ebaf68a4b5a68c581492579bb68273c523ef325fbf9ce2f1b57fb136ad023b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   characters:
     dependency: transitive
     description:
@@ -593,10 +601,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "1f5a4b38eb742422d89c1a01d9db6077c3c9496f551bc9da74649e338a2b5101"
+      sha256: "420ed22d2c9ce767ed96df723aaebfeb20ce92dfda8665cd2ba72d72a51ae669"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.6"
+    version: "0.8.6+1"
   image_picker_for_web:
     dependency: transitive
     description:

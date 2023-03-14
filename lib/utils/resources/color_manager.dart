@@ -14,4 +14,5 @@ class ColorManager {
   static Color grey2 = const Color(0xff797979);
   static Color white = const Color(0xffFFFFFF);
   static Color error = const Color(0xffe61f34); // red color
+  static Color green = const Color(0xff008000); // red color
 }

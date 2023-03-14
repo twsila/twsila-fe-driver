@@ -16,6 +16,29 @@ class SliderViewObject {
   SliderViewObject(this.sliderObject, this.numOfSlides, this.currentIndex);
 }
 
+class DriverRegstrationObj {
+  String serviceType;
+  String serviceTypeCapacity;
+  int plateNumber;
+  String carBrandAndModel;
+  String notes;
+  String carDocumentImage;
+  String carOwnerLicenseImage;
+  String carOwnerIdentityCardImage;
+  String carDriverIdentityCardImage;
+
+  DriverRegstrationObj(
+      this.serviceType,
+      this.serviceTypeCapacity,
+      this.plateNumber,
+      this.carBrandAndModel,
+      this.notes,
+      this.carDocumentImage,
+      this.carOwnerLicenseImage,
+      this.carOwnerIdentityCardImage,
+      this.carDriverIdentityCardImage);
+}
+
 // login models
 
 class Customer {
@@ -41,13 +64,12 @@ class Authentication {
   Authentication(this.customer, this.contacts);
 }
 
-class FirebaseCodeSent{
+class FirebaseCodeSent {
   String verificationId;
   int? resendToken;
 
   FirebaseCodeSent(this.verificationId, this.resendToken);
 }
-
 
 class Service {
   int id;

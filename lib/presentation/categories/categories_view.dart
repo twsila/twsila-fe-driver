@@ -74,7 +74,7 @@ class CategoriesView extends StatelessWidget {
                       Flexible(
                         child: CustomSquareButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, Routes.goodsRoute);
+                              // Navigator.pushNamed(context, Routes.goodsRoute);
                             },
                             text: AppStrings.goods.tr(),
                             iconData: Icons.chair),

@@ -10,7 +10,8 @@ import 'package:easy_localization/easy_localization.dart';
 import '../../presentation/login/login_view.dart';
 import '../../presentation/main/main_view.dart';
 import '../../presentation/onboarding/onboarding_view.dart';
-import '../../presentation/register/register_view.dart';
+import '../../presentation/pending_approval_driver/view/pending_approval_view.dart';
+import '../../presentation/register/view/register_view.dart';
 import '../../presentation/splash/splash_view.dart';
 
 class Routes {
@@ -24,6 +25,7 @@ class Routes {
   static const String categoriesRoute = "/categories";
   static const String goodsRoute = "/goods";
   static const String furnitureRoute = "/furniture";
+  static const String pendingApprovalRoute = "/pendingApproval";
 }
 
 class RouteGenerator {
@@ -51,6 +53,8 @@ class RouteGenerator {
       case Routes.verifyOtpRoute:
         initVerifyOtpModule();
         return MaterialPageRoute(builder: (_) => VerifyOtpView());
+      case Routes.pendingApprovalRoute:
+        return MaterialPageRoute(builder: (_) => const PendingApprovalDriver());
       default:
         return unDefinedRoute();
     }

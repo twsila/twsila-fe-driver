@@ -7,6 +7,8 @@ import 'package:taxi_for_you/utils/resources/styles_manager.dart';
 import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
+import '../../../utils/resources/font_manager.dart';
+import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../../common/widgets/custom_text_button.dart';
@@ -30,6 +32,10 @@ class _PhoneLoginViewState extends State<PhoneLoginView> {
       child: Column(
         children: [
           const Center(child: Image(image: AssetImage(ImageAssets.logoImg))),
+          Center(
+              child: Text(AppStrings.driverLabel.tr(),
+                  style: getBoldStyle(
+                      color: ColorManager.primary, fontSize: FontSize.s18))),
           const SizedBox(
             height: AppSize.s28,
           ),
@@ -96,6 +102,7 @@ class _PhoneLoginViewState extends State<PhoneLoginView> {
                           _formKey.currentState!.validate()) {
                         initVerifyOtpModule();
                         _viewModel.goNext();
+
                       }
                     },
                   )

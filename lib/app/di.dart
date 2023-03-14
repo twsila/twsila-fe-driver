@@ -21,7 +21,8 @@ import '../domain/usecase/register_usecase.dart';
 import '../domain/usecase/store_details_usecase.dart';
 import '../presentation/login/login_viewmodel.dart';
 import '../presentation/main/pages/home/viewmodel/home_viewmodel.dart';
-import '../presentation/register/register_viewmodel.dart';
+import '../presentation/pending_approval_driver/view/pending_approval_view.dart';
+import '../presentation/register/viewmodel/register_viewmodel.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -55,6 +56,8 @@ Future<void> initAppModule() async {
 
   // local data source
   instance.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
+
+
 
   // repository
 

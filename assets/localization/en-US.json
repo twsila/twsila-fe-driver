@@ -122,5 +122,6 @@
   "phone_verification": "Phone\nVerification",
   "enter_otp_hint": "Enter your OTP code below",
   "send_otp_again_hint": "Send OTP again",
-  "wrong_otp": "wrong otp"
+  "wrong_otp": "wrong otp",
+  "driver_label": "Driver Edition"
 }
