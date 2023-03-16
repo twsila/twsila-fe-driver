@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:taxi_for_you/presentation/google_maps/bloc/maps_bloc.dart';
+import 'package:taxi_for_you/presentation/google_maps/model/maps_repo.dart';
+import 'package:taxi_for_you/utils/location/map_provider.dart';
+import 'package:taxi_for_you/utils/resources/theme_manager.dart';
 
-import '../presentation/google_maps/bloc/maps_bloc.dart';
-import '../presentation/google_maps/helpers/map_provider.dart';
-import '../presentation/google_maps/model/maps_repo.dart';
 import '../utils/resources/routes_manager.dart';
-import '../utils/resources/theme_manager.dart';
 import 'app_prefs.dart';
 import 'di.dart';
 import 'package:easy_localization/easy_localization.dart';

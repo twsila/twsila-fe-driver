@@ -7,13 +7,14 @@ const String PREFS_KEY_LANG = "PREFS_KEY_LANG";
 const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED =
     "PREFS_KEY_ONBOARDING_SCREEN_VIEWED";
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
+const String USER_SELECTED_COUNTRY = "USER_SELECTED_COUNTRY";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
 
   AppPreferences(this._sharedPreferences);
 
-  Future<String> getAppLanguage() async {
+  String getAppLanguage() {
     String? language = _sharedPreferences.getString(PREFS_KEY_LANG);
     if (language != null && language.isNotEmpty) {
       return language;
@@ -24,7 +25,7 @@ class AppPreferences {
   }
 
   Future<void> changeAppLanguage() async {
-    String currentLang = await getAppLanguage();
+    String currentLang = getAppLanguage();
 
     if (currentLang == LanguageType.ARABIC.getValue()) {
       // set english
@@ -38,13 +39,22 @@ class AppPreferences {
   }
 
   Future<Locale> getLocal() async {
-    String currentLang = await getAppLanguage();
+    String currentLang = getAppLanguage();
 
     if (currentLang == LanguageType.ARABIC.getValue()) {
       return ARABIC_LOCAL;
     } else {
       return ENGLISH_LOCAL;
     }
+  }
+
+  //Selected country
+  setUserSelectedCountry(String country) {
+    _sharedPreferences.setString(USER_SELECTED_COUNTRY, country);
+  }
+
+  String? getUserSelectedCountry() {
+    return _sharedPreferences.getString(USER_SELECTED_COUNTRY);
   }
 
   // on boarding

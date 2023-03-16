@@ -4,10 +4,10 @@ import 'package:google_places_flutter/model/prediction.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/app/constants.dart';
 
+import '../../../utils/location/map_provider.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/styles_manager.dart';
-import '../helpers/map_provider.dart';
 
 class GoogleMapsPlacesField extends StatefulWidget {
   TextEditingController controller;

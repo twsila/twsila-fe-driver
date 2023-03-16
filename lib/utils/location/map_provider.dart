@@ -5,22 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_for_you/app/constants.dart';
-import 'package:taxi_for_you/presentation/google_maps/helpers/set_result.dart';
-import 'package:taxi_for_you/presentation/google_maps/helpers/show_all_markers.dart';
+import 'package:taxi_for_you/utils/location/show_all_markers.dart';
 
-import '../model/location_model.dart';
+import '../../presentation/google_maps/model/location_model.dart';
 
 class MapProvider with ChangeNotifier {
-  Results results = Results();
   GoogleMapController? controller;
   MarkerId sourceMarkerId = const MarkerId('source_location');
   MarkerId destinationMarkerId = const MarkerId('destination_location');
 
   //Locations
   LocationModel? currentLocation;
-  LocationModel? sourceLocation;
-  LocationModel? destinationLocation;
-  List<String> countries = ['eg'];
+  List<String> countries = ['SA'];
   String? distance;
 
   //Marker
@@ -42,8 +38,9 @@ class MapProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setCountry(String country) {
+  setCountry(String country, {bool needsRebuild = true}) {
     countries = [country];
+    if (!needsRebuild) return;
     notifyListeners();
   }
 
@@ -56,42 +53,45 @@ class MapProvider with ChangeNotifier {
     )));
   }
 
-  setSourceLocation(LocationModel? sourceLocation) {
-    this.sourceLocation = sourceLocation;
-    if (sourceLocation == null) {
-      results.sourceLocation = null;
+  setLocation(
+      {LocationModel? sourceLocation, LocationModel? destinationLocation}) {
+    if (sourceLocation == null && destinationLocation == null) {
+      LatLng latLng =
+          LatLng(currentLocation!.latitude, currentLocation!.longitude);
       removeMarker(sourceMarkerId);
       resetPolyPoints();
+      addMarker(Marker(markerId: sourceMarkerId, position: latLng));
+      animateCamera(latLng);
       return;
-    }
-    LatLng latLng = LatLng(sourceLocation.latitude, sourceLocation.longitude);
-    if (destinationLocation == null) animateCamera(latLng);
-    addMarker(
-      Marker(markerId: sourceMarkerId, position: latLng),
-    );
-    getPolyline();
-
-    results.sourceLocation = sourceLocation.locationName;
-  }
-
-  setDestinationLocation(LocationModel? destinationLocation) {
-    this.destinationLocation = destinationLocation;
-    if (destinationLocation == null) {
-      results.destinationLocation = null;
+    } else if (sourceLocation != null && destinationLocation == null) {
+      LatLng latLng = LatLng(sourceLocation.latitude, sourceLocation.longitude);
       removeMarker(destinationMarkerId);
       resetPolyPoints();
+      addMarker(Marker(markerId: sourceMarkerId, position: latLng));
+      animateCamera(latLng);
+      return;
+    } else if (sourceLocation == null && destinationLocation != null) {
+      LatLng latLng =
+          LatLng(destinationLocation.latitude, destinationLocation.longitude);
+      removeMarker(sourceMarkerId);
+      resetPolyPoints();
+      addMarker(Marker(markerId: destinationMarkerId, position: latLng));
+      animateCamera(latLng);
       return;
     }
-    LatLng latLng =
-        LatLng(destinationLocation.latitude, destinationLocation.longitude);
-    if (sourceLocation == null) animateCamera(latLng);
-
+    LatLng sourcePosition =
+        LatLng(sourceLocation!.latitude, sourceLocation.longitude);
+    LatLng destinationPosition =
+        LatLng(destinationLocation!.latitude, destinationLocation.longitude);
     addMarker(
-      Marker(markerId: destinationMarkerId, position: latLng),
+      Marker(markerId: sourceMarkerId, position: sourcePosition),
     );
-    getPolyline();
-
-    results.destinationLocation = destinationLocation.locationName;
+    addMarker(
+      Marker(markerId: destinationMarkerId, position: destinationPosition),
+    );
+    getPolyline(
+        sourceLocation: sourceLocation,
+        destinationLocation: destinationLocation);
   }
 
   //Handle Polylines
@@ -107,16 +107,17 @@ class MapProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  getPolyline() async {
+  getPolyline(
+      {LocationModel? sourceLocation,
+      LocationModel? destinationLocation}) async {
     if (controller == null ||
         sourceLocation == null ||
         destinationLocation == null) return;
     resetPolyPoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       Constants.GOOGLE_API_KEY,
-      PointLatLng(sourceLocation!.latitude, sourceLocation!.longitude),
-      PointLatLng(
-          destinationLocation!.latitude, destinationLocation!.longitude),
+      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
       travelMode: TravelMode.driving,
     );
     if (result.points.isNotEmpty) {

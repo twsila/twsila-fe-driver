@@ -11,6 +11,7 @@ import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
+import '../../../utils/resources/langauge_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/styles_manager.dart';
@@ -19,6 +20,8 @@ import '../../common/state_renderer/state_renderer_impl.dart';
 import '../../common/widgets/custom_dropdown.dart';
 import '../../common/widgets/custom_text_input_field.dart';
 import '../viewmodel/register_viewmodel.dart';
+
+import 'dart:math' as math;
 
 enum UPLOAD_DOCUMENTS {
   CAR_DOCUMENT,
@@ -110,6 +113,11 @@ class _RegisterViewState extends State<RegisterView> {
     super.initState();
   }
 
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
+    // return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,21 +186,21 @@ class _RegisterViewState extends State<RegisterView> {
                             builder: (context, snapshot) {
                               return snapshot.data ?? false
                                   ? Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: CustomDropDown(
-                            backgroundColor: ColorManager.white,
-                            isTitleBold: false,
-                            stringsArr: list2,
-                            isValid: true,
-                            hintTextColor: ColorManager.grey,
-                            hintText: 'اختر من هنا',
-                            textColor: ColorManager.primary,
-                            borderColor: ColorManager.grey,
-                            onChanged: (selectedValue) {
+                                      textDirection: TextDirection.rtl,
+                                      child: CustomDropDown(
+                                        backgroundColor: ColorManager.white,
+                                        isTitleBold: false,
+                                        stringsArr: list2,
+                                        isValid: true,
+                                        hintTextColor: ColorManager.grey,
+                                        hintText: 'اختر من هنا',
+                                        textColor: ColorManager.primary,
+                                        borderColor: ColorManager.grey,
+                                        onChanged: (selectedValue) {
                                           _viewModel.setServiceCapacity(
                                               selectedValue!);
-                            },
-                          ),
+                                        },
+                                      ),
                                     )
                                   : Container();
                             }),
@@ -356,7 +364,7 @@ class _RegisterViewState extends State<RegisterView> {
               ListTile(
                 trailing: const Icon(Icons.arrow_forward),
                 leading: const Icon(Icons.camera),
-                title: Text(AppStrings.photoGallery.tr()),
+                title: Text("جاليرى"),
                 onTap: () {
                   _imageFromGallery(uploadDocuments);
                   Navigator.of(context).pop();
@@ -365,7 +373,7 @@ class _RegisterViewState extends State<RegisterView> {
               ListTile(
                 trailing: const Icon(Icons.arrow_forward),
                 leading: const Icon(Icons.camera_alt_outlined),
-                title: Text(AppStrings.photoCamera.tr()),
+                title: Text("كاميرا"),
                 onTap: () {
                   _imageFromCamera(uploadDocuments);
                   Navigator.of(context).pop();

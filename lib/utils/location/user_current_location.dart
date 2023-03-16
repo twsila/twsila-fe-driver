@@ -1,7 +1,7 @@
 import 'package:flutter_geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../model/location_model.dart';
+import '../../presentation/google_maps/model/location_model.dart';
 
 class UserCurrentLocation {
   Future<LocationModel> getCurrentLocation() async {

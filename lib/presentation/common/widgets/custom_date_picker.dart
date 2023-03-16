@@ -1,51 +1,67 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
-
-import '../../google_maps/helpers/set_result.dart';
+import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
+import 'package:taxi_for_you/utils/resources/strings_manager.dart';
+import 'package:taxi_for_you/utils/resources/styles_manager.dart';
 
 class CustomDatePickerWidget extends StatefulWidget {
-  const CustomDatePickerWidget({Key? key}) : super(key: key);
+  final Function(String date) onSelectDate;
+  const CustomDatePickerWidget({Key? key, required this.onSelectDate})
+      : super(key: key);
 
   @override
   State<CustomDatePickerWidget> createState() => _CustomDatePickerWidgetState();
 }
 
 class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
+  final _appPrefs = instance<AppPreferences>();
   final ValueNotifier<DateTime?> dateSub = ValueNotifier(null);
-  final results = Results();
+
+  String dateFormatterString = 'dd MMM, yyyy hh:mm a';
 
   Widget buildDateTimePicker(String data) {
     return Row(
       children: [
-        Expanded(
+        Flexible(
+          flex: 1,
+          child: Text(
+            AppStrings.scheduleAppoinment.tr(),
+            style: getMediumStyle(color: ColorManager.lightGrey, fontSize: 12),
+          ),
+        ),
+        const SizedBox(width: 6),
+        Flexible(
+          flex: 3,
           child: ListTile(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
               side: BorderSide(color: ColorManager.lightPrimary, width: 1.5),
             ),
             title: Text(
-              data != '' ? data : 'اختر معاد',
-              textAlign: TextAlign.end,
+              data != '' ? data : AppStrings.selectDate.tr(),
+              textAlign: TextAlign.start,
             ),
-            trailing: Icon(
+            leading: Icon(
               Icons.calendar_today,
               color: ColorManager.primary,
             ),
           ),
-        ),
-        const SizedBox(width: 6),
-        Text(
-          'جدولة المواعيد',
-          // style: Theme.of(context).textTheme.headline4,
         ),
       ],
     );
   }
 
   String convertDate(DateTime dateTime) {
-    results.date = DateFormat.yMMMd().format(dateTime);
-    return DateFormat.yMMMd().format(dateTime);
+    String dateFormatted =
+        DateFormat(dateFormatterString, _appPrefs.getAppLanguage())
+            .format(dateTime);
+    widget.onSelectDate(dateFormatted);
+    return DateFormat(dateFormatterString, _appPrefs.getAppLanguage())
+        .format(dateTime);
   }
 
   @override
@@ -59,6 +75,10 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                   onTap: () async {
                     FocusScope.of(context).unfocus();
                     DateTime? date = await showDatePicker(
+                        locale: _appPrefs.getAppLanguage() ==
+                                LanguageType.ENGLISH.getValue()
+                            ? ENGLISH_LOCAL
+                            : ARABIC_LOCAL,
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime.now(),
@@ -78,7 +98,29 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                             child: child!,
                           );
                         });
-                    dateSub.value = date;
+                    final timeValue = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                                colorScheme: ColorScheme.fromSwatch(
+                              primarySwatch: Colors.indigo,
+                              accentColor: ColorManager.lightGrey,
+                              backgroundColor: Colors.lightBlue,
+                              cardColor: Colors.white,
+                            )),
+                            child: child!,
+                          );
+                        });
+                    var dateTime = DateTime(
+                      date!.year,
+                      date.month,
+                      date.day,
+                      timeValue!.hour,
+                      timeValue.minute,
+                    );
+                    dateSub.value = dateTime;
                   },
                   child: buildDateTimePicker(
                       dateVal != null ? convertDate(dateVal) : ''));

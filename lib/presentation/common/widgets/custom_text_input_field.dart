@@ -177,6 +177,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                 contentPadding: widget.padding ??
                     const EdgeInsets.only(
                       left: 10,
+                      right: 10
                     ),
                 counterStyle: const TextStyle(
                   height: double.minPositive,

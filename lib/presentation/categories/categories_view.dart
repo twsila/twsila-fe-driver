@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_language_widget.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_square_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
@@ -21,6 +22,11 @@ class CategoriesView extends StatelessWidget {
       color: ColorManager.white,
       child: Stack(
         children: [
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Container(width: 100, height: 100, child: const LanguageWidget()),
+          ),
           Positioned(
             top: 0,
             left: 0,
@@ -67,9 +73,11 @@ class CategoriesView extends StatelessWidget {
                     children: [
                       Flexible(
                         child: CustomSquareButton(
-                            onPressed: () {},
-                            text: AppStrings.people.tr(),
-                            iconData: Icons.people),
+                            onPressed: () {
+                              Navigator.pushNamed(context, Routes.tripsRoute);
+                            },
+                            text: AppStrings.trips.tr(),
+                            iconData: Icons.car_rental),
                       ),
                       Flexible(
                         child: CustomSquareButton(

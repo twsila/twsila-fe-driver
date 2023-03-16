@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taxi_for_you/presentation/login/login_viewmodel.dart';
 import 'package:taxi_for_you/presentation/otp/viewmodel/verify_otp_viewmodel.dart';
+import 'package:taxi_for_you/presentation/register/view/register_view.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
@@ -60,8 +61,9 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
       if (isCodeIsVerified) {
         // navigate to main screen
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          // _appPreferences.setUserLoggedIn();
+          _appPreferences.setUserLoggedIn();
           Navigator.of(context).pushReplacementNamed(Routes.registerRoute);
+
         });
       }
     });

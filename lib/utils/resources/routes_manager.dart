@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/categories/categories_view.dart';
-import 'package:taxi_for_you/presentation/goods/furniture_view/furniture_view.dart';
-import 'package:taxi_for_you/presentation/goods/goods_view.dart';
+import 'package:taxi_for_you/presentation/trip_details/view/trip_client_details_view.dart';
+import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
+import 'package:taxi_for_you/presentation/trips/view/trips_view.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/presentation/otp/view/verify_otp_view.dart';
 import '../../app/di.dart';
@@ -26,6 +27,9 @@ class Routes {
   static const String goodsRoute = "/goods";
   static const String furnitureRoute = "/furniture";
   static const String pendingApprovalRoute = "/pendingApproval";
+  static const String tripsRoute = "/trips";
+  static const String tripDetailsRoute = "/tripDetails";
+  static const String tripClientDetailsRoute = "/tripClientDetails";
 }
 
 class RouteGenerator {
@@ -35,10 +39,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const SplashView());
       case Routes.categoriesRoute:
         return MaterialPageRoute(builder: (_) => const CategoriesView());
-      case Routes.goodsRoute:
-        return MaterialPageRoute(builder: (_) => const GoodsView());
-      case Routes.furnitureRoute:
-        return MaterialPageRoute(builder: (_) => const FurnitureView());
+      // case Routes.goodsRoute:
+      //   return MaterialPageRoute(builder: (_) => const GoodsView());
+      // case Routes.furnitureRoute:
+      //   return MaterialPageRoute(builder: (_) => const FurnitureView());
       case Routes.loginRoute:
         initLoginModule();
         return MaterialPageRoute(builder: (_) => const LoginView());
@@ -46,7 +50,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
       case Routes.registerRoute:
         initRegisterModule();
-        return MaterialPageRoute(builder: (_) => const RegisterView());
+        return MaterialPageRoute(builder: (_) =>  const RegisterView());
       case Routes.mainRoute:
         initHomeModule();
         return MaterialPageRoute(builder: (_) => const MainView());
@@ -55,6 +59,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => VerifyOtpView());
       case Routes.pendingApprovalRoute:
         return MaterialPageRoute(builder: (_) => const PendingApprovalDriver());
+      case Routes.tripsRoute:
+        return MaterialPageRoute(builder: (_) => const TripsView());
+      case Routes.tripDetailsRoute:
+        return MaterialPageRoute(builder: (_) => const TripDetailsView());
+      case Routes.tripClientDetailsRoute:
+        return MaterialPageRoute(builder: (_) => const TripClientDetailsView());
       default:
         return unDefinedRoute();
     }

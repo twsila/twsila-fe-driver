@@ -1,6 +1,8 @@
 class AppStrings {
   static const noRouteFound = "noRouteFound";
   static const skip = "skip";
+  static const en = 'en';
+  static const ar = 'ar';
   static const username = "username_hint";
   static const password = "password_hint";
   static const usernameError = "username_error";
@@ -57,6 +59,59 @@ class AppStrings {
   static const String enterOtpHint = "enter_otp_hint";
   static const String sendOtpAgainHint = "send_otp_again_hint";
   static const String driverLabel = "driver_label";
+  static const String trips = "trips";
+  static const String searchForTrips = "search_for_trips";
+  static const String selectFromHereHint = "select_from_here_hint";
+  static const String ongoingTrips = "ongoing_trips";
+  static const String scheduledTrips = "scheduled_trips";
+  static const String nearFromMeTrips = "near_from_me_trips";
+  static const String fromToTrips = "from_to_trips";
+  static const String animalsTrips = "animals_trips";
+  static const String boxTrips = "box_trips";
+  static const String viewAllTrips = "view_all_trips";
+  static const String tripDetailsBeforeAcceptClientAcceptance =
+      "trip_details_before_client_acceptance";
+  static const String clientOffer = "client_offer";
+  static const String withPrice = "with_price";
+  static const String sarCurrency = "sar_currency";
+  static const String tripDetailsDiffWithTypeHint =
+      "trip_details_diff_with_type_hint";
+  static const tripConfirmation = "trip_confirmation";
+  static const tripConfirmationSucceeded = "trip_confirmation_succeeded";
+  static const selectDate = "select_date";
+  static const scheduleAppoinment = "scheduling_appointments";
+  static const sourcePoint = "source_point";
+  static const destinationPoint = "destination_point";
+  static const privateNotes = "private_notes";
+  static const pickedImages = "picked_images";
+  static const nothing = "nothing";
+  static const gallery = "gallery";
+  static const camera = "camera";
+  static const sourceHint = 'source_hint';
+  static const destinationHint = 'destination_hint';
+  static const clientName = 'client_name';
+  static const tripInformation = 'trip_information';
+  static const clientOfferLabel = 'client_offer_label';
+  static const rating = 'rating';
+  static const fromKhobarToElDmam = 'from_dmam_to_khobar';
+
+  static const now = "now";
+  static const String pickupPoint = "pick_up_point";
+  static const String notes = "notes";
+  static const String wantToOfferPriceForTrip = "want_to_offer_price_for_trip";
+  static const String acceptOffer = "request_details_screen_accept_offer";
+  static const String offerAcceptedMessage = "offer_accepted_message";
+  static const String acceptClientOffer = "accept_client_offer";
+  static const String offerFromClientNamed = "offer_from_client_named";
+  static const String ahmedMohamedClient = "ahmed_client";
+  static const String captainOfferNewPrice = "captain_offer_new_price";
+  static const String tripDetailsChangeRegardingItsType =
+      "trip_details_change_regarding_its_type";
+  static const String enterPriceThatYouWant = "enter_price_that_you_want";
+  static const String sendSuggestedPrice = "send_suggest_price";
+  static const String tripDetails = "trip_details";
+
+  static const attachFurnitureImages = "attach_furniture_images";
 
   // error handler
   static const String badRequestError = "bad_request_error";
