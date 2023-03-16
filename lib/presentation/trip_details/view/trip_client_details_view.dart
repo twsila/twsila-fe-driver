@@ -195,6 +195,7 @@ class _TripClientDetailsViewState extends State<TripClientDetailsView> {
             ),
             ElevatedButton(
                 onPressed: () {
+                  FocusScope.of(context).unfocus();
                   Fluttertoast.showToast(
                       msg: AppStrings.offerAcceptedMessage.tr(),
                       toastLength: Toast.LENGTH_SHORT,

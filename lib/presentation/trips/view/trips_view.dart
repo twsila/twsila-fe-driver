@@ -81,79 +81,77 @@ class _TripsViewState extends State<TripsView> {
                   border: Border.all(color: ColorManager.primary),
                   borderRadius: const BorderRadius.all(Radius.circular(8)),
                 ),
-                child: Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppStrings.clientName.tr(),
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                          Text(
-                            AppStrings.ahmedMohamedClient.tr(),
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppStrings.tripInformation.tr(),
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                          Text(
-                            AppStrings.fromKhobarToElDmam.tr(),
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppStrings.clientOfferLabel.tr(),
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                          Text(
-                            "10000",
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppStrings.rating.tr(),
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                          Text(
-                            "4.3",
-                            style: getRegularStyle(
-                                color: ColorManager.black,
-                                fontSize: FontSize.s12),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppStrings.clientName.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                        Text(
+                          AppStrings.ahmedMohamedClient.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppStrings.tripInformation.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                        Text(
+                          AppStrings.fromKhobarToElDmam.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppStrings.clientOfferLabel.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                        Text(
+                          "10000",
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppStrings.rating.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                        Text(
+                          "4.3",
+                          style: getRegularStyle(
+                              color: ColorManager.black,
+                              fontSize: FontSize.s12),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),
