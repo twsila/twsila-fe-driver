@@ -15,38 +15,74 @@ import '../../../utils/resources/strings_manager.dart';
 class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInput, RegisterViewModelOutput {
   StreamController serviceTypeStreamController =
-  StreamController<String>.broadcast();
+      StreamController<String>.broadcast();
   StreamController serviceTypeCapacityStreamController =
-  StreamController<String>.broadcast();
+      StreamController<String>.broadcast();
   StreamController plateNumberStreamController =
-  StreamController<int>.broadcast();
+      StreamController<int>.broadcast();
   StreamController notesStreamController = StreamController<String>.broadcast();
   StreamController carBrandAndModelStreamController =
-  StreamController<String>.broadcast();
-  StreamController carDocumentStreamController =
-  StreamController<File>.broadcast();
-  StreamController carOwnerLicenseImageStreamController =
-  StreamController<File>.broadcast();
-  StreamController carOwnerIdentityCardImageStreamController =
-  StreamController<File>.broadcast();
-  StreamController carDriverIdentityCardImageStreamController =
-  StreamController<File>.broadcast();
+      StreamController<String>.broadcast();
+  StreamController carDocumentFrontStreamController =
+      StreamController<File>.broadcast();
+  StreamController carOwnerLicenseFrontImageStreamController =
+      StreamController<File>.broadcast();
+  StreamController carOwnerIdentityCardFrontImageStreamController =
+      StreamController<File>.broadcast();
+  StreamController carDriverIdentityCardFrontImageStreamController =
+      StreamController<File>.broadcast();
+  StreamController carDocumentBackStreamController =
+      StreamController<File>.broadcast();
+  StreamController carOwnerLicenseBackImageStreamController =
+      StreamController<File>.broadcast();
+  StreamController carOwnerIdentityCardBackImageStreamController =
+      StreamController<File>.broadcast();
+  StreamController carDriverIdentityCardBackImageStreamController =
+      StreamController<File>.broadcast();
+
+  StreamController carDocumentExpireDateStreamController =
+      StreamController<String>.broadcast();
+  StreamController carOwnerLicenseExpireDateStreamController =
+      StreamController<String>.broadcast();
+  StreamController carOwnerIdentityCardExpireDateStreamController =
+      StreamController<String>.broadcast();
+  StreamController carDriverIdentityCardExpireDateStreamController =
+      StreamController<String>.broadcast();
+
+  StreamController areAllCarDocumentIsValidStreamController =
+      StreamController<void>.broadcast();
+  StreamController areAllCarOwnerIdentityIsValidStreamController =
+      StreamController<void>.broadcast();
+  StreamController areAllCarDriverLicenseIsValidStreamController =
+      StreamController<void>.broadcast();
+  StreamController areAllCarDriverIdentityIsValidStreamController =
+      StreamController<void>.broadcast();
+
   StreamController areAllInputsValidStreamController =
-  StreamController<void>.broadcast();
+      StreamController<void>.broadcast();
 
   StreamController isUserRegisteredInSuccessfullyStreamController =
-  StreamController<bool>();
+      StreamController<bool>();
   final RegisterUseCase _registerUseCase;
   var registerObject = DriverRegstrationObj(
-      "",
-      "",
-      0,
-      "",
-      "",
-      "",
-      "",
-      "",
-      "");
+    "",
+    "",
+    0,
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  );
 
   RegisterViewModel(this._registerUseCase);
 
@@ -63,13 +99,28 @@ class RegisterViewModel extends BaseViewModel
     plateNumberStreamController.close();
     notesStreamController.close();
     carBrandAndModelStreamController.close();
-    carOwnerLicenseImageStreamController.close();
-    carOwnerIdentityCardImageStreamController.close();
-    carDriverIdentityCardImageStreamController.close();
-    carDocumentStreamController.close();
     areAllInputsValidStreamController.close();
+    areAllCarDocumentIsValidStreamController.close();
+    areAllCarOwnerIdentityIsValidStreamController.close();
+    areAllCarDriverLicenseIsValidStreamController.close();
+    areAllCarDriverIdentityIsValidStreamController.close();
     isUserRegisteredInSuccessfullyStreamController.close();
     super.dispose();
+  }
+
+  void disposeUploadStreams() {
+    carOwnerLicenseFrontImageStreamController.close();
+    carOwnerIdentityCardFrontImageStreamController.close();
+    carDriverIdentityCardFrontImageStreamController.close();
+    carDocumentFrontStreamController.close();
+    carDocumentBackStreamController.close();
+    carOwnerLicenseBackImageStreamController.close();
+    carOwnerIdentityCardBackImageStreamController.close();
+    carDriverIdentityCardBackImageStreamController.close();
+    carOwnerLicenseExpireDateStreamController.close();
+    carOwnerIdentityCardExpireDateStreamController.close();
+    carDriverIdentityCardExpireDateStreamController.close();
+    carDocumentExpireDateStreamController.close();
   }
 
   @override
@@ -81,22 +132,21 @@ class RegisterViewModel extends BaseViewModel
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
 
     (await _registerUseCase.execute(RegisterUseCaseInput(
-        registerObject.serviceType,
-        registerObject.serviceTypeCapacity,
-        registerObject.plateNumber,
-        registerObject.notes,
-        registerObject.carBrandAndModel,
-        registerObject.carDocumentImage,
-        registerObject.carOwnerLicenseImage,
-        registerObject.carOwnerIdentityCardImage,
-        registerObject.carDriverIdentityCardImage)))
+            registerObject.serviceType,
+            registerObject.serviceTypeCapacity,
+            registerObject.plateNumber,
+            registerObject.notes,
+            registerObject.carBrandAndModel,
+            registerObject.carDocumentFrontImage,
+            registerObject.carOwnerLicenseFrontImage,
+            registerObject.carOwnerIdentityCardFrontImage,
+            registerObject.carDriverIdentityCardFrontImage)))
         .fold(
-            (failure) =>
-        {
-          // left -> failure
-          inputState.add(ErrorState(
-              StateRendererType.popupErrorState, failure.message))
-        }, (data) {
+            (failure) => {
+                  // left -> failure
+                  inputState.add(ErrorState(
+                      StateRendererType.popupErrorState, failure.message))
+                }, (data) {
       // right -> data (success)
       // content
       inputState.add(ContentState());
@@ -140,30 +190,80 @@ class RegisterViewModel extends BaseViewModel
     return registerObject.serviceType.isNotEmpty &&
         registerObject.plateNumber != 0 &&
         registerObject.carBrandAndModel.isNotEmpty &&
-        registerObject.carDocumentImage.isNotEmpty &&
-        registerObject.carDriverIdentityCardImage.isNotEmpty &&
-        registerObject.carOwnerLicenseImage.isNotEmpty &&
-        registerObject.carOwnerIdentityCardImage.isNotEmpty;
+        registerObject.carDocumentFrontImage.isNotEmpty &&
+        registerObject.carDocumentBackImage.isNotEmpty &&
+        registerObject.carDriverIdentityCardFrontImage.isNotEmpty &&
+        registerObject.carDriverIdentityCardBackImage.isNotEmpty &&
+        registerObject.carDriverIdentityCardExpireDate.isNotEmpty &&
+        registerObject.carOwnerLicenseFrontImage.isNotEmpty &&
+        registerObject.carOwnerLicenseBackImage.isNotEmpty &&
+        registerObject.carOwnerLicenseExpireDate.isNotEmpty &&
+        registerObject.carOwnerIdentityCardFrontImage.isNotEmpty &&
+        registerObject.carOwnerIdentityCardBackImage.isNotEmpty &&
+        registerObject.carOwnerIdentityCardExpireDate.isNotEmpty;
+  }
+
+  bool _areAllCarDocumentInputsValid() {
+    return registerObject.carDocumentExpireDate.isNotEmpty &&
+        registerObject.carDocumentBackImage.isNotEmpty &&
+        registerObject.carDocumentFrontImage.isNotEmpty;
+  }
+
+  bool _areAllCarDriverLicenseInputsValid() {
+    return registerObject.carOwnerLicenseExpireDate.isNotEmpty &&
+        registerObject.carOwnerLicenseBackImage.isNotEmpty &&
+        registerObject.carOwnerLicenseFrontImage.isNotEmpty;
+  }
+
+  bool _areAllCarDriverIdentityInputsValid() {
+    return registerObject.carDriverIdentityCardExpireDate.isNotEmpty &&
+        registerObject.carDriverIdentityCardBackImage.isNotEmpty &&
+        registerObject.carDriverIdentityCardFrontImage.isNotEmpty;
+  }
+
+  bool _areAllCarOwnerIdentityInputsValid() {
+    return registerObject.carOwnerIdentityCardExpireDate.isNotEmpty &&
+        registerObject.carOwnerIdentityCardFrontImage.isNotEmpty &&
+        registerObject.carOwnerIdentityCardBackImage.isNotEmpty;
   }
 
   validate() {
     inputAllInputsValid.add(null);
+    inputCarDocumentInputsValid.add(null);
+    inputAllCarDriverIdentityInputsValid.add(null);
+    inputAllCarOwnerIdentityInputsValid.add(null);
+    inputAllCarDriverLicenseInputsValid.add(null);
   }
 
   @override
-  Sink get inputCarDocumentImage => carDocumentStreamController.sink;
+  Sink get inputCarDocumentFrontImage => carDocumentFrontStreamController.sink;
 
   @override
-  Sink get inputCarDriverIdentityCardImage =>
-      carDriverIdentityCardImageStreamController.sink;
+  Sink get inputCarDriverIdentityCardFrontImage =>
+      carDriverIdentityCardFrontImageStreamController.sink;
 
   @override
-  Sink get inputCarOwnerIdentityCardImage =>
-      carOwnerIdentityCardImageStreamController.sink;
+  Sink get inputCarOwnerIdentityCardFrontImage =>
+      carOwnerIdentityCardFrontImageStreamController.sink;
 
   @override
-  Sink get inputCarOwnerLicenseImage =>
-      carOwnerLicenseImageStreamController.sink;
+  Sink get inputCarOwnerLicenseFrontImage =>
+      carOwnerLicenseFrontImageStreamController.sink;
+
+  @override
+  Sink get inputCarDocumentBackImage => carDocumentBackStreamController.sink;
+
+  @override
+  Sink get inputCarDriverIdentityCardBackImage =>
+      carDriverIdentityCardBackImageStreamController.sink;
+
+  @override
+  Sink get inputCarOwnerIdentityCardBackImage =>
+      carOwnerIdentityCardBackImageStreamController.sink;
+
+  @override
+  Sink get inputCarOwnerLicenseBackImage =>
+      carOwnerLicenseBackImageStreamController.sink;
 
   @override
   Sink get inputCardBrandAndModel => carBrandAndModelStreamController.sink;
@@ -181,20 +281,109 @@ class RegisterViewModel extends BaseViewModel
   Sink get inputServiceType => serviceTypeStreamController.sink;
 
   @override
-  Stream<File> get outputCarDocumentImage =>
-      carDocumentStreamController.stream.map((file) => file);
+  Sink get inputCarDocumentExpireDate =>
+      carDocumentExpireDateStreamController.sink;
 
   @override
-  Stream<File> get outputCarDriverIdentityCardImage =>
-      carDriverIdentityCardImageStreamController.stream.map((file) => file);
+  Sink get inputCarDriverIdentityCardExpireDate =>
+      carDriverIdentityCardExpireDateStreamController.sink;
 
   @override
-  Stream<File> get outputCarOwnerIdentityCardImage =>
-      carOwnerIdentityCardImageStreamController.stream.map((file) => file);
+  Sink get inputCarOwnerIdentityCardExpireDate =>
+      carOwnerIdentityCardExpireDateStreamController.sink;
 
   @override
-  Stream<File> get outputCarOwnerLicenseImage =>
-      carOwnerLicenseImageStreamController.stream.map((file) => file);
+  Sink get inputCarOwnerLicenseExpireDate =>
+      carOwnerLicenseExpireDateStreamController.sink;
+
+  @override
+  Sink get inputAllCarDriverIdentityInputsValid =>
+      areAllCarDriverIdentityIsValidStreamController.sink;
+
+  @override
+  Sink get inputAllCarDriverLicenseInputsValid =>
+      areAllCarDriverLicenseIsValidStreamController.sink;
+
+  @override
+  Sink get inputAllCarOwnerIdentityInputsValid =>
+      areAllCarOwnerIdentityIsValidStreamController.sink;
+
+  @override
+  Sink get inputCarDocumentInputsValid =>
+      areAllCarDocumentIsValidStreamController.sink;
+
+  @override
+  Stream<File> get outputCarDocumentFrontImage =>
+      carDocumentFrontStreamController.stream.map((file) => file);
+
+  @override
+  Stream<File> get outputCarDriverIdentityCardFrontImage =>
+      carDriverIdentityCardFrontImageStreamController.stream
+          .map((file) => file);
+
+  @override
+  Stream<File> get outputCarOwnerIdentityCardFrontImage =>
+      carOwnerIdentityCardFrontImageStreamController.stream.map((file) => file);
+
+  @override
+  Stream<File> get outputCarOwnerLicenseFrontImage =>
+      carOwnerLicenseFrontImageStreamController.stream.map((file) => file);
+
+  @override
+  Stream<File> get outputCarDocumentBackImage =>
+      carDocumentBackStreamController.stream.map((file) => file);
+
+  @override
+  Stream<File> get outputCarDriverIdentityCardBackImage =>
+      carDriverIdentityCardBackImageStreamController.stream.map((file) => file);
+
+  @override
+  Stream<File> get outputCarOwnerIdentityCardBackImage =>
+      carOwnerIdentityCardBackImageStreamController.stream.map((file) => file);
+
+  @override
+  Stream<File> get outputCarOwnerLicenseBackImage =>
+      carOwnerLicenseBackImageStreamController.stream.map((file) => file);
+
+  @override
+  Stream<String> get outputCarDocumentExpireDate =>
+      carDocumentExpireDateStreamController.stream
+          .map((expireDate) => expireDate);
+
+  @override
+  Stream<String> get outputCarDriverIdentityCardExpireDate =>
+      carDriverIdentityCardExpireDateStreamController.stream
+          .map((expireDate) => expireDate);
+
+  @override
+  Stream<String> get outputCarOwnerIdentityCardExpireDate =>
+      carOwnerIdentityCardExpireDateStreamController.stream
+          .map((expireDate) => expireDate);
+
+  @override
+  Stream<bool> get outputAreAllCarDocumentsInputsValid =>
+      areAllCarDocumentIsValidStreamController.stream
+          .map((_) => _areAllCarDocumentInputsValid());
+
+  @override
+  Stream<bool> get outputAreAllCarDriverIdentityInputsValid =>
+      areAllCarDriverIdentityIsValidStreamController.stream
+          .map((_) => _areAllCarDriverIdentityInputsValid());
+
+  @override
+  Stream<bool> get outputAreCarDriverLicenseInputsValid =>
+      areAllCarDriverLicenseIsValidStreamController.stream
+          .map((_) => _areAllCarDriverLicenseInputsValid());
+
+  @override
+  Stream<bool> get outputAreCarOwnerIdentityInputsValid =>
+      areAllCarOwnerIdentityIsValidStreamController.stream
+          .map((_) => _areAllCarOwnerIdentityInputsValid());
+
+  @override
+  Stream<String> get outputCarOwnerLicenseExpireDate =>
+      carOwnerLicenseExpireDateStreamController.stream
+          .map((expireDate) => expireDate);
 
   @override
   Stream<String?> get outputErrorCardBrandAndModel =>
@@ -209,7 +398,7 @@ class RegisterViewModel extends BaseViewModel
   @override
   Stream<bool> get outputIsCardBrandAndModelValid =>
       carBrandAndModelStreamController.stream.map(
-              (carBrandAndModel) => _isCarBrandAndModelValid(carBrandAndModel));
+          (carBrandAndModel) => _isCarBrandAndModelValid(carBrandAndModel));
 
   @override
   Stream<bool> get outputIsNotesValid =>
@@ -222,59 +411,113 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   // TODO: implement outputServiceType
-  Stream<bool> get outputServiceType =>
-      serviceTypeStreamController.stream.map((serviceType) => serviceType ==
-          "نقل افراد" ? true : false);
+  Stream<bool> get outputServiceType => serviceTypeStreamController.stream
+      .map((serviceType) => serviceType == "نقل افراد" ? true : false);
 
   @override
-  setCarDocumentImage(File carDocumentImage) {
-    inputCarDocumentImage.add(carDocumentImage);
-    if (carDocumentImage.path.isNotEmpty) {
+  setCarDocumentFrontImage(File carDocumentFrontImage) {
+    inputCarDocumentFrontImage.add(carDocumentFrontImage);
+    if (carDocumentFrontImage.path.isNotEmpty) {
       //  update register view object
-      registerObject.carDocumentImage = carDocumentImage.path;
+      registerObject.carDocumentFrontImage = carDocumentFrontImage.path;
     } else {
       // reset profilePicture value in register view object
-      registerObject.carDocumentImage = "";
+      registerObject.carDocumentFrontImage = "";
     }
     validate();
   }
 
   @override
-  setCarDriverIdentityCardImage(File carDriverIdentityCardImage) {
-    inputCarDriverIdentityCardImage.add(carDriverIdentityCardImage);
-    if (carDriverIdentityCardImage.path.isNotEmpty) {
+  setCarDriverIdentityCardFrontImage(File carDriverIdentityCardFrontImage) {
+    inputCarDriverIdentityCardFrontImage.add(carDriverIdentityCardFrontImage);
+    if (carDriverIdentityCardFrontImage.path.isNotEmpty) {
       //  update register view object
-      registerObject.carDriverIdentityCardImage =
-          carDriverIdentityCardImage.path;
+      registerObject.carDriverIdentityCardFrontImage =
+          carDriverIdentityCardFrontImage.path;
     } else {
       // reset profilePicture value in register view object
-      registerObject.carDriverIdentityCardImage = "";
+      registerObject.carDriverIdentityCardFrontImage = "";
     }
     validate();
   }
 
   @override
-  setCarOwnerIdentityCardImage(File carOwnerIdentityCardImage) {
-    inputCarOwnerIdentityCardImage.add(carOwnerIdentityCardImage);
-    if (carOwnerIdentityCardImage.path.isNotEmpty) {
+  setCarOwnerIdentityCardFrontImage(File carOwnerIdentityCardFrontImage) {
+    inputCarOwnerIdentityCardFrontImage.add(carOwnerIdentityCardFrontImage);
+    if (carOwnerIdentityCardFrontImage.path.isNotEmpty) {
       //  update register view object
-      registerObject.carOwnerIdentityCardImage = carOwnerIdentityCardImage.path;
+      registerObject.carOwnerIdentityCardFrontImage =
+          carOwnerIdentityCardFrontImage.path;
     } else {
       // reset profilePicture value in register view object
-      registerObject.carOwnerIdentityCardImage = "";
+      registerObject.carOwnerIdentityCardFrontImage = "";
     }
     validate();
   }
 
   @override
-  setCarOwnerLicenseImage(File carOwnerLicenseImage) {
-    inputCarOwnerLicenseImage.add(carOwnerLicenseImage);
-    if (carOwnerLicenseImage.path.isNotEmpty) {
+  setCarOwnerLicenseFrontImage(File carOwnerLicenseFrontImage) {
+    inputCarOwnerLicenseFrontImage.add(carOwnerLicenseFrontImage);
+    if (carOwnerLicenseFrontImage.path.isNotEmpty) {
       //  update register view object
-      registerObject.carOwnerLicenseImage = carOwnerLicenseImage.path;
+      registerObject.carOwnerLicenseFrontImage = carOwnerLicenseFrontImage.path;
     } else {
       // reset profilePicture value in register view object
-      registerObject.carOwnerLicenseImage = "";
+      registerObject.carOwnerLicenseFrontImage = "";
+    }
+    validate();
+  }
+
+  @override
+  setCarDocumentBackImage(File carDocumentBackImage) {
+    inputCarDocumentBackImage.add(carDocumentBackImage);
+    if (carDocumentBackImage.path.isNotEmpty) {
+      //  update register view object
+      registerObject.carDocumentBackImage = carDocumentBackImage.path;
+    } else {
+      // reset profilePicture value in register view object
+      registerObject.carDocumentBackImage = "";
+    }
+    validate();
+  }
+
+  @override
+  setCarDriverIdentityCardBackImage(File carDriverIdentityCardBackImage) {
+    inputCarDriverIdentityCardBackImage.add(carDriverIdentityCardBackImage);
+    if (carDriverIdentityCardBackImage.path.isNotEmpty) {
+      //  update register view object
+      registerObject.carDriverIdentityCardBackImage =
+          carDriverIdentityCardBackImage.path;
+    } else {
+      // reset profilePicture value in register view object
+      registerObject.carDriverIdentityCardBackImage = "";
+    }
+    validate();
+  }
+
+  @override
+  setCarOwnerIdentityCardBackImage(File carOwnerIdentityCardBackImage) {
+    inputCarOwnerIdentityCardFrontImage.add(carOwnerIdentityCardBackImage);
+    if (carOwnerIdentityCardBackImage.path.isNotEmpty) {
+      //  update register view object
+      registerObject.carOwnerIdentityCardBackImage =
+          carOwnerIdentityCardBackImage.path;
+    } else {
+      // reset profilePicture value in register view object
+      registerObject.carOwnerIdentityCardBackImage = "";
+    }
+    validate();
+  }
+
+  @override
+  setCarOwnerLicenseBackImage(File carOwnerLicenseBackImage) {
+    inputCarOwnerLicenseBackImage.add(carOwnerLicenseBackImage);
+    if (carOwnerLicenseBackImage.path.isNotEmpty) {
+      //  update register view object
+      registerObject.carOwnerLicenseBackImage = carOwnerLicenseBackImage.path;
+    } else {
+      // reset profilePicture value in register view object
+      registerObject.carOwnerLicenseBackImage = "";
     }
     validate();
   }
@@ -332,7 +575,35 @@ class RegisterViewModel extends BaseViewModel
     validate();
   }
 
+  @override
+  setCarDocumentExpireDate(String carDocumentExpireDate) {
+    inputCarDocumentExpireDate.add(carDocumentExpireDate);
+    registerObject.carDocumentExpireDate = carDocumentExpireDate;
+    validate();
+  }
 
+  @override
+  setCarDriverIdentityCardExpireDate(String carDriverIdentityCardExpireDate) {
+    inputCarDriverIdentityCardExpireDate.add(carDriverIdentityCardExpireDate);
+    registerObject.carDriverIdentityCardExpireDate =
+        carDriverIdentityCardExpireDate;
+    validate();
+  }
+
+  @override
+  setCarOwnerIdentityCardExpireDate(String carOwnerIdentityCardExpireDate) {
+    inputCarOwnerIdentityCardExpireDate.add(carOwnerIdentityCardExpireDate);
+    registerObject.carOwnerIdentityCardExpireDate =
+        carOwnerIdentityCardExpireDate;
+    validate();
+  }
+
+  @override
+  setCarOwnerLicenseExpireDate(String carOwnerLicenseExpireDate) {
+    inputCarOwnerLicenseExpireDate.add(carOwnerLicenseExpireDate);
+    registerObject.carOwnerLicenseExpireDate = carOwnerLicenseExpireDate;
+    validate();
+  }
 }
 
 abstract class RegisterViewModelInput {
@@ -346,13 +617,37 @@ abstract class RegisterViewModelInput {
 
   Sink get inputCardBrandAndModel;
 
-  Sink get inputCarDocumentImage;
+  Sink get inputCarDocumentFrontImage;
 
-  Sink get inputCarOwnerLicenseImage;
+  Sink get inputCarDocumentBackImage;
 
-  Sink get inputCarOwnerIdentityCardImage;
+  Sink get inputCarDocumentExpireDate;
 
-  Sink get inputCarDriverIdentityCardImage;
+  Sink get inputCarOwnerLicenseFrontImage;
+
+  Sink get inputCarOwnerLicenseBackImage;
+
+  Sink get inputCarOwnerLicenseExpireDate;
+
+  Sink get inputCarOwnerIdentityCardFrontImage;
+
+  Sink get inputCarOwnerIdentityCardBackImage;
+
+  Sink get inputCarOwnerIdentityCardExpireDate;
+
+  Sink get inputCarDriverIdentityCardFrontImage;
+
+  Sink get inputCarDriverIdentityCardBackImage;
+
+  Sink get inputCarDriverIdentityCardExpireDate;
+
+  Sink get inputCarDocumentInputsValid;
+
+  Sink get inputAllCarDriverLicenseInputsValid;
+
+  Sink get inputAllCarOwnerIdentityInputsValid;
+
+  Sink get inputAllCarDriverIdentityInputsValid;
 
   Sink get inputAllInputsValid;
 
@@ -368,13 +663,29 @@ abstract class RegisterViewModelInput {
 
   setCardBrandAndModel(String cardBrandAndModel);
 
-  setCarDocumentImage(File carDocumentImage);
+  setCarDocumentFrontImage(File carDocumentImage);
 
-  setCarOwnerLicenseImage(File carOwnerLicenseImage);
+  setCarDocumentBackImage(File carDocumentImage);
 
-  setCarOwnerIdentityCardImage(File carOwnerIdentityCardImage);
+  setCarDocumentExpireDate(String carDocumentExpireDate);
 
-  setCarDriverIdentityCardImage(File carDriverIdentityCardImage);
+  setCarOwnerLicenseFrontImage(File carOwnerLicenseImage);
+
+  setCarOwnerLicenseBackImage(File carOwnerLicenseImage);
+
+  setCarOwnerLicenseExpireDate(String carOwnerLicenseExpireDate);
+
+  setCarOwnerIdentityCardFrontImage(File carOwnerIdentityCardImage);
+
+  setCarOwnerIdentityCardBackImage(File carOwnerIdentityCardImage);
+
+  setCarOwnerIdentityCardExpireDate(String carOwnerIdentityCardExpireDate);
+
+  setCarDriverIdentityCardFrontImage(File carDriverIdentityCardImage);
+
+  setCarDriverIdentityCardBackImage(File carDriverIdentityCardImage);
+
+  setCarDriverIdentityCardExpireDate(String carDriverIdentityCardExpireDate);
 }
 
 abstract class RegisterViewModelOutput {
@@ -392,13 +703,37 @@ abstract class RegisterViewModelOutput {
 
   Stream<String?> get outputErrorNotes;
 
-  Stream<File> get outputCarDocumentImage;
+  Stream<File> get outputCarDocumentFrontImage;
 
-  Stream<File> get outputCarOwnerLicenseImage;
+  Stream<File> get outputCarDocumentBackImage;
 
-  Stream<File> get outputCarOwnerIdentityCardImage;
+  Stream<String> get outputCarDocumentExpireDate;
 
-  Stream<File> get outputCarDriverIdentityCardImage;
+  Stream<File> get outputCarOwnerLicenseFrontImage;
+
+  Stream<File> get outputCarOwnerLicenseBackImage;
+
+  Stream<String> get outputCarOwnerLicenseExpireDate;
+
+  Stream<File> get outputCarOwnerIdentityCardFrontImage;
+
+  Stream<File> get outputCarOwnerIdentityCardBackImage;
+
+  Stream<String> get outputCarOwnerIdentityCardExpireDate;
+
+  Stream<File> get outputCarDriverIdentityCardFrontImage;
+
+  Stream<File> get outputCarDriverIdentityCardBackImage;
+
+  Stream<String> get outputCarDriverIdentityCardExpireDate;
+
+  Stream<bool> get outputAreAllCarDocumentsInputsValid;
+
+  Stream<bool> get outputAreCarOwnerIdentityInputsValid;
+
+  Stream<bool> get outputAreCarDriverLicenseInputsValid;
+
+  Stream<bool> get outputAreAllCarDriverIdentityInputsValid;
 
   Stream<bool> get outputAreAllInputsValid;
 }

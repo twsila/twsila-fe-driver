@@ -22,10 +22,18 @@ class DriverRegstrationObj {
   int plateNumber;
   String carBrandAndModel;
   String notes;
-  String carDocumentImage;
-  String carOwnerLicenseImage;
-  String carOwnerIdentityCardImage;
-  String carDriverIdentityCardImage;
+  String carDocumentFrontImage;
+  String carDocumentBackImage;
+  String carDocumentExpireDate;
+  String carOwnerLicenseFrontImage;
+  String carOwnerLicenseBackImage;
+  String carOwnerLicenseExpireDate;
+  String carOwnerIdentityCardFrontImage;
+  String carOwnerIdentityCardBackImage;
+  String carOwnerIdentityCardExpireDate;
+  String carDriverIdentityCardFrontImage;
+  String carDriverIdentityCardBackImage;
+  String carDriverIdentityCardExpireDate;
 
   DriverRegstrationObj(
       this.serviceType,
@@ -33,10 +41,18 @@ class DriverRegstrationObj {
       this.plateNumber,
       this.carBrandAndModel,
       this.notes,
-      this.carDocumentImage,
-      this.carOwnerLicenseImage,
-      this.carOwnerIdentityCardImage,
-      this.carDriverIdentityCardImage);
+      this.carDocumentFrontImage,
+      this.carDocumentBackImage,
+      this.carDocumentExpireDate,
+      this.carOwnerLicenseFrontImage,
+      this.carOwnerLicenseBackImage,
+      this.carOwnerLicenseExpireDate,
+      this.carOwnerIdentityCardFrontImage,
+      this.carOwnerIdentityCardBackImage,
+      this.carOwnerIdentityCardExpireDate,
+      this.carDriverIdentityCardFrontImage,
+      this.carDriverIdentityCardBackImage,
+      this.carDriverIdentityCardExpireDate);
 }
 
 // login models

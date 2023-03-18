@@ -25,7 +25,8 @@ class CategoriesView extends StatelessWidget {
           Positioned(
             top: 0,
             right: 0,
-            child: Container(width: 100, height: 100, child: const LanguageWidget()),
+            child: Container(
+                width: 100, height: 100, child: const LanguageWidget()),
           ),
           Positioned(
             top: 0,
@@ -88,6 +89,33 @@ class CategoriesView extends StatelessWidget {
                             iconData: Icons.chair),
                       )
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Flexible(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Flexible(
+                          child: CustomSquareButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, Routes.registerRoute);
+                              },
+                              text: AppStrings.register.tr(),
+                              iconData: Icons.car_rental),
+                        ),
+                        Flexible(
+                          child: CustomSquareButton(
+                              onPressed: () {
+                                // Navigator.pushNamed(context, Routes.goodsRoute);
+                              },
+                              text: AppStrings.goods.tr(),
+                              iconData: Icons.chair),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],

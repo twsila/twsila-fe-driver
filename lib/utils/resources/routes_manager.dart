@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/categories/categories_view.dart';
+import 'package:taxi_for_you/presentation/register/view/upload_documents_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_client_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/presentation/trips/view/trips_view.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/presentation/otp/view/verify_otp_view.dart';
+import '../../app/constants.dart';
 import '../../app/di.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -19,6 +21,8 @@ class Routes {
   static const String splashRoute = "/";
   static const String loginRoute = "/login";
   static const String registerRoute = "/register";
+  static const String registerUploadDocumentsRoute =
+      "/registerUploadDocumentsRoute";
   static const String onBoardingRoute = "/onBoarding";
   static const String mainRoute = "/main";
   static const String storeDetailsRoute = "/storeDetails";
@@ -50,7 +54,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
       case Routes.registerRoute:
         initRegisterModule();
-        return MaterialPageRoute(builder: (_) =>  const RegisterView());
+        return MaterialPageRoute(builder: (_) => const RegisterView());
+      // case Routes.registerUploadDocumentsRoute:
+      //   initRegisterModule();
+      //   return MaterialPageRoute(
+      //     builder: (_) => UploadDocumentsView(),
+      //     settings: const RouteSettings(name: Constants.UPLOAD_DOCUMENTS_TYPE,),
+      //   );
       case Routes.mainRoute:
         initHomeModule();
         return MaterialPageRoute(builder: (_) => const MainView());

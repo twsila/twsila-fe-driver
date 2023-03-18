@@ -10,7 +10,14 @@ import 'package:taxi_for_you/utils/resources/styles_manager.dart';
 
 class CustomDatePickerWidget extends StatefulWidget {
   final Function(String date) onSelectDate;
-  const CustomDatePickerWidget({Key? key, required this.onSelectDate})
+  final bool pickTime;
+  final String? labelText;
+
+  const CustomDatePickerWidget(
+      {Key? key,
+      required this.onSelectDate,
+      required this.pickTime,
+      this.labelText})
       : super(key: key);
 
   @override
@@ -29,7 +36,7 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
         Flexible(
           flex: 1,
           child: Text(
-            AppStrings.scheduleAppoinment.tr(),
+            widget.labelText ?? AppStrings.scheduleAppoinment.tr(),
             style: getMediumStyle(color: ColorManager.lightGrey, fontSize: 12),
           ),
         ),
@@ -98,29 +105,40 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                             child: child!,
                           );
                         });
-                    final timeValue = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                        builder: (context, child) {
-                          return Theme(
-                            data: Theme.of(context).copyWith(
-                                colorScheme: ColorScheme.fromSwatch(
-                              primarySwatch: Colors.indigo,
-                              accentColor: ColorManager.lightGrey,
-                              backgroundColor: Colors.lightBlue,
-                              cardColor: Colors.white,
-                            )),
-                            child: child!,
-                          );
-                        });
-                    var dateTime = DateTime(
-                      date!.year,
-                      date.month,
-                      date.day,
-                      timeValue!.hour,
-                      timeValue.minute,
-                    );
-                    dateSub.value = dateTime;
+                    if (widget.pickTime) {
+                      final timeValue = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                          builder: (context, child) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                  colorScheme: ColorScheme.fromSwatch(
+                                primarySwatch: Colors.indigo,
+                                accentColor: ColorManager.lightGrey,
+                                backgroundColor: Colors.lightBlue,
+                                cardColor: Colors.white,
+                              )),
+                              child: child!,
+                            );
+                          });
+                      var dateTime = DateTime(
+                        date!.year,
+                        date.month,
+                        date.day,
+                        timeValue!.hour,
+                        timeValue.minute,
+                      );
+                      dateSub.value = dateTime;
+                    } else {
+                      var dateTime = DateTime(
+                        date!.year,
+                        date.month,
+                        date.day,
+                        DateTime.now().hour,
+                        DateTime.now().minute,
+                      );
+                      dateSub.value = dateTime;
+                    }
                   },
                   child: buildDateTimePicker(
                       dateVal != null ? convertDate(dateVal) : ''));

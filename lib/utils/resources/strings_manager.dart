@@ -110,8 +110,57 @@ class AppStrings {
   static const String enterPriceThatYouWant = "enter_price_that_you_want";
   static const String sendSuggestedPrice = "send_suggest_price";
   static const String tripDetails = "trip_details";
-
+  static const String carDocumentsInfo = "car_document_info";
+  static const String carDriverIdentityInfo = "car_driver_identity_info";
+  static const String carDriverLicenseInfo = "car_driver_license_info";
+  static const String carOwnerIdentityInfo = "car_owner_identity_info";
   static const attachFurnitureImages = "attach_furniture_images";
+
+  static const String carDocumentFrontImage = "car_documents_front";
+  static const String carDocumentBackImage = "car_documents_back";
+  static const String carDocumentExpireDate = "car_documents_expire_date";
+
+  static const String goodsTransportations = "goods_transport";
+  static const String personsTransportation = "persons_transport";
+  static const String bus5passengers = "bus_5";
+  static const String bus7passengers = "bus_7";
+  static const String bus15passengers = "bus_15";
+  static const String bus25passengers = "bus_25";
+
+
+  static const String plateNumber = "plate_number";
+  static const String carModelAndBrand = "car_model_and_brand";
+  static const String carNotes = "car_notes";
+
+  static const String registrationBottomHint = "registration_bottom_hint";
+  static const String termsAndConditions = "terms_and_conditions";
+  static const String agreeWithTermsAndConditions = "agree_with_terms_and_conditions";
+  static const String confirm = "confirm";
+
+
+
+
+  static const String carDriverIdentityCardFrontImage =
+      "car_driver_identity_front";
+  static const String carDriverIdentityCardBackImage =
+      "car_driver_identity_back";
+  static const String carDriverIdentityCardExpireDate =
+      "car_driver_identity_expire_date";
+
+  static const String carDriverLicenseFrontImage = "car_driver_license_front";
+  static const String carDriverLicenseBackImage = "car_driver_license_back";
+  static const String carDriverLicenseExpireDate = "car_driver_license_expire";
+
+  static const String carOwnerIdentityCardFrontImage =
+      "car_owner_identity_front";
+  static const String carOwnerIdentityCardBackImage = "car_owner_identity_back";
+  static const String carOwnerIdentityCardExpireDate =
+      "car_owner_identity_expire_date";
+
+  static const String addPhoto = "add_photo";
+  static const String finish = "finish";
+  static const String carInfo = "car_info";
+  static const String pleaseEnterServiceYouProvide = "please_enter_service_you_provide_it";
 
   // error handler
   static const String badRequestError = "bad_request_error";

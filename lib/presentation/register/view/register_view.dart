@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taxi_for_you/app/constants.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_date_picker.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_dialog.dart';
+import 'package:taxi_for_you/presentation/register/view/upload_documents_view.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
@@ -27,7 +32,15 @@ enum UPLOAD_DOCUMENTS {
   CAR_DOCUMENT,
   CAR_OWNER_LICENSE,
   CAR_OWNER_CARD_IDENITY,
-  CAR_DRIVER_CARD_IDENITY
+  CAR_DRIVER_CARD_IDENITY,
+  CAR_DOCUMENT_FRONT,
+  CAR_OWNER_LICENSE_FRONT,
+  CAR_OWNER_CARD_IDENITY_FRONT,
+  CAR_DRIVER_CARD_IDENITY_FRONT,
+  CAR_DOCUMENT_BACK,
+  CAR_OWNER_LICENSE_BACK,
+  CAR_OWNER_CARD_IDENITY_BACK,
+  CAR_DRIVER_CARD_IDENITY_BACK,
 }
 
 extension DocumentTypeNumber on UPLOAD_DOCUMENTS {
@@ -41,6 +54,22 @@ extension DocumentTypeNumber on UPLOAD_DOCUMENTS {
         return 3;
       case UPLOAD_DOCUMENTS.CAR_DRIVER_CARD_IDENITY:
         return 4;
+      case UPLOAD_DOCUMENTS.CAR_DOCUMENT_FRONT:
+        return 5;
+      case UPLOAD_DOCUMENTS.CAR_OWNER_LICENSE_FRONT:
+        return 6;
+      case UPLOAD_DOCUMENTS.CAR_OWNER_CARD_IDENITY_FRONT:
+        return 7;
+      case UPLOAD_DOCUMENTS.CAR_DRIVER_CARD_IDENITY_FRONT:
+        return 8;
+      case UPLOAD_DOCUMENTS.CAR_DOCUMENT_BACK:
+        return 9;
+      case UPLOAD_DOCUMENTS.CAR_OWNER_LICENSE_BACK:
+        return 10;
+      case UPLOAD_DOCUMENTS.CAR_OWNER_CARD_IDENITY_BACK:
+        return 11;
+      case UPLOAD_DOCUMENTS.CAR_DRIVER_CARD_IDENITY_BACK:
+        return 12;
     }
   }
 }
@@ -58,8 +87,17 @@ class _RegisterViewState extends State<RegisterView> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   final _formKey = GlobalKey<FormState>();
   bool showPplDropdown = false;
-  List<String> list1 = ["نقل افراد", "نقل بضائع و اثاث"];
+  List<String> list1 = [
+    AppStrings.goodsTransportations.tr(),
+    AppStrings.personsTransportation.tr()
+  ];
   List<String> list2 = [
+    AppStrings.bus5passengers.tr(),
+    AppStrings.bus7passengers.tr(),
+    AppStrings.bus15passengers.tr(),
+    AppStrings.bus25passengers.tr()
+  ];
+  List<String> list3 = [
     "حافلة 25 راكب",
     "حافلة 15 راكب",
     "سيدان 7 ركاب ",
@@ -113,11 +151,6 @@ class _RegisterViewState extends State<RegisterView> {
     super.initState();
   }
 
-  bool isRtl() {
-    return context.locale == ARABIC_LOCAL;
-    // return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +170,7 @@ class _RegisterViewState extends State<RegisterView> {
         children: [
           Center(
             child: Text(
-              "بيانات المركبة",
+              AppStrings.carInfo.tr(),
               style: getRegularStyle(
                   color: ColorManager.primary, fontSize: FontSize.s20),
             ),
@@ -153,30 +186,24 @@ class _RegisterViewState extends State<RegisterView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            "نرجو اختيار نوع الخدمة التى تقدمها ",
-                            style: getRegularStyle(
-                                color: ColorManager.primary,
-                                fontSize: FontSize.s16),
-                          ),
+                        Text(
+                          AppStrings.pleaseEnterServiceYouProvide.tr(),
+                          style: getRegularStyle(
+                              color: ColorManager.primary,
+                              fontSize: FontSize.s16),
                         ),
-                        Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: CustomDropDown(
-                            backgroundColor: ColorManager.white,
-                            isTitleBold: false,
-                            stringsArr: list1,
-                            isValid: true,
-                            hintTextColor: ColorManager.grey,
-                            hintText: 'اختر من هنا',
-                            textColor: ColorManager.primary,
-                            borderColor: ColorManager.grey,
-                            onChanged: (selectedValue) {
-                              _viewModel.setServiceType(selectedValue!);
-                            },
-                          ),
+                        CustomDropDown(
+                          backgroundColor: ColorManager.white,
+                          isTitleBold: false,
+                          stringsArr: list1,
+                          isValid: true,
+                          hintTextColor: ColorManager.grey,
+                          hintText: AppStrings.selectFromHereHint.tr(),
+                          textColor: ColorManager.primary,
+                          borderColor: ColorManager.grey,
+                          onChanged: (selectedValue) {
+                            _viewModel.setServiceType(selectedValue!);
+                          },
                         ),
                         const SizedBox(
                           height: 10,
@@ -185,27 +212,25 @@ class _RegisterViewState extends State<RegisterView> {
                             stream: _viewModel.outputServiceType,
                             builder: (context, snapshot) {
                               return snapshot.data ?? false
-                                  ? Directionality(
-                                      textDirection: TextDirection.rtl,
-                                      child: CustomDropDown(
-                                        backgroundColor: ColorManager.white,
-                                        isTitleBold: false,
-                                        stringsArr: list2,
-                                        isValid: true,
-                                        hintTextColor: ColorManager.grey,
-                                        hintText: 'اختر من هنا',
-                                        textColor: ColorManager.primary,
-                                        borderColor: ColorManager.grey,
-                                        onChanged: (selectedValue) {
-                                          _viewModel.setServiceCapacity(
-                                              selectedValue!);
-                                        },
-                                      ),
+                                  ? CustomDropDown(
+                                      backgroundColor: ColorManager.white,
+                                      isTitleBold: false,
+                                      stringsArr: list2,
+                                      isValid: true,
+                                      hintTextColor: ColorManager.grey,
+                                      hintText:
+                                          AppStrings.selectFromHereHint.tr(),
+                                      textColor: ColorManager.primary,
+                                      borderColor: ColorManager.grey,
+                                      onChanged: (selectedValue) {
+                                        _viewModel
+                                            .setServiceCapacity(selectedValue!);
+                                      },
                                     )
                                   : Container();
                             }),
                         numberField(
-                            'رقم اللوحة',
+                            AppStrings.plateNumber.tr(),
                             CustomTextInputField(
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
@@ -213,7 +238,7 @@ class _RegisterViewState extends State<RegisterView> {
                               },
                             )),
                         numberField(
-                            'نوع السيارة و الموديل',
+                            AppStrings.carModelAndBrand.tr(),
                             CustomTextInputField(
                               keyboardType: TextInputType.text,
                               onChanged: (value) {
@@ -221,54 +246,209 @@ class _RegisterViewState extends State<RegisterView> {
                               },
                             )),
                         numberField(
-                            'اى ملاحظات خاصة بالسيارة',
+                            AppStrings.carNotes.tr(),
                             CustomTextInputField(
                               keyboardType: TextInputType.text,
                               onChanged: (value) {
                                 _viewModel.setNotes(value);
                               },
                             )),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "تحميل صورة السيارة",
-                            style: getRegularStyle(
-                                color: ColorManager.primary,
-                                fontSize: FontSize.s16),
-                          ),
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                              _showPicker(
-                                  context, UPLOAD_DOCUMENTS.CAR_DOCUMENT);
+                        CustomCard(
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UploadDocumentsView(
+                                    viewModel: _viewModel,
+                                  ),
+                                  settings: RouteSettings(
+                                    name: Constants.UPLOAD_DOCUMENTS_TYPE,
+                                    arguments: UploadDocumentsArguments(
+                                        uploadDocumentFor: UPLOAD_DOCUMENTS
+                                            .CAR_DOCUMENT
+                                            .toString()),
+                                  ),
+                                ),
+                              );
                             },
-                            child: _getMediaWidget("صورة استمارة السيارة",
-                                _viewModel.outputCarDocumentImage)),
-                        GestureDetector(
-                            onTap: () {
-                              _showPicker(
-                                  context, UPLOAD_DOCUMENTS.CAR_OWNER_LICENSE);
+                            bodyWidget: StreamBuilder<bool>(
+                                stream: _viewModel
+                                    .outputAreAllCarDocumentsInputsValid,
+                                builder: (context, snapshot) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        AppStrings.carDocumentsInfo.tr(),
+                                        style: getRegularStyle(
+                                            color: ColorManager.primary,
+                                            fontSize: FontSize.s16),
+                                      ),
+                                      snapshot.data == true
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: ColorManager.green,
+                                            )
+                                          : Transform(
+                                              alignment: Alignment.center,
+                                              transform: Matrix4.rotationY(
+                                                  isRtl() ? math.pi : 0),
+                                              child: SvgPicture.asset(
+                                                  ImageAssets
+                                                      .rightArrowSettingsIc),
+                                            ),
+                                    ],
+                                  );
+                                })),
+                        CustomCard(
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UploadDocumentsView(
+                                    viewModel: _viewModel,
+                                  ),
+                                  settings: RouteSettings(
+                                    name: Constants.UPLOAD_DOCUMENTS_TYPE,
+                                    arguments: UploadDocumentsArguments(
+                                        uploadDocumentFor: UPLOAD_DOCUMENTS
+                                            .CAR_OWNER_LICENSE
+                                            .toString()),
+                                  ),
+                                ),
+                              );
                             },
-                            child: _getMediaWidget("صورة رخصة قائد السيارة",
-                                _viewModel.outputCarOwnerLicenseImage)),
-                        GestureDetector(
-                            onTap: () {
-                              _showPicker(context,
-                                  UPLOAD_DOCUMENTS.CAR_OWNER_CARD_IDENITY);
+                            bodyWidget: StreamBuilder<bool>(
+                                stream: _viewModel
+                                    .outputAreCarDriverLicenseInputsValid,
+                                builder: (context, snapshot) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        AppStrings.carDriverLicenseInfo.tr(),
+                                        style: getRegularStyle(
+                                            color: ColorManager.primary,
+                                            fontSize: FontSize.s16),
+                                      ),
+                                      snapshot.data == true
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: ColorManager.green,
+                                            )
+                                          : Transform(
+                                              alignment: Alignment.center,
+                                              transform: Matrix4.rotationY(
+                                                  isRtl() ? math.pi : 0),
+                                              child: SvgPicture.asset(
+                                                  ImageAssets
+                                                      .rightArrowSettingsIc),
+                                            ),
+                                    ],
+                                  );
+                                })),
+                        CustomCard(
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UploadDocumentsView(
+                                    viewModel: _viewModel,
+                                  ),
+                                  settings: RouteSettings(
+                                    name: Constants.UPLOAD_DOCUMENTS_TYPE,
+                                    arguments: UploadDocumentsArguments(
+                                        uploadDocumentFor: UPLOAD_DOCUMENTS
+                                            .CAR_OWNER_CARD_IDENITY
+                                            .toString()),
+                                  ),
+                                ),
+                              );
                             },
-                            child: _getMediaWidget("صورة هوية مالك السيارة",
-                                _viewModel.outputCarOwnerIdentityCardImage)),
-                        GestureDetector(
-                            onTap: () {
-                              _showPicker(context,
-                                  UPLOAD_DOCUMENTS.CAR_DRIVER_CARD_IDENITY);
+                            bodyWidget: StreamBuilder<bool>(
+                                stream: _viewModel
+                                    .outputAreCarOwnerIdentityInputsValid,
+                                builder: (context, snapshot) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        AppStrings.carOwnerIdentityInfo.tr(),
+                                        style: getRegularStyle(
+                                            color: ColorManager.primary,
+                                            fontSize: FontSize.s16),
+                                      ),
+                                      snapshot.data == true
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: ColorManager.green,
+                                            )
+                                          : Transform(
+                                              alignment: Alignment.center,
+                                              transform: Matrix4.rotationY(
+                                                  isRtl() ? math.pi : 0),
+                                              child: SvgPicture.asset(
+                                                  ImageAssets
+                                                      .rightArrowSettingsIc),
+                                            ),
+                                    ],
+                                  );
+                                })),
+                        CustomCard(
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UploadDocumentsView(
+                                    viewModel: _viewModel,
+                                  ),
+                                  settings: RouteSettings(
+                                    name: Constants.UPLOAD_DOCUMENTS_TYPE,
+                                    arguments: UploadDocumentsArguments(
+                                        uploadDocumentFor: UPLOAD_DOCUMENTS
+                                            .CAR_DRIVER_CARD_IDENITY
+                                            .toString()),
+                                  ),
+                                ),
+                              );
                             },
-                            child: _getMediaWidget("صورة  هوية قائد السيارة",
-                                _viewModel.outputCarDriverIdentityCardImage)),
+                            bodyWidget: StreamBuilder<bool>(
+                                stream: _viewModel
+                                    .outputAreAllCarDriverIdentityInputsValid,
+                                builder: (context, snapshot) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        AppStrings.carDriverIdentityInfo.tr(),
+                                        style: getRegularStyle(
+                                            color: ColorManager.primary,
+                                            fontSize: FontSize.s16),
+                                      ),
+                                      snapshot.data == true
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: ColorManager.green,
+                                            )
+                                          : Transform(
+                                              alignment: Alignment.center,
+                                              transform: Matrix4.rotationY(
+                                                  isRtl() ? math.pi : 0),
+                                              child: SvgPicture.asset(
+                                                  ImageAssets
+                                                      .rightArrowSettingsIc),
+                                            ),
+                                    ],
+                                  );
+                                })),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "سيتم تحديد موعد لعمل مقابلة عبر احد تطبيقات الفيديو لمعاينة السيارة للتأكد من صحة بيانات لتفعيل الحساب",
+                            AppStrings.registrationBottomHint.tr(),
                             textAlign: TextAlign.center,
                             style: getRegularStyle(
                                 color: ColorManager.primary,
@@ -276,7 +456,7 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                         ),
                         Text(
-                          "السياسات و الشروط و الاحكام ",
+                          AppStrings.termsAndConditions.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             decoration: TextDecoration.underline,
@@ -286,16 +466,7 @@ class _RegisterViewState extends State<RegisterView> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Flexible(
-                                child: Text(
-                                  "اقر بان كافة البيانات صحيحة و انى قرات سياسات الشركة و موافق عليها",
-                                  style: getRegularStyle(
-                                      color: ColorManager.black,
-                                      fontSize: FontSize.s10),
-                                ),
-                              ),
                               Checkbox(
                                   value: _isAgreeChecked,
                                   onChanged: (isChecked) {
@@ -303,6 +474,14 @@ class _RegisterViewState extends State<RegisterView> {
                                       _isAgreeChecked = isChecked!;
                                     });
                                   }),
+                              Flexible(
+                                child: Text(
+                                  AppStrings.agreeWithTermsAndConditions.tr(),
+                                  style: getRegularStyle(
+                                      color: ColorManager.black,
+                                      fontSize: FontSize.s10),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -324,7 +503,7 @@ class _RegisterViewState extends State<RegisterView> {
                                                   Routes.pendingApprovalRoute);
                                             }
                                           : null,
-                                      child: const Text("تــاكيــد")),
+                                      child: Text(AppStrings.confirm.tr())),
                                 ),
                               );
                             }),
@@ -340,15 +519,15 @@ class _RegisterViewState extends State<RegisterView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          width: 120,
-          child: widget,
-        ),
-        const SizedBox(width: 8),
         Text(
           text,
           style: getRegularStyle(
               color: ColorManager.primary, fontSize: FontSize.s16),
+        ),
+        const SizedBox(width: 8),
+        SizedBox(
+          width: 120,
+          child: widget,
         ),
       ],
     );
@@ -397,19 +576,19 @@ class _RegisterViewState extends State<RegisterView> {
   void handleViewModelDocuments(UPLOAD_DOCUMENTS selectedType, File image) {
     switch (selectedType) {
       case UPLOAD_DOCUMENTS.CAR_DOCUMENT:
-        _viewModel.setCarDocumentImage(image);
+        // _viewModel.setCarDocumentImage(image);
         break;
 
       case UPLOAD_DOCUMENTS.CAR_OWNER_LICENSE:
-        _viewModel.setCarOwnerLicenseImage(image);
+        // _viewModel.setCarOwnerLicenseImage(image);
         break;
 
       case UPLOAD_DOCUMENTS.CAR_OWNER_CARD_IDENITY:
-        _viewModel.setCarOwnerIdentityCardImage(image);
+        // _viewModel.setCarOwnerIdentityCardImage(image);
         break;
 
       case UPLOAD_DOCUMENTS.CAR_DRIVER_CARD_IDENITY:
-        _viewModel.setCarDriverIdentityCardImage(image);
+        // _viewModel.setCarDriverIdentityCardImage(image);
         break;
 
       default:
@@ -417,6 +596,10 @@ class _RegisterViewState extends State<RegisterView> {
           print('no selected type');
         }
     }
+  }
+
+  bool isRtl() {
+    return context.locale == ARABIC_LOCAL;
   }
 
   Widget _getMediaWidget(String text, Stream<File> documentOutputStream) {

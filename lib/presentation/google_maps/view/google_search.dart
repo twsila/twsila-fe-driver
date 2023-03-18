@@ -68,7 +68,10 @@ class GoogleSearchScreenState extends State<GoogleSearchScreen> {
                     },
                   ),
                   if (!_isChecked)
-                    CustomDatePickerWidget(onSelectDate: widget.onSelectDate!)
+                    CustomDatePickerWidget(
+                      onSelectDate: widget.onSelectDate!,
+                      pickTime: true,
+                    )
                 ],
               )
             : const SizedBox(),
