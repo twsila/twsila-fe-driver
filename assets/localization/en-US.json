@@ -198,5 +198,7 @@
   "terms_and_conditions": "Terms and conditions",
   "agree_with_terms_and_conditions": "agree with terms and conditions and all data is correct",
   "confirm": "Confirm",
-  "register": "Registration"
+  "register": "Registration",
+  "photo_from_galley": "Gallery",
+  "photo_from_camera": "Camera"
 }

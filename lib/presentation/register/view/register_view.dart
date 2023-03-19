@@ -533,109 +533,10 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  _showPicker(BuildContext context, UPLOAD_DOCUMENTS uploadDocuments) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return SafeArea(
-              child: Wrap(
-            children: [
-              ListTile(
-                trailing: const Icon(Icons.arrow_forward),
-                leading: const Icon(Icons.camera),
-                title: Text("جاليرى"),
-                onTap: () {
-                  _imageFromGallery(uploadDocuments);
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                trailing: const Icon(Icons.arrow_forward),
-                leading: const Icon(Icons.camera_alt_outlined),
-                title: Text("كاميرا"),
-                onTap: () {
-                  _imageFromCamera(uploadDocuments);
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ));
-        });
-  }
 
-  _imageFromGallery(UPLOAD_DOCUMENTS uploadDocumentType) async {
-    var image = await _imagePicker.pickImage(source: ImageSource.gallery);
-    handleViewModelDocuments(uploadDocumentType, File(image?.path ?? ""));
-  }
-
-  _imageFromCamera(UPLOAD_DOCUMENTS uploadDocumentType) async {
-    var image = await _imagePicker.pickImage(source: ImageSource.camera);
-    handleViewModelDocuments(uploadDocumentType, File(image?.path ?? ""));
-  }
-
-  void handleViewModelDocuments(UPLOAD_DOCUMENTS selectedType, File image) {
-    switch (selectedType) {
-      case UPLOAD_DOCUMENTS.CAR_DOCUMENT:
-        // _viewModel.setCarDocumentImage(image);
-        break;
-
-      case UPLOAD_DOCUMENTS.CAR_OWNER_LICENSE:
-        // _viewModel.setCarOwnerLicenseImage(image);
-        break;
-
-      case UPLOAD_DOCUMENTS.CAR_OWNER_CARD_IDENITY:
-        // _viewModel.setCarOwnerIdentityCardImage(image);
-        break;
-
-      case UPLOAD_DOCUMENTS.CAR_DRIVER_CARD_IDENITY:
-        // _viewModel.setCarDriverIdentityCardImage(image);
-        break;
-
-      default:
-        if (kDebugMode) {
-          print('no selected type');
-        }
-    }
-  }
 
   bool isRtl() {
     return context.locale == ARABIC_LOCAL;
   }
 
-  Widget _getMediaWidget(String text, Stream<File> documentOutputStream) {
-    return Padding(
-      padding: const EdgeInsets.only(
-          left: AppPadding.p8, right: AppPadding.p8, top: AppPadding.p12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-              child: StreamBuilder<File>(
-            stream: documentOutputStream,
-            builder: (context, snapshot) {
-              return _imagePicketByUser(snapshot.data);
-            },
-          )),
-          Flexible(
-              child: Text(
-            text,
-            style: getRegularStyle(
-                color: ColorManager.primary, fontSize: FontSize.s16),
-          )),
-        ],
-      ),
-    );
-  }
-
-  Widget _imagePicketByUser(File? image) {
-    if (image != null && image.path.isNotEmpty) {
-      // return image
-      return Image.file(image);
-    } else {
-      return SizedBox(
-          width: 60,
-          height: 60,
-          child: SvgPicture.asset(ImageAssets.photoCameraIc));
-    }
-  }
 }

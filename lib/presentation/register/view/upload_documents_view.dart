@@ -25,7 +25,9 @@ class UploadDocumentsView extends StatefulWidget {
   UPLOAD_DOCUMENTS? uploadDocumentsFor;
   RegisterViewModel viewModel;
 
-  UploadDocumentsView({Key? key, this.uploadDocumentsFor,required this.viewModel}) : super(key: key);
+  UploadDocumentsView(
+      {Key? key, this.uploadDocumentsFor, required this.viewModel})
+      : super(key: key);
 
   @override
   State<UploadDocumentsView> createState() => _UploadDocumentsViewState();
@@ -69,7 +71,8 @@ class _UploadDocumentsViewState extends State<UploadDocumentsView> {
         streamsOutputs.add(widget.viewModel.outputCarDocumentFrontImage);
         streamsOutputs.add(widget.viewModel.outputCarDocumentBackImage);
         _selectedDateController.addListener(() {
-          widget.viewModel.setCarDocumentExpireDate(_selectedDateController.text);
+          widget.viewModel
+              .setCarDocumentExpireDate(_selectedDateController.text);
         });
         break;
       case "UPLOAD_DOCUMENTS.CAR_OWNER_LICENSE":
@@ -80,7 +83,8 @@ class _UploadDocumentsViewState extends State<UploadDocumentsView> {
         streamsOutputs.add(widget.viewModel.outputCarOwnerLicenseFrontImage);
         streamsOutputs.add(widget.viewModel.outputCarOwnerLicenseBackImage);
         _selectedDateController.addListener(() {
-          widget.viewModel.setCarOwnerLicenseExpireDate(_selectedDateController.text);
+          widget.viewModel
+              .setCarOwnerLicenseExpireDate(_selectedDateController.text);
         });
         break;
       case "UPLOAD_DOCUMENTS.CAR_OWNER_CARD_IDENITY":
@@ -88,8 +92,10 @@ class _UploadDocumentsViewState extends State<UploadDocumentsView> {
         frontImageTitle = AppStrings.carOwnerIdentityCardFrontImage.tr();
         backImageTitle = AppStrings.carOwnerIdentityCardBackImage.tr();
         expireDateTitle = AppStrings.carOwnerIdentityCardExpireDate.tr();
-        streamsOutputs.add(widget.viewModel.outputCarOwnerIdentityCardFrontImage);
-        streamsOutputs.add(widget.viewModel.outputCarOwnerIdentityCardBackImage);
+        streamsOutputs
+            .add(widget.viewModel.outputCarOwnerIdentityCardFrontImage);
+        streamsOutputs
+            .add(widget.viewModel.outputCarOwnerIdentityCardBackImage);
         _selectedDateController.addListener(() {
           widget.viewModel
               .setCarOwnerIdentityCardExpireDate(_selectedDateController.text);
@@ -100,8 +106,10 @@ class _UploadDocumentsViewState extends State<UploadDocumentsView> {
         frontImageTitle = AppStrings.carDriverIdentityCardFrontImage.tr();
         backImageTitle = AppStrings.carDriverIdentityCardBackImage.tr();
         expireDateTitle = AppStrings.carDriverIdentityCardExpireDate.tr();
-        streamsOutputs.add(widget.viewModel.outputCarDriverIdentityCardFrontImage);
-        streamsOutputs.add(widget.viewModel.outputCarDriverIdentityCardBackImage);
+        streamsOutputs
+            .add(widget.viewModel.outputCarDriverIdentityCardFrontImage);
+        streamsOutputs
+            .add(widget.viewModel.outputCarDriverIdentityCardBackImage);
         _selectedDateController.addListener(() {
           widget.viewModel
               .setCarDriverIdentityCardExpireDate(_selectedDateController.text);
@@ -223,13 +231,9 @@ class _UploadDocumentsViewState extends State<UploadDocumentsView> {
                           color: ColorManager.black, fontSize: FontSize.s14),
                     ),
                     const SizedBox(height: AppSize.s8),
-                    GestureDetector(
-                        onTap: () {
-                          _showPicker(context, uploadFor);
-                        },
-                        child: streamsOutputs.isNotEmpty
-                            ? _getMediaWidget(streamsOutputs[0], "_FRONT")
-                            : CircularProgressIndicator())
+                    streamsOutputs.isNotEmpty
+                        ? _getMediaWidget(streamsOutputs[0], "_FRONT")
+                        : CircularProgressIndicator()
                   ],
                 ),
                 onClick: () {}),
@@ -248,13 +252,9 @@ class _UploadDocumentsViewState extends State<UploadDocumentsView> {
                     const SizedBox(
                       height: AppSize.s8,
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          _showPicker(context, uploadFor);
-                        },
-                        child: streamsOutputs.isNotEmpty
-                            ? _getMediaWidget(streamsOutputs[1], "_BACK")
-                            : const CircularProgressIndicator())
+                    streamsOutputs.isNotEmpty
+                        ? _getMediaWidget(streamsOutputs[1], "_BACK")
+                        : const CircularProgressIndicator()
                   ],
                 ),
                 onClick: () {}),

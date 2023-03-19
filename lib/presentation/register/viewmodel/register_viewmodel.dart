@@ -105,10 +105,6 @@ class RegisterViewModel extends BaseViewModel
     areAllCarDriverLicenseIsValidStreamController.close();
     areAllCarDriverIdentityIsValidStreamController.close();
     isUserRegisteredInSuccessfullyStreamController.close();
-    super.dispose();
-  }
-
-  void disposeUploadStreams() {
     carOwnerLicenseFrontImageStreamController.close();
     carOwnerIdentityCardFrontImageStreamController.close();
     carDriverIdentityCardFrontImageStreamController.close();
@@ -121,6 +117,7 @@ class RegisterViewModel extends BaseViewModel
     carOwnerIdentityCardExpireDateStreamController.close();
     carDriverIdentityCardExpireDateStreamController.close();
     carDocumentExpireDateStreamController.close();
+    super.dispose();
   }
 
   @override
@@ -497,7 +494,7 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   setCarOwnerIdentityCardBackImage(File carOwnerIdentityCardBackImage) {
-    inputCarOwnerIdentityCardFrontImage.add(carOwnerIdentityCardBackImage);
+    inputCarOwnerIdentityCardBackImage.add(carOwnerIdentityCardBackImage);
     if (carOwnerIdentityCardBackImage.path.isNotEmpty) {
       //  update register view object
       registerObject.carOwnerIdentityCardBackImage =
