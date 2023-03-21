@@ -19,12 +19,11 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
-import '../../goods_register/viewmodel/goods_register_viewmodel.dart';
-import '../viewmodel/persons_register_viewmodel.dart';
+import '../viewmodel/goods_register_viewmodel.dart';
 
 class UploadDocumentsView extends StatefulWidget {
   UPLOAD_DOCUMENTS? uploadDocumentsFor;
-  PersonsRegisterViewModel viewModel;
+  GoodsRegisterViewModel viewModel;
 
   UploadDocumentsView(
       {Key? key, this.uploadDocumentsFor, required this.viewModel})

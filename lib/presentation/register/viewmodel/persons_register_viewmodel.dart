@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:taxi_for_you/domain/model/models.dart';
 
-import '../../../domain/usecase/register_usecase.dart';
+import '../../../domain/usecase/persons_register_usecase.dart';
 import '../../base/baseviewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -12,8 +12,8 @@ import '../../common/state_renderer/state_renderer.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
 import '../../../utils/resources/strings_manager.dart';
 
-class RegisterViewModel extends BaseViewModel
-    with RegisterViewModelInput, RegisterViewModelOutput {
+class PersonsRegisterViewModel extends BaseViewModel
+    with PersonsRegisterViewModelInput, PersonsRegisterViewModelOutput {
   StreamController serviceTypeStreamController =
       StreamController<String>.broadcast();
   StreamController serviceTypeCapacityStreamController =
@@ -63,7 +63,7 @@ class RegisterViewModel extends BaseViewModel
 
   StreamController isUserRegisteredInSuccessfullyStreamController =
       StreamController<bool>();
-  final RegisterUseCase _registerUseCase;
+  final PersonsRegisterUseCase _registerUseCase;
   var registerObject = DriverRegstrationObj(
     "",
     "",
@@ -84,7 +84,7 @@ class RegisterViewModel extends BaseViewModel
     "",
   );
 
-  RegisterViewModel(this._registerUseCase);
+  PersonsRegisterViewModel(this._registerUseCase);
 
   // inputs
   @override
@@ -128,7 +128,7 @@ class RegisterViewModel extends BaseViewModel
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
 
-    (await _registerUseCase.execute(RegisterUseCaseInput(
+    (await _registerUseCase.execute(PersonsRegisterUseCaseInput(
             registerObject.serviceType,
             registerObject.serviceTypeCapacity,
             registerObject.plateNumber,
@@ -408,8 +408,9 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   // TODO: implement outputServiceType
-  Stream<bool> get outputServiceType => serviceTypeStreamController.stream
-      .map((serviceType) => serviceType == "نقل افراد" ? true : false);
+  Stream<bool> get outputServiceType =>
+      serviceTypeStreamController.stream.map((serviceType) =>
+          serviceType == AppStrings.personsTransportation.tr() ? true : false);
 
   @override
   setCarDocumentFrontImage(File carDocumentFrontImage) {
@@ -603,7 +604,7 @@ class RegisterViewModel extends BaseViewModel
   }
 }
 
-abstract class RegisterViewModelInput {
+abstract class PersonsRegisterViewModelInput {
   Sink get inputServiceType;
 
   Sink get inputServiceCapacity;
@@ -685,7 +686,7 @@ abstract class RegisterViewModelInput {
   setCarDriverIdentityCardExpireDate(String carDriverIdentityCardExpireDate);
 }
 
-abstract class RegisterViewModelOutput {
+abstract class PersonsRegisterViewModelOutput {
   Stream<bool> get outputServiceType;
 
   Stream<bool> get outputIsPlateNumberValid;

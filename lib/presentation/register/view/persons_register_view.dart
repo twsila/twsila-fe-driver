@@ -24,7 +24,8 @@ import '../../../utils/resources/values_manager.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
 import '../../common/widgets/custom_dropdown.dart';
 import '../../common/widgets/custom_text_input_field.dart';
-import '../viewmodel/register_viewmodel.dart';
+import '../../common/widgets/multi_pick_image.dart';
+import '../viewmodel/persons_register_viewmodel.dart';
 
 import 'dart:math' as math;
 
@@ -74,34 +75,26 @@ extension DocumentTypeNumber on UPLOAD_DOCUMENTS {
   }
 }
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+class PersonsRegisterView extends StatefulWidget {
+  const PersonsRegisterView({Key? key}) : super(key: key);
 
   @override
-  _RegisterViewState createState() => _RegisterViewState();
+  _PersonsRegisterViewState createState() => _PersonsRegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
-  final RegisterViewModel _viewModel = instance<RegisterViewModel>();
+class _PersonsRegisterViewState extends State<PersonsRegisterView> {
+  final PersonsRegisterViewModel _viewModel =
+      instance<PersonsRegisterViewModel>();
   final ImagePicker _imagePicker = instance<ImagePicker>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
   final _formKey = GlobalKey<FormState>();
   bool showPplDropdown = false;
-  List<String> list1 = [
-    AppStrings.goodsTransportations.tr(),
-    AppStrings.personsTransportation.tr()
-  ];
+  List<String> list1 = [AppStrings.personsTransportation.tr()];
   List<String> list2 = [
     AppStrings.bus5passengers.tr(),
     AppStrings.bus7passengers.tr(),
     AppStrings.bus15passengers.tr(),
     AppStrings.bus25passengers.tr()
-  ];
-  List<String> list3 = [
-    "حافلة 25 راكب",
-    "حافلة 15 راكب",
-    "سيدان 7 ركاب ",
-    "سيدان 5 ركاب"
   ];
 
   final TextEditingController _numberPlateTextController =
@@ -253,6 +246,9 @@ class _RegisterViewState extends State<RegisterView> {
                                 _viewModel.setNotes(value);
                               },
                             )),
+                        MutliPickImageWidget(
+                          onPickedImages: (List<XFile>? images) {},
+                        ),
                         CustomCard(
                             onClick: () {
                               Navigator.push(
@@ -533,10 +529,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-
-
   bool isRtl() {
     return context.locale == ARABIC_LOCAL;
   }
-
 }

@@ -69,55 +69,36 @@ class CategoriesView extends StatelessWidget {
                   ),
                 )),
                 Flexible(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Flexible(
-                        child: CustomSquareButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, Routes.tripsRoute);
-                            },
-                            text: AppStrings.trips.tr(),
-                            iconData: Icons.car_rental),
-                      ),
-                      Flexible(
-                        child: CustomSquareButton(
-                            onPressed: () {
-                              // Navigator.pushNamed(context, Routes.goodsRoute);
-                            },
-                            text: AppStrings.goods.tr(),
-                            iconData: Icons.chair),
-                      )
-                    ],
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  child: Center(
+                    child: Column(
                       children: [
                         Flexible(
                           child: CustomSquareButton(
+                              width: double.infinity,
+                              height: AppSize.s60,
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, Routes.registerRoute);
+                                Navigator.pushNamed(context, Routes.personsRegisterRoute);
                               },
-                              text: AppStrings.register.tr(),
-                              iconData: Icons.car_rental),
+                              text: AppStrings.registerPersonsTrips.tr(),
+                              iconData: Icons.person_outline),
+                        ),
+                        const SizedBox(
+                          height: AppSize.s14,
                         ),
                         Flexible(
                           child: CustomSquareButton(
+                              width: double.infinity,
+                              height: AppSize.s60,
                               onPressed: () {
-                                // Navigator.pushNamed(context, Routes.goodsRoute);
+                                Navigator.pushNamed(context, Routes.goodsRegisterRoute);
                               },
-                              text: AppStrings.goods.tr(),
-                              iconData: Icons.chair),
+                              text: AppStrings.registerGoodsTrips.tr(),
+                              iconData: Icons.chair_rounded),
                         )
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           )

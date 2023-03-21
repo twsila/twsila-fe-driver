@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 
+import '../../../utils/resources/font_manager.dart';
+import '../../../utils/resources/styles_manager.dart';
+
 class CustomCheckBox extends StatefulWidget {
   bool _checked = false;
   String _fieldName;
@@ -38,7 +41,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
             }),
         Text(
           widget._fieldName,
-          style: Theme.of(context).textTheme.headline3,
+          style: getRegularStyle(color: ColorManager.primary,fontSize: FontSize.s14),
         ),
       ],
     );

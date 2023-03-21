@@ -94,6 +94,33 @@ class AppStrings {
   static const clientOfferLabel = 'client_offer_label';
   static const rating = 'rating';
   static const fromKhobarToElDmam = 'from_dmam_to_khobar';
+  static const registerPersonsTrips = 'register_persons_trips';
+  static const registerGoodsTrips = 'register_goods_trips';
+
+  static const carType = 'car_type';
+  static const largeVehicleOpened = 'large_vehicle_opened';
+  static const largeVehicleClosed = 'large_vehicle_closed';
+  static const goodsFurnitureTransportation = 'goods_furniture_transportation';
+  static const furnitureTransportation = 'furniture_transportations';
+  static const flatness = 'flatness';
+
+
+  static const loadAndUnload = 'flatness';
+  static const reassembleAndAssemble = 'reassemble_and_assemble';
+  static const wrapping = 'wrapping';
+  static const winchCrane = 'winch_crane';
+
+  static const truck = 'truck';
+  static const tipper = 'tipper';
+  static const wanet = 'wanet';
+  static const motocycles = 'motocycles';
+  static const waterCisterns = 'water_cisterns';
+  static const sanitationCisterns = 'sanitation_cisterns';
+  static const freezer = 'freezer';
+
+  static const uploadCarPhotos = 'upload_car_photos';
+
+  static const doYouHaveLaborAvailable = 'do_you_have_labor';
 
   static const now = "now";
   static const String pickupPoint = "pick_up_point";
@@ -127,18 +154,15 @@ class AppStrings {
   static const String bus15passengers = "bus_15";
   static const String bus25passengers = "bus_25";
 
-
   static const String plateNumber = "plate_number";
   static const String carModelAndBrand = "car_model_and_brand";
   static const String carNotes = "car_notes";
 
   static const String registrationBottomHint = "registration_bottom_hint";
   static const String termsAndConditions = "terms_and_conditions";
-  static const String agreeWithTermsAndConditions = "agree_with_terms_and_conditions";
+  static const String agreeWithTermsAndConditions =
+      "agree_with_terms_and_conditions";
   static const String confirm = "confirm";
-
-
-
 
   static const String carDriverIdentityCardFrontImage =
       "car_driver_identity_front";
@@ -160,7 +184,8 @@ class AppStrings {
   static const String addPhoto = "add_photo";
   static const String finish = "finish";
   static const String carInfo = "car_info";
-  static const String pleaseEnterServiceYouProvide = "please_enter_service_you_provide_it";
+  static const String pleaseEnterServiceYouProvide =
+      "please_enter_service_you_provide_it";
 
   // error handler
   static const String badRequestError = "bad_request_error";

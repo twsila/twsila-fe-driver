@@ -25,6 +25,7 @@ class VerifyOTPViewModel extends BaseViewModel
   GenerateOtpUseCaseInput generateOtpUseCaseInput = GenerateOtpUseCaseInput("");
   VerifyOtpUseCaseInput verifyOtpUseCaseInput = VerifyOtpUseCaseInput("", "");
   static FirebaseCodeSent firebaseCodeSent = FirebaseCodeSent("", 0);
+  static String phoneNumber = "";
 
   VerifyOTPViewModel(this._generateOtpUseCase, this._verifyOtpUseCase);
 

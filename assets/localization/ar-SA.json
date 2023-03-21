@@ -48,6 +48,9 @@
     "one_cabin_car": "ربع نقل كابينة واحدة",
     "two_cabin_car": "ربع نقل كابينتان"
   },
+
+  "large_vehicle_closed": "سيارة نقل كبيرة مغلقة",
+  "large_vehicle_opened": "سيارة نقل كبيرة مفتوحة",
   "change_language_to": "Change language to English",
   "would_you_like_to_transport": "هل ترغب في نقل",
   "stuff_goods_request_types": {
@@ -195,5 +198,20 @@
   "confirm": "تاكيد",
   "register": "التسجيل",
   "photo_from_galley": "معرض الصور",
-  "photo_from_camera": "الكاميرا"
+  "photo_from_camera": "الكاميرا",
+  "register_persons_trips": "تسجيل لنقل افراد",
+  "register_goods_trips": "تسجيل لنقل بضائع",
+  "goods_furniture_transportation": "نقل بضائع و اثاث",
+  "furniture_transportations": "نقل اثاث",
+  "flatness": "سطحة",
+  "truck": "شاحنة",
+  "tipper": "قلاب",
+  "wanet": "وانيت",
+  "motocycles": "دباب",
+  "water_cisterns": "صهريج مياه شرب",
+  "sanitation_cisterns": "صهريج صرف صحى",
+  "freezer": "ثلاجة",
+  "upload_car_photos": "تحميل صور السيارة",
+  "do_you_have_labor": "هل متوفر معك عمالة للقيام بالاعمال التالية",
+  "car_type": "نوع السيارة"
 }

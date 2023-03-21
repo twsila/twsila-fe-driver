@@ -63,6 +63,7 @@ dependencies:
   flutter_bloc: ^8.1.2
   provider: ^6.0.5
   equatable: ^2.0.5
+  sms_autofill: ^2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/categories/categories_view.dart';
+import 'package:taxi_for_you/presentation/goods_register/view/goods_register_view.dart';
 import 'package:taxi_for_you/presentation/register/view/upload_documents_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_client_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
@@ -14,13 +15,14 @@ import '../../presentation/login/login_view.dart';
 import '../../presentation/main/main_view.dart';
 import '../../presentation/onboarding/onboarding_view.dart';
 import '../../presentation/pending_approval_driver/view/pending_approval_view.dart';
-import '../../presentation/register/view/register_view.dart';
+import '../../presentation/register/view/persons_register_view.dart';
 import '../../presentation/splash/splash_view.dart';
 
 class Routes {
   static const String splashRoute = "/";
   static const String loginRoute = "/login";
-  static const String registerRoute = "/register";
+  static const String personsRegisterRoute = "/personsRegister";
+  static const String goodsRegisterRoute = "/goodsRegister";
   static const String registerUploadDocumentsRoute =
       "/registerUploadDocumentsRoute";
   static const String onBoardingRoute = "/onBoarding";
@@ -52,9 +54,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const LoginView());
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
-      case Routes.registerRoute:
-        initRegisterModule();
-        return MaterialPageRoute(builder: (_) => const RegisterView());
+      case Routes.personsRegisterRoute:
+        initPersonsRegisterModule();
+        return MaterialPageRoute(builder: (_) => const PersonsRegisterView());
+        case Routes.goodsRegisterRoute:
+        initGoodsRegisterModule();
+        return MaterialPageRoute(builder: (_) => const GoodsRegisterView());
       // case Routes.registerUploadDocumentsRoute:
       //   initRegisterModule();
       //   return MaterialPageRoute(

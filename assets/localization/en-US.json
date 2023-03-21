@@ -48,6 +48,9 @@
     "one_cabin_car": "One cabin",
     "two_cabin_car": "Two cabin"
   },
+
+  "large_vehicle_closed": "Large vehicle closed",
+  "large_vehicle_opened": "Large vehicle opened",
   "change_language_to": "تغيير اللغة إلى العربية",
   "would_you_like_to_transport": "Would you like to transport",
   "stuff_goods_request_types": {
@@ -200,5 +203,21 @@
   "confirm": "Confirm",
   "register": "Registration",
   "photo_from_galley": "Gallery",
-  "photo_from_camera": "Camera"
+  "photo_from_camera": "Camera",
+  "register_persons_trips": "Register to persons trips",
+  "register_goods_trips": "Register to goods trips",
+  "goods_furniture_transportation": "Goods and furniture transportation",
+  "furniture_transportations": "furniture transportation",
+  "flatness": "flatness",
+  "lory": "truck",
+  "tipper": "tipper",
+  "wanet": "wanet",
+  "motocycles": "motorcycles",
+  "water_cisterns": "water cisterns",
+  "sanitation_cisterns": "sanitation cisterns",
+  "freezer": "refrigerator",
+  "upload_car_photos": "upload car photos",
+  "do_you_have_labor": "do you have labor available for the below work",
+  "car_type": "Car Type"
+
 }

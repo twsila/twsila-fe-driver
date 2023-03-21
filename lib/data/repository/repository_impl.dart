@@ -182,19 +182,26 @@ class RepositoryImpl implements Repository {
       try {
         String verificationIdG = "";
         int resendTokenG = 0;
+        VerifyOTPViewModel.phoneNumber =
+            firebaseOTPRequest.phoneNumberWithCountryCode;
         FirebaseAuthException exception = FirebaseAuthException(code: "101");
         await FirebaseAuth.instance.verifyPhoneNumber(
           phoneNumber: firebaseOTPRequest.phoneNumberWithCountryCode,
-          verificationCompleted: (PhoneAuthCredential credential) {},
+          timeout: Duration(minutes: 1),
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            print("verificationCompleted");
+            await auth.signInWithCredential(credential);
+          },
           verificationFailed: (FirebaseAuthException e) {
+            print("verificationFailed");
             exception = e;
           },
           codeSent: (String verificationId, int? resendToken) {
+            print("codeSent");
             //here SMS With code is sent Successfully
             verificationIdG = verificationId;
             resendTokenG = resendToken ?? 0;
             VerifyOTPViewModel.firebaseCodeSent.verificationId = verificationId;
-
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
         );

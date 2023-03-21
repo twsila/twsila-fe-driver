@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:taxi_for_you/presentation/login/login_viewmodel.dart';
 import 'package:taxi_for_you/presentation/otp/viewmodel/verify_otp_viewmodel.dart';
-import 'package:taxi_for_you/presentation/register/view/register_view.dart';
+import 'package:taxi_for_you/presentation/register/view/persons_register_view.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
@@ -33,9 +34,16 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
   GlobalKey globalKey = GlobalKey();
 
   final AppPreferences _appPreferences = instance<AppPreferences>();
+  String _code = "";
 
-  _bind() {
+  _bind() async {
     _viewModel.start();
+    // await SmsAutoFill().listenForCode();
+    // SmsAutoFill().getAppSignature.then((signature) {
+    //   setState(() {
+    //     print("signature = $signature");
+    //   });
+    // });
     _viewModel.setPhoneNumber(
       _loginViewModel.loginObject.countryCode +
           _loginViewModel.loginObject.phoneNumber,
@@ -62,8 +70,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
         // navigate to main screen
         SchedulerBinding.instance.addPostFrameCallback((_) {
           _appPreferences.setUserLoggedIn();
-          Navigator.of(context).pushReplacementNamed(Routes.registerRoute);
-
+          Navigator.of(context).pushReplacementNamed(Routes.categoriesRoute);
         });
       }
     });
@@ -72,6 +79,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
   @override
   void dispose() {
     _viewModel.dispose();
+    // SmsAutoFill().unregisterListener();
     super.dispose();
   }
 
@@ -141,6 +149,21 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                             globalKey.currentContext?.findRenderObject();
                         object?.showOnScreen();
                       },
+                      // child: PinFieldAutoFill(
+                      //   decoration: UnderlineDecoration(
+                      //     textStyle: const TextStyle(
+                      //         fontSize: 20, color: Colors.black),
+                      //     colorBuilder:
+                      //         FixedColorBuilder(Colors.black.withOpacity(0.3)),
+                      //   ),
+                      //   currentCode: _code,
+                      //   onCodeSubmitted: (code) {},
+                      //   onCodeChanged: (code) {
+                      //     if (code!.length == 6) {
+                      //       FocusScope.of(context).requestFocus(FocusNode());
+                      //     }
+                      //   },
+                      // ),
                       child: CustomVerificationCodeWidget(
                         onComplete: (stringCode) {
                           _viewModel.setCode(stringCode);

@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
+import 'package:taxi_for_you/utils/resources/styles_manager.dart';
+import '../../../utils/resources/color_manager.dart';
 import '../state_renderer/dialogs.dart';
 
 class MutliPickImageWidget extends StatefulWidget {
   final Function(List<XFile>? images) onPickedImages;
+
   const MutliPickImageWidget({Key? key, required this.onPickedImages})
       : super(key: key);
 
@@ -98,8 +102,9 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                 const Icon(Icons.file_upload_outlined),
                 const SizedBox(width: 8),
                 Text(
-                  AppStrings.attachFurnitureImages.tr(),
-                  style: Theme.of(context).textTheme.headline3,
+                  AppStrings.uploadCarPhotos.tr(),
+                  style: getRegularStyle(
+                      color: ColorManager.primary, fontSize: FontSize.s16),
                 ),
               ],
             ),
