@@ -48,7 +48,6 @@
     "one_cabin_car": "One cabin",
     "two_cabin_car": "Two cabin"
   },
-
   "large_vehicle_closed": "Large vehicle closed",
   "large_vehicle_opened": "Large vehicle opened",
   "change_language_to": "تغيير اللغة إلى العربية",
@@ -218,6 +217,18 @@
   "freezer": "refrigerator",
   "upload_car_photos": "upload car photos",
   "do_you_have_labor": "do you have labor available for the below work",
-  "car_type": "Car Type"
-
+  "car_type": "Car Type",
+  "which_registration_type_you_want": "How would you like to register in Twsila",
+  "register_as_captain": "Register as Captain",
+  "add_one_car": "add one car",
+  "register_as_company_man": "Register as Company owner",
+  "want_to_add_and_manage_multiple_cars": "want to add and manage multiple cars",
+  "welcome_into": "Welcome into",
+  "tawsela": "Twsila",
+  "enter_phone_to_continue": "Enter mobile number to continue",
+  "continue": "Continue",
+  "saudi_country_code": "+966",
+  "egypt_country_code": "+20",
+  "saudi_arabia": "Saudi Arabia",
+  "egypt": "Egypt"
 }

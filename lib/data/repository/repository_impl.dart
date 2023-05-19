@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/data/mapper/mapper.dart';
 
+import '../../domain/model/driver_model.dart';
 import '../../domain/model/models.dart';
 import '../../domain/repository/repository.dart';
 import '../../presentation/otp/viewmodel/verify_otp_viewmodel.dart';
@@ -22,14 +23,14 @@ class RepositoryImpl implements Repository {
       this._remoteDataSource, this._networkInfo, this._localDataSource);
 
   @override
-  Future<Either<Failure, Authentication>> login(
+  Future<Either<Failure, Driver>> login(
       LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response = await _remoteDataSource.login(loginRequest);
 
-        if (response.status == ApiInternalStatus.SUCCESS) {
+        if (response.success == ApiInternalStatus.SUCCESS) {
           // success
           // return either right
           // return data
@@ -50,32 +51,7 @@ class RepositoryImpl implements Repository {
     }
   }
 
-  @override
-  Future<Either<Failure, String>> forgotPassword(String email) async {
-    if (await _networkInfo.isConnected) {
-      try {
-        // its safe to call API
-        final response = await _remoteDataSource.forgotPassword(email);
 
-        if (response.status == ApiInternalStatus.SUCCESS) {
-          // success
-          // return right
-          return Right(response.toDomain());
-        } else {
-          // failure
-          // return left
-          return Left(Failure(response.status ?? ResponseCode.DEFAULT,
-              response.message ?? ResponseMessage.DEFAULT));
-        }
-      } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
-      }
-    } else {
-      // return network connection error
-      // return left
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-    }
-  }
 
   @override
   Future<Either<Failure, Authentication>> register(
@@ -85,7 +61,7 @@ class RepositoryImpl implements Repository {
       try {
         final response = await _remoteDataSource.register(registerRequest);
 
-        if (response.status == ApiInternalStatus.SUCCESS) {
+        if (response.success == ApiInternalStatus.SUCCESS) {
           // success
           // return either right
           // return data
@@ -121,7 +97,7 @@ class RepositoryImpl implements Repository {
         try {
           final response = await _remoteDataSource.getHomeData();
 
-          if (response.status == ApiInternalStatus.SUCCESS) {
+          if (response.success == ApiInternalStatus.SUCCESS) {
             // success
             // return either right
             // return data
@@ -143,33 +119,6 @@ class RepositoryImpl implements Repository {
       } else {
         // return internet connection error
         // return either left
-        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-      }
-    }
-  }
-
-  @override
-  Future<Either<Failure, StoreDetails>> getStoreDetails() async {
-    try {
-      // get data from cache
-
-      final response = await _localDataSource.getStoreDetails();
-      return Right(response.toDomain());
-    } catch (cacheError) {
-      if (await _networkInfo.isConnected) {
-        try {
-          final response = await _remoteDataSource.getStoreDetails();
-          if (response.status == ApiInternalStatus.SUCCESS) {
-            _localDataSource.saveStoreDetailsToCache(response);
-            return Right(response.toDomain());
-          } else {
-            return Left(Failure(response.status ?? ResponseCode.DEFAULT,
-                response.message ?? ResponseMessage.DEFAULT));
-          }
-        } catch (error) {
-          return Left(ErrorHandler.handle(error).failure);
-        }
-      } else {
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
     }
@@ -235,5 +184,17 @@ class RepositoryImpl implements Repository {
     } else {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, String>> forgotPassword(String email) {
+    // TODO: implement forgotPassword
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, StoreDetails>> getStoreDetails() {
+    // TODO: implement getStoreDetails
+    throw UnimplementedError();
   }
 }

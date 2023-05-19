@@ -1,8 +1,9 @@
 class LoginRequest {
-  String email;
-  String password;
+  String mobileNumber;
+  String language;
+  Map<String, dynamic> userDeviceDTO;
 
-  LoginRequest(this.email, this.password);
+  LoginRequest(this.mobileNumber, this.language, this.userDeviceDTO);
 }
 
 class RegisterRequest {
@@ -34,10 +35,9 @@ class GenerateFirebaseOTPRequest {
   GenerateFirebaseOTPRequest(this.phoneNumberWithCountryCode);
 }
 
-
 class VerifyFirebaseOTPRequest {
   String verificationId;
   String code;
 
-  VerifyFirebaseOTPRequest(this.verificationId,this.code);
+  VerifyFirebaseOTPRequest(this.verificationId, this.code);
 }

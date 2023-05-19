@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../utils/resources/color_manager.dart';
 
@@ -37,6 +38,7 @@ class CustomTextInputField extends StatefulWidget {
   final String? labelText;
   final Color fillColor;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final String? helperText;
   final Function(String)? onFieldSubmitted;
   final VoidCallback? onClearIconTapped;
@@ -60,6 +62,7 @@ class CustomTextInputField extends StatefulWidget {
       this.obscureText = false,
       this.isKeyboardDigitsOnly = false,
       this.padding,
+      this.margin,
       this.maxLines,
       // this.initialValue = "",
       this.prefixIcon,
@@ -125,11 +128,17 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.labelText!,
-                  style: widget.istitleBold!
-                      ? Theme.of(context).textTheme.headline6
-                      : const TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 16)),
+              Container(
+                margin: widget.margin ??
+                    const EdgeInsets.symmetric(horizontal: AppSize.s12),
+                child: Text(widget.labelText!,
+                    style: widget.istitleBold!
+                        ? Theme.of(context).textTheme.titleMedium
+                        : TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: AppSize.s14,
+                            color: ColorManager.formLabelTextColor)),
+              ),
               _textFormField(),
             ],
           )
@@ -140,14 +149,14 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
     return Semantics(
       label: widget.semanticsLabelKey,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: widget.margin ??
+            const EdgeInsets.symmetric(
+                horizontal: AppSize.s12, vertical: AppSize.s4),
         child: Column(
           children: [
             TextFormField(
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge!
-                  .copyWith(color: widget.textColor ?? ColorManager.primary),
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: widget.textColor ?? ColorManager.blackTextColor),
               obscureText: widget.obscureText,
               textAlign: widget.textAlign ?? TextAlign.start,
               maxLength: widget.maxLength,
@@ -175,10 +184,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                 helperMaxLines: 8,
                 helperText: widget.helperText,
                 contentPadding: widget.padding ??
-                    const EdgeInsets.only(
-                      left: 10,
-                      right: 10
-                    ),
+                    const EdgeInsets.only(left: 10, right: 10),
                 counterStyle: const TextStyle(
                   height: double.minPositive,
                 ),
@@ -190,7 +196,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                         child: GestureDetector(
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(2),
                               border: Border.all(
                                   color: ColorManager.primary, width: 1.5),
                             ),
@@ -230,38 +236,39 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                 //     .headline5!
                 //     .copyWith(color: ColorManager.helperTextColor),
                 errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 8),
+                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
                     color: ColorManager.error,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 8),
+                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
                     color: widget.borderColor ?? ColorManager.lightGrey,
                   ),
                 ),
                 disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 8),
+                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
                     color: widget.borderColor ?? ColorManager.lightGrey,
                   ),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 8),
+                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
                     color: ColorManager.error,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 8),
+                  borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
                     color: widget.borderColor ?? ColorManager.lightGrey,
                   ),
                 ),
                 hintText: widget.hintText,
-                hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: widget.hintTextColor ?? ColorManager.lightGrey,
+                hintStyle: Theme.of(context).textTheme.displayLarge!.copyWith(
+                    color:
+                        widget.hintTextColor ?? ColorManager.formHintTextColor,
                     fontSize: 13),
                 alignLabelWithHint: true,
               ),

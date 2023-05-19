@@ -2,25 +2,28 @@ import 'package:dartz/dartz.dart';
 
 import '../../data/network/failure.dart';
 import '../../data/network/requests.dart';
+import '../model/driver_model.dart';
 import '../model/models.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
 
-class LoginUseCase implements BaseUseCase<LoginUseCaseInput, Authentication> {
+class LoginUseCase implements BaseUseCase<LoginUseCaseInput, Driver> {
   final Repository _repository;
 
   LoginUseCase(this._repository);
 
   @override
-  Future<Either<Failure, Authentication>> execute(
+  Future<Either<Failure, Driver>> execute(
       LoginUseCaseInput input) async {
-    return await _repository.login(LoginRequest(input.email, input.password));
+    return await _repository.login(
+        LoginRequest(input.mobileNumber, input.language, input.userDeviceDTO));
   }
 }
 
 class LoginUseCaseInput {
-  String email;
-  String password;
+  String mobileNumber;
+  String language;
+  Map<String, dynamic> userDeviceDTO;
 
-  LoginUseCaseInput(this.email, this.password);
+  LoginUseCaseInput(this.mobileNumber, this.language, this.userDeviceDTO);
 }

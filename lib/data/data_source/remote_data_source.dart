@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import '../network/app_api.dart';
 import '../network/requests.dart';
 import '../response/responses.dart';
 
 abstract class RemoteDataSource {
-  Future<AuthenticationResponse> login(LoginRequest loginRequest);
+  Future<LoginResponse> login(LoginRequest loginRequest);
 
   Future<AuthenticationResponse> register(RegisterRequest registerRequest);
 
@@ -20,9 +22,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   RemoteDataSourceImpl(this._appServiceClient);
 
   @override
-  Future<AuthenticationResponse> login(LoginRequest loginRequest) async {
-    return await _appServiceClient.login(
-        loginRequest.email, loginRequest.password);
+  Future<LoginResponse> login(LoginRequest loginRequest) async {
+    return await _appServiceClient.login(loginRequest.mobileNumber,loginRequest.language,loginRequest.userDeviceDTO);
   }
 
   @override

@@ -21,6 +21,7 @@ abstract class BaseViewModel extends BaseViewModelInputs
   }
 }
 
+
 abstract class BaseViewModelInputs {
   void start(); // start view model job
 

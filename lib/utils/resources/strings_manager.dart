@@ -104,7 +104,6 @@ class AppStrings {
   static const furnitureTransportation = 'furniture_transportations';
   static const flatness = 'flatness';
 
-
   static const loadAndUnload = 'flatness';
   static const reassembleAndAssemble = 'reassemble_and_assemble';
   static const wrapping = 'wrapping';
@@ -212,4 +211,25 @@ class AppStrings {
   static const onBoardingSubTitle3 = "on_boarding_desc3";
   static const onBoardingSubTitle4 = "on_boarding_desc4";
   static const String wrongOtp = "wrong_otp";
+
+  //registration
+
+  static const whichRegistrationTypeYouWant =
+      "which_registration_type_you_want";
+  static const registerAsACaptain = "register_as_captain";
+  static const addOneCar = "add_one_car";
+  static const registerAsCompanyOwner = "register_as_company_man";
+  static const wantToAddAndManageMultipleCars =
+      "want_to_add_and_manage_multiple_cars";
+
+
+
+  static const welcomeInto = "welcome_into";
+  static const twsela = "tawsela";
+  static const enterPhoneNumberToContinue = "enter_phone_to_continue";
+  static const continueStr = "continue";
+  static const saudiCountryCode = "saudi_country_code";
+  static const egyptCountryCode = "egypt_country_code";
+  static const saudiArabia = "saudi_arabia";
+  static const egypt = "egypt";
 }

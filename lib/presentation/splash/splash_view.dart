@@ -3,6 +3,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_language_widget.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
+import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
 import '../../utils/location/map_provider.dart';
@@ -62,7 +65,8 @@ class _SplashViewState extends State<SplashView> {
           else
             {
               // Navigate to Login Screen
-              Navigator.pushReplacementNamed(context, Routes.loginRoute)
+              Navigator.pushReplacementNamed(
+                  context, Routes.selectRegistrationType)
             }
         });
   }
@@ -76,18 +80,27 @@ class _SplashViewState extends State<SplashView> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(ImageAssets.logoImg),
+            const SizedBox(
+              height: AppSize.s210,
+            ),
+            Image.asset(ImageAssets.splashIcon),
             const SizedBox(height: 16),
+            const Align(alignment: Alignment.center, child: LanguageWidget()),
+            const Spacer(),
+            CustomTextButton(
+              text: 'Get Started',
+              onPressed: () {
+                _goNext();
+              },
+            ),
             BlocConsumer<MapsBloc, MapsState>(
               listener: ((context, state) {
                 if (state is CurrentLocationFailed) {
                   ShowDialogHelper.showErrorMessage(
                       state.errorMessage, context);
-                  _goNext();
                 } else if (state is CurrentLocationLoadedSuccessfully) {
                   Provider.of<MapProvider>(context, listen: false)
                       .currentLocation = state.currentLocation;
-                  _goNext();
                 }
               }),
               builder: ((context, state) {

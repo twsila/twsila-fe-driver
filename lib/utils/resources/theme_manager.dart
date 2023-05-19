@@ -44,8 +44,8 @@ ThemeData getApplicationTheme() {
                 borderRadius: BorderRadius.circular(AppSize.s12)))),
 
     textTheme: TextTheme(
-        displayLarge:
-            getBoldStyle(color: ColorManager.black, fontSize: FontSize.s22),
+        displayLarge: getBoldStyle(
+            color: ColorManager.blackTextColor, fontSize: FontSize.s22),
         displaySmall: getMediumStyle(
             color: ColorManager.lightGrey, fontSize: FontSize.s14),
         headlineLarge: getSemiBoldStyle(
@@ -54,10 +54,10 @@ ThemeData getApplicationTheme() {
             color: ColorManager.darkGrey, fontSize: FontSize.s14),
         titleLarge:
             getBoldStyle(color: ColorManager.primary, fontSize: FontSize.s30),
-        titleMedium:
-            getMediumStyle(color: ColorManager.primary, fontSize: FontSize.s16),
-        titleSmall:
-            getRegularStyle(color: ColorManager.white, fontSize: FontSize.s16),
+        titleMedium: getMediumStyle(
+            color: ColorManager.blackTextColor, fontSize: FontSize.s16),
+        titleSmall: getRegularStyle(
+            color: ColorManager.blackTextColor, fontSize: FontSize.s16),
         bodyLarge: getRegularStyle(color: ColorManager.grey1),
         bodySmall:
             getRegularStyle(color: ColorManager.grey, fontSize: FontSize.s18),

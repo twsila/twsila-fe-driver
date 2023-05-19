@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
+import '../../../app/constants.dart';
 import '../../../utils/resources/color_manager.dart';
 
 class CustomVerificationCodeWidget extends StatefulWidget {
@@ -19,35 +21,35 @@ class _CustomVerificationCodeWidgetState
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
-      margin: const EdgeInsets.all(5),
+      width: AppSize.s50,
+      height: AppSize.s50,
+      margin: const EdgeInsets.all(2),
       textStyle: TextStyle(
           fontSize: 20,
-          color: ColorManager.primary,
+          color: ColorManager.blackTextColor,
           fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
-        border: Border.all(color: ColorManager.grey),
-        borderRadius: BorderRadius.circular(8),
+        color: ColorManager.forthAccentColor,
+        borderRadius: BorderRadius.circular(2),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: ColorManager.black),
-      borderRadius: BorderRadius.circular(8),
+      color: ColorManager.secondaryAccentColor,
+      borderRadius: BorderRadius.circular(2),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        border: Border.all(color: ColorManager.grey),
+        color: ColorManager.secondaryAccentColor,
       ),
     );
     return Pinput(
-      length: 6,
+      length: Constants.otpSize,
       defaultPinTheme: defaultPinTheme,
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,
-      showCursor: true,
+      showCursor: Constants.showCursorOtpField,
       onCompleted: widget.onComplete,
     );
   }

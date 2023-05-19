@@ -48,7 +48,6 @@
     "one_cabin_car": "ربع نقل كابينة واحدة",
     "two_cabin_car": "ربع نقل كابينتان"
   },
-
   "large_vehicle_closed": "سيارة نقل كبيرة مغلقة",
   "large_vehicle_opened": "سيارة نقل كبيرة مفتوحة",
   "change_language_to": "Change language to English",
@@ -213,5 +212,18 @@
   "freezer": "ثلاجة",
   "upload_car_photos": "تحميل صور السيارة",
   "do_you_have_labor": "هل متوفر معك عمالة للقيام بالاعمال التالية",
-  "car_type": "نوع السيارة"
+  "car_type": "نوع السيارة",
+  "which_registration_type_you_want": "كيف تود التسجيل في توصيلة",
+  "register_as_captain": "التسجيل ككابتن",
+  "add_one_car": "اضافة سيارة واحدة",
+  "register_as_company_man": "التسجيل كمالك شركة",
+  "want_to_add_and_manage_multiple_cars": "اريد اضافة و ادارة عدة سيارات",
+  "welcome_into": "اهلا بك في",
+  "tawsela": "توصيلة",
+  "enter_phone_to_continue": "أدخل رقم هاتفك للأستمرار",
+  "continue": "متابعه",
+  "saudi_country_code": "٩٦٦+",
+  "egypt_country_code": "٢٠+",
+  "saudi_arabia": "السعودية",
+  "egypt": "مصر"
 }

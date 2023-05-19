@@ -64,11 +64,9 @@ class _CustomDropDownState extends State<CustomDropDown> {
         Container(
           height: 45,
           margin: EdgeInsets.symmetric(vertical: 8),
-          decoration: new BoxDecoration(
-            color: widget.backgroundColor != null
-                ? widget.backgroundColor
-                : Theme.of(context).accentColor,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+          decoration: BoxDecoration(
+            color: widget.backgroundColor ?? Theme.of(context).primaryColor,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: widget.isValid
                 ? Border.all(color: widget.borderColor ?? Colors.transparent)
                 : Border.all(color: Colors.red),

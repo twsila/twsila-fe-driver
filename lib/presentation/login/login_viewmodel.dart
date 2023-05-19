@@ -73,7 +73,7 @@ class LoginViewModel extends BaseViewModel
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
     (await _loginUseCase.execute(LoginUseCaseInput(
-            loginObject.countryCode, loginObject.phoneNumber)))
+            loginObject.countryCode, loginObject.phoneNumber,{})))
         .fold(
             (failure) => {
                   // left -> failure
