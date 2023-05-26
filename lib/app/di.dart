@@ -3,10 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
+import 'package:taxi_for_you/presentation/captain_registration/view/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/immediate_trip/viewmodel/immediate_trip_viewmodel.dart';
 import 'package:taxi_for_you/presentation/login/bloc/login_bloc.dart';
-import 'package:taxi_for_you/presentation/otp/viewmodel/verify_otp_viewmodel.dart';
+import 'package:taxi_for_you/presentation/otp/bloc/verify_otp_bloc.dart';
 
 import '../data/data_source/local_data_source.dart';
 import '../data/data_source/remote_data_source.dart';
@@ -27,7 +29,7 @@ import '../presentation/goods_register/viewmodel/goods_register_viewmodel.dart';
 import '../presentation/login/login_viewmodel.dart';
 import '../presentation/main/pages/home/viewmodel/home_viewmodel.dart';
 import '../presentation/pending_approval_driver/view/pending_approval_view.dart';
-import '../presentation/register/viewmodel/persons_register_viewmodel.dart';
+import '../presentation/captain_registration/viewmodel/persons_register_viewmodel.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -67,8 +69,13 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<Repository>(
       () => RepositoryImpl(instance(), instance(), instance()));
 
-  //useCases
   instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+  instance
+      .registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(instance()));
+  instance.registerFactory<GenerateOtpUseCase>(
+      () => GenerateOtpUseCase(instance()));
+  instance.registerFactory<RegistrationServiceUseCase>(
+      () => RegistrationServiceUseCase(instance()));
 }
 
 initLoginModule() {
@@ -81,12 +88,12 @@ initLoginModule() {
   }
 }
 
-initPersonsRegisterModule() {
+initCaptainRegisterModule() {
   if (!GetIt.I.isRegistered<PersonsRegisterUseCase>()) {
     instance.registerFactory<PersonsRegisterUseCase>(
         () => PersonsRegisterUseCase(instance()));
-    instance.registerFactory<PersonsRegisterViewModel>(
-        () => PersonsRegisterViewModel(instance()));
+    instance.registerFactory<CaptainRegistrationView>(
+        () => const CaptainRegistrationView());
     instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 }
@@ -109,34 +116,19 @@ initHomeModule() {
 }
 
 initVerifyOtpModule() {
-  if (!GetIt.I.isRegistered<GenerateOtpUseCase>()) {
+  if (!GetIt.I.isRegistered<VerifyOtpUseCase>() ||
+      !GetIt.I.isRegistered<LoginUseCase>()) {
     instance.registerFactory<GenerateOtpUseCase>(
         () => GenerateOtpUseCase(instance()));
     instance
         .registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(instance()));
-    instance.registerFactory<VerifyOTPViewModel>(
-        () => VerifyOTPViewModel(instance(), instance()));
+    instance.registerFactory<GenerateOtpUseCase>(
+        () => GenerateOtpUseCase(instance()));
+
+    instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+    instance.registerLazySingleton<VerifyOtpBloc>(() => VerifyOtpBloc(
+        verifyOtpUseCase: instance(),
+        generateOtpUseCase: instance(),
+        loginUseCase: instance()));
   }
-}
-
-initImmediateTripModule() {
-  // if (!GetIt.I.isRegistered<GenerateOtpUseCase>()) {
-  //   instance.registerFactory<GenerateOtpUseCase>(
-  //           () => GenerateOtpUseCase(instance()));
-  //   instance
-  //       .registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(instance()));
-  instance
-      .registerFactory<ImmediateTripViewModel>(() => ImmediateTripViewModel());
-  // }
-}
-
-initScheduledTripModule() {
-  // if (!GetIt.I.isRegistered<GenerateOtpUseCase>()) {
-  //   instance.registerFactory<GenerateOtpUseCase>(
-  //           () => GenerateOtpUseCase(instance()));
-  //   instance
-  //       .registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(instance()));
-  instance
-      .registerFactory<ScheduledTripViewModel>(() => ScheduledTripViewModel());
-  // }
 }

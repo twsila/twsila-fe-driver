@@ -108,7 +108,6 @@ class _CustomScaffoldState extends State<CustomScaffold> {
               ),
             ),
           ),
-
           if (widget.pageBuilder.displayLoadingIndicator) EasyLoader(),
         ],
       ),
@@ -122,7 +121,7 @@ class _CustomScaffoldState extends State<CustomScaffold> {
             ? Text(
                 widget.pageBuilder.appBarTitle!,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: ColorManager.blackTextColor,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
               )

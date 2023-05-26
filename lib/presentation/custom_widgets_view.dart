@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
-import 'package:taxi_for_you/presentation/common/widgets/custom_verification_code_widget.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../utils/resources/color_manager.dart';
+import 'common/widgets/CustomAutoFullSms.dart';
 import 'login/widgets/phone_view.dart';
 
 class CustomWidgetsView extends StatefulWidget {
@@ -31,7 +31,7 @@ class _CustomWidgetsViewState extends State<CustomWidgetsView> {
                 ),
                 onPressed: () {},
               ),
-              CustomVerificationCodeWidget(onComplete: (otp) {}),
+              // CustomVerificationCodeWidget(onComplete: (otp) {}, controller: null,),
               CustomTextInputField(
                 showLabelText: true,
                 istitleBold: false,

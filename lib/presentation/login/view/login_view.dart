@@ -1,16 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:taxi_for_you/domain/model/models.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_dialog.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
-import 'package:taxi_for_you/presentation/login/widgets/phone_view.dart';
-import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
-import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
+import 'package:taxi_for_you/presentation/otp/view/verify_otp_view.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
+import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
+import 'package:taxi_for_you/utils/helpers/language_helper.dart';
+import 'package:taxi_for_you/utils/resources/font_manager.dart';
 
+import 'dart:math' as math;
 import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
@@ -18,13 +21,9 @@ import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
-import '../../../utils/resources/styles_manager.dart';
 import '../../../utils/resources/values_manager.dart';
-import '../../common/state_renderer/state_renderer_impl.dart';
-import '../../common/widgets/custom_language_widget.dart';
 import '../../common/widgets/page_builder.dart';
 import '../bloc/login_bloc.dart';
-import '../login_viewmodel.dart';
 
 class LoginView extends StatefulWidget {
   String registerAs;
@@ -41,9 +40,13 @@ class _LoginViewState extends State<LoginView> {
   bool _displayLoadingIndicator = false;
   CountryCodes selectedCountry = Constants.countryList.first;
   Function()? onPressFun;
+  String mobileNumber = "";
+  final TextEditingController _controller = TextEditingController();
+   String onChangValue = "";
 
   @override
   void initState() {
+    setCountryCodeValue(selectedCountry);
     super.initState();
   }
 
@@ -86,22 +89,32 @@ class _LoginViewState extends State<LoginView> {
         }
 
         if (state is LoginSuccessState) {
-          print('successLogin');
+          // _appPreferences.setUserLoggedIn();
+          _appPreferences.setDriver(state.driver);
+          if (_appPreferences.getCachedDriver() != null) {
+            String validMobileNumber =
+                LanguageHelper().replaceEnglishNumber(mobileNumber);
+            Navigator.pushNamed(context, Routes.verifyOtpRoute,
+                arguments: VerifyArguments(validMobileNumber, mobileNumber));
+          }
         }
 
-        if (state is LoginFailState) {
-          print('failedLogin');
-        }
-        if (state is LoginIsAllInputNotValid) {
+        // if (state is LoginFailState) {
+        //   CustomDialog(context).showErrorDialog('title', 'desc', state.message);
+        // }
+        else if (state is LoginIsAllInputNotValid) {
           onPressFun = null;
-        }
-        if (state is LoginIsAllInputValid) {
+        } else if (state is LoginIsAllInputValid) {
           onPressFun = () {
-            BlocProvider.of<LoginBloc>(context)
-                .add(MakeLoginEvent('1234567893'));
+            FocusScope.of(context).unfocus();
+            String validMobileNumber =
+                LanguageHelper().replaceEnglishNumber(mobileNumber);
+            BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+                validMobileNumber, _appPreferences.getAppLanguage()));
+            Navigator.pushNamed(context, Routes.verifyOtpRoute,
+                arguments: VerifyArguments(validMobileNumber, mobileNumber));
           };
-        }
-        if (state is LoginIsAllInputNotValid) {
+        } else if (state is LoginIsAllInputNotValid) {
           onPressFun = null;
         }
       },
@@ -134,7 +147,11 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 Text(
                   AppStrings.enterPhoneNumberToContinue.tr(),
-                  style: Theme.of(context).textTheme.displayLarge,
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      fontWeight: FontWeight.bold, fontSize: FontSize.s26),
+                ),
+                const SizedBox(
+                  height: AppSize.s18,
                 ),
                 phoneNumberWidget(),
                 const SizedBox(
@@ -149,7 +166,22 @@ class _LoginViewState extends State<LoginView> {
                         ? ColorManager.white
                         : ColorManager.disableTextColor,
                   ),
-                )
+                ),
+                const Spacer(),
+                // showArabicKeyboard
+                //     ? Container(
+                //         color: Colors.black,
+                //         child: VirtualKeyboard(
+                //           fontSize: 20,
+                //           textColor: Colors.white,
+                //           textController: _controller,
+                //           type: VirtualKeyboardType.Alphanumeric,
+                //           defaultLayouts: const [
+                //             VirtualKeyboardDefaultLayouts.Arabic
+                //           ],
+                //         ),
+                //       )
+                //     : Container(),
               ],
             ));
       },
@@ -176,7 +208,7 @@ class _LoginViewState extends State<LoginView> {
                 return InkWell(
                   onTap: () {
                     setState(() {
-                      this.selectedCountry = selectedCountry;
+                      setCountryCodeValue(selectedCountry);
                       Navigator.pop(context);
                     });
                   },
@@ -191,11 +223,23 @@ class _LoginViewState extends State<LoginView> {
                         const SizedBox(
                           width: AppSize.s8,
                         ),
-                        Text(selectedCountry.countryPhoneKey),
+                        Text(
+                          '(${selectedCountry.countryPhoneKey.tr()})',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: ColorManager.blackTextColor),
+                        ),
                         const SizedBox(
                           width: AppSize.s8,
                         ),
-                        Text(selectedCountry.countryName),
+                        Text(
+                          selectedCountry.countryName.tr(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: ColorManager.blackTextColor),
+                        )
                       ],
                     ),
                   ),
@@ -205,68 +249,100 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Widget phoneNumberWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Flexible(
-          flex: 6,
-          child: CustomTextInputField(
-            borderColor: ColorManager.white,
-            fillColor: ColorManager.thirdAccentColor,
-            textColor: ColorManager.blackTextColor,
-            textAlign: TextAlign.left,
-            keyboardType: TextInputType.number,
-            onChanged: (value) {
-              BlocProvider.of<LoginBloc>(context)
-                  .add(CheckInputIsValidEvent(value));
-            },
-          ),
-        ),
-        Flexible(
-          flex: 2,
-          child: InkWell(
-            onTap: () {
-              _showBottomSheet();
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  height: AppSize.s45,
-                  decoration: BoxDecoration(
-                      color: ColorManager.forthAccentColor,
-                      borderRadius: BorderRadius.circular(2)),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: AppPadding.p12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          selectedCountry.countryPhoneKey.tr(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: ColorManager.black),
-                        ),
-                        const SizedBox(
-                          width: AppSize.s8,
-                        ),
-                        Image.asset(
-                          selectedCountry.flagPath,
-                          width: AppSize.s20,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+    return Transform(
+      alignment: Alignment.center,
+      transform:
+          Matrix4.rotationY(LanguageHelper().isRtl(context) ? 0 : math.pi),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            flex: 6,
+            child: Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.rotationY(
+                  LanguageHelper().isRtl(context) ? 0 : math.pi),
+              child: CustomTextInputField(
+                inputFormatter: [ArabicNumbersTextFormatter()],
+                controller: _controller,
+                borderColor: ColorManager.white,
+                fillColor: ColorManager.thirdAccentColor,
+                textColor: ColorManager.blackTextColor,
+                textAlign: TextAlign.left,
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  onChangValue = value;
+                  mobileNumber = selectedCountry.countryPhoneKey + value;
+                  BlocProvider.of<LoginBloc>(context)
+                      .add(CheckInputIsValidEvent(value));
+                },
+              ),
             ),
           ),
-        ),
-      ],
+          Flexible(
+            flex: 2,
+            child: InkWell(
+              onTap: () {
+                _showBottomSheet();
+              },
+              child: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(
+                    LanguageHelper().isRtl(context) ? 0 : math.pi),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: AppSize.s47,
+                      decoration: BoxDecoration(
+                          color: ColorManager.forthAccentColor,
+                          borderRadius: BorderRadius.circular(2)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppPadding.p8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              LanguageHelper().replaceArabicNumber(
+                                  selectedCountry.countryPhoneKey.tr()),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      color: ColorManager.black,
+                                      fontSize: FontSize.s16),
+                            ),
+                            const SizedBox(
+                              width: AppSize.s8,
+                            ),
+                            Image.asset(
+                              selectedCountry.flagPath,
+                              width: AppSize.s20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
+  }
+
+  void setCountryCodeValue(CountryCodes selectedCountry) {
+    this.selectedCountry = selectedCountry;
+    if (selectedCountry.countryIsoCode == 'SA') {
+      this.selectedCountry.countryPhoneKey = '+966';
+    } else {
+      this.selectedCountry.countryPhoneKey = '+20';
+    }
+    mobileNumber = selectedCountry.countryPhoneKey + onChangValue;
   }
 }
 

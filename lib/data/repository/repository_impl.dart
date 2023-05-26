@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:taxi_for_you/data/mapper/driver.dart';
 import 'package:taxi_for_you/data/mapper/mapper.dart';
+import 'package:taxi_for_you/data/response/responses.dart';
+import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
+import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 
 import '../../domain/model/driver_model.dart';
 import '../../domain/model/models.dart';
+import '../../domain/model/verify_otp_model.dart';
 import '../../domain/repository/repository.dart';
-import '../../presentation/otp/viewmodel/verify_otp_viewmodel.dart';
 import '../data_source/local_data_source.dart';
 import '../data_source/remote_data_source.dart';
 import '../network/error_handler.dart';
@@ -23,18 +29,20 @@ class RepositoryImpl implements Repository {
       this._remoteDataSource, this._networkInfo, this._localDataSource);
 
   @override
-  Future<Either<Failure, Driver>> login(
-      LoginRequest loginRequest) async {
+  Future<Either<Failure, Driver>> login(LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.login(loginRequest);
+        var response = await _remoteDataSource.login(loginRequest);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           // success
           // return either right
           // return data
-          return Right(response.toDomain());
+          //save driver data
+          await _localDataSource
+              .saveDriverToCache(Driver.fromJson(response.result!));
+          return Right(LoginResponse.fromJson(response.result!).toDomain());
         } else {
           // failure --return business error
           // return either left
@@ -50,8 +58,6 @@ class RepositoryImpl implements Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
-
-
 
   @override
   Future<Either<Failure, Authentication>> register(
@@ -125,57 +131,17 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, FirebaseCodeSent>> generateFirebaseOtp(
-      GenerateFirebaseOTPRequest firebaseOTPRequest) async {
-    if (await _networkInfo.isConnected) {
-      try {
-        String verificationIdG = "";
-        int resendTokenG = 0;
-        VerifyOTPViewModel.phoneNumber =
-            firebaseOTPRequest.phoneNumberWithCountryCode;
-        FirebaseAuthException exception = FirebaseAuthException(code: "101");
-        await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: firebaseOTPRequest.phoneNumberWithCountryCode,
-          timeout: Duration(minutes: 1),
-          verificationCompleted: (PhoneAuthCredential credential) async {
-            print("verificationCompleted");
-            await auth.signInWithCredential(credential);
-          },
-          verificationFailed: (FirebaseAuthException e) {
-            print("verificationFailed");
-            exception = e;
-          },
-          codeSent: (String verificationId, int? resendToken) {
-            print("codeSent");
-            //here SMS With code is sent Successfully
-            verificationIdG = verificationId;
-            resendTokenG = resendToken ?? 0;
-            VerifyOTPViewModel.firebaseCodeSent.verificationId = verificationId;
-          },
-          codeAutoRetrievalTimeout: (String verificationId) {},
-        );
-
-        return Right(FirebaseCodeSent(verificationIdG, resendTokenG));
-      } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
-      }
-    } else {
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, FirebaseCodeSent>> verifyFirebaseOtp(
-      VerifyFirebaseOTPRequest firebaseOTPRequest) async {
+      VerifyOTPRequest firebaseOTPRequest) async {
     // Create a PhoneAuthCredential with the code
 
     if (await _networkInfo.isConnected) {
       try {
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: VerifyOTPViewModel.firebaseCodeSent.verificationId,
-            smsCode: firebaseOTPRequest.code);
+        // PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        //     verificationId: VerifyOTPViewModel.firebaseCodeSent.verificationId,
+        //     smsCode: firebaseOTPRequest.code);
         // Sign the user in (or link) with the credential
-        await auth.signInWithCredential(credential);
+        // await auth.signInWithCredential(credential);
 
         return Right(FirebaseCodeSent("", 0));
       } catch (error) {
@@ -196,5 +162,93 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, StoreDetails>> getStoreDetails() {
     // TODO: implement getStoreDetails
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, GenerateOtpModel>> generateOtp(
+      GenerateOTPRequest otpRequest) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.generateOtp(otpRequest);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          // success
+          // return either right
+          // return data
+          return Right(response);
+        } else {
+          // failure --return business error
+          // return either left
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, VerifyOtpModel>> verifyOtp(
+      VerifyOTPRequest verifyOTPRequest) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.verifyOtp(verifyOTPRequest);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          // success
+          // return either right
+          // return data
+          return Right(response);
+        } else {
+          // failure --return business error
+          // return either left
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ServiceTypeModel>> registrationServiceTypes() async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.registrationServicesType();
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          // success
+          // return either right
+          // return data
+          ServiceTypeModel returnedServices =
+              json.decode(response.result as String);
+          return Right(returnedServices);
+        } else {
+          // failure --return business error
+          // return either left
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
   }
 }

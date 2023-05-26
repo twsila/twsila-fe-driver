@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/domain/model/driver_model.dart';
 
 import '../utils/resources/langauge_manager.dart';
 
@@ -8,6 +11,7 @@ const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED =
     "PREFS_KEY_ONBOARDING_SCREEN_VIEWED";
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String USER_SELECTED_COUNTRY = "USER_SELECTED_COUNTRY";
+const String DRIVER_MODEL = "DRIVER_MODEL";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -48,6 +52,14 @@ class AppPreferences {
     }
   }
 
+  //driver functionalities
+  Future<bool> setDriver(Driver driver) async {
+    setUserLoggedIn();
+    String driverStr = json.encode(driver);
+   await _sharedPreferences.setString(DRIVER_MODEL, driverStr);
+   return true;
+  }
+
   //Selected country
   setUserSelectedCountry(String country) {
     _sharedPreferences.setString(USER_SELECTED_COUNTRY, country);
@@ -55,6 +67,12 @@ class AppPreferences {
 
   String? getUserSelectedCountry() {
     return _sharedPreferences.getString(USER_SELECTED_COUNTRY);
+  }
+
+  Driver? getCachedDriver() {
+    Map<String, dynamic> driverMap =
+        jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!);
+    return Driver.fromJson(driverMap);
   }
 
   // on boarding

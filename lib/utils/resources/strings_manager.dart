@@ -57,6 +57,8 @@ class AppStrings {
   static const String logout = "logout";
   static const String phoneVerification = "phone_verification";
   static const String enterOtpHint = "enter_otp_hint";
+  static const String otpValidated = "otp_validated";
+  static const String otpIs = "otp_is";
   static const String sendOtpAgainHint = "send_otp_again_hint";
   static const String driverLabel = "driver_label";
   static const String trips = "trips";
@@ -211,6 +213,8 @@ class AppStrings {
   static const onBoardingSubTitle3 = "on_boarding_desc3";
   static const onBoardingSubTitle4 = "on_boarding_desc4";
   static const String wrongOtp = "wrong_otp";
+  static const String cannotSendOtp = "cannot_send_otp";
+  static const String getStarted = "get_started";
 
   //registration
 
@@ -232,4 +236,42 @@ class AppStrings {
   static const egyptCountryCode = "egypt_country_code";
   static const saudiArabia = "saudi_arabia";
   static const egypt = "egypt";
+
+
+
+  static const enterVerificationCode = 'enter_verification_code';
+  static const enterHereSentCodeForNumber = 'enter_here_sent_code_for_number';
+  static const codeWillSentAround = 'code_will_sent_around';
+  static const second = 'second';
+  static const didNotReceiveTheCode = 'didnt_receive_code';
+  static const resendCode = 'resend_code';
+  static const registeredSuccessfully = 'registered_successfully';
+
+
+  //no service added
+
+  static const myServices = 'my_services';
+  static const youDidntAddAnySerivces = 'you_didnt_add_any_service';
+  static const startNowAndAddYourCarIntoApplication = 'start_now_and_add_your_car_into_application';
+  static const addService = 'add_service';
+
+  //captain registration
+
+  static const pleaseResumePersonalData = 'please_resume_personal_data';
+  static const uploadCaptainPhoto = 'upload_captain_photo';
+  static const userName = 'user_name';
+  static const enterUserNameHere = 'user_name_hint';
+  static const email = 'email';
+  static const enterEmailHere = 'email_hint';
+  static const type = 'type';
+  static const male = 'male';
+  static const female = 'female';
+  static const iReadAndAgreeWith = 'read_and_agree_with';
+  static const tawsilaApplication = 'tawsila_app';
+  static const save = 'save';
+
+
+
+
+
 }

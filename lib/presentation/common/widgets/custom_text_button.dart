@@ -63,7 +63,7 @@ class _CustomTextButtonState extends State<CustomTextButton> {
                     color: widget.onPressed != null
                         ? ColorManager.buttonTextColor
                         : ColorManager.disableTextColor,
-                    fontSize: FontSize.s18)),
+                    fontSize: FontSize.s16)),
             const SizedBox(
               width: AppSize.s12,
             ),

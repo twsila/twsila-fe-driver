@@ -77,7 +77,7 @@ class CategoriesView extends StatelessWidget {
                               width: double.infinity,
                               height: AppSize.s60,
                               onPressed: () {
-                                Navigator.pushNamed(context, Routes.personsRegisterRoute);
+                                Navigator.pushNamed(context, Routes.captainRegisterRoute);
                               },
                               text: AppStrings.registerPersonsTrips.tr(),
                               iconData: Icons.person_outline),

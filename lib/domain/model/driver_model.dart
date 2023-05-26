@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:taxi_for_you/data/response/responses.dart';
+
 Driver driverFromJson(String str) => Driver.fromJson(json.decode(str));
 
 String driverToJson(Driver data) => json.encode(data.toJson());
@@ -16,7 +18,7 @@ class Driver {
   String gender;
   String dateOfBirth;
   String token;
-  UserDevice userDevice;
+  UserDeviceResponse userDevice;
   String tokenExpirationTime;
 
   Driver({
@@ -39,7 +41,7 @@ class Driver {
     gender: json["gender"],
     dateOfBirth: json["dateOfBirth"],
     token: json["token"],
-    userDevice: UserDevice.fromJson(json["userDevice"]),
+    userDevice: UserDeviceResponse.fromJson(json["userDevice"]),
     tokenExpirationTime: json["tokenExpirationTime"],
   );
 

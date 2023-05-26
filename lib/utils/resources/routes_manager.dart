@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:taxi_for_you/presentation/captain_registration/view/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/categories/categories_view.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
 import 'package:taxi_for_you/presentation/goods_register/view/goods_register_view.dart';
-import 'package:taxi_for_you/presentation/register/view/upload_documents_view.dart';
+import 'package:taxi_for_you/presentation/no_service_added/view/no_service_added_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_client_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/presentation/trips/view/trips_view.dart';
@@ -18,7 +19,6 @@ import '../../presentation/login/view/login_view.dart';
 import '../../presentation/main/main_view.dart';
 import '../../presentation/onboarding/onboarding_view.dart';
 import '../../presentation/pending_approval_driver/view/pending_approval_view.dart';
-import '../../presentation/register/view/persons_register_view.dart';
 import '../../presentation/scheduled_trip/view/scheduled_trip_view.dart';
 import '../../presentation/select_registation_type/view/registration_type_view.dart';
 import '../../presentation/splash/splash_view.dart';
@@ -26,7 +26,7 @@ import '../../presentation/splash/splash_view.dart';
 class Routes {
   static const String splashRoute = "/";
   static const String loginRoute = "/login";
-  static const String personsRegisterRoute = "/personsRegister";
+  static const String captainRegisterRoute = "/captainRegister";
   static const String goodsRegisterRoute = "/goodsRegister";
   static const String registerUploadDocumentsRoute =
       "/registerUploadDocumentsRoute";
@@ -46,6 +46,7 @@ class Routes {
   static const String canceledTrip = "/canceledTrip";
   static const String customWidgetsTest = "/customWidgetsTest";
   static const String selectRegistrationType = "/selectRegistrationType";
+  static const String noServicesAdded = "/noServicesAdded";
 }
 
 class RouteGenerator {
@@ -65,9 +66,9 @@ class RouteGenerator {
         );
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
-      case Routes.personsRegisterRoute:
-        initPersonsRegisterModule();
-        return MaterialPageRoute(builder: (_) => const PersonsRegisterView());
+      case Routes.captainRegisterRoute:
+        initCaptainRegisterModule();
+        return MaterialPageRoute(builder: (_) => const CaptainRegistrationView());
       case Routes.goodsRegisterRoute:
         initGoodsRegisterModule();
         return MaterialPageRoute(builder: (_) => const GoodsRegisterView());
@@ -75,8 +76,15 @@ class RouteGenerator {
         initHomeModule();
         return MaterialPageRoute(builder: (_) => const MainView());
       case Routes.verifyOtpRoute:
+        final args = settings.arguments as VerifyArguments;
         initVerifyOtpModule();
-        return MaterialPageRoute(builder: (_) => VerifyOtpView());
+        return MaterialPageRoute(
+            builder: (_) => VerifyOtpView(
+               args.mobileNumberForApi,
+                args.mobileNumberForDisplay,
+                ));
+      case Routes.noServicesAdded:
+        return MaterialPageRoute(builder: (_) => const NoServiceAddedView());
       case Routes.pendingApprovalRoute:
         return MaterialPageRoute(builder: (_) => const PendingApprovalDriver());
       case Routes.tripsRoute:
@@ -86,10 +94,8 @@ class RouteGenerator {
       case Routes.tripClientDetailsRoute:
         return MaterialPageRoute(builder: (_) => const TripClientDetailsView());
       case Routes.immediateTrip:
-        initImmediateTripModule();
         return MaterialPageRoute(builder: (_) => const ImmediateTripView());
       case Routes.scheduledTrip:
-        initScheduledTripModule();
         return MaterialPageRoute(builder: (_) => const ScheduledTripView());
       case Routes.canceledTrip:
         return MaterialPageRoute(builder: (_) => const CanceledTripView());

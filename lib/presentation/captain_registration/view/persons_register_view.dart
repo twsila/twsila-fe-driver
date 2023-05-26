@@ -10,7 +10,7 @@ import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_date_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_dialog.dart';
-import 'package:taxi_for_you/presentation/register/view/upload_documents_view.dart';
+import 'package:taxi_for_you/presentation/captain_registration/view/upload_documents_view.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';

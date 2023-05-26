@@ -15,7 +15,7 @@ class LoginViewModel extends BaseViewModel
   final PageController pageController = PageController(initialPage: 0);
   final List<Widget> widgets = [
     const PhoneLoginView(),
-    VerifyOtpView(),
+    // VerifyOtpView(),
   ];
   //Stream Input Controllers
   final StreamController _countryCodeStreamController =

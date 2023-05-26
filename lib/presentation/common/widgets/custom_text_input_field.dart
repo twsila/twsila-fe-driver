@@ -101,7 +101,7 @@ class CustomTextInputField extends StatefulWidget {
       this.shouldrequestFocus,
       this.minmumNumberOfCharacters = 0,
       this.onSaved,
-      this.istitleBold = true,
+      this.istitleBold = false,
       this.clearIconColor})
       : super(key: key);
 
@@ -133,11 +133,13 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                     const EdgeInsets.symmetric(horizontal: AppSize.s12),
                 child: Text(widget.labelText!,
                     style: widget.istitleBold!
-                        ? Theme.of(context).textTheme.titleMedium
-                        : TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: AppSize.s14,
-                            color: ColorManager.formLabelTextColor)),
+                        ? Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: ColorManager.titlesTextColor)
+                        : Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: ColorManager.titlesTextColor)),
               ),
               _textFormField(),
             ],
@@ -156,7 +158,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
           children: [
             TextFormField(
               style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  color: widget.textColor ?? ColorManager.blackTextColor),
+                  color: widget.textColor ?? ColorManager.headersTextColor),
               obscureText: widget.obscureText,
               textAlign: widget.textAlign ?? TextAlign.start,
               maxLength: widget.maxLength,
@@ -237,39 +239,37 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                 //     .copyWith(color: ColorManager.helperTextColor),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
-                  borderSide: BorderSide(
-                    color: ColorManager.error,
-                  ),
+                  borderSide:
+                      BorderSide(color: ColorManager.error, width: AppSize.s1),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
-                    color: widget.borderColor ?? ColorManager.lightGrey,
-                  ),
+                      color: widget.borderColor ?? ColorManager.borderColor,
+                      width: AppSize.s1),
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
-                    color: widget.borderColor ?? ColorManager.lightGrey,
-                  ),
+                      color: widget.borderColor ?? ColorManager.borderColor,
+                      width: AppSize.s1),
                 ),
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
-                  borderSide: BorderSide(
-                    color: ColorManager.error,
-                  ),
+                  borderSide:
+                      BorderSide(color: ColorManager.error, width: AppSize.s1),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(widget.borderRadius ?? 2),
                   borderSide: BorderSide(
-                    color: widget.borderColor ?? ColorManager.lightGrey,
-                  ),
+                      color: widget.borderColor ?? ColorManager.borderColor,
+                      width: AppSize.s1),
                 ),
                 hintText: widget.hintText,
                 hintStyle: Theme.of(context).textTheme.displayLarge!.copyWith(
-                    color:
-                        widget.hintTextColor ?? ColorManager.formHintTextColor,
-                    fontSize: 13),
+                    fontWeight: FontWeight.normal,
+                    color: widget.hintTextColor ?? ColorManager.hintTextColor,
+                    fontSize: AppSize.s16),
                 alignLabelWithHint: true,
               ),
               onChanged: (val) {

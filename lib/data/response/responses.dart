@@ -71,7 +71,6 @@ class UserDeviceResponse {
   // to json
   Map<String, dynamic> toJson() => _$UserDeviceResponseToJson(this);
 }
-
 @JsonSerializable()
 class CustomerResponse {
   @JsonKey(name: "id")

@@ -52,6 +52,83 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
+  Future<GenerateOtpModel> generateOtp(mobile) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'mobile': mobile};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GenerateOtpModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/otp/generate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GenerateOtpModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<VerifyOtpModel> verifyOtp(
+    mobile,
+    userOtp,
+    generatedOtp,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'mobile': mobile,
+      'userOtp': userOtp,
+      'generatedOtp': generatedOtp,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<VerifyOtpModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/otp/validate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = VerifyOtpModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<RegistrationServicesTypesResponse> registrationServices() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<RegistrationServicesTypesResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/drivers/vehicle-types',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = RegistrationServicesTypesResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ForgotPasswordResponse> forgotPassword(email) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

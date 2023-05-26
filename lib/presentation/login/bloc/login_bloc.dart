@@ -5,6 +5,9 @@ import 'package:meta/meta.dart';
 import 'package:taxi_for_you/presentation/common/state_renderer/state_renderer.dart';
 import 'package:taxi_for_you/presentation/common/state_renderer/state_renderer_impl.dart';
 
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart';
+import '../../../domain/model/driver_model.dart';
 import '../../../domain/usecase/login_usecase.dart';
 
 part 'login_event.dart';
@@ -13,6 +16,7 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginUseCase loginUseCase;
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   LoginBloc({required this.loginUseCase}) : super(LoginInitial()) {
     on<CheckInputIsValidEvent>(_checkInputStatus);
@@ -22,7 +26,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   FutureOr<void> _makeLogin(
       MakeLoginEvent event, Emitter<LoginState> emit) async {
     emit(LoginLoadingState());
-    (await loginUseCase.execute(LoginUseCaseInput(event.mobileNumber, 'en', {
+    (await loginUseCase.execute(LoginUseCaseInput(
+            event.mobileNumber, event.appLanguage, {
       "registrationId": "asda8sd84asd",
       "deviceOs": "android",
       "appVersion": "2.3,23"
@@ -32,13 +37,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   // left -> failure
                   //emit failure state
 
-                  emit(LoginFailState())
-                }, (data) {
+                  emit(LoginFailState(failure.message))
+                }, (driverModel) async {
       // right -> data (success)
       // content
       // emit success state
       // navigate to main screen
-      emit(LoginSuccessState());
+
+      LoginSuccessState(driver: driverModel);
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }

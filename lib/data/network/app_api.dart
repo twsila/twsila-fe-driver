@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
+import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
 import '../../app/constants.dart';
+import '../../domain/model/registration_services_response.dart';
 import '../response/responses.dart';
 
 part 'app_api.g.dart';
@@ -15,6 +18,21 @@ abstract class AppServiceClient {
       @Field("mobile") String mobile,
       @Field("language") String language,
       @Field("userDeviceDTO") Map<String, dynamic> userDeviceDTO);
+
+  @POST("/otp/generate")
+  Future<GenerateOtpModel> generateOtp(
+    @Field("mobile") String mobile,
+  );
+
+  @POST("/otp/validate")
+  Future<VerifyOtpModel> verifyOtp(
+    @Field("mobile") String mobile,
+    @Field("userOtp") String userOtp,
+    @Field("generatedOtp") String generatedOtp,
+  );
+
+  @POST("/drivers/vehicle-types")
+  Future<RegistrationServicesTypesResponse> registrationServices();
 
   @POST("/customers/forgotPassword")
   Future<ForgotPasswordResponse> forgotPassword(@Field("email") String email);

@@ -29,15 +29,15 @@ class RegisterRequest {
       this.carDriverIdentityCardImage);
 }
 
-class GenerateFirebaseOTPRequest {
+class GenerateOTPRequest {
   String phoneNumberWithCountryCode;
 
-  GenerateFirebaseOTPRequest(this.phoneNumberWithCountryCode);
+  GenerateOTPRequest(this.phoneNumberWithCountryCode);
 }
 
-class VerifyFirebaseOTPRequest {
-  String verificationId;
-  String code;
+class VerifyOTPRequest {
+  String otp;
+  String mobileNumber;
 
-  VerifyFirebaseOTPRequest(this.verificationId, this.code);
+  VerifyOTPRequest(this.otp, this.mobileNumber);
 }

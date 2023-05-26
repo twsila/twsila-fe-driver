@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_date_picker.dart';
-import 'package:taxi_for_you/presentation/register/view/persons_register_view.dart';
+import 'package:taxi_for_you/presentation/captain_registration/view/persons_register_view.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';

@@ -14,6 +14,7 @@ class ColorManager {
   static Color secondaryAccentColor = const Color(0xffD5FFD5);
   static Color thirdAccentColor = const Color(0xffEFEFFE);
   static Color forthAccentColor = const Color(0xffF0F0F1);
+  static Color purpleFade = const Color(0xffEAEAFF);
   static Color borderColor = const Color(0xffD8D8ED);
 
   //text

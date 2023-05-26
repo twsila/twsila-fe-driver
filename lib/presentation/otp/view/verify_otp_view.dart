@@ -1,194 +1,242 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:taxi_for_you/data/network/error_handler.dart';
 import 'package:taxi_for_you/presentation/login/login_viewmodel.dart';
-import 'package:taxi_for_you/presentation/otp/viewmodel/verify_otp_viewmodel.dart';
-import 'package:taxi_for_you/presentation/register/view/persons_register_view.dart';
-
+import 'package:taxi_for_you/presentation/otp/bloc/verify_otp_bloc.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
+import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
+import '../../../utils/helpers/language_helper.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
-import '../../../utils/resources/styles_manager.dart';
 import '../../../utils/resources/values_manager.dart';
-import '../../common/state_renderer/state_renderer_impl.dart';
-import '../../common/widgets/custom_back_button.dart';
-import '../../common/widgets/custom_verification_code_widget.dart';
+import '../../common/widgets/CustomAutoFullSms.dart';
+import '../../common/widgets/custom_countdown_timer.dart';
+import '../../common/widgets/custom_scaffold.dart';
+import '../../common/widgets/page_builder.dart';
+
+import 'dart:math' as math;
 
 class VerifyOtpView extends StatefulWidget {
-  VerifyOtpView({Key? key}) : super(key: key);
+  String mobileNumberForApi;
+  String mobileNumberForDisplay;
+
+  VerifyOtpView(this.mobileNumberForApi, this.mobileNumberForDisplay,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<VerifyOtpView> createState() => _VerifyOtpViewState();
 }
 
 class _VerifyOtpViewState extends State<VerifyOtpView> {
-  final VerifyOTPViewModel _viewModel = instance<VerifyOTPViewModel>();
-  final LoginViewModel _loginViewModel = instance<LoginViewModel>();
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  bool _displayLoadingIndicator = false;
+
   final _formKey = GlobalKey<FormState>();
   GlobalKey globalKey = GlobalKey();
 
   final AppPreferences _appPreferences = instance<AppPreferences>();
-  String _code = "";
+  bool isTimerFinished = false;
 
-  _bind() async {
-    _viewModel.start();
-    // await SmsAutoFill().listenForCode();
-    // SmsAutoFill().getAppSignature.then((signature) {
-    //   setState(() {
-    //     print("signature = $signature");
-    //   });
-    // });
-    _viewModel.setPhoneNumber(
-      _loginViewModel.loginObject.countryCode +
-          _loginViewModel.loginObject.phoneNumber,
-    );
-    print(_loginViewModel.loginObject.countryCode +
-        _loginViewModel.loginObject.phoneNumber);
-    _viewModel.generateOtp();
-    _viewModel.isCodeIsSentStreamController.stream.listen((isOTPSent) {
-      if (isOTPSent) {
-        Fluttertoast.showToast(
-            msg: "Code sent",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
-    });
-
-    _viewModel.isCodeIsVerifiedStreamController.stream
-        .listen((isCodeIsVerified) {
-      if (isCodeIsVerified) {
-        // navigate to main screen
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          _appPreferences.setUserLoggedIn();
-          Navigator.of(context).pushReplacementNamed(Routes.categoriesRoute);
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _viewModel.dispose();
-    // SmsAutoFill().unregisterListener();
-    super.dispose();
-  }
+  TextEditingController otpController = TextEditingController();
 
   @override
   void initState() {
-    _bind();
+    // BlocProvider.of<VerifyOtpBloc>(context)
+    //     .add(SendOtpEvent(widget.mobileNumberForApi));
+
+    ToastHandler(context)
+        .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
+    BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
+        widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
+
+
     super.initState();
+  }
+
+  void startLoading() {
+    setState(() {
+      _displayLoadingIndicator = true;
+    });
+  }
+
+  void stopLoading() {
+    setState(() {
+      _displayLoadingIndicator = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<FlowState>(
-      stream: _viewModel.outputState,
-      builder: (context, snapshot) {
-        // _getContentWidget();
-        return snapshot.data
-                ?.getScreenWidget(context, _getContentWidget(), () {}) ??
-            _getContentWidget();
-      },
+    return CustomScaffold(
+      pageBuilder: PageBuilder(
+        appbar: true,
+        context: context,
+        body: _getContentWidget(context),
+        scaffoldKey: _key,
+        displayLoadingIndicator: _displayLoadingIndicator,
+        allowBackButtonInAppBar: true,
+      ),
     );
   }
 
-  Widget _getContentWidget() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: AppSize.s16),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomBackButton(
-                    onPressed: () {
-                      _loginViewModel.goPrevious();
-                    },
-                  ),
+  Widget _getContentWidget(BuildContext context) {
+    return BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
+      listener: (context, state) {
+        if (state is VerifyOtpLoading) {
+          startLoading();
+        } else {
+          stopLoading();
+        }
+        if (state is GenerateOtpSuccess) {
+          ToastHandler(context).showToast(
+              "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
+        } else if (state is GenerateOtpFail) {
+          CustomDialog(context).showErrorDialog(
+              "", "", AppStrings.cannotSendOtp.tr(), onBtnPressed: () {
+            Navigator.pop(context);
+          });
+        } else if (state is VerifyOtpSuccess) {
+
+
+          ToastHandler(context)
+              .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
+          BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
+              widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
+
+
+        } else if (state is VerifyOtpFail) {
+          if (state.code == ResponseMessage.NOT_FOUND) {
+            CustomDialog(context)
+                .showErrorDialog("", "", AppStrings.wrongOtp.tr());
+          }
+        } else if (state is LoginSuccessState) {
+          _appPreferences.setUserLoggedIn();
+          _appPreferences.setDriver(state.driver);
+          if (_appPreferences.getCachedDriver() != null) {
+            Navigator.pushNamed(
+              context,
+              Routes.noServicesAdded,
+            );
+          }
+        } else if (state is LoginFailState) {
+          if (state.errorCode == ResponseCode.NOT_FOUND.toString()) {
+            Navigator.pushNamed(context, Routes.captainRegisterRoute);
+          } else {
+            CustomDialog(context).showErrorDialog('', '', state.message);
+          }
+        }
+      },
+      builder: (context, state) {
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: AppSize.s16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(
+                height: AppSize.s40,
+              ),
+              Text(
+                AppStrings.enterVerificationCode.tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .displayLarge
+                    ?.copyWith(fontSize: FontSize.s26),
+              ),
+              Text(
+                AppStrings.enterHereSentCodeForNumber.tr(),
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontSize: FontSize.s16,
+                    color: ColorManager.formLabelTextColor),
+              ),
+              Text(
+                LanguageHelper()
+                    .replaceArabicNumber(widget.mobileNumberForDisplay),
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontSize: FontSize.s16, color: ColorManager.blackTextColor),
+              ),
+              const SizedBox(
+                height: AppSize.s30,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: CustomVerificationCodeWidget(
+                  onCodeSubmitted: (code) {
+                    BlocProvider.of<VerifyOtpBloc>(context)
+                        .add(VerifyOtpBEEvent(widget.mobileNumberForApi, code));
+                  },
+                  controller: otpController,
+                  onCodeChanged: (otpChangedValue) {},
                 ),
-                const SizedBox(height: AppSize.s8),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      AppStrings.phoneVerification.tr(),
-                      style: Theme.of(context).textTheme.titleLarge,
-                    )),
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: Image(image: AssetImage(ImageAssets.verifyOtpGraphic)),
-                ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    AppStrings.enterOtpHint.tr(),
-                    style: getRegularStyle(
-                        color: ColorManager.black, fontSize: FontSize.s16),
-                  ),
-                ),
-                Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        await Future.delayed(const Duration(milliseconds: 500));
-                        RenderObject? object =
-                            globalKey.currentContext?.findRenderObject();
-                        object?.showOnScreen();
+              ),
+              const SizedBox(
+                height: AppSize.s30,
+              ),
+              Text(
+                AppStrings.didNotReceiveTheCode.tr(),
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontSize: FontSize.s16, color: ColorManager.blackTextColor),
+              ),
+              const SizedBox(
+                height: AppSize.s4,
+              ),
+              isTimerFinished
+                  ? GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isTimerFinished = false;
+                          BlocProvider.of<VerifyOtpBloc>(context)
+                              .add(ReSendOtpEvent(widget.mobileNumberForApi));
+                        });
                       },
-                      // child: PinFieldAutoFill(
-                      //   decoration: UnderlineDecoration(
-                      //     textStyle: const TextStyle(
-                      //         fontSize: 20, color: Colors.black),
-                      //     colorBuilder:
-                      //         FixedColorBuilder(Colors.black.withOpacity(0.3)),
-                      //   ),
-                      //   currentCode: _code,
-                      //   onCodeSubmitted: (code) {},
-                      //   onCodeChanged: (code) {
-                      //     if (code!.length == 6) {
-                      //       FocusScope.of(context).requestFocus(FocusNode());
-                      //     }
-                      //   },
-                      // ),
-                      child: CustomVerificationCodeWidget(
-                        onComplete: (stringCode) {
-                          _viewModel.setCode(stringCode);
-                          _viewModel.verifyOtp();
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: AppSize.s20,
-                    ),
-                    Align(
-                        key: globalKey,
-                        alignment: FractionalOffset.bottomCenter,
-                        child: InkWell(
-                          onTap: () => _viewModel.generateOtp(),
-                          child: Text(
-                            AppStrings.sendOtpAgainHint.tr(),
-                            style: Theme.of(context).textTheme.bodyMedium,
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            ImageAssets.retryIcon,
+                            width: AppSize.s16,
                           ),
-                        ))
-                  ],
-                )
-              ],
-            ),
+                          const SizedBox(
+                            width: AppSize.s10,
+                          ),
+                          Text(
+                            AppStrings.resendCode.tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FontSize.s16,
+                                    color: ColorManager.primary),
+                          ),
+                        ],
+                      ))
+                  : CustomCountDownTimer(
+                      onTimerFinished: () {
+                        setState(() {
+                          isTimerFinished = true;
+                        });
+                      },
+                    ),
+            ],
           ),
-        ));
+        );
+      },
+    );
   }
+}
+
+class VerifyArguments {
+  String mobileNumberForApi;
+  String mobileNumberForDisplay;
+
+  VerifyArguments(this.mobileNumberForApi, this.mobileNumberForDisplay);
 }

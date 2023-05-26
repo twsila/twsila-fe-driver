@@ -30,7 +30,7 @@ class _EasyLoaderState extends State<EasyLoader> {
           height: 90,
           width: double.infinity,
           decoration: BoxDecoration(
-              color: ColorManager.primary,
+              color: ColorManager.white,
               border: Border.all(color: Colors.white),
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
@@ -38,7 +38,7 @@ class _EasyLoaderState extends State<EasyLoader> {
           child: Row(
             children: [
               SpinKitCircle(
-                color: Colors.white,
+                color: ColorManager.headersTextColor,
               ),
               const SizedBox(width: 24),
               Text(
@@ -46,7 +46,7 @@ class _EasyLoaderState extends State<EasyLoader> {
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: ColorManager.headersTextColor),
               ),
               DefaultTextStyle(
                 style: Theme.of(context)
