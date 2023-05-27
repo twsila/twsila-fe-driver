@@ -4,4 +4,5 @@ class ServiceTypeModel {
   Map<String, List<VehicleModel>> service;
 
   ServiceTypeModel(this.service);
+
 }

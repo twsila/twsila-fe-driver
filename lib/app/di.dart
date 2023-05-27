@@ -23,13 +23,9 @@ import '../domain/usecase/goods_register_usecase.dart';
 import '../domain/usecase/home_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/persons_register_usecase.dart';
-import '../domain/usecase/store_details_usecase.dart';
-import '../presentation/canceld_trip/viewmodel/canceled_trip_viewmodel.dart';
 import '../presentation/goods_register/viewmodel/goods_register_viewmodel.dart';
 import '../presentation/login/login_viewmodel.dart';
 import '../presentation/main/pages/home/viewmodel/home_viewmodel.dart';
-import '../presentation/pending_approval_driver/view/pending_approval_view.dart';
-import '../presentation/captain_registration/viewmodel/persons_register_viewmodel.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -112,6 +108,13 @@ initHomeModule() {
   if (!GetIt.I.isRegistered<HomeUseCase>()) {
     instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
     instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
+  }
+}
+
+initServiceRegistrationModule() {
+  if (!GetIt.I.isRegistered<RegistrationServiceUseCase>()) {
+    instance.registerFactory<RegistrationServiceUseCase>(
+        () => RegistrationServiceUseCase(instance()));
   }
 }
 

@@ -31,7 +31,6 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
 
   @override
   void initState() {
-    BlocProvider.of<RegistrationBloc>(context).add(GetServiceTypes());
     super.initState();
   }
 
@@ -69,9 +68,6 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           startLoading();
         } else {
           stopLoading();
-        }
-        if(state is ServicesTypesSuccess){
-          print(state.serviceTypeModel);
         }
       },
       builder: (context, state) {

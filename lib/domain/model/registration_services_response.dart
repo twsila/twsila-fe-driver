@@ -4,15 +4,21 @@
 
 import 'dart:convert';
 
-RegistrationServicesTypesResponse registrationServicesTypesResponseFromJson(String str) => RegistrationServicesTypesResponse.fromJson(json.decode(str));
+import 'package:taxi_for_you/domain/model/vehicleModel.dart';
 
-String registrationServicesTypesResponseToJson(RegistrationServicesTypesResponse data) => json.encode(data.toJson());
+RegistrationServicesTypesResponse registrationServicesTypesResponseFromJson(
+        String str) =>
+    RegistrationServicesTypesResponse.fromJson(json.decode(str));
+
+String registrationServicesTypesResponseToJson(
+        RegistrationServicesTypesResponse data) =>
+    json.encode(data.toJson());
 
 class RegistrationServicesTypesResponse {
   bool success;
   dynamic message;
   String dateTime;
-  Result result;
+  Map<String, dynamic> result;
 
   RegistrationServicesTypesResponse({
     required this.success,
@@ -21,19 +27,21 @@ class RegistrationServicesTypesResponse {
     required this.result,
   });
 
-  factory RegistrationServicesTypesResponse.fromJson(Map<String, dynamic> json) => RegistrationServicesTypesResponse(
-    success: json["success"],
-    message: json["message"],
-    dateTime: json["dateTime"],
-    result: Result.fromJson(json["result"]),
-  );
+  factory RegistrationServicesTypesResponse.fromJson(
+          Map<String, dynamic> json) =>
+      RegistrationServicesTypesResponse(
+        success: json["success"],
+        message: json["message"],
+        dateTime: json["dateTime"],
+        result: json['result'],
+      );
 
   Map<String, dynamic> toJson() => {
-    "success": success,
-    "message": message,
-    "dateTime": dateTime,
-    "result": result.toJson(),
-  };
+        "success": success,
+        "message": message,
+        "dateTime": dateTime,
+        "result": result,
+      };
 }
 
 class Result {
@@ -46,14 +54,14 @@ class Result {
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-    persons: List<Good>.from(json["PERSONS"].map((x) => Good.fromJson(x))),
-    goods: List<Good>.from(json["GOODS"].map((x) => Good.fromJson(x))),
-  );
+        persons: List<Good>.from(json["PERSONS"].map((x) => Good.fromJson(x))),
+        goods: List<Good>.from(json["GOODS"].map((x) => Good.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "PERSONS": List<dynamic>.from(persons.map((x) => x.toJson())),
-    "GOODS": List<dynamic>.from(goods.map((x) => x.toJson())),
-  };
+        "PERSONS": List<dynamic>.from(persons.map((x) => x.toJson())),
+        "GOODS": List<dynamic>.from(goods.map((x) => x.toJson())),
+      };
 }
 
 class Good {
@@ -68,14 +76,14 @@ class Good {
   });
 
   factory Good.fromJson(Map<String, dynamic> json) => Good(
-    id: json["id"],
-    vehicleType: json["vehicleType"],
-    driverServiceType: json["driverServiceType"],
-  );
+        id: json["id"],
+        vehicleType: json["vehicleType"],
+        driverServiceType: json["driverServiceType"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "vehicleType": vehicleType,
-    "driverServiceType": driverServiceType,
-  };
+        "id": id,
+        "vehicleType": vehicleType,
+        "driverServiceType": driverServiceType,
+      };
 }

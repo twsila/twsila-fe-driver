@@ -6,11 +6,9 @@ abstract class RegistrationState {}
 class RegistrationInitial extends RegistrationState {}
 
 class RegistrationLoading extends RegistrationState {}
+class RegistrationFail extends RegistrationState {
+  final String message;
 
-class ServicesTypesSuccess extends RegistrationState {
-  final ServiceTypeModel serviceTypeModel;
-
-  ServicesTypesSuccess(this.serviceTypeModel);
+  RegistrationFail(this.message);
 }
-class RegistrationFail extends RegistrationState {}
 

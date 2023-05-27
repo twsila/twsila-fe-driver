@@ -31,7 +31,7 @@ abstract class AppServiceClient {
     @Field("generatedOtp") String generatedOtp,
   );
 
-  @POST("/drivers/vehicle-types")
+  @GET("/drivers/vehicle-types")
   Future<RegistrationServicesTypesResponse> registrationServices();
 
   @POST("/customers/forgotPassword")

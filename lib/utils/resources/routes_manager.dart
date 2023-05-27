@@ -4,6 +4,7 @@ import 'package:taxi_for_you/presentation/categories/categories_view.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
 import 'package:taxi_for_you/presentation/goods_register/view/goods_register_view.dart';
 import 'package:taxi_for_you/presentation/no_service_added/view/no_service_added_view.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/serivce_registration_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_client_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/presentation/trips/view/trips_view.dart';
@@ -47,6 +48,7 @@ class Routes {
   static const String customWidgetsTest = "/customWidgetsTest";
   static const String selectRegistrationType = "/selectRegistrationType";
   static const String noServicesAdded = "/noServicesAdded";
+  static const String serviceRegistration = "/serviceRegistration";
 }
 
 class RouteGenerator {
@@ -68,7 +70,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
       case Routes.captainRegisterRoute:
         initCaptainRegisterModule();
-        return MaterialPageRoute(builder: (_) => const CaptainRegistrationView());
+        return MaterialPageRoute(
+            builder: (_) => const CaptainRegistrationView());
       case Routes.goodsRegisterRoute:
         initGoodsRegisterModule();
         return MaterialPageRoute(builder: (_) => const GoodsRegisterView());
@@ -80,11 +83,15 @@ class RouteGenerator {
         initVerifyOtpModule();
         return MaterialPageRoute(
             builder: (_) => VerifyOtpView(
-               args.mobileNumberForApi,
-                args.mobileNumberForDisplay,
+                  args.mobileNumberForApi,
+                  args.mobileNumberForDisplay,
                 ));
       case Routes.noServicesAdded:
         return MaterialPageRoute(builder: (_) => const NoServiceAddedView());
+      case Routes.serviceRegistration:
+        initServiceRegistrationModule();
+        return MaterialPageRoute(
+            builder: (_) => const ServiceRegistrationView());
       case Routes.pendingApprovalRoute:
         return MaterialPageRoute(builder: (_) => const PendingApprovalDriver());
       case Routes.tripsRoute:

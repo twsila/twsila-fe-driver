@@ -17,29 +17,5 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
   RegistrationBloc({required this.registrationServiceUseCase})
-      : super(RegistrationInitial()) {
-    on<GetServiceTypes>(_getServicesTypes);
-  }
-
-  FutureOr<void> _getServicesTypes(
-      GetServiceTypes event, Emitter<RegistrationState> emit) async {
-    emit(RegistrationLoading());
-    (await registrationServiceUseCase
-            .execute(RegistrationServiceUseCaseInput()))
-        .fold(
-            (failure) => {
-                  // left -> failure
-                  //emit failure state
-
-                  // emit(LoginFailState(failure.message))
-                }, (driverModel) async {
-      // right -> data (success)
-      // content
-      // emit success state
-      // navigate to main screen
-
-      RegistrationFail();
-      // isUserLoggedInSuccessfullyStreamController.add(true);
-    });
-  }
+      : super(RegistrationInitial()) {}
 }

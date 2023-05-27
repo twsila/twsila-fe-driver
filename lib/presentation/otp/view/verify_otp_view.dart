@@ -51,14 +51,13 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 
   @override
   void initState() {
-    // BlocProvider.of<VerifyOtpBloc>(context)
-    //     .add(SendOtpEvent(widget.mobileNumberForApi));
+    BlocProvider.of<VerifyOtpBloc>(context)
+        .add(SendOtpEvent(widget.mobileNumberForApi));
 
-    ToastHandler(context)
-        .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
-    BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
-        widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
-
+    // ToastHandler(context)
+    //     .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
+    // BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
+    //     widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
 
     super.initState();
   }
@@ -100,26 +99,26 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
         if (state is GenerateOtpSuccess) {
           ToastHandler(context).showToast(
               "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
-        } else if (state is GenerateOtpFail) {
+        }
+        if (state is GenerateOtpFail) {
           CustomDialog(context).showErrorDialog(
               "", "", AppStrings.cannotSendOtp.tr(), onBtnPressed: () {
             Navigator.pop(context);
           });
-        } else if (state is VerifyOtpSuccess) {
-
-
+        }
+        if (state is VerifyOtpSuccess) {
           ToastHandler(context)
               .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
           BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
               widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
-
-
-        } else if (state is VerifyOtpFail) {
+        }
+        if (state is VerifyOtpFail) {
           if (state.code == ResponseMessage.NOT_FOUND) {
             CustomDialog(context)
                 .showErrorDialog("", "", AppStrings.wrongOtp.tr());
           }
-        } else if (state is LoginSuccessState) {
+        }
+        if (state is LoginSuccessState) {
           _appPreferences.setUserLoggedIn();
           _appPreferences.setDriver(state.driver);
           if (_appPreferences.getCachedDriver() != null) {
@@ -128,7 +127,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
               Routes.noServicesAdded,
             );
           }
-        } else if (state is LoginFailState) {
+        }
+        if (state is LoginFailState) {
           if (state.errorCode == ResponseCode.NOT_FOUND.toString()) {
             Navigator.pushNamed(context, Routes.captainRegisterRoute);
           } else {

@@ -7,6 +7,7 @@ import 'package:taxi_for_you/data/mapper/mapper.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
+import 'package:taxi_for_you/domain/model/vehicleModel.dart';
 
 import '../../domain/model/driver_model.dart';
 import '../../domain/model/models.dart';
@@ -233,9 +234,17 @@ class RepositoryImpl implements Repository {
           // success
           // return either right
           // return data
-          ServiceTypeModel returnedServices =
-              json.decode(response.result as String);
-          return Right(returnedServices);
+          // String responseResult = response.result.toString();
+          // ServiceTypeModel returnedServices =
+          //     json.decode(responseResult);
+
+          ServiceTypeModel servicesModel = ServiceTypeModel({});
+
+          response.result.forEach((key, value) {
+            servicesModel.service[key] = value.cast<VehicleModel>();
+          });
+
+          return Right(servicesModel);
         } else {
           // failure --return business error
           // return either left

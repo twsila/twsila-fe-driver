@@ -109,8 +109,8 @@ class _LoginViewState extends State<LoginView> {
             FocusScope.of(context).unfocus();
             String validMobileNumber =
                 LanguageHelper().replaceEnglishNumber(mobileNumber);
-            BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-                validMobileNumber, _appPreferences.getAppLanguage()));
+            // BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+            //     validMobileNumber, _appPreferences.getAppLanguage()));
             Navigator.pushNamed(context, Routes.verifyOtpRoute,
                 arguments: VerifyArguments(validMobileNumber, mobileNumber));
           };
