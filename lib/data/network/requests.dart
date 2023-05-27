@@ -1,8 +1,9 @@
 class LoginRequest {
-  String email;
-  String password;
+  String mobileNumber;
+  String language;
+  Map<String, dynamic> userDeviceDTO;
 
-  LoginRequest(this.email, this.password);
+  LoginRequest(this.mobileNumber, this.language, this.userDeviceDTO);
 }
 
 class RegisterRequest {
@@ -28,16 +29,15 @@ class RegisterRequest {
       this.carDriverIdentityCardImage);
 }
 
-class GenerateFirebaseOTPRequest {
+class GenerateOTPRequest {
   String phoneNumberWithCountryCode;
 
-  GenerateFirebaseOTPRequest(this.phoneNumberWithCountryCode);
+  GenerateOTPRequest(this.phoneNumberWithCountryCode);
 }
 
+class VerifyOTPRequest {
+  String otp;
+  String mobileNumber;
 
-class VerifyFirebaseOTPRequest {
-  String verificationId;
-  String code;
-
-  VerifyFirebaseOTPRequest(this.verificationId,this.code);
+  VerifyOTPRequest(this.otp, this.mobileNumber);
 }

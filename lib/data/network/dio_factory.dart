@@ -23,7 +23,11 @@ class DioFactory {
     Map<String, String> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
-      AUTHORIZATION: Constants.token,
+      AUTHORIZATION: await _appPreferences.isUserLoggedIn()
+          ? _appPreferences.getCachedDriver() != null
+              ? "Bearer ${_appPreferences.getCachedDriver()!.token}"
+              : Constants.token
+          : Constants.token,
       DEFAULT_LANGUAGE: language
     };
 

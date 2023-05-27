@@ -1,7 +1,10 @@
+import 'package:taxi_for_you/domain/model/driver_model.dart';
+
 import '../network/error_handler.dart';
 import '../response/responses.dart';
 
 const CACHE_HOME_KEY = "CACHE_HOME_KEY";
+const CACHE_DRIVER_KEY = "CACHE_DRIVER_KEY";
 const CACHE_HOME_INTERVAL = 60 * 1000; // 1 minute cache in millis
 const CACHE_STORE_DETAILS_KEY = "CACHE_STORE_DETAILS_KEY";
 const CACHE_STORE_DETAILS_INTERVAL = 60 * 1000; // 30s in millis
@@ -10,6 +13,8 @@ abstract class LocalDataSource {
   Future<HomeResponse> getHomeData();
 
   Future<void> saveHomeToCache(HomeResponse homeResponse);
+
+  Future<void> saveDriverToCache(Driver driver);
 
   void clearCache();
 
@@ -67,6 +72,11 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   void removeFromCache(String key) {
     cacheMap.remove(key);
+  }
+
+  @override
+  Future<void> saveDriverToCache(Driver driver) async {
+    cacheMap[CACHE_DRIVER_KEY] = CachedItem(driver);
   }
 }
 

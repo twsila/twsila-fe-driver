@@ -8,7 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_date_picker.dart';
-import 'package:taxi_for_you/presentation/register/view/register_view.dart';
+import 'package:taxi_for_you/presentation/captain_registration/view/persons_register_view.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
@@ -19,11 +19,11 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
-import '../viewmodel/register_viewmodel.dart';
+import '../viewmodel/goods_register_viewmodel.dart';
 
 class UploadDocumentsView extends StatefulWidget {
   UPLOAD_DOCUMENTS? uploadDocumentsFor;
-  RegisterViewModel viewModel;
+  GoodsRegisterViewModel viewModel;
 
   UploadDocumentsView(
       {Key? key, this.uploadDocumentsFor, required this.viewModel})

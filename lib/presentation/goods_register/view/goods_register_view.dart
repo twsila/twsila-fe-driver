@@ -8,9 +8,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_checkbox.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_date_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_dialog.dart';
-import 'package:taxi_for_you/presentation/register/view/upload_documents_view.dart';
+import 'package:taxi_for_you/presentation/goods_register/view/upload_documents_view.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
@@ -24,7 +25,8 @@ import '../../../utils/resources/values_manager.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
 import '../../common/widgets/custom_dropdown.dart';
 import '../../common/widgets/custom_text_input_field.dart';
-import '../viewmodel/register_viewmodel.dart';
+import '../../common/widgets/multi_pick_image.dart';
+import '../viewmodel/goods_register_viewmodel.dart';
 
 import 'dart:math' as math;
 
@@ -74,34 +76,45 @@ extension DocumentTypeNumber on UPLOAD_DOCUMENTS {
   }
 }
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+class GoodsRegisterView extends StatefulWidget {
+  const GoodsRegisterView({Key? key}) : super(key: key);
 
   @override
-  _RegisterViewState createState() => _RegisterViewState();
+  _GoodsRegisterViewState createState() => _GoodsRegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
-  final RegisterViewModel _viewModel = instance<RegisterViewModel>();
+class _GoodsRegisterViewState extends State<GoodsRegisterView> {
+  final GoodsRegisterViewModel _viewModel = instance<GoodsRegisterViewModel>();
   final ImagePicker _imagePicker = instance<ImagePicker>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
   final _formKey = GlobalKey<FormState>();
   bool showPplDropdown = false;
+
+  bool _isFurntitureTransportation = false;
+  bool _isGoodsTransportation = false;
+  bool _isFreezersTransportation = false;
+  bool _isCisterns = false;
+  bool _isFlatness = false;
+
+  bool _isloadandunload = false;
+  bool _isreassembleAndAssemble = false;
+  bool _isWrapping = false;
+  bool _isWinchCrane = false;
+
   List<String> list1 = [
     AppStrings.goodsTransportations.tr(),
-    AppStrings.personsTransportation.tr()
   ];
   List<String> list2 = [
-    AppStrings.bus5passengers.tr(),
-    AppStrings.bus7passengers.tr(),
-    AppStrings.bus15passengers.tr(),
-    AppStrings.bus25passengers.tr()
-  ];
-  List<String> list3 = [
-    "حافلة 25 راكب",
-    "حافلة 15 راكب",
-    "سيدان 7 ركاب ",
-    "سيدان 5 ركاب"
+    AppStrings.largeVehicleOpened.tr(),
+    AppStrings.largeVehicleClosed.tr(),
+    AppStrings.truck.tr(),
+    AppStrings.tipper.tr(),
+    AppStrings.wanet.tr(),
+    AppStrings.motocycles.tr(),
+    AppStrings.waterCisterns.tr(),
+    AppStrings.sanitationCisterns.tr(),
+    AppStrings.freezer.tr(),
+    AppStrings.flatness.tr(),
   ];
 
   final TextEditingController _numberPlateTextController =
@@ -212,23 +225,90 @@ class _RegisterViewState extends State<RegisterView> {
                             stream: _viewModel.outputServiceType,
                             builder: (context, snapshot) {
                               return snapshot.data ?? false
-                                  ? CustomDropDown(
-                                      backgroundColor: ColorManager.white,
-                                      isTitleBold: false,
-                                      stringsArr: list2,
-                                      isValid: true,
-                                      hintTextColor: ColorManager.grey,
-                                      hintText:
-                                          AppStrings.selectFromHereHint.tr(),
-                                      textColor: ColorManager.primary,
-                                      borderColor: ColorManager.grey,
-                                      onChanged: (selectedValue) {
-                                        _viewModel
-                                            .setServiceCapacity(selectedValue!);
-                                      },
+                                  ? Column(
+                                      children: [
+                                        CustomDropDown(
+                                          title: AppStrings.carType.tr(),
+                                          backgroundColor: ColorManager.white,
+                                          isTitleBold: false,
+                                          stringsArr: list2,
+                                          isValid: true,
+                                          hintTextColor: ColorManager.grey,
+                                          hintText: AppStrings
+                                              .selectFromHereHint
+                                              .tr(),
+                                          textColor: ColorManager.primary,
+                                          borderColor: ColorManager.grey,
+                                          onChanged: (selectedValue) {
+                                            _viewModel.setServiceCapacity(
+                                                selectedValue!);
+                                          },
+                                        ),
+                                      ],
                                     )
                                   : Container();
                             }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomCheckBox(
+                              checked: _isFreezersTransportation,
+                              fieldName: AppStrings.freezers.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isFreezersTransportation = value;
+                                });
+                              },
+                            ),
+                            CustomCheckBox(
+                              checked: _isFurntitureTransportation,
+                              fieldName:
+                                  AppStrings.furnitureTransportation.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isFurntitureTransportation = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomCheckBox(
+                              checked: _isGoodsTransportation,
+                              fieldName: AppStrings.goodsTransportations.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isGoodsTransportation = value;
+                                });
+                              },
+                            ),
+                            CustomCheckBox(
+                              checked: _isCisterns,
+                              fieldName: AppStrings.cisterns.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isCisterns = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomCheckBox(
+                              checked: _isFlatness,
+                              fieldName: AppStrings.flatness.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isFlatness = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                         numberField(
                             AppStrings.plateNumber.tr(),
                             CustomTextInputField(
@@ -253,6 +333,9 @@ class _RegisterViewState extends State<RegisterView> {
                                 _viewModel.setNotes(value);
                               },
                             )),
+                        MutliPickImageWidget(
+                          onPickedImages: (List<XFile>? images) {},
+                        ),
                         CustomCard(
                             onClick: () {
                               Navigator.push(
@@ -446,6 +529,62 @@ class _RegisterViewState extends State<RegisterView> {
                                   );
                                 })),
                         Padding(
+                          padding: const EdgeInsets.all(13.0),
+                          child: Text(
+                            AppStrings.doYouHaveLaborAvailable.tr(),
+                            textAlign: TextAlign.center,
+                            style: getRegularStyle(
+                                color: ColorManager.primary,
+                                fontSize: FontSize.s14),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomCheckBox(
+                              checked: _isloadandunload,
+                              fieldName: AppStrings.loadAndUnload.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isloadandunload = value;
+                                });
+                              },
+                            ),
+                            CustomCheckBox(
+                              checked: _isreassembleAndAssemble,
+                              fieldName: AppStrings.reassembleAndAssemble.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isreassembleAndAssemble = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomCheckBox(
+                              checked: _isWrapping,
+                              fieldName: AppStrings.wrapping.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isWrapping = value;
+                                });
+                              },
+                            ),
+                            CustomCheckBox(
+                              checked: _isWinchCrane,
+                              fieldName: AppStrings.winchCrane.tr(),
+                              onChange: (value) {
+                                setState(() {
+                                  _isWinchCrane = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             AppStrings.registrationBottomHint.tr(),
@@ -533,10 +672,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-
-
   bool isRtl() {
     return context.locale == ARABIC_LOCAL;
   }
-
 }

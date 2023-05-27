@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:taxi_for_you/utils/resources/color_manager.dart';
+
+import '../../../utils/resources/font_manager.dart';
 
 class CustomDropDown extends StatefulWidget {
   final String? title;
@@ -48,29 +51,22 @@ class _CustomDropDownState extends State<CustomDropDown> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         widget.title != null && widget.title != ''
-            ? Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  widget.title ?? '',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: widget.isTitleBold!
-                        ? FontWeight.bold
-                        : FontWeight.normal,
-                    fontFamily: 'Avenir',
-                    color: Colors.black,
-                  ),
+            ? Text(
+                widget.title ?? '',
+                style: TextStyle(
+                  fontSize: FontSize.s16,
+                  fontWeight:
+                      widget.isTitleBold! ? FontWeight.bold : FontWeight.normal,
+                  color: ColorManager.primary,
                 ),
               )
             : Container(),
         Container(
           height: 45,
           margin: EdgeInsets.symmetric(vertical: 8),
-          decoration: new BoxDecoration(
-            color: widget.backgroundColor != null
-                ? widget.backgroundColor
-                : Theme.of(context).accentColor,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+          decoration: BoxDecoration(
+            color: widget.backgroundColor ?? Theme.of(context).primaryColor,
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
             border: widget.isValid
                 ? Border.all(color: widget.borderColor ?? Colors.transparent)
                 : Border.all(color: Colors.red),

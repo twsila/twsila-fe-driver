@@ -6,15 +6,15 @@ import '../model/models.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
 
-class RegisterUseCase
-    implements BaseUseCase<RegisterUseCaseInput, Authentication> {
+class PersonsRegisterUseCase
+    implements BaseUseCase<PersonsRegisterUseCaseInput, Authentication> {
   final Repository _repository;
 
-  RegisterUseCase(this._repository);
+  PersonsRegisterUseCase(this._repository);
 
   @override
   Future<Either<Failure, Authentication>> execute(
-      RegisterUseCaseInput input) async {
+      PersonsRegisterUseCaseInput input) async {
     return await _repository.register(RegisterRequest(
         input.serviceType,
         input.serviceTypeCapacity,
@@ -28,7 +28,7 @@ class RegisterUseCase
   }
 }
 
-class RegisterUseCaseInput {
+class PersonsRegisterUseCaseInput {
   String serviceType;
   String serviceTypeCapacity;
   int plateNumber;
@@ -39,7 +39,7 @@ class RegisterUseCaseInput {
   String carOwnerIdentityCardImage;
   String carDriverIdentityCardImage;
 
-  RegisterUseCaseInput(
+  PersonsRegisterUseCaseInput(
       this.serviceType,
       this.serviceTypeCapacity,
       this.plateNumber,

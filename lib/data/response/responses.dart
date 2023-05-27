@@ -4,12 +4,73 @@ part 'responses.g.dart';
 
 @JsonSerializable()
 class BaseResponse {
-  @JsonKey(name: "status")
-  int? status;
+  @JsonKey(name: "success")
+  bool? success;
   @JsonKey(name: "message")
   String? message;
+  @JsonKey(name: "dateTime")
+  String? dateTime;
+  @JsonKey(name: "result")
+  Map<String, dynamic>? result;
+  @JsonKey(name: "errorCode")
+  String? errorCode;
 }
 
+@JsonSerializable()
+class LoginResponse extends BaseResponse{
+  @JsonKey(name: "firstName")
+  String? firstName;
+  @JsonKey(name: "lastName")
+  String? lastName;
+  @JsonKey(name: "mobile")
+  String? mobile;
+  @JsonKey(name: "email")
+  String? email;
+  @JsonKey(name: "gender")
+  String? gender;
+  @JsonKey(name: "dateOfBirth")
+  String? dateOfBirth;
+  @JsonKey(name: "token")
+  String? token;
+  @JsonKey(name: "tokenExpirationTime")
+  String? tokenExpirationTime;
+  @JsonKey(name: "userDevice")
+  UserDeviceResponse? userDevice;
+
+  LoginResponse(this.firstName, this.lastName, this.mobile, this.email, this.gender,
+      this.dateOfBirth, this.token, this.tokenExpirationTime, this.userDevice);
+
+  // from json
+  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseFromJson(json);
+
+// to json
+  Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
+}
+
+@JsonSerializable()
+class UserDeviceResponse {
+  @JsonKey(name: "id")
+  int? id;
+  @JsonKey(name: "registrationId")
+  String? registrationId;
+  @JsonKey(name: "deviceOs")
+  String? deviceOs;
+  @JsonKey(name: "appVersion")
+  String? appVersion;
+  @JsonKey(name: "userId")
+  int? userId;
+
+  UserDeviceResponse(this.id, this.registrationId, this.deviceOs,
+      this.appVersion, this.userId);
+
+  // from json
+  factory UserDeviceResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserDeviceResponseFromJson(json);
+
+  // to json
+  Map<String, dynamic> toJson() => _$UserDeviceResponseToJson(this);
+}
 @JsonSerializable()
 class CustomerResponse {
   @JsonKey(name: "id")
@@ -183,7 +244,7 @@ class HomeResponse extends BaseResponse {
 }
 
 @JsonSerializable()
-class StoreDetailsResponse extends BaseResponse{
+class StoreDetailsResponse extends BaseResponse {
   @JsonKey(name: 'id')
   int? id;
   @JsonKey(name: 'title')
@@ -197,7 +258,8 @@ class StoreDetailsResponse extends BaseResponse{
   @JsonKey(name: 'about')
   String? about;
 
-  StoreDetailsResponse(this.id, this.title, this.image,this.details, this.services, this.about);
+  StoreDetailsResponse(
+      this.id, this.title, this.image, this.details, this.services, this.about);
 
   factory StoreDetailsResponse.fromJson(Map<String, dynamic> json) =>
       _$StoreDetailsResponseFromJson(json);

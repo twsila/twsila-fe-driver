@@ -3,9 +3,9 @@ import 'dart:async';
 import '../../base/baseviewmodel.dart';
 import '../../common/state_renderer/state_renderer_impl.dart';
 
-class ScheduledTripViewModel extends BaseViewModel
-    with ScheduledTripViewModelInput, ScheduledTripViewModelOutput {
-  StreamController scheduledTripStreamController =
+class ImmediateTripViewModel extends BaseViewModel
+    with ImmediateTripViewModelInput, ImmediateTripViewModelOutput {
+  StreamController immediateTripStreamController =
       StreamController<String>.broadcast();
 
   @override
@@ -15,24 +15,24 @@ class ScheduledTripViewModel extends BaseViewModel
 
   @override
   void dispose() {
-    scheduledTripStreamController.close();
+    immediateTripStreamController.close();
     super.dispose();
   }
 
   @override
   // TODO: implement inputServiceType
-  Sink get inputServiceType => scheduledTripStreamController.sink;
+  Sink get inputServiceType => immediateTripStreamController.sink;
 
   @override
   setServiceType(String serviceType) {
-    scheduledTripStreamController.add(serviceType);
+    immediateTripStreamController.add(serviceType);
   }
 }
 
-abstract class ScheduledTripViewModelInput {
+abstract class ImmediateTripViewModelInput {
   Sink get inputServiceType;
 
   setServiceType(String serviceType);
 }
 
-abstract class ScheduledTripViewModelOutput {}
+abstract class ImmediateTripViewModelOutput {}

@@ -15,7 +15,7 @@ class LoginViewModel extends BaseViewModel
   final PageController pageController = PageController(initialPage: 0);
   final List<Widget> widgets = [
     const PhoneLoginView(),
-    VerifyOtpView(),
+    // VerifyOtpView(),
   ];
   //Stream Input Controllers
   final StreamController _countryCodeStreamController =
@@ -73,7 +73,7 @@ class LoginViewModel extends BaseViewModel
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
     (await _loginUseCase.execute(LoginUseCaseInput(
-            loginObject.countryCode, loginObject.phoneNumber)))
+            loginObject.countryCode, loginObject.phoneNumber,{})))
         .fold(
             (failure) => {
                   // left -> failure

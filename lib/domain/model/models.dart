@@ -16,6 +16,15 @@ class SliderViewObject {
   SliderViewObject(this.sliderObject, this.numOfSlides, this.currentIndex);
 }
 
+class CountryCodes {
+  String flagPath;
+  String countryPhoneKey;
+  String countryIsoCode;
+  String countryName;
+
+  CountryCodes(this.flagPath, this.countryPhoneKey, this.countryIsoCode, this.countryName);
+}
+
 class DriverRegstrationObj {
   String serviceType;
   String serviceTypeCapacity;

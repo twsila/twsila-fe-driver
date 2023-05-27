@@ -3,8 +3,12 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
-import 'package:taxi_for_you/presentation/otp/viewmodel/verify_otp_viewmodel.dart';
+import 'package:taxi_for_you/presentation/captain_registration/view/captain_registraion.dart';
+import 'package:taxi_for_you/presentation/immediate_trip/viewmodel/immediate_trip_viewmodel.dart';
+import 'package:taxi_for_you/presentation/login/bloc/login_bloc.dart';
+import 'package:taxi_for_you/presentation/otp/bloc/verify_otp_bloc.dart';
 
 import '../data/data_source/local_data_source.dart';
 import '../data/data_source/remote_data_source.dart';
@@ -15,14 +19,13 @@ import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/forgot_password_usecase.dart';
 import '../domain/usecase/generate_otp_usecase.dart';
+import '../domain/usecase/goods_register_usecase.dart';
 import '../domain/usecase/home_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
-import '../domain/usecase/register_usecase.dart';
-import '../domain/usecase/store_details_usecase.dart';
+import '../domain/usecase/persons_register_usecase.dart';
+import '../presentation/goods_register/viewmodel/goods_register_viewmodel.dart';
 import '../presentation/login/login_viewmodel.dart';
 import '../presentation/main/pages/home/viewmodel/home_viewmodel.dart';
-import '../presentation/pending_approval_driver/view/pending_approval_view.dart';
-import '../presentation/register/viewmodel/register_viewmodel.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -57,12 +60,18 @@ Future<void> initAppModule() async {
   // local data source
   instance.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
 
-
-
   // repository
 
   instance.registerLazySingleton<Repository>(
       () => RepositoryImpl(instance(), instance(), instance()));
+
+  instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+  instance
+      .registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(instance()));
+  instance.registerFactory<GenerateOtpUseCase>(
+      () => GenerateOtpUseCase(instance()));
+  instance.registerFactory<RegistrationServiceUseCase>(
+      () => RegistrationServiceUseCase(instance()));
 }
 
 initLoginModule() {
@@ -70,15 +79,27 @@ initLoginModule() {
     instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
     instance.registerLazySingleton<LoginViewModel>(
         () => LoginViewModel(instance()));
+    instance.registerLazySingleton<LoginBloc>(
+        () => LoginBloc(loginUseCase: instance()));
   }
 }
 
-initRegisterModule() {
-  if (!GetIt.I.isRegistered<RegisterUseCase>()) {
-    instance
-        .registerFactory<RegisterUseCase>(() => RegisterUseCase(instance()));
-    instance.registerFactory<RegisterViewModel>(
-        () => RegisterViewModel(instance()));
+initCaptainRegisterModule() {
+  if (!GetIt.I.isRegistered<PersonsRegisterUseCase>()) {
+    instance.registerFactory<PersonsRegisterUseCase>(
+        () => PersonsRegisterUseCase(instance()));
+    instance.registerFactory<CaptainRegistrationView>(
+        () => const CaptainRegistrationView());
+    instance.registerFactory<ImagePicker>(() => ImagePicker());
+  }
+}
+
+initGoodsRegisterModule() {
+  if (!GetIt.I.isRegistered<GoodsRegisterUseCase>()) {
+    instance.registerFactory<GoodsRegisterUseCase>(
+        () => GoodsRegisterUseCase(instance()));
+    instance.registerFactory<GoodsRegisterViewModel>(
+        () => GoodsRegisterViewModel(instance()));
     instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 }
@@ -90,13 +111,27 @@ initHomeModule() {
   }
 }
 
+initServiceRegistrationModule() {
+  if (!GetIt.I.isRegistered<RegistrationServiceUseCase>()) {
+    instance.registerFactory<RegistrationServiceUseCase>(
+        () => RegistrationServiceUseCase(instance()));
+  }
+}
+
 initVerifyOtpModule() {
-  if (!GetIt.I.isRegistered<GenerateOtpUseCase>()) {
+  if (!GetIt.I.isRegistered<VerifyOtpUseCase>() ||
+      !GetIt.I.isRegistered<LoginUseCase>()) {
     instance.registerFactory<GenerateOtpUseCase>(
         () => GenerateOtpUseCase(instance()));
     instance
         .registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(instance()));
-    instance.registerFactory<VerifyOTPViewModel>(
-        () => VerifyOTPViewModel(instance(), instance()));
+    instance.registerFactory<GenerateOtpUseCase>(
+        () => GenerateOtpUseCase(instance()));
+
+    instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+    instance.registerLazySingleton<VerifyOtpBloc>(() => VerifyOtpBloc(
+        verifyOtpUseCase: instance(),
+        generateOtpUseCase: instance(),
+        loginUseCase: instance()));
   }
 }

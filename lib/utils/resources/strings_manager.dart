@@ -57,6 +57,8 @@ class AppStrings {
   static const String logout = "logout";
   static const String phoneVerification = "phone_verification";
   static const String enterOtpHint = "enter_otp_hint";
+  static const String otpValidated = "otp_validated";
+  static const String otpIs = "otp_is";
   static const String sendOtpAgainHint = "send_otp_again_hint";
   static const String driverLabel = "driver_label";
   static const String trips = "trips";
@@ -94,6 +96,32 @@ class AppStrings {
   static const clientOfferLabel = 'client_offer_label';
   static const rating = 'rating';
   static const fromKhobarToElDmam = 'from_dmam_to_khobar';
+  static const registerPersonsTrips = 'register_persons_trips';
+  static const registerGoodsTrips = 'register_goods_trips';
+
+  static const carType = 'car_type';
+  static const largeVehicleOpened = 'large_vehicle_opened';
+  static const largeVehicleClosed = 'large_vehicle_closed';
+  static const goodsFurnitureTransportation = 'goods_furniture_transportation';
+  static const furnitureTransportation = 'furniture_transportations';
+  static const flatness = 'flatness';
+
+  static const loadAndUnload = 'flatness';
+  static const reassembleAndAssemble = 'reassemble_and_assemble';
+  static const wrapping = 'wrapping';
+  static const winchCrane = 'winch_crane';
+
+  static const truck = 'truck';
+  static const tipper = 'tipper';
+  static const wanet = 'wanet';
+  static const motocycles = 'motocycles';
+  static const waterCisterns = 'water_cisterns';
+  static const sanitationCisterns = 'sanitation_cisterns';
+  static const freezer = 'freezer';
+
+  static const uploadCarPhotos = 'upload_car_photos';
+
+  static const doYouHaveLaborAvailable = 'do_you_have_labor';
 
   static const now = "now";
   static const String pickupPoint = "pick_up_point";
@@ -127,18 +155,15 @@ class AppStrings {
   static const String bus15passengers = "bus_15";
   static const String bus25passengers = "bus_25";
 
-
   static const String plateNumber = "plate_number";
   static const String carModelAndBrand = "car_model_and_brand";
   static const String carNotes = "car_notes";
 
   static const String registrationBottomHint = "registration_bottom_hint";
   static const String termsAndConditions = "terms_and_conditions";
-  static const String agreeWithTermsAndConditions = "agree_with_terms_and_conditions";
+  static const String agreeWithTermsAndConditions =
+      "agree_with_terms_and_conditions";
   static const String confirm = "confirm";
-
-
-
 
   static const String carDriverIdentityCardFrontImage =
       "car_driver_identity_front";
@@ -160,7 +185,8 @@ class AppStrings {
   static const String addPhoto = "add_photo";
   static const String finish = "finish";
   static const String carInfo = "car_info";
-  static const String pleaseEnterServiceYouProvide = "please_enter_service_you_provide_it";
+  static const String pleaseEnterServiceYouProvide =
+      "please_enter_service_you_provide_it";
 
   // error handler
   static const String badRequestError = "bad_request_error";
@@ -187,4 +213,65 @@ class AppStrings {
   static const onBoardingSubTitle3 = "on_boarding_desc3";
   static const onBoardingSubTitle4 = "on_boarding_desc4";
   static const String wrongOtp = "wrong_otp";
+  static const String cannotSendOtp = "cannot_send_otp";
+  static const String getStarted = "get_started";
+
+  //registration
+
+  static const whichRegistrationTypeYouWant =
+      "which_registration_type_you_want";
+  static const registerAsACaptain = "register_as_captain";
+  static const addOneCar = "add_one_car";
+  static const registerAsCompanyOwner = "register_as_company_man";
+  static const wantToAddAndManageMultipleCars =
+      "want_to_add_and_manage_multiple_cars";
+
+
+
+  static const welcomeInto = "welcome_into";
+  static const twsela = "tawsela";
+  static const enterPhoneNumberToContinue = "enter_phone_to_continue";
+  static const continueStr = "continue";
+  static const saudiCountryCode = "saudi_country_code";
+  static const egyptCountryCode = "egypt_country_code";
+  static const saudiArabia = "saudi_arabia";
+  static const egypt = "egypt";
+
+
+
+  static const enterVerificationCode = 'enter_verification_code';
+  static const enterHereSentCodeForNumber = 'enter_here_sent_code_for_number';
+  static const codeWillSentAround = 'code_will_sent_around';
+  static const second = 'second';
+  static const didNotReceiveTheCode = 'didnt_receive_code';
+  static const resendCode = 'resend_code';
+  static const registeredSuccessfully = 'registered_successfully';
+
+
+  //no service added
+
+  static const myServices = 'my_services';
+  static const youDidntAddAnySerivces = 'you_didnt_add_any_service';
+  static const startNowAndAddYourCarIntoApplication = 'start_now_and_add_your_car_into_application';
+  static const addService = 'add_service';
+
+  //captain registration
+
+  static const pleaseResumePersonalData = 'please_resume_personal_data';
+  static const uploadCaptainPhoto = 'upload_captain_photo';
+  static const userName = 'user_name';
+  static const enterUserNameHere = 'user_name_hint';
+  static const email = 'email';
+  static const enterEmailHere = 'email_hint';
+  static const type = 'type';
+  static const male = 'male';
+  static const female = 'female';
+  static const iReadAndAgreeWith = 'read_and_agree_with';
+  static const tawsilaApplication = 'tawsila_app';
+  static const save = 'save';
+
+
+
+
+
 }

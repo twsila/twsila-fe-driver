@@ -26,6 +26,26 @@ class ImageAssets {
   static const String checkIcon = "$imagePath/check.png";
   static const String languageIc = "$imagePath/language_ic.png";
   static const String verifyOtpGraphic = "$imagePath/verify_otp_grp.png";
+  static const String splashIcon = "$imagePath/tawsela_splash_icon.png";
+  static const String welcomeToTawselaGraphic =
+      "$imagePath/welcome_to_tawsela_graphic.png";
+
+  //registration
+  static const String appBarLogo = "$imagePath/appbar_logo.png";
+  static const String captainApplyIcon = "$imagePath/ic_apply_captain.png";
+  static const String boApplyIcon = "$imagePath/ic_apply_bo.png";
+  static const String saudiFlag = "$imagePath/saudi_flag.png";
+  static const String egyptFlag = "$imagePath/egypt_flag.png";
+  static const String retryIcon = "$imagePath/retry_icon.png";
+
+  //no service added
+
+  static const String noServiceAdded = "$imagePath/no_service_added_graphic.png";
+
+  //captain registration
+  static const String personIcon = "$imagePath/person_icon.png";
+
+
 }
 
 class JsonAssets {

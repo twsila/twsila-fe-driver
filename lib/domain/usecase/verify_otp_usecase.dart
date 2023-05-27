@@ -2,27 +2,28 @@ import 'package:dartz/dartz.dart';
 
 import 'package:taxi_for_you/data/network/failure.dart';
 import 'package:taxi_for_you/data/network/requests.dart';
+import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
 import '../model/models.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
 
 class VerifyOtpUseCase
-    implements BaseUseCase<VerifyOtpUseCaseInput, FirebaseCodeSent> {
+    implements BaseUseCase<VerifyOtpUseCaseInput, VerifyOtpModel> {
   final Repository _repository;
 
   VerifyOtpUseCase(this._repository);
 
   @override
-  Future<Either<Failure, FirebaseCodeSent>> execute(VerifyOtpUseCaseInput input) {
-    return _repository.verifyFirebaseOtp(VerifyFirebaseOTPRequest(input.verificationId, input.code));
+  Future<Either<Failure, VerifyOtpModel>> execute(VerifyOtpUseCaseInput input) {
+    return _repository.verifyOtp(VerifyOTPRequest(input.code, input.mobileNumber));
   }
 
 }
 
 class VerifyOtpUseCaseInput {
-  String verificationId;
+  String mobileNumber;
   String code;
 
-  VerifyOtpUseCaseInput(this.verificationId,this.code);
+  VerifyOtpUseCaseInput(this.mobileNumber,this.code);
 }

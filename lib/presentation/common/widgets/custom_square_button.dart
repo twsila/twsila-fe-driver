@@ -37,13 +37,16 @@ class _CustomSquareButtonState extends State<CustomSquareButton> {
           borderRadius: BorderRadius.all(Radius.circular(AppSize.s8)),
         ),
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 widget.iconData,
                 size: AppSize.s32,
                 color: Colors.white,
+              ),
+              const SizedBox(
+                width: AppSize.s14,
               ),
               Text(
                 widget.text,
