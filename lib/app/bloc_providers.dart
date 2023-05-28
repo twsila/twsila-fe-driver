@@ -17,9 +17,16 @@ blocProviders(BuildContext context) {
     BlocProvider.value(value: MapsBloc(MapsRepo())),
     BlocProvider.value(value: LoginBloc(loginUseCase: instance())),
     BlocProvider.value(
-        value: VerifyOtpBloc(verifyOtpUseCase: instance(),generateOtpUseCase: instance(),loginUseCase: instance())),
-    BlocProvider.value(value: RegistrationBloc(registrationServiceUseCase: instance())),
-    BlocProvider.value(value: ServiceRegistrationBloc(registrationServiceUseCase: instance())),
+        value: VerifyOtpBloc(
+            verifyOtpUseCase: instance(),
+            generateOtpUseCase: instance(),
+            loginUseCase: instance())),
+    BlocProvider.value(
+        value: RegistrationBloc(registrationServiceUseCase: instance())),
+    BlocProvider.value(
+        value: ServiceRegistrationBloc(
+            registrationServiceUseCase: instance(),
+            carBrandsAndModelsUseCase: instance())),
     ChangeNotifierProvider(create: (_) => MapProvider())
   ];
 }

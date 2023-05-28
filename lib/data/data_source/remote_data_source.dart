@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
@@ -11,12 +12,13 @@ import '../response/responses.dart';
 abstract class RemoteDataSource {
   Future<LoginResponse> login(LoginRequest loginRequest);
 
-
   Future<GenerateOtpModel> generateOtp(GenerateOTPRequest generateOTPRequest);
 
   Future<VerifyOtpModel> verifyOtp(VerifyOTPRequest verifyOTPRequest);
 
-  Future<RegistrationServicesTypesResponse> registrationServicesType ();
+  Future<RegistrationServicesTypesResponse> registrationServicesType();
+
+  Future<CarBrandAndModelsModel> carBrandAndModel();
 
   Future<AuthenticationResponse> register(RegisterRequest registerRequest);
 
@@ -80,7 +82,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<RegistrationServicesTypesResponse> registrationServicesType() async{
+  Future<RegistrationServicesTypesResponse> registrationServicesType() async {
     return await _appServiceClient.registrationServices();
+  }
+
+  @override
+  Future<CarBrandAndModelsModel> carBrandAndModel() async {
+    return await _appServiceClient.carBrandsAndModels();
   }
 }

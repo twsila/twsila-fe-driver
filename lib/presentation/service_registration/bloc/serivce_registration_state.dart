@@ -22,3 +22,15 @@ class ServicesTypesFail extends ServiceRegistrationState {
 
   ServicesTypesFail(this.message);
 }
+
+class CarBrandsAndModelsSuccess extends ServiceRegistrationState {
+  final List<CarModel> carModelList;
+
+  CarBrandsAndModelsSuccess(this.carModelList);
+}
+
+class CarBrandsAndModelsFail extends ServiceRegistrationState {
+  final String message;
+
+  CarBrandsAndModelsFail(this.message);
+}

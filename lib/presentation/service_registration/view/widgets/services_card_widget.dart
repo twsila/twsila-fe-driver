@@ -95,8 +95,8 @@ class _ServiceCardState extends State<ServiceCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FadeInImage(
-                          height: AppSize.s33,
-                          width: AppSize.s33,
+                          height: AppSize.s30,
+                          width: AppSize.s30,
                           image: NetworkImage(
                               'https://icons-for-free.com/iconfiles/png/512/mountains+photo+photos+placeholder+sun+icon-1320165661388177228.png'),
                           placeholder: AssetImage(ImageAssets.appBarLogo),
@@ -111,7 +111,7 @@ class _ServiceCardState extends State<ServiceCard> {
                               .titleMedium
                               ?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: FontSize.s14,
+                                  fontSize: FontSize.s12,
                                   color: ColorManager.headersTextColor),
                         )
                       ],
@@ -199,7 +199,7 @@ class _ServiceCardState extends State<ServiceCard> {
                                     .titleMedium
                                     ?.copyWith(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: FontSize.s14,
+                                        fontSize: FontSize.s12,
                                         color: ColorManager.headersTextColor),
                               )
                             ],

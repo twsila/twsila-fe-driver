@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 import 'package:taxi_for_you/presentation/captain_registration/view/captain_registraion.dart';
@@ -72,6 +73,8 @@ Future<void> initAppModule() async {
       () => GenerateOtpUseCase(instance()));
   instance.registerFactory<RegistrationServiceUseCase>(
       () => RegistrationServiceUseCase(instance()));
+  instance.registerFactory<CarBrandsAndModelsUseCase>(
+      () => CarBrandsAndModelsUseCase(instance()));
 }
 
 initLoginModule() {
@@ -115,6 +118,8 @@ initServiceRegistrationModule() {
   if (!GetIt.I.isRegistered<RegistrationServiceUseCase>()) {
     instance.registerFactory<RegistrationServiceUseCase>(
         () => RegistrationServiceUseCase(instance()));
+    instance.registerFactory<CarBrandsAndModelsUseCase>(
+        () => CarBrandsAndModelsUseCase(instance()));
   }
 }
 

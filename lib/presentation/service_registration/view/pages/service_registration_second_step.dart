@@ -9,6 +9,7 @@ import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import '../../../../app/app_prefs.dart';
 import '../../../../app/di.dart';
 import '../../../../domain/model/ServiceTypeModel.dart';
+import '../../../../domain/model/car_brand_models_model.dart';
 import '../../../../domain/model/vehicleModel.dart';
 import '../../../../utils/resources/color_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
@@ -34,11 +35,14 @@ class _ServiceRegistrationSecondStepState
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
-  List<ServiceTypeModel>? serviceModelList;
-  TextEditingController _plateNumberController = TextEditingController();
+  bool _loadingCars = false;
+  List<CarModel>? carModelList;
+  CarModel? selectedCarModel;
 
   @override
   void initState() {
+    BlocProvider.of<ServiceRegistrationBloc>(context)
+        .add(GetCarBrandAndModel());
     super.initState();
   }
 
@@ -76,6 +80,10 @@ class _ServiceRegistrationSecondStepState
         } else {
           stopLoading();
         }
+        if (state is CarBrandsAndModelsSuccess) {
+          _loadingCars = false;
+          carModelList = state.carModelList;
+        }
       },
       builder: (context, state) {
         return Container(
@@ -112,7 +120,13 @@ class _ServiceRegistrationSecondStepState
                       color: ColorManager.headersTextColor),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      carModelList != null
+                          ? _showBottomSheet(carModelList ?? [])
+                          : _loadingCars;
+                    });
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border:
@@ -120,24 +134,31 @@ class _ServiceRegistrationSecondStepState
                     ),
                     child: Padding(
                       padding: EdgeInsets.all(AppPadding.p8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppStrings.carModelAndBrand.tr(),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    fontSize: FontSize.s16,
-                                    color: ColorManager.titlesTextColor),
-                          ),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: ColorManager.primary,
-                          )
-                        ],
-                      ),
+                      child: _loadingCars
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: ColorManager.primary,
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  selectedCarModel?.carModel ??
+                                      AppStrings.carModelAndBrand.tr(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                          fontSize: FontSize.s16,
+                                          color: ColorManager.titlesTextColor),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: ColorManager.primary,
+                                )
+                              ],
+                            ),
                     ),
                   ),
                 ),
@@ -181,23 +202,25 @@ class _ServiceRegistrationSecondStepState
                         EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0),
                   ),
                 ),
-                MutliPickImageWidget((List<XFile>? images) {
-                  print(images!.length);
-                },
-                    AppStrings.uploadCarPhotos.tr(),
-                    AppStrings.addPhotos.tr(),
-                    Image.asset(ImageAssets.photosIcon, width: AppSize.s20),
-                    ColorManager.secondaryColor),
                 MutliPickImageWidget(
                   (List<XFile>? images) {
                     print(images!.length);
                   },
-                  AppStrings.uploadCarDocumentPhoto.tr(),
-                  AppStrings.documentPhoto.tr(),
+                  AppStrings.uploadCarPhotos.tr(),
+                  AppStrings.addPhotos.tr(),
                   Image.asset(ImageAssets.photosIcon, width: AppSize.s20),
                   ColorManager.secondaryColor,
-                  addMultiplePhotos: false,
+                  fontSize: FontSize.s10,
                 ),
+                MutliPickImageWidget((List<XFile>? images) {
+                  print(images!.length);
+                },
+                    AppStrings.uploadCarDocumentPhoto.tr(),
+                    AppStrings.documentPhoto.tr(),
+                    Image.asset(ImageAssets.photosIcon, width: AppSize.s20),
+                    ColorManager.secondaryColor,
+                    addMultiplePhotos: false,
+                    fontSize: FontSize.s10),
                 MutliPickImageWidget((List<XFile>? images) {
                   print(images!.length);
                 },
@@ -205,7 +228,8 @@ class _ServiceRegistrationSecondStepState
                     AppStrings.carDriverLicPhoto.tr(),
                     Image.asset(ImageAssets.documentIcon, width: AppSize.s20),
                     ColorManager.secondaryColor,
-                    addMultiplePhotos: false),
+                    addMultiplePhotos: false,
+                    fontSize: FontSize.s10),
                 MutliPickImageWidget((List<XFile>? images) {
                   print(images!.length);
                 },
@@ -213,7 +237,8 @@ class _ServiceRegistrationSecondStepState
                     AppStrings.carOwnerIdPhoto.tr(),
                     Image.asset(ImageAssets.documentIcon, width: AppSize.s20),
                     ColorManager.secondaryColor,
-                    addMultiplePhotos: false),
+                    addMultiplePhotos: false,
+                    fontSize: FontSize.s10),
                 MutliPickImageWidget((List<XFile>? images) {
                   print(images!.length);
                 },
@@ -221,7 +246,8 @@ class _ServiceRegistrationSecondStepState
                     AppStrings.carDriverIdPhoto.tr(),
                     Image.asset(ImageAssets.documentIcon, width: AppSize.s20),
                     ColorManager.secondaryColor,
-                    addMultiplePhotos: false),
+                    addMultiplePhotos: false,
+                    fontSize: FontSize.s10),
                 CustomTextButton(
                   text: AppStrings.applyRequest.tr(),
                   onPressed: () {},
@@ -232,5 +258,35 @@ class _ServiceRegistrationSecondStepState
         );
       },
     );
+  }
+
+  void _showBottomSheet(List<CarModel> carModelList) {
+    showModalBottomSheet(
+        elevation: 10,
+        context: context,
+        backgroundColor: ColorManager.white,
+        builder: (ctx) => carModelList != null
+            ? ListView.builder(
+                itemCount: carModelList.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        Navigator.pop(context);
+                        selectedCarModel = carModelList[index];
+                      });
+                    },
+                    child: ListTile(
+                        title: Text(carModelList[index].carModel),
+                        subtitle: Text(carModelList[index]
+                            .carManufacturerId
+                            .carManufacturer)),
+                  );
+                },
+              )
+            : CircularProgressIndicator(
+                color: ColorManager.primary,
+              ));
   }
 }

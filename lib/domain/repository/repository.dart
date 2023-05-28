@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
+import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 
 import '../../data/network/failure.dart';
@@ -12,6 +13,8 @@ abstract class Repository {
   Future<Either<Failure, Driver>> login(LoginRequest loginRequest);
 
   Future<Either<Failure, List<ServiceTypeModel>>> registrationServiceTypes();
+
+  Future<Either<Failure, List<CarModel>>> carBrandsAndModels();
 
   Future<Either<Failure, String>> forgotPassword(String email);
 

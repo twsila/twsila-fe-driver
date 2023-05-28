@@ -18,10 +18,11 @@ class MutliPickImageWidget extends StatefulWidget {
   final Widget btnIcon;
   final Color btnBackgroundColor;
   bool addMultiplePhotos;
+  double? fontSize;
 
   MutliPickImageWidget(this.onPickedImages, this.titleText, this.btnText,
       this.btnIcon, this.btnBackgroundColor,
-      {this.addMultiplePhotos = true});
+      {this.addMultiplePhotos = true,this.fontSize});
 
   @override
   State<MutliPickImageWidget> createState() => _MutliPickImageWidgetState();
@@ -157,9 +158,10 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                   children: [
                     CustomTextButton(
                       text: widget.btnText.tr(),
-                      width: AppSize.s190,
+                      width: AppSize.s140,
                       height: AppSize.s50,
                       isWaitToEnable: false,
+                      fontSize: widget.fontSize,
                       backgroundColor: widget.btnBackgroundColor,
                       icon: widget.btnIcon,
                       onPressed: () {

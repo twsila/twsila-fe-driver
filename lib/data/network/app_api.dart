@@ -4,6 +4,7 @@ import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
 import '../../app/constants.dart';
+import '../../domain/model/car_brand_models_model.dart';
 import '../../domain/model/registration_services_response.dart';
 import '../response/responses.dart';
 
@@ -33,6 +34,9 @@ abstract class AppServiceClient {
 
   @GET("/drivers/vehicle-types")
   Future<RegistrationServicesTypesResponse> registrationServices();
+
+  @GET("/drivers/car-model")
+  Future<CarBrandAndModelsModel> carBrandsAndModels();
 
   @POST("/customers/forgotPassword")
   Future<ForgotPasswordResponse> forgotPassword(@Field("email") String email);

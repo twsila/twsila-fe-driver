@@ -8,7 +8,7 @@ class Constants {
   static const String baseUrl =
       "https://twsila-dev-service-f33wiujt7a-lm.a.run.app";
   static const String empty = "";
-  static const String token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNjg1MjcwOTQ4LCJleHAiOjE2ODUzMTQxNDh9.-ZbEPD952WsBH01QJdNeDuTiIujNFdw4GBUpSfdlPm2hwcEIdg0uKVirWubzTU9ziciUyNwWm-yzx73Yj41vyQ";
+  static const String token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNjg1Mjg0NjU3LCJleHAiOjE2ODUzMjc4NTd9.87MLXxgEq_d3iSLLOBX4O_NAdzs7O5F1Ln9n5BPax5IqBMm1xcANtTvwgxnN7-e6nAiG6H-8Tc7FbV4KAOZTMg";
   static const int zero = 0;
   static const int apiTimeOut = 60000;
   static const String GOOGLE_API_KEY =
