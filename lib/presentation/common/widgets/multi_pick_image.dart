@@ -3,17 +3,25 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/styles_manager.dart';
 import '../../../utils/resources/color_manager.dart';
+import '../../../utils/resources/values_manager.dart';
 import '../state_renderer/dialogs.dart';
 
 class MutliPickImageWidget extends StatefulWidget {
   final Function(List<XFile>? images) onPickedImages;
+  final String titleText;
+  final String btnText;
+  final Widget btnIcon;
+  final Color btnBackgroundColor;
+  bool addMultiplePhotos;
 
-  const MutliPickImageWidget({Key? key, required this.onPickedImages})
-      : super(key: key);
+  MutliPickImageWidget(this.onPickedImages, this.titleText, this.btnText,
+      this.btnIcon, this.btnBackgroundColor,
+      {this.addMultiplePhotos = true});
 
   @override
   State<MutliPickImageWidget> createState() => _MutliPickImageWidgetState();
@@ -93,21 +101,12 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 16, 8, 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: openImages,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Icon(Icons.file_upload_outlined),
-                const SizedBox(width: 8),
-                Text(
-                  AppStrings.uploadCarPhotos.tr(),
-                  style: getRegularStyle(
-                      color: ColorManager.primary, fontSize: FontSize.s16),
-                ),
-              ],
-            ),
+          Text(
+            widget.titleText,
+            style: getRegularStyle(
+                color: ColorManager.titlesTextColor, fontSize: FontSize.s14),
           ),
           imagefiles.isNotEmpty
               ? Wrap(
@@ -150,7 +149,25 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                     );
                   }).toList(),
                 )
-              : Container()
+              : Container(),
+          widget.addMultiplePhotos == false && imagefiles.length > 0
+              ? Container()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomTextButton(
+                      text: widget.btnText.tr(),
+                      width: AppSize.s190,
+                      height: AppSize.s50,
+                      isWaitToEnable: false,
+                      backgroundColor: widget.btnBackgroundColor,
+                      icon: widget.btnIcon,
+                      onPressed: () {
+                        openImages();
+                      },
+                    )
+                  ],
+                ),
         ],
       ),
     );

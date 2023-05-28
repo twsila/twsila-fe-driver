@@ -51,13 +51,13 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 
   @override
   void initState() {
-    BlocProvider.of<VerifyOtpBloc>(context)
-        .add(SendOtpEvent(widget.mobileNumberForApi));
+    // BlocProvider.of<VerifyOtpBloc>(context)
+    //     .add(SendOtpEvent(widget.mobileNumberForApi));
 
     // ToastHandler(context)
     //     .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
-    // BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
-    //     widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
+    BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
+        widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
 
     super.initState();
   }
@@ -130,7 +130,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
         }
         if (state is LoginFailState) {
           if (state.errorCode == ResponseCode.NOT_FOUND.toString()) {
-            Navigator.pushNamed(context, Routes.captainRegisterRoute);
+            // Navigator.pushNamed(context, Routes.captainRegisterRoute);
+            Navigator.pushNamed(context, Routes.noServicesAdded);
           } else {
             CustomDialog(context).showErrorDialog('', '', state.message);
           }

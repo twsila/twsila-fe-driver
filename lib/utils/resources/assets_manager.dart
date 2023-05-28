@@ -46,6 +46,13 @@ class ImageAssets {
   static const String personIcon = "$imagePath/person_icon.png";
 
 
+  //service Registration
+  static const String personDocumentIcon = "$imagePath/person_icon.png";
+  static const String documentIcon = "$imagePath/personal_document_ic.png";
+  static const String photosIcon = "$imagePath/photos_ic.png";
+
+
+
 }
 
 class JsonAssets {

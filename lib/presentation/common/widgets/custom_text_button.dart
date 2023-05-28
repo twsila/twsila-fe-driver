@@ -14,8 +14,9 @@ class CustomTextButton extends StatefulWidget {
   final double? height;
   final double? width;
   final double? margin;
-  final Icon? icon;
+  final Widget? icon;
   final Color? iconColor;
+  final bool isWaitToEnable;
 
   const CustomTextButton({
     Key? key,
@@ -28,6 +29,7 @@ class CustomTextButton extends StatefulWidget {
     this.icon,
     this.iconColor,
     this.onPressed,
+    this.isWaitToEnable = true,
     required this.text,
   }) : super(key: key);
 
@@ -45,9 +47,11 @@ class _CustomTextButtonState extends State<CustomTextButton> {
         width: widget.width ?? double.infinity,
         height: widget.height ?? AppSize.s50,
         decoration: BoxDecoration(
-            color: widget.onPressed != null
-                ? ColorManager.primary
-                : ColorManager.disableBackgroundColor,
+            color: widget.isWaitToEnable
+                ? widget.onPressed != null
+                    ? ColorManager.primary
+                    : ColorManager.disableBackgroundColor
+                : widget.backgroundColor,
             border: Border.all(
                 color: widget.borderColor ??
                     ((widget.onPressed != null)

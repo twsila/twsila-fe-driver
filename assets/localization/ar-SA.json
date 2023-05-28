@@ -254,6 +254,25 @@
   "read_and_agree_with": "لقد قرأت و وافقت علي",
   "tawsila_app": "تطبيق توصيلة",
   "save": "حفظ",
-  "get_started": "ابدا الان"
-
+  "get_started": "ابدا الان",
+  "step_one": "خطوة ٢/١",
+  "step_two": "خطوة ٢/٢",
+  "service_data": "بيانات الخدمة",
+  "select_service_type": "إختر نوع الخدمة",
+  "select_service_vehicle_type": "إختر نوع المركبة",
+  "select_service_truck_type": "إختر نوع الشاحنة",
+  "aslo_provide_this_services": "اقدم ايضا الخدمات التالية",
+  "car_data": "بيانات السيارة",
+  "upload_car_document_photos": "تحميل إستمارة السيارة",
+  "upload_car_driver_lic_photo": "تحميل رخصة قائد السيارة",
+  "car_notes_hint": "اترك تفاصيل اكثر عن السيارة (إختياري)",
+  "upload_car_owner_id_photo": "تحميل هوية مالك السيارة",
+  "upload_car_driver_id_photo": "تحميل هوية قائد السيارة",
+  "service_registration_agreement": "اقر بأن كافة البيانات صحيحة و أني قرأت سياسة الشركة و اوافق عليها",
+  "add_photos": "إضافة صور",
+  "document_photo": "صورة إلاستمارة",
+  "car_owner_id_photo": "صورة هوية المالك",
+  "car_driver_lic_photo": "صورة رخصة القائد",
+  "car_driver_id_photo": "صورة هوية القائد",
+  "apply_request": "تقديم الطلب"
 }

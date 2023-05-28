@@ -16,6 +16,7 @@ class ColorManager {
   static Color forthAccentColor = const Color(0xffF0F0F1);
   static Color purpleFade = const Color(0xffEAEAFF);
   static Color borderColor = const Color(0xffD8D8ED);
+  static Color primaryBlueBackgroundColor = const Color(0xffEFEFFE);
 
   //text
 
@@ -29,6 +30,7 @@ class ColorManager {
   static Color accentTextColor = const Color(0xffFF862E);
   static Color warningTextColor = const Color(0xffFF0B1B);
   static Color purpleMainTextColor = const Color(0xff7577CD);
+  static Color lineColor = const Color(0xffE1E1E4);
 
 
   //disable color

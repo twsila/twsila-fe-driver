@@ -8,6 +8,7 @@ import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/vehicleModel.dart';
+import 'package:taxi_for_you/utils/helpers/cast_helpers.dart';
 
 import '../../domain/model/driver_model.dart';
 import '../../domain/model/models.dart';
@@ -224,30 +225,25 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, ServiceTypeModel>> registrationServiceTypes() async {
+  Future<Either<Failure, List<ServiceTypeModel>>>
+      registrationServiceTypes() async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response = await _remoteDataSource.registrationServicesType();
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          // success
-          // return either right
-          // return data
-          // String responseResult = response.result.toString();
-          // ServiceTypeModel returnedServices =
-          //     json.decode(responseResult);
-
-          ServiceTypeModel servicesModel = ServiceTypeModel({});
+          List<ServiceTypeModel> servicesList = [];
 
           response.result.forEach((key, value) {
-            servicesModel.service[key] = value.cast<VehicleModel>();
+            List<VehicleModel> x = List<VehicleModel>.from(
+                value.map((x) => VehicleModel.fromJson(x)));
+
+            servicesList.add(ServiceTypeModel(key, x));
           });
 
-          return Right(servicesModel);
+          return Right(servicesList);
         } else {
-          // failure --return business error
-          // return either left
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));
         }

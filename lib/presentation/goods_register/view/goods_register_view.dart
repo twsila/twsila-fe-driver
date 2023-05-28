@@ -333,9 +333,9 @@ class _GoodsRegisterViewState extends State<GoodsRegisterView> {
                                 _viewModel.setNotes(value);
                               },
                             )),
-                        MutliPickImageWidget(
-                          onPickedImages: (List<XFile>? images) {},
-                        ),
+                        // MutliPickImageWidget(
+                        //   onPickedImages: (List<XFile>? images) {},
+                        // ),
                         CustomCard(
                             onClick: () {
                               Navigator.push(

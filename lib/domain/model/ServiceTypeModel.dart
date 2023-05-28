@@ -1,8 +1,9 @@
 import 'package:taxi_for_you/domain/model/vehicleModel.dart';
 
 class ServiceTypeModel {
-  Map<String, List<VehicleModel>> service;
+  String serviceName;
+  List<VehicleModel> VehicleModels;
+  bool isSelected;
 
-  ServiceTypeModel(this.service);
-
+  ServiceTypeModel(this.serviceName, this.VehicleModels,{this.isSelected = false});
 }

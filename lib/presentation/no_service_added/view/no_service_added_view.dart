@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
+import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 import '../../../utils/resources/font_manager.dart';
@@ -86,7 +87,9 @@ class _NoServiceAddedViewState extends State<NoServiceAddedView> {
               color: ColorManager.white,
             ),
             text: AppStrings.addService.tr(),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context,Routes.serviceRegistrationFirstStep);
+            },
           )
         ],
       ),

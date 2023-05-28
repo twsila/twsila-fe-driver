@@ -12,9 +12,9 @@ class ServiceRegistrationSuccess extends ServiceRegistrationState {}
 class ServiceRegistrationFail extends ServiceRegistrationState {}
 
 class ServicesTypesSuccess extends ServiceRegistrationState {
-  final ServiceTypeModel serviceTypeModel;
+  final List<ServiceTypeModel> serviceTypeModelList;
 
-  ServicesTypesSuccess(this.serviceTypeModel);
+  ServicesTypesSuccess(this.serviceTypeModelList);
 }
 
 class ServicesTypesFail extends ServiceRegistrationState {

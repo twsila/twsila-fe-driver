@@ -11,7 +11,7 @@ import '../model/verify_otp_model.dart';
 abstract class Repository {
   Future<Either<Failure, Driver>> login(LoginRequest loginRequest);
 
-  Future<Either<Failure, ServiceTypeModel>> registrationServiceTypes();
+  Future<Either<Failure, List<ServiceTypeModel>>> registrationServiceTypes();
 
   Future<Either<Failure, String>> forgotPassword(String email);
 
@@ -22,10 +22,9 @@ abstract class Repository {
 
   Future<Either<Failure, StoreDetails>> getStoreDetails();
 
+  Future<Either<Failure, GenerateOtpModel>> generateOtp(
+      GenerateOTPRequest otpRequest);
 
-  Future<Either<Failure, GenerateOtpModel>> generateOtp(GenerateOTPRequest otpRequest);
-
-  Future<Either<Failure, VerifyOtpModel>> verifyOtp(VerifyOTPRequest verifyOTPRequest);
-
-
+  Future<Either<Failure, VerifyOtpModel>> verifyOtp(
+      VerifyOTPRequest verifyOTPRequest);
 }

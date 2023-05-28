@@ -70,13 +70,13 @@ class _CustomVerificationCodeWidgetState
         children: [
           PinFieldAutoFill(
             decoration: BoxLooseDecoration(
-              bgColorBuilder: FixedColorBuilder(ColorManager.lightGrey),
+              bgColorBuilder: FixedColorBuilder(ColorManager.white),
               obscureStyle: ObscureStyle(
-                isTextObscure: _isHidden,
+                isTextObscure: false,
                 obscureText: '⬤',
               ),
               textStyle: Theme.of(context).textTheme.labelLarge,
-              strokeColorBuilder: const FixedColorBuilder(Colors.transparent),
+              strokeColorBuilder: FixedColorBuilder(ColorManager.borderColor),
               radius: const Radius.circular(5),
               strokeWidth: 2,
               gapSpace: 5,

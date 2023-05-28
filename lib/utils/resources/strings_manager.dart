@@ -119,7 +119,6 @@ class AppStrings {
   static const sanitationCisterns = 'sanitation_cisterns';
   static const freezer = 'freezer';
 
-  static const uploadCarPhotos = 'upload_car_photos';
 
   static const doYouHaveLaborAvailable = 'do_you_have_labor';
 
@@ -155,9 +154,6 @@ class AppStrings {
   static const String bus15passengers = "bus_15";
   static const String bus25passengers = "bus_25";
 
-  static const String plateNumber = "plate_number";
-  static const String carModelAndBrand = "car_model_and_brand";
-  static const String carNotes = "car_notes";
 
   static const String registrationBottomHint = "registration_bottom_hint";
   static const String termsAndConditions = "terms_and_conditions";
@@ -269,6 +265,39 @@ class AppStrings {
   static const iReadAndAgreeWith = 'read_and_agree_with';
   static const tawsilaApplication = 'tawsila_app';
   static const save = 'save';
+
+
+  //service registration
+
+
+  static const stepOne = 'step_one';
+  static const stepTwo = 'step_two';
+  static const serviceData = 'service_data';
+  static const selectServiceType = 'select_service_type';
+  static const selectServiceVehicleType = 'select_service_vehicle_type';
+  static const selectServiceTruckType = 'select_service_truck_type';
+  static const alsoProvideThisServices = 'aslo_provide_this_services';
+  static const carData = 'car_data';
+
+  static const String plateNumber = "plate_number";
+  static const String carModelAndBrand = "car_model_and_brand";
+  static const String carNotes = "car_notes";
+  static const String carNotesHint = "car_notes_hint";
+
+
+  static const String addPhotos = "add_photos";
+  static const String documentPhoto = "document_photo";
+  static const String carOwnerIdPhoto = "car_owner_id_photo";
+  static const String carDriverIdPhoto = "car_driver_id_photo";
+  static const String carDriverLicPhoto = "car_driver_lic_photo";
+
+  static const uploadCarPhotos = 'upload_car_photos';
+  static const uploadCarDocumentPhoto = 'upload_car_document_photos';
+  static const uploadCarDriverLicPhoto = 'upload_car_driver_lic_photo';
+  static const uploadCarOwnerIDPhoto = 'upload_car_owner_id_photo';
+  static const uploadCarDriverIDPhoto = 'upload_car_driver_id_photo';
+  static const serviceRegistrationAgreement = 'service_registration_agreement';
+  static const applyRequest = 'apply_request';
 
 
 

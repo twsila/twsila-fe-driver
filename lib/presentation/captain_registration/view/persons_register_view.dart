@@ -246,9 +246,9 @@ class _PersonsRegisterViewState extends State<PersonsRegisterView> {
                                 _viewModel.setNotes(value);
                               },
                             )),
-                        MutliPickImageWidget(
-                          onPickedImages: (List<XFile>? images) {},
-                        ),
+                        // MutliPickImageWidget(
+                        //   onPickedImages: (List<XFile>? images) {},
+                        // ),
                         CustomCard(
                             onClick: () {
                               Navigator.push(

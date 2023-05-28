@@ -33,13 +33,13 @@ class ServiceRegistrationBloc
                   //emit failure state
 
                   emit(ServicesTypesFail(failure.message))
-                }, (serviceTypes) async {
+                }, (serviceTypeList) async {
       // right -> data (success)
       // content
       // emit success state
       // navigate to main screen
 
-      emit(ServicesTypesSuccess(serviceTypes));
+      emit(ServicesTypesSuccess(serviceTypeList));
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }

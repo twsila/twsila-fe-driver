@@ -10,13 +10,14 @@ import '../repository/repository.dart';
 import 'base_usecase.dart';
 
 class RegistrationServiceUseCase
-    implements BaseUseCase<RegistrationServiceUseCaseInput, ServiceTypeModel> {
+    implements
+        BaseUseCase<RegistrationServiceUseCaseInput, List<ServiceTypeModel>> {
   final Repository _repository;
 
   RegistrationServiceUseCase(this._repository);
 
   @override
-  Future<Either<Failure, ServiceTypeModel>> execute(
+  Future<Either<Failure, List<ServiceTypeModel>>> execute(
       RegistrationServiceUseCaseInput input) {
     return _repository.registrationServiceTypes();
   }
