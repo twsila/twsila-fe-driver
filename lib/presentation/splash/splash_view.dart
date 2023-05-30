@@ -70,8 +70,10 @@ class _SplashViewState extends State<SplashView> {
           else
             {
               // Navigate to Login Screen
+              // Navigator.pushReplacementNamed(
+              //     context, Routes.selectRegistrationType)
               Navigator.pushReplacementNamed(
-                  context, Routes.selectRegistrationType)
+                  context, Routes.serviceAppliedSuccessfullyView)
             }
         });
   }

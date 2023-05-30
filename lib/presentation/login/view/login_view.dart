@@ -42,7 +42,7 @@ class _LoginViewState extends State<LoginView> {
   Function()? onPressFun;
   String mobileNumber = "";
   final TextEditingController _controller = TextEditingController();
-   String onChangValue = "";
+  String onChangValue = "";
 
   @override
   void initState() {
@@ -168,20 +168,6 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
                 const Spacer(),
-                // showArabicKeyboard
-                //     ? Container(
-                //         color: Colors.black,
-                //         child: VirtualKeyboard(
-                //           fontSize: 20,
-                //           textColor: Colors.white,
-                //           textController: _controller,
-                //           type: VirtualKeyboardType.Alphanumeric,
-                //           defaultLayouts: const [
-                //             VirtualKeyboardDefaultLayouts.Arabic
-                //           ],
-                //         ),
-                //       )
-                //     : Container(),
               ],
             ));
       },

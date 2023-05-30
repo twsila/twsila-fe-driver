@@ -5,6 +5,7 @@ import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
 import 'package:taxi_for_you/presentation/goods_register/view/goods_register_view.dart';
 import 'package:taxi_for_you/presentation/no_service_added/view/no_service_added_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/service_applyed_success_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_client_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
@@ -53,6 +54,8 @@ class Routes {
       "/serviceRegistrationFirstStep";
   static const String serviceRegistrationSecondStep =
       "/serviceRegistrationSecondStep";
+  static const String serviceAppliedSuccessfullyView = "/serviceAppliedSuccessfullyView";
+
 }
 
 class RouteGenerator {
@@ -100,6 +103,8 @@ class RouteGenerator {
                 ));
       case Routes.noServicesAdded:
         return MaterialPageRoute(builder: (_) => const NoServiceAddedView());
+      case Routes.serviceAppliedSuccessfullyView:
+        return MaterialPageRoute(builder: (_) => const ServiceAppliedSuccessView());
       case Routes.pendingApprovalRoute:
         return MaterialPageRoute(builder: (_) => const PendingApprovalDriver());
       case Routes.tripsRoute:

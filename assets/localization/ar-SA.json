@@ -274,5 +274,11 @@
   "car_owner_id_photo": "صورة هوية المالك",
   "car_driver_lic_photo": "صورة رخصة القائد",
   "car_driver_id_photo": "صورة هوية القائد",
-  "apply_request": "تقديم الطلب"
+  "apply_request": "تقديم الطلب",
+  "request_applied_successfully": "تم تقديم الطلب بنجاح",
+  "thank_your_reg_with_twsila_message": "نشكركم علي التسجيل مع توصيلة و نود ابلاغكم ان طلبكم تحت المراجعه و سيتم تحديد موعد لعمل مقابلة خلال ١٢ ساعة عبر احد تطبيقات الفيديو للتأكد من صحة البيانات و تفعيل الحساب الخاص بكم",
+  "back_to_main_screen": "العوده للصفحة الرئيسية",
+  "my_profile": "صفحتي",
+  "my_trips": "رحلاتي",
+  "search_trips": "بحث"
 }

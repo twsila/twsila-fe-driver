@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/presentation/main/pages/home/view/home_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/notifications/notifications_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/search/search_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/settings/settings_page.dart';
 
+import '../../utils/resources/assets_manager.dart';
 import '../../utils/resources/color_manager.dart';
 import '../../utils/resources/strings_manager.dart';
 import '../../utils/resources/values_manager.dart';
@@ -45,22 +47,25 @@ class _MainViewState extends State<MainView> {
           BoxShadow(color: ColorManager.lightGrey, spreadRadius: AppSize.s1)
         ]),
         child: BottomNavigationBar(
-          selectedItemColor: ColorManager.primary,
-          unselectedItemColor: ColorManager.grey,
+          selectedItemColor: ColorManager.headersTextColor,
+          unselectedItemColor: ColorManager.hintTextColor,
           currentIndex: _currentIndex,
+          backgroundColor: ColorManager.thirdAccentColor,
           onTap: onTap,
           items: [
             BottomNavigationBarItem(
-                icon: const Icon(Icons.home_outlined),
-                label: AppStrings.home.tr()),
+                icon: SvgPicture.asset(ImageAssets.searchTripsInactiveIcon),
+                label: AppStrings.searchTrips.tr(),
+                activeIcon:
+                    SvgPicture.asset(ImageAssets.searchTripsActiveIcon)),
             BottomNavigationBarItem(
-                icon: const Icon(Icons.search), label: AppStrings.search.tr()),
+                icon: SvgPicture.asset(ImageAssets.myTripsInactiveIcon),
+                label: AppStrings.myTrips.tr(),
+                activeIcon: SvgPicture.asset(ImageAssets.myTripsActiveIcon)),
             BottomNavigationBarItem(
-                icon: const Icon(Icons.notifications),
-                label: AppStrings.notifications.tr()),
-            BottomNavigationBarItem(
-                icon: const Icon(Icons.settings),
-                label: AppStrings.settings.tr()),
+                icon: SvgPicture.asset(ImageAssets.profileInactiveIcon),
+                label: AppStrings.myProfile.tr(),
+                activeIcon: SvgPicture.asset(ImageAssets.profileActiveIcon)),
           ],
         ),
       ),

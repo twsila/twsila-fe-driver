@@ -40,19 +40,32 @@ class ImageAssets {
 
   //no service added
 
-  static const String noServiceAdded = "$imagePath/no_service_added_graphic.png";
+  static const String noServiceAdded =
+      "$imagePath/no_service_added_graphic.png";
 
   //captain registration
   static const String personIcon = "$imagePath/person_icon.png";
-
 
   //service Registration
   static const String personDocumentIcon = "$imagePath/person_icon.png";
   static const String documentIcon = "$imagePath/personal_document_ic.png";
   static const String photosIcon = "$imagePath/photos_ic.png";
+  static const String appliedWaiting = "$imagePath/applied_waiting.svg";
 
+  //main
 
-
+  static const String profileActiveIcon =
+      "$imagePath/profile_active_nav_icon.svg";
+  static const String profileInactiveIcon =
+      "$imagePath/profile_inactive_nav_icon.svg";
+  static const String myTripsInactiveIcon =
+      "$imagePath/my_trips_inactive_nav_icon.svg";
+  static const String myTripsActiveIcon =
+      "$imagePath/my_trips_active_nav_icon.svg";
+  static const String searchTripsActiveIcon =
+      "$imagePath/search_active_nav_icon.svg";
+  static const String searchTripsInactiveIcon =
+      "$imagePath/search_inactive_nav_icon.svg";
 }
 
 class JsonAssets {

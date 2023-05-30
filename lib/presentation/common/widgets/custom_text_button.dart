@@ -53,7 +53,7 @@ class _CustomTextButtonState extends State<CustomTextButton> {
                 ? widget.onPressed != null
                     ? ColorManager.primary
                     : ColorManager.disableBackgroundColor
-                : widget.backgroundColor,
+                : widget.backgroundColor ?? ColorManager.primary,
             border: Border.all(
                 color: widget.borderColor ??
                     ((widget.onPressed != null)
@@ -66,9 +66,11 @@ class _CustomTextButtonState extends State<CustomTextButton> {
           children: [
             Text(widget.text,
                 style: getBoldStyle(
-                    color: widget.onPressed != null
-                        ? ColorManager.buttonTextColor
-                        : ColorManager.disableTextColor,
+                    color: widget.isWaitToEnable
+                        ? widget.onPressed != null
+                            ? ColorManager.buttonTextColor
+                            : ColorManager.disableTextColor
+                        : ColorManager.buttonTextColor,
                     fontSize: widget.fontSize ?? FontSize.s16)),
             const SizedBox(
               width: AppSize.s12,

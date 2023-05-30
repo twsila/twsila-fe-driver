@@ -299,6 +299,16 @@ class AppStrings {
   static const serviceRegistrationAgreement = 'service_registration_agreement';
   static const applyRequest = 'apply_request';
 
+  static const requestAppliedSuccessfully = 'request_applied_successfully';
+  static const thankYouForRegisterWithTwsilaMessage = 'thank_your_reg_with_twsila_message';
+  static const backToMainScreen = 'back_to_main_screen';
+
+
+  //main
+  static const myProfile = 'my_profile';
+  static const myTrips = 'my_trips';
+  static const searchTrips = 'search_trips';
+
 
 
 
