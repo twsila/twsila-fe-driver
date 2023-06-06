@@ -104,7 +104,8 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                 child: CustomTextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep);
-                    }, text: AppStrings.continueStr.tr()))
+                    },
+                    text: AppStrings.continueStr.tr()))
           ]),
         );
       },
@@ -267,28 +268,20 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                 });
               },
             ), //
-            Row(
-              children: [
-                Text('${AppStrings.iReadAndAgreeWith.tr()} ',
+            Expanded(
+              child: Wrap(
+                children: [
+                  Text(
+                    '${AppStrings.iReadAndAgreeWith.tr()} ${AppStrings.termsAndConditions.tr()} ${AppStrings.tawsilaApplication.tr()}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: FontSize.s14,
-                        color: ColorManager.headersTextColor,
-                        fontWeight: FontWeight.normal)),
-                Text(
-                  '${AppStrings.termsAndConditions.tr()} ',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: FontSize.s14,
-                      color: ColorManager.primary,
-                      fontWeight: FontWeight.normal),
-                ),
-                Text(
-                  AppStrings.tawsilaApplication.tr(),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: FontSize.s14,
-                      color: ColorManager.headersTextColor,
-                      fontWeight: FontWeight.normal),
-                ),
-              ],
+                          fontSize: FontSize.s16,
+                          color: ColorManager.headersTextColor,
+                        ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
             ), //TextSizedBox
           ], //<Widget>[]
         ), //Row

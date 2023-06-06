@@ -281,6 +281,7 @@ class AppStrings {
   static const String carOwnerIdPhoto = "car_owner_id_photo";
   static const String carDriverIdPhoto = "car_driver_id_photo";
   static const String carDriverLicPhoto = "car_driver_lic_photo";
+  static const String noUserFound = "no_user_found";
 
   static const uploadCarPhotos = 'upload_car_photos';
   static const uploadCarDocumentPhoto = 'upload_car_document_photos';

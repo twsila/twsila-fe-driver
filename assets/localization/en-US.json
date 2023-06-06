@@ -293,5 +293,6 @@
   "logout": "Log out",
   "pending": "Pending",
   "approved": "Approved",
-  "rejected": "Rejected"
+  "rejected": "Rejected",
+  "no_user_found":"No user found with this data"
 }

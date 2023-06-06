@@ -128,14 +128,16 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
           if (driver != null) {
             Navigator.pushNamed(
               context,
-              Routes.mainRoute,
+              Routes.captainRegisterRoute,
             );
           }
         }
         if (state is LoginFailState) {
           if (state.errorCode == ResponseCode.NOT_FOUND.toString()) {
-            Navigator.pushNamed(context, Routes.captainRegisterRoute);
             // Navigator.pushNamed(context, Routes.noServicesAdded);
+            CustomDialog(context).showErrorDialog('', '', AppStrings.noUserFound.tr(),onBtnPressed: (){
+              Navigator.pop(context);
+            });
           } else {
             CustomDialog(context).showErrorDialog('', '', state.message);
           }

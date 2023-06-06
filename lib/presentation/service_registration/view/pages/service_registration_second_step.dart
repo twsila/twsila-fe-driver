@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/CustomAutoFullSms.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
+import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 
 import '../../../../app/app_prefs.dart';
 import '../../../../app/di.dart';
@@ -250,7 +251,9 @@ class _ServiceRegistrationSecondStepState
                     fontSize: FontSize.s10),
                 CustomTextButton(
                   text: AppStrings.applyRequest.tr(),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.mainRoute);
+                  },
                 )
               ],
             ),
