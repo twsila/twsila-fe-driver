@@ -6,6 +6,7 @@ import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
+import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../utils/resources/color_manager.dart';
@@ -101,7 +102,9 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                 left: 0,
                 right: 0,
                 child: CustomTextButton(
-                    onPressed: () {}, text: AppStrings.save.tr()))
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep);
+                    }, text: AppStrings.continueStr.tr()))
           ]),
         );
       },

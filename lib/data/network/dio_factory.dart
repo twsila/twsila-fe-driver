@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:taxi_for_you/app/di.dart';
+import 'package:taxi_for_you/domain/model/driver_model.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/constants.dart';
@@ -24,10 +26,8 @@ class DioFactory {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
       AUTHORIZATION: await _appPreferences.isUserLoggedIn()
-          ? _appPreferences.getCachedDriver() != null
-              ? "Bearer ${_appPreferences.getCachedDriver()!.token}"
-              : Constants.token
-          : Constants.token,
+          ? "Bearer " + (_appPreferences.getCachedDriver()?.token ?? "")
+          : "",
       DEFAULT_LANGUAGE: language
     };
 
@@ -36,6 +36,8 @@ class DioFactory {
         headers: headers,
         receiveTimeout: Constants.apiTimeOut,
         sendTimeout: Constants.apiTimeOut);
+
+    dio.interceptors.add(TokenInterceptor());
 
     if (!kReleaseMode) {
       // its debug mode so print app logs
@@ -47,5 +49,19 @@ class DioFactory {
     }
 
     return dio;
+  }
+}
+
+class TokenInterceptor extends Interceptor {
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+
+  @override
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
+    String token = await  _appPreferences.isUserLoggedIn()
+        ? "Bearer " + (_appPreferences.getCachedDriver()?.token ?? "")
+        : "";
+    options.headers[AUTHORIZATION] = token;
+    super.onRequest(options, handler);
   }
 }

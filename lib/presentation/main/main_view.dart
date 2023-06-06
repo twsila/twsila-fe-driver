@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/presentation/main/pages/home/view/home_page.dart';
+import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_view.dart';
 import 'package:taxi_for_you/presentation/main/pages/notifications/notifications_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/search/search_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/settings/settings_page.dart';
@@ -20,16 +21,14 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   List<Widget> pages = [
-    HomePage(),
-    SearchPage(),
-    NotificationsPage(),
-    SettingsPage()
+    MyProfilePage(),
+    MyProfilePage(),
+    MyProfilePage(),
   ];
   List<String> titles = [
-    AppStrings.home.tr(),
-    AppStrings.search.tr(),
-    AppStrings.notifications.tr(),
-    AppStrings.settings.tr(),
+    AppStrings.myProfile.tr(),
+    AppStrings.myTrips.tr(),
+    AppStrings.searchTrips.tr(),
   ];
 
   var _title = AppStrings.home.tr();
@@ -38,9 +37,6 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_title, style: Theme.of(context).textTheme.titleSmall),
-      ),
       body: pages[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(boxShadow: [

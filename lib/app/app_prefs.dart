@@ -56,8 +56,8 @@ class AppPreferences {
   Future<bool> setDriver(Driver driver) async {
     setUserLoggedIn();
     String driverStr = json.encode(driver);
-   await _sharedPreferences.setString(DRIVER_MODEL, driverStr);
-   return true;
+    await _sharedPreferences.setString(DRIVER_MODEL, driverStr);
+    return true;
   }
 
   //Selected country
@@ -71,7 +71,9 @@ class AppPreferences {
 
   Driver? getCachedDriver() {
     Map<String, dynamic> driverMap =
-        jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!);
+        _sharedPreferences.getString(DRIVER_MODEL) != null
+            ? jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!)
+            : {};
     return Driver.fromJson(driverMap);
   }
 

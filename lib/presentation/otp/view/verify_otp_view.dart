@@ -11,6 +11,7 @@ import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
+import '../../../domain/model/driver_model.dart';
 import '../../../utils/helpers/language_helper.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
@@ -57,7 +58,9 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     // ToastHandler(context)
     //     .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
     BlocProvider.of<VerifyOtpBloc>(context).add(MakeLoginEvent(
-        widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
+        /*'1234567890'*/
+        widget.mobileNumberForApi,
+        _appPreferences.getAppLanguage()));
 
     super.initState();
   }
@@ -90,7 +93,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 
   Widget _getContentWidget(BuildContext context) {
     return BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is VerifyOtpLoading) {
           startLoading();
         } else {
@@ -120,18 +123,19 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
         }
         if (state is LoginSuccessState) {
           _appPreferences.setUserLoggedIn();
-          _appPreferences.setDriver(state.driver);
-          if (_appPreferences.getCachedDriver() != null) {
+          await _appPreferences.setDriver(state.driver);
+          Driver? driver = _appPreferences.getCachedDriver();
+          if (driver != null) {
             Navigator.pushNamed(
               context,
-              Routes.noServicesAdded,
+              Routes.mainRoute,
             );
           }
         }
         if (state is LoginFailState) {
           if (state.errorCode == ResponseCode.NOT_FOUND.toString()) {
-            // Navigator.pushNamed(context, Routes.captainRegisterRoute);
-            Navigator.pushNamed(context, Routes.noServicesAdded);
+            Navigator.pushNamed(context, Routes.captainRegisterRoute);
+            // Navigator.pushNamed(context, Routes.noServicesAdded);
           } else {
             CustomDialog(context).showErrorDialog('', '', state.message);
           }

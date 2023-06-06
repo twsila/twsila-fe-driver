@@ -66,6 +66,19 @@ class ImageAssets {
       "$imagePath/search_active_nav_icon.svg";
   static const String searchTripsInactiveIcon =
       "$imagePath/search_inactive_nav_icon.svg";
+
+  //my profile
+
+  static const String MyServicesIc = "$imagePath/ic_myservices.svg";
+  static const String inviteFriends = "$imagePath/ic_invitefriends.svg";
+  static const String walletAndRevenueIc = "$imagePath/ic_walletandrevenue.svg";
+  static const String getHelpIc = "$imagePath/ic_gethelp.svg";
+  static const String logout = "$imagePath/ic_logout.svg";
+  static const String placeholeder = "$imagePath/img.png";
+
+
+
+
 }
 
 class JsonAssets {

@@ -280,5 +280,13 @@
   "back_to_main_screen": "العوده للصفحة الرئيسية",
   "my_profile": "صفحتي",
   "my_trips": "رحلاتي",
-  "search_trips": "بحث"
+  "search_trips": "بحث",
+  "change_my_profile": "تعديل الملف الشخصي",
+  "wallet_and_revenue": "المحفظة و الأرباح",
+  "invite_friends_and_win": "إدع اصدقائك واربح",
+  "get_help": "احصل علي مساعدة",
+  "logout": "تسجيل خروج",
+  "pending": "تحت المراجعة",
+  "approved": "تمت الموافقة",
+  "rejected": "مرفوضة"
 }

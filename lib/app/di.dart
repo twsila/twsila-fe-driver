@@ -5,6 +5,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 import 'package:taxi_for_you/presentation/captain_registration/view/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/immediate_trip/viewmodel/immediate_trip_viewmodel.dart';
@@ -75,6 +76,8 @@ Future<void> initAppModule() async {
       () => RegistrationServiceUseCase(instance()));
   instance.registerFactory<CarBrandsAndModelsUseCase>(
       () => CarBrandsAndModelsUseCase(instance()));
+  instance.registerFactory<ServiceStatusUseCase>(
+      () => ServiceStatusUseCase(instance()));
 }
 
 initLoginModule() {

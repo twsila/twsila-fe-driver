@@ -212,6 +212,29 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
+  Future<ServiceRegisterModel> serviceStatus(userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'userId': userId};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ServiceRegisterModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/drivers/registration-status',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ServiceRegisterModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<HomeResponse> getHomeData() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

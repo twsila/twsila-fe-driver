@@ -3,6 +3,7 @@ import 'package:taxi_for_you/presentation/captain_registration/view/captain_regi
 import 'package:taxi_for_you/presentation/categories/categories_view.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
 import 'package:taxi_for_you/presentation/goods_register/view/goods_register_view.dart';
+import 'package:taxi_for_you/presentation/my_serivces/view/my_services_view.dart';
 import 'package:taxi_for_you/presentation/no_service_added/view/no_service_added_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_applyed_success_view.dart';
@@ -54,8 +55,9 @@ class Routes {
       "/serviceRegistrationFirstStep";
   static const String serviceRegistrationSecondStep =
       "/serviceRegistrationSecondStep";
-  static const String serviceAppliedSuccessfullyView = "/serviceAppliedSuccessfullyView";
-
+  static const String serviceAppliedSuccessfullyView =
+      "/serviceAppliedSuccessfullyView";
+  static const String myServices = "/myServices";
 }
 
 class RouteGenerator {
@@ -81,6 +83,8 @@ class RouteGenerator {
         initServiceRegistrationModule();
         return MaterialPageRoute(
             builder: (_) => const ServiceRegistrationSecondStep());
+      case Routes.myServices:
+        return MaterialPageRoute(builder: (_) => const MyServicesView());
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
       case Routes.captainRegisterRoute:
@@ -104,7 +108,8 @@ class RouteGenerator {
       case Routes.noServicesAdded:
         return MaterialPageRoute(builder: (_) => const NoServiceAddedView());
       case Routes.serviceAppliedSuccessfullyView:
-        return MaterialPageRoute(builder: (_) => const ServiceAppliedSuccessView());
+        return MaterialPageRoute(
+            builder: (_) => const ServiceAppliedSuccessView());
       case Routes.pendingApprovalRoute:
         return MaterialPageRoute(builder: (_) => const PendingApprovalDriver());
       case Routes.tripsRoute:

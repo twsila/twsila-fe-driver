@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
+import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
 import '../../domain/model/registration_services_response.dart';
@@ -21,6 +22,8 @@ abstract class RemoteDataSource {
   Future<CarBrandAndModelsModel> carBrandAndModel();
 
   Future<AuthenticationResponse> register(RegisterRequest registerRequest);
+
+  Future<ServiceRegisterModel> servicesStatus(String userId);
 
   Future<ForgotPasswordResponse> forgotPassword(String email);
 
@@ -89,5 +92,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<CarBrandAndModelsModel> carBrandAndModel() async {
     return await _appServiceClient.carBrandsAndModels();
+  }
+
+  @override
+  Future<ServiceRegisterModel> servicesStatus(String userId) async {
+    return await _appServiceClient.serviceStatus(userId);
   }
 }

@@ -73,7 +73,7 @@ class _SplashViewState extends State<SplashView> {
               // Navigator.pushReplacementNamed(
               //     context, Routes.selectRegistrationType)
               Navigator.pushReplacementNamed(
-                  context, Routes.serviceAppliedSuccessfullyView)
+                  context, Routes.selectRegistrationType)
             }
         });
   }

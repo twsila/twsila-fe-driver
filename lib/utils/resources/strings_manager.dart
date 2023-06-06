@@ -119,7 +119,6 @@ class AppStrings {
   static const sanitationCisterns = 'sanitation_cisterns';
   static const freezer = 'freezer';
 
-
   static const doYouHaveLaborAvailable = 'do_you_have_labor';
 
   static const now = "now";
@@ -153,7 +152,6 @@ class AppStrings {
   static const String bus7passengers = "bus_7";
   static const String bus15passengers = "bus_15";
   static const String bus25passengers = "bus_25";
-
 
   static const String registrationBottomHint = "registration_bottom_hint";
   static const String termsAndConditions = "terms_and_conditions";
@@ -222,8 +220,6 @@ class AppStrings {
   static const wantToAddAndManageMultipleCars =
       "want_to_add_and_manage_multiple_cars";
 
-
-
   static const welcomeInto = "welcome_into";
   static const twsela = "tawsela";
   static const enterPhoneNumberToContinue = "enter_phone_to_continue";
@@ -233,8 +229,6 @@ class AppStrings {
   static const saudiArabia = "saudi_arabia";
   static const egypt = "egypt";
 
-
-
   static const enterVerificationCode = 'enter_verification_code';
   static const enterHereSentCodeForNumber = 'enter_here_sent_code_for_number';
   static const codeWillSentAround = 'code_will_sent_around';
@@ -243,12 +237,12 @@ class AppStrings {
   static const resendCode = 'resend_code';
   static const registeredSuccessfully = 'registered_successfully';
 
-
   //no service added
 
   static const myServices = 'my_services';
   static const youDidntAddAnySerivces = 'you_didnt_add_any_service';
-  static const startNowAndAddYourCarIntoApplication = 'start_now_and_add_your_car_into_application';
+  static const startNowAndAddYourCarIntoApplication =
+      'start_now_and_add_your_car_into_application';
   static const addService = 'add_service';
 
   //captain registration
@@ -266,9 +260,7 @@ class AppStrings {
   static const tawsilaApplication = 'tawsila_app';
   static const save = 'save';
 
-
   //service registration
-
 
   static const stepOne = 'step_one';
   static const stepTwo = 'step_two';
@@ -283,7 +275,6 @@ class AppStrings {
   static const String carModelAndBrand = "car_model_and_brand";
   static const String carNotes = "car_notes";
   static const String carNotesHint = "car_notes_hint";
-
 
   static const String addPhotos = "add_photos";
   static const String documentPhoto = "document_photo";
@@ -300,17 +291,28 @@ class AppStrings {
   static const applyRequest = 'apply_request';
 
   static const requestAppliedSuccessfully = 'request_applied_successfully';
-  static const thankYouForRegisterWithTwsilaMessage = 'thank_your_reg_with_twsila_message';
+  static const thankYouForRegisterWithTwsilaMessage =
+      'thank_your_reg_with_twsila_message';
   static const backToMainScreen = 'back_to_main_screen';
-
 
   //main
   static const myProfile = 'my_profile';
   static const myTrips = 'my_trips';
   static const searchTrips = 'search_trips';
 
+  //myProfile
 
+  static const changeMyProfile = 'change_my_profile';
 
+  // static const myServices = 'my_trips';
+  static const WalletAndRevenue = 'wallet_and_revenue';
+  static const inviteFriendsAndWin = 'invite_friends_and_win';
+  static const getHelp = 'get_help';
+  // static const logout = 'search_trips';
 
+  //my services
+  static const pending = 'pending';
+  static const approved = 'approved';
+  static const rejected = 'rejected';
 
 }

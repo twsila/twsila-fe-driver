@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
@@ -7,6 +8,7 @@ import '../../data/network/failure.dart';
 import '../../data/network/requests.dart';
 import '../model/generate_otp_model.dart';
 import '../model/models.dart';
+import '../model/service_status_model.dart';
 import '../model/verify_otp_model.dart';
 
 abstract class Repository {
@@ -23,11 +25,11 @@ abstract class Repository {
 
   Future<Either<Failure, HomeObject>> getHomeData();
 
-  Future<Either<Failure, StoreDetails>> getStoreDetails();
-
   Future<Either<Failure, GenerateOtpModel>> generateOtp(
       GenerateOTPRequest otpRequest);
 
   Future<Either<Failure, VerifyOtpModel>> verifyOtp(
       VerifyOTPRequest verifyOTPRequest);
+
+  Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
 }

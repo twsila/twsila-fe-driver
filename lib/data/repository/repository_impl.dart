@@ -8,6 +8,7 @@ import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
+import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/vehicleModel.dart';
 import 'package:taxi_for_you/utils/helpers/cast_helpers.dart';
 
@@ -266,9 +267,31 @@ class RepositoryImpl implements Repository {
         final response = await _remoteDataSource.carBrandAndModel();
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-
-
           return Right(response.result);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(
+      String userId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.servicesStatus(userId);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));
