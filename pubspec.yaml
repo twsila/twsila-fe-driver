@@ -16,6 +16,9 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 #to generate auto impl code for model and api requests : flutter packages pub run build_runner build --delete-conflicting-outputs
+#BUILDING APK COMMANDS
+#flutter build apk --obfuscate --split-debug-info=Sanlam/lib/main.dart
+#flutter build apk --no-tree-shake-icons
 version: 1.0.3
 
 environment:
