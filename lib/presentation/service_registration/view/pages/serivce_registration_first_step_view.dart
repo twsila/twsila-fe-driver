@@ -85,7 +85,7 @@ class _ServiceRegistrationFirstStepViewState
           margin: EdgeInsets.only(
               left: AppMargin.m16, right: AppMargin.m16, top: AppMargin.m16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
                 onTap: () {
@@ -117,21 +117,19 @@ class _ServiceRegistrationFirstStepViewState
               ),
               serviceModelList != null
                   ? Container(
-                      child: Expanded(
-                        child: ServiceCard(
-                          serviceTypeModelList: this.serviceModelList!,
-                          showServiceCarTypes: false,
-                          selectedService: (ServiceTypeModel service) {
-                            setState(() {
-                              selectedService = service;
-                            });
-                          },
-                          selectedVehicleType: (VehicleModel vehicleType) {
-                            setState(() {
-                              selectedVehicleType = vehicleType;
-                            });
-                          },
-                        ),
+                      child: ServiceCard(
+                        serviceTypeModelList: this.serviceModelList!,
+                        showServiceCarTypes: false,
+                        selectedService: (ServiceTypeModel service) {
+                          setState(() {
+                            selectedService = service;
+                          });
+                        },
+                        selectedVehicleType: (VehicleModel vehicleType) {
+                          setState(() {
+                            selectedVehicleType = vehicleType;
+                          });
+                        },
                       ),
                     )
                   : Center(
@@ -139,6 +137,7 @@ class _ServiceRegistrationFirstStepViewState
                         color: ColorManager.primary,
                       ),
                     ),
+              Spacer(),
               CustomTextButton(
                 text: AppStrings.continueStr.tr(),
                 icon: Icon(

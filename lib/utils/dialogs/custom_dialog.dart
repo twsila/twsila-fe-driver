@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 
+import '../resources/values_manager.dart';
+
 class CustomDialog {
   BuildContext context;
 
@@ -17,7 +19,7 @@ class CustomDialog {
       body: Center(
         child: Text(
           body,
-          style: Theme.of(context).textTheme.displayLarge,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: AppSize.s16),
         ),
       ),
       title: title ?? "",

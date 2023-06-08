@@ -128,7 +128,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
           if (driver != null) {
             Navigator.pushNamed(
               context,
-              Routes.captainRegisterRoute,
+              Routes.serviceRegistrationFirstStep,
             );
           }
         }
