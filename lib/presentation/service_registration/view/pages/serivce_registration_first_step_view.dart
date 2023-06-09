@@ -125,7 +125,7 @@ class _ServiceRegistrationFirstStepViewState
                             selectedService = service;
                           });
                         },
-                        selectedVehicleType: (VehicleModel vehicleType) {
+                        selectedVehicleType: (VehicleModel? vehicleType) {
                           setState(() {
                             selectedVehicleType = vehicleType;
                           });

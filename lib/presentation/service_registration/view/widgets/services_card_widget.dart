@@ -18,7 +18,7 @@ class ServiceCard extends StatefulWidget {
   final List<ServiceTypeModel> serviceTypeModelList;
   final bool showServiceCarTypes;
   Function(ServiceTypeModel service) selectedService;
-  Function(VehicleModel vehcileType) selectedVehicleType;
+  Function(VehicleModel? vehcileType) selectedVehicleType;
 
   ServiceCard(
       {Key? key,
@@ -35,6 +35,7 @@ class ServiceCard extends StatefulWidget {
 class _ServiceCardState extends State<ServiceCard> {
   ServiceTypeModel? selectedService;
   VehicleModel? selectedVehicleModel;
+  bool refreshVehicleTypes = false;
 
   @override
   void initState() {
@@ -73,6 +74,10 @@ class _ServiceCardState extends State<ServiceCard> {
                               selectedService =
                                   widget.serviceTypeModelList[index];
                               selectedService!.isSelected = true;
+                              if (selectedVehicleModel != null) {
+                                selectedVehicleModel!.isSelected = false;
+                                widget.selectedVehicleType(null);
+                              }
                             } else {
                               selectedService =
                                   widget.serviceTypeModelList[index];
@@ -199,7 +204,7 @@ class _ServiceCardState extends State<ServiceCard> {
                                         .titleMedium
                                         ?.copyWith(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: FontSize.s14,
+                                            fontSize: FontSize.s12,
                                             color:
                                                 ColorManager.headersTextColor),
                                   )
