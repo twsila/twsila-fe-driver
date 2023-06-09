@@ -294,5 +294,8 @@
   "pending": "Pending",
   "approved": "Approved",
   "rejected": "Rejected",
-  "no_user_found":"No user found with this data"
+  "no_user_found": "No user found with this data",
+  "are_you_sure_you_want_to_logout": "are you sure you want to logout",
+  "confirm_logout": "confirm logout",
+  "cancel": "Cancel"
 }

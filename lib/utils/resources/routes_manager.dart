@@ -81,7 +81,6 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => const CaptainRegistrationView());
       case Routes.mainRoute:
-        initHomeModule();
         return MaterialPageRoute(builder: (_) => const MainView());
       case Routes.verifyOtpRoute:
         final args = settings.arguments as VerifyArguments;

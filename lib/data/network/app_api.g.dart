@@ -235,48 +235,33 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<HomeResponse> getHomeData() async {
+  Future<LogoutModel> logout(
+    userId,
+    registrationId,
+    language,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = {
+      'userId': userId,
+      'registrationId': registrationId,
+      'language': language,
+    };
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<HomeResponse>(Options(
-      method: 'GET',
+        .fetch<Map<String, dynamic>>(_setStreamType<LogoutModel>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/home',
+              '/drivers/logout',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = HomeResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<StoreDetailsResponse> getStoreDetails() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<StoreDetailsResponse>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/storeDetails/1',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = StoreDetailsResponse.fromJson(_result.data!);
+    final value = LogoutModel.fromJson(_result.data!);
     return value;
   }
 

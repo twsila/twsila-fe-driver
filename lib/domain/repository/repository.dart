@@ -7,6 +7,7 @@ import 'package:taxi_for_you/domain/model/driver_model.dart';
 import '../../data/network/failure.dart';
 import '../../data/network/requests.dart';
 import '../model/generate_otp_model.dart';
+import '../model/logout_model.dart';
 import '../model/models.dart';
 import '../model/service_status_model.dart';
 import '../model/verify_otp_model.dart';
@@ -23,7 +24,6 @@ abstract class Repository {
   Future<Either<Failure, Authentication>> register(
       RegisterRequest registerRequest);
 
-  Future<Either<Failure, HomeObject>> getHomeData();
 
   Future<Either<Failure, GenerateOtpModel>> generateOtp(
       GenerateOTPRequest otpRequest);
@@ -32,4 +32,6 @@ abstract class Repository {
       VerifyOTPRequest verifyOTPRequest);
 
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
+
+  Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 }

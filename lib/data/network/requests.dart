@@ -41,3 +41,11 @@ class VerifyOTPRequest {
 
   VerifyOTPRequest(this.otp, this.mobileNumber);
 }
+
+class LogoutRequest {
+  int userId;
+  String registrationId;
+  String language;
+
+  LogoutRequest(this.userId, this.registrationId, this.language);
+}

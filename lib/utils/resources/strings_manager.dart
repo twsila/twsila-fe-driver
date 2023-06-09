@@ -316,4 +316,11 @@ class AppStrings {
   static const approved = 'approved';
   static const rejected = 'rejected';
 
+
+  //logout
+  static const areYouSureYouWantToLogout = 'are_you_sure_you_want_to_logout';
+  static const confirmLogout = 'confirm_logout';
+  static const cancel = 'cancel';
+
+
 }

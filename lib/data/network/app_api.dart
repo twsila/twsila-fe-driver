@@ -5,6 +5,7 @@ import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
 import '../../app/constants.dart';
 import '../../domain/model/car_brand_models_model.dart';
+import '../../domain/model/logout_model.dart';
 import '../../domain/model/registration_services_response.dart';
 import '../../domain/model/service_status_model.dart';
 import '../response/responses.dart';
@@ -54,9 +55,10 @@ abstract class AppServiceClient {
   @POST("/drivers/registration-status")
   Future<ServiceRegisterModel> serviceStatus(@Field("userId") String userId);
 
-  @GET("/home")
-  Future<HomeResponse> getHomeData();
-
-  @GET("/storeDetails/1")
-  Future<StoreDetailsResponse> getStoreDetails();
+  @POST("/drivers/logout")
+  Future<LogoutModel> logout(
+    @Field("userId") int userId,
+    @Field("registrationId") String registrationId,
+    @Field("language") String language,
+  );
 }

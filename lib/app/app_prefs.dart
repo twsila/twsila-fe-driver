@@ -71,10 +71,16 @@ class AppPreferences {
 
   Driver? getCachedDriver() {
     Map<String, dynamic> driverMap =
-        _sharedPreferences.getString(DRIVER_MODEL) != null
+        _sharedPreferences.getString(DRIVER_MODEL) != null &&
+                _sharedPreferences.getString(DRIVER_MODEL) != ""
             ? jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!)
             : {};
     return Driver.fromJson(driverMap);
+  }
+
+  bool? removeCachedDriver() {
+    _sharedPreferences.setString(DRIVER_MODEL, "");
+    return true;
   }
 
   // on boarding
@@ -92,6 +98,10 @@ class AppPreferences {
 
   Future<void> setUserLoggedIn() async {
     _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);
+  }
+
+  Future<void> setUserLoggedOut() async {
+    _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, false);
   }
 
   Future<bool> isUserLoggedIn() async {

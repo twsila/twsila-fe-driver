@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
+import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
@@ -25,11 +26,9 @@ abstract class RemoteDataSource {
 
   Future<ServiceRegisterModel> servicesStatus(String userId);
 
+  Future<LogoutModel> logout(LogoutRequest logoutRequest);
+
   Future<ForgotPasswordResponse> forgotPassword(String email);
-
-  Future<HomeResponse> getHomeData();
-
-  Future<StoreDetailsResponse> getStoreDetails();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -62,16 +61,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<HomeResponse> getHomeData() async {
-    return await _appServiceClient.getHomeData();
-  }
-
-  @override
-  Future<StoreDetailsResponse> getStoreDetails() async {
-    return await _appServiceClient.getStoreDetails();
-  }
-
-  @override
   Future<GenerateOtpModel> generateOtp(
       GenerateOTPRequest generateOTPRequest) async {
     return await _appServiceClient
@@ -97,5 +86,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<ServiceRegisterModel> servicesStatus(String userId) async {
     return await _appServiceClient.serviceStatus(userId);
+  }
+
+  @override
+  Future<LogoutModel> logout(LogoutRequest logoutRequest) async {
+    return await _appServiceClient.logout(logoutRequest.userId,
+        logoutRequest.registrationId, logoutRequest.language);
   }
 }

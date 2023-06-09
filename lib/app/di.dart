@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
@@ -19,11 +20,9 @@ import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/generate_otp_usecase.dart';
-import '../domain/usecase/home_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/persons_register_usecase.dart';
 import '../presentation/login/login_viewmodel.dart';
-import '../presentation/main/pages/home/viewmodel/home_viewmodel.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -74,6 +73,7 @@ Future<void> initAppModule() async {
       () => CarBrandsAndModelsUseCase(instance()));
   instance.registerFactory<ServiceStatusUseCase>(
       () => ServiceStatusUseCase(instance()));
+  instance.registerFactory<LogoutUseCase>(() => LogoutUseCase(instance()));
 }
 
 initLoginModule() {
@@ -93,13 +93,6 @@ initCaptainRegisterModule() {
     instance.registerFactory<CaptainRegistrationView>(
         () => const CaptainRegistrationView());
     instance.registerFactory<ImagePicker>(() => ImagePicker());
-  }
-}
-
-initHomeModule() {
-  if (!GetIt.I.isRegistered<HomeUseCase>()) {
-    instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
-    instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
   }
 }
 

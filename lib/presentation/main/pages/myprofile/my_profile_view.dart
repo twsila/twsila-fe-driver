@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/widget/menu_widget.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
@@ -49,67 +52,106 @@ class _MyProfilePageState extends State<MyProfilePage> {
     );
   }
 
+  void startLoading() {
+    setState(() {
+      _displayLoadingIndicator = true;
+    });
+  }
+
+  void stopLoading() {
+    setState(() {
+      _displayLoadingIndicator = false;
+    });
+  }
+
   Widget _getContentWidget(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(AppMargin.m12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            AppStrings.myProfile.tr(),
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: ColorManager.headersTextColor, fontSize: FontSize.s28),
+    return BlocConsumer<MyProfileBloc, MyProfileState>(
+      listener: (context, state) {
+        if (state is MyProfileLoading) {
+          startLoading();
+        } else {
+          stopLoading();
+        }
+        if (state is LoggedOutSuccessfully) {
+          Navigator.pushReplacementNamed(
+              context, Routes.selectRegistrationType);
+        }
+      },
+      builder: (context, state) {
+        return Container(
+          margin: EdgeInsets.all(AppMargin.m12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                AppStrings.myProfile.tr(),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: ColorManager.headersTextColor,
+                    fontSize: FontSize.s28),
+              ),
+              _profileDataHeader(),
+              MenuWidget(
+                menuImage: ImageAssets.MyServicesIc,
+                menuLabel: AppStrings.myServices.tr(),
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.myServices);
+                },
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 16),
+                child: const Divider(),
+              ),
+              MenuWidget(
+                menuImage: ImageAssets.walletAndRevenueIc,
+                menuLabel: AppStrings.WalletAndRevenue.tr(),
+                onPressed: () {},
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 16),
+                child: const Divider(),
+              ),
+              MenuWidget(
+                menuImage: ImageAssets.inviteFriends,
+                menuLabel: AppStrings.inviteFriendsAndWin.tr(),
+                onPressed: () {},
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 16),
+                child: const Divider(),
+              ),
+              MenuWidget(
+                menuImage: ImageAssets.getHelpIc,
+                menuLabel: AppStrings.getHelp.tr(),
+                onPressed: () {},
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 16),
+                child: const Divider(),
+              ),
+              MenuWidget(
+                menuImage: ImageAssets.logout,
+                menuLabel: AppStrings.logout.tr(),
+                onPressed: () {
+                  CustomDialog(context).showCupertinoDialog(
+                      AppStrings.logout.tr(),
+                      AppStrings.areYouSureYouWantToLogout.tr(),
+                      AppStrings.confirmLogout.tr(),
+                      AppStrings.cancel.tr(), () {
+                    BlocProvider.of<MyProfileBloc>(context).add(logoutEvent());
+                    Navigator.pop(context);
+                  }, () {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 16),
+                child: const Divider(),
+              ),
+            ],
           ),
-          _profileDataHeader(),
-          MenuWidget(
-            menuImage: ImageAssets.MyServicesIc,
-            menuLabel: AppStrings.myServices.tr(),
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.myServices);
-            },
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: const Divider(),
-          ),
-          MenuWidget(
-            menuImage: ImageAssets.walletAndRevenueIc,
-            menuLabel: AppStrings.WalletAndRevenue.tr(),
-            onPressed: () {},
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: const Divider(),
-          ),
-          MenuWidget(
-            menuImage: ImageAssets.inviteFriends,
-            menuLabel: AppStrings.inviteFriendsAndWin.tr(),
-            onPressed: () {},
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: const Divider(),
-          ),
-          MenuWidget(
-            menuImage: ImageAssets.getHelpIc,
-            menuLabel: AppStrings.getHelp.tr(),
-            onPressed: () {},
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: const Divider(),
-          ),
-          MenuWidget(
-            menuImage: ImageAssets.logout,
-            menuLabel: AppStrings.logout.tr(),
-            onPressed: () {},
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: const Divider(),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -161,80 +203,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ),
           ],
         )
-      ],
-    );
-  }
-
-  Widget _MenuList() {
-    return Column(
-      children: [
-        SizedBox(
-          child: ListTile(
-            leading: SvgPicture.asset(ImageAssets.MyServicesIc),
-            title: Text(
-              AppStrings.myServices.tr(),
-              textScaleFactor: 1.5,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: ColorManager.headersTextColor, fontSize: FontSize.s16),
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_sharp,
-              color: ColorManager.headersTextColor,
-            ),
-          ),
-        ),
-        ListTile(
-          leading: SvgPicture.asset(ImageAssets.MyServicesIc),
-          title: Text(
-            AppStrings.myServices.tr(),
-            textScaleFactor: 1.5,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: ColorManager.headersTextColor, fontSize: FontSize.s16),
-          ),
-          trailing: Icon(
-            Icons.arrow_forward_ios_sharp,
-            color: ColorManager.headersTextColor,
-          ),
-        ),
-        ListTile(
-          leading: SvgPicture.asset(ImageAssets.MyServicesIc),
-          title: Text(
-            AppStrings.myServices.tr(),
-            textScaleFactor: 1.5,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: ColorManager.headersTextColor, fontSize: FontSize.s16),
-          ),
-          trailing: Icon(
-            Icons.arrow_forward_ios_sharp,
-            color: ColorManager.headersTextColor,
-          ),
-        ),
-        ListTile(
-          leading: SvgPicture.asset(ImageAssets.MyServicesIc),
-          title: Text(
-            AppStrings.myServices.tr(),
-            textScaleFactor: 1.5,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: ColorManager.headersTextColor, fontSize: FontSize.s16),
-          ),
-          trailing: Icon(
-            Icons.arrow_forward_ios_sharp,
-            color: ColorManager.headersTextColor,
-          ),
-        ),
-        ListTile(
-          leading: SvgPicture.asset(ImageAssets.logout),
-          title: Text(
-            AppStrings.logout.tr(),
-            textScaleFactor: 1.5,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: ColorManager.headersTextColor, fontSize: FontSize.s16),
-          ),
-          trailing: Icon(
-            Icons.arrow_forward_ios_sharp,
-            color: ColorManager.headersTextColor,
-          ),
-        ),
       ],
     );
   }

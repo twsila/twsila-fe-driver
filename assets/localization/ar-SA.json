@@ -289,5 +289,9 @@
   "pending": "تحت المراجعة",
   "approved": "تمت الموافقة",
   "rejected": "مرفوضة",
-  "no_user_found": "لا يوجد مستخدم بهذه البيانات"
+  "no_user_found": "لا يوجد مستخدم بهذه البيانات",
+  "are_you_sure_you_want_to_logout": "هل متأكد من تسجيل الخروج من التطبيق",
+  "confirm_logout": "تأكيد الخروج",
+  "cancel": "إلغاء"
+
 }
