@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 
 import '../../../../utils/resources/strings_manager.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class MyTripsPage extends StatefulWidget {
+  const MyTripsPage({Key? key}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _MyTripsPageState createState() => _MyTripsPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _MyTripsPageState extends State<MyTripsPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(AppStrings.search.tr()),
+      child: Text(AppStrings.myTrips.tr()),
     );
   }
 }

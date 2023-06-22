@@ -6,10 +6,10 @@ import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
-import '../../../utils/resources/font_manager.dart';
-import '../../../utils/resources/values_manager.dart';
-import '../../common/widgets/custom_scaffold.dart';
-import '../../common/widgets/page_builder.dart';
+import '../../../../utils/resources/font_manager.dart';
+import '../../../../utils/resources/values_manager.dart';
+import '../../../common/widgets/custom_scaffold.dart';
+import '../../../common/widgets/page_builder.dart';
 
 class NoServiceAddedView extends StatefulWidget {
   const NoServiceAddedView({Key? key}) : super(key: key);

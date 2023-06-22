@@ -8,7 +8,7 @@ import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
-import 'package:taxi_for_you/presentation/captain_registration/view/captain_registraion.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/login/bloc/login_bloc.dart';
 import 'package:taxi_for_you/presentation/otp/bloc/verify_otp_bloc.dart';
 
@@ -90,8 +90,6 @@ initCaptainRegisterModule() {
   if (!GetIt.I.isRegistered<PersonsRegisterUseCase>()) {
     instance.registerFactory<PersonsRegisterUseCase>(
         () => PersonsRegisterUseCase(instance()));
-    instance.registerFactory<CaptainRegistrationView>(
-        () => const CaptainRegistrationView());
     instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 }

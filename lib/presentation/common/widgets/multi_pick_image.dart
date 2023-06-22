@@ -7,6 +7,7 @@ import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/styles_manager.dart';
+import '../../../app/constants.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../state_renderer/dialogs.dart';
@@ -22,7 +23,7 @@ class MutliPickImageWidget extends StatefulWidget {
 
   MutliPickImageWidget(this.onPickedImages, this.titleText, this.btnText,
       this.btnIcon, this.btnBackgroundColor,
-      {this.addMultiplePhotos = true,this.fontSize});
+      {this.addMultiplePhotos = true, this.fontSize});
 
   @override
   State<MutliPickImageWidget> createState() => _MutliPickImageWidgetState();
@@ -52,7 +53,8 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                   InkWell(
                     onTap: () async {
                       try {
-                        var pickedfiles = await imgpicker.pickMultiImage();
+                        var pickedfiles = await imgpicker.pickMultiImage(
+                            imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
 
                         imagefiles = pickedfiles;
                         widget.onPickedImages(imagefiles);
@@ -74,8 +76,8 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                     onTap: () async {
                       try {
                         var pickedfile = await imgpicker.pickImage(
-                          source: ImageSource.camera,
-                        );
+                            source: ImageSource.camera,
+                            imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
 
                         imagefiles.add(pickedfile!);
                         widget.onPickedImages(imagefiles);

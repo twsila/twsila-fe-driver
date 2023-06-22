@@ -79,6 +79,9 @@ class _ServiceRegistrationFirstStepViewState
           this.serviceModelList = state.serviceTypeModelList;
           print(state.serviceTypeModelList.length);
         }
+        if (state is FirstStepDataAddedState) {
+          Navigator.pushNamed(context, Routes.serviceRegistrationSecondStep);
+        }
       },
       builder: (context, state) {
         return Container(
@@ -147,8 +150,10 @@ class _ServiceRegistrationFirstStepViewState
                 onPressed:
                     selectedVehicleType != null && selectedService != null
                         ? () {
-                            Navigator.pushNamed(
-                                context, Routes.serviceRegistrationSecondStep);
+                            BlocProvider.of<ServiceRegistrationBloc>(context)
+                                .add(SetFirstStepData(
+                                    selectedService!.serviceName.toString(),
+                                    selectedVehicleType!.id.toString()));
                           }
                         : null,
               )

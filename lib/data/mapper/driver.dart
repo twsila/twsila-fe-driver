@@ -10,16 +10,37 @@ import '../../app/extensions.dart';
 extension LoginResponseMapper on LoginResponse? {
   Driver toDomain() {
     return Driver(
-      firstName: this?.firstName.orEmpty() ?? Constants.empty,
-      lastName: this?.lastName.orEmpty() ?? Constants.empty,
-      mobile: this?.mobile.orEmpty() ?? Constants.empty,
-      email: this?.email.orEmpty() ?? Constants.empty,
-      gender: this?.gender.orEmpty() ?? Constants.empty,
-      dateOfBirth: this?.dateOfBirth.orEmpty() ?? Constants.empty,
+      firstName: this?.driver!.firstName.orEmpty() ?? Constants.empty,
+      lastName: this?.driver!.lastName.orEmpty() ?? Constants.empty,
+      mobile: this?.driver!.mobile.orEmpty() ?? Constants.empty,
+      email: this?.driver!.email.orEmpty() ?? Constants.empty,
+      gender: this?.driver!.gender.orEmpty() ?? Constants.empty,
+      dateOfBirth: this?.driver!.dateOfBirth.orEmpty() ?? Constants.empty,
       token: this?.token.orEmpty() ?? Constants.empty,
-      userDevice: this!.userDevice!,
+      userDevice: this!.userDevice,
       tokenExpirationTime:
           this?.tokenExpirationTime.orEmpty() ?? Constants.empty,
+      id: this?.driver!.id.orZero() ?? Constants.zero,
+      driverServiceType:
+          this?.driver!.driverServiceType.orEmpty() ?? Constants.empty,
+      registrationStatus:
+          this?.driver!.registrationStatus.orEmpty() ?? Constants.empty,
+      vehicleType: this!.driver!.vehicleType,
+      carManufacturerType: this!.driver!.carManufacturerType,
+      carModel: this!.driver!.carModel,
+      canTransportFurniture: this?.driver!.canTransportFurniture ?? false,
+      canTransportGoods: this?.driver!.canTransportFurniture ?? false,
+      canTransportFrozen: this?.driver!.canTransportFurniture ?? false,
+      hasWaterTank: this?.driver!.canTransportFurniture ?? false,
+      hasOtherTanks: this?.driver!.canTransportFurniture ?? false,
+      hasPacking: this?.driver!.canTransportFurniture ?? false,
+      hasLoading: this?.driver!.canTransportFurniture ?? false,
+      hasAssembly: this?.driver!.canTransportFurniture ?? false,
+      hasLifting: this?.driver!.canTransportFurniture ?? false,
+      plateNumber: this?.driver!.plateNumber.orEmpty() ?? Constants.empty,
+      images: [],
+      rating: this?.driver!.rating ?? 0.0 ,
+      acknowledged: this?.driver!.acknowledged ?? false,
     );
   }
 }

@@ -23,7 +23,7 @@ class MyServicesBloc extends Bloc<MyServicesEvent, MyServicesState> {
   FutureOr<void> _getServiceStatus(
       GetServiceStatus event, Emitter<MyServicesState> emit) async {
     String userId =
-        _appPreferences.getCachedDriver()?.userDevice.userId.toString() ?? "";
+        _appPreferences.getCachedDriver()?.userDevice!.userId.toString() ?? "";
 
     emit(ServiceStatusLoading());
     (await serviceStatusUseCase.execute(ServiceStatusInput(userId))).fold(

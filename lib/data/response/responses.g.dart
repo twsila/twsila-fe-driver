@@ -24,18 +24,14 @@ Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      json['firstName'] as String?,
-      json['lastName'] as String?,
-      json['mobile'] as String?,
-      json['email'] as String?,
-      json['gender'] as String?,
-      json['dateOfBirth'] as String?,
+      json['driver'] == null
+          ? null
+          : Driver.fromJson(json['driver'] as Map<String, dynamic>),
       json['token'] as String?,
       json['tokenExpirationTime'] as String?,
       json['userDevice'] == null
           ? null
-          : UserDeviceResponse.fromJson(
-              json['userDevice'] as Map<String, dynamic>),
+          : UserDevice.fromJson(json['userDevice'] as Map<String, dynamic>),
     )
       ..success = json['success'] as bool?
       ..message = json['message'] as String?
@@ -50,12 +46,7 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'dateTime': instance.dateTime,
       'result': instance.result,
       'errorCode': instance.errorCode,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'mobile': instance.mobile,
-      'email': instance.email,
-      'gender': instance.gender,
-      'dateOfBirth': instance.dateOfBirth,
+      'driver': instance.driver,
       'token': instance.token,
       'tokenExpirationTime': instance.tokenExpirationTime,
       'userDevice': instance.userDevice,

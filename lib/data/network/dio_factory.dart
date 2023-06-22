@@ -12,6 +12,7 @@ const String CONTENT_TYPE = "content-type";
 const String ACCEPT = "accept";
 const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "language";
+const String ACCEPT_LANGUAGE = "Accept-Language";
 
 class DioFactory {
   final AppPreferences _appPreferences;
@@ -28,7 +29,7 @@ class DioFactory {
       AUTHORIZATION: await _appPreferences.isUserLoggedIn()
           ? "Bearer " + (_appPreferences.getCachedDriver()?.token ?? "")
           : "",
-      DEFAULT_LANGUAGE: language
+      ACCEPT_LANGUAGE: language
     };
 
     dio.options = BaseOptions(

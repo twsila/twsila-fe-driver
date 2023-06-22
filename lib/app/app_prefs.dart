@@ -70,11 +70,12 @@ class AppPreferences {
   }
 
   Driver? getCachedDriver() {
-    Map<String, dynamic> driverMap =
-        _sharedPreferences.getString(DRIVER_MODEL) != null &&
-                _sharedPreferences.getString(DRIVER_MODEL) != ""
-            ? jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!)
-            : {};
+    Map<String, dynamic> driverMap = {};
+    if (_sharedPreferences.getString(DRIVER_MODEL) != null &&
+        _sharedPreferences.getString(DRIVER_MODEL) != "") {
+      driverMap = jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!);
+      driverMap["userDevice"] = UserDevice.fromJson(driverMap["userDevice"]);
+    }
     return Driver.fromJson(driverMap);
   }
 

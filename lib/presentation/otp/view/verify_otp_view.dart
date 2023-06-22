@@ -7,6 +7,7 @@ import 'package:sms_autofill/sms_autofill.dart';
 import 'package:taxi_for_you/data/network/error_handler.dart';
 import 'package:taxi_for_you/presentation/login/login_viewmodel.dart';
 import 'package:taxi_for_you/presentation/otp/bloc/verify_otp_bloc.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import '../../../app/app_prefs.dart';
@@ -126,16 +127,15 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
           await _appPreferences.setDriver(state.driver);
           Driver? driver = _appPreferences.getCachedDriver();
           if (driver != null) {
-            Navigator.pushNamed(
-              context,
-              Routes.mainRoute,
-            );
+            Navigator.pushNamed(context, Routes.captainRegisterRoute,
+                arguments: captainRegistrationArgs(widget.mobileNumberForApi));
           }
         }
         if (state is LoginFailState) {
           if (state.errorCode == ResponseCode.NOT_FOUND.toString()) {
             // Navigator.pushNamed(context, Routes.noServicesAdded);
-            CustomDialog(context).showErrorDialog('', '', AppStrings.noUserFound.tr(),onBtnPressed: (){
+            CustomDialog(context).showErrorDialog(
+                '', '', AppStrings.noUserFound.tr(), onBtnPressed: () {
               Navigator.pop(context);
             });
           } else {
@@ -177,6 +177,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: CustomVerificationCodeWidget(
+                  autoFocus: false,
                   onCodeSubmitted: (code) {
                     BlocProvider.of<VerifyOtpBloc>(context)
                         .add(VerifyOtpBEEvent(widget.mobileNumberForApi, code));

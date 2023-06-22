@@ -142,6 +142,11 @@ class AppStrings {
   static const String carOwnerIdentityInfo = "car_owner_identity_info";
   static const attachFurnitureImages = "attach_furniture_images";
 
+  static const firstName = "first_name";
+  static const lastName = "last_name";
+  static const enterFirstNameHere = "first_name_hint";
+  static const enterLastNameHere = "last_name_hint";
+
   static const String carDocumentFrontImage = "car_documents_front";
   static const String carDocumentBackImage = "car_documents_back";
   static const String carDocumentExpireDate = "car_documents_expire_date";

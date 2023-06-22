@@ -1,4 +1,4 @@
-package com.example.taxi_for_you
+package com.twsila.driver.app
 
 import io.flutter.embedding.android.FlutterActivity
 

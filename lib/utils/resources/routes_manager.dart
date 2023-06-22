@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:taxi_for_you/presentation/captain_registration/view/captain_registraion.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
 import 'package:taxi_for_you/presentation/my_serivces/view/my_services_view.dart';
-import 'package:taxi_for_you/presentation/no_service_added/view/no_service_added_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_applyed_success_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
@@ -16,6 +15,7 @@ import '../../presentation/login/view/login_view.dart';
 import '../../presentation/main/main_view.dart';
 import '../../presentation/onboarding/onboarding_view.dart';
 import '../../presentation/select_registation_type/view/registration_type_view.dart';
+import '../../presentation/service_registration/view/pages/no_service_added_view.dart';
 import '../../presentation/splash/splash_view.dart';
 
 class Routes {
@@ -49,6 +49,7 @@ class Routes {
   static const String serviceAppliedSuccessfullyView =
       "/serviceAppliedSuccessfullyView";
   static const String myServices = "/myServices";
+  static const String uploadDocument = "/uploadDocument";
 }
 
 class RouteGenerator {
@@ -77,11 +78,23 @@ class RouteGenerator {
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
       case Routes.captainRegisterRoute:
+        final args = settings.arguments as captainRegistrationArgs;
         initCaptainRegisterModule();
         return MaterialPageRoute(
-            builder: (_) => const CaptainRegistrationView());
+            builder: (_) =>  CaptainRegistrationView(
+                  mobileNumber: args.mobileNumber,
+                ));
       case Routes.mainRoute:
         return MaterialPageRoute(builder: (_) => const MainView());
+      // case Routes.uploadDocument:
+      //   final args = settings.arguments as UploadDocumentsArguments;
+      //   return MaterialPageRoute(
+      //       builder: (_) => UploadDocuments(
+      //             frontImageTitle: args.frontImageTitle,
+      //             backImageTitle: args.backImageTitle,
+      //             expirationDateTitle: args.expirationDateTitle,
+      //             pageController: args.pageController,
+      //           ));
       case Routes.verifyOtpRoute:
         final args = settings.arguments as VerifyArguments;
         initVerifyOtpModule();

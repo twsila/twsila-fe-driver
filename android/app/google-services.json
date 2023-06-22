@@ -14,6 +14,38 @@
       },
       "oauth_client": [
         {
+          "client_id": "766267696454-1nruk3uq7n98q4e3eiecct7ghgq92vvb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.taxi_for_you",
+            "certificate_hash": "e054e18140a46b3a1a23d59643c0de54defa6306"
+          }
+        },
+        {
+          "client_id": "766267696454-6vd0anomh21kuorg93qfbf7nql2oski9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.taxi_for_you",
+            "certificate_hash": "4464a841276da0cb455effecda4bd9ae18c36ee7"
+          }
+        },
+        {
+          "client_id": "766267696454-r7jr0t9tonvoihl3rrtusmk3lku0if1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.taxi_for_you",
+            "certificate_hash": "ac3dbaaf1d155d6016b49cd549cfc94a36595248"
+          }
+        },
+        {
+          "client_id": "766267696454-vk7evcv6qp7gprgn0j3ec2v3hh486po7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.taxi_for_you",
+            "certificate_hash": "2506eef08ce0ec1814627807a81be3a986e4f34b"
+          }
+        },
+        {
           "client_id": "766267696454-mcnk52p1gjc47u7sv2pojf3qs46ttojs.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +61,81 @@
             {
               "client_id": "766267696454-mcnk52p1gjc47u7sv2pojf3qs46ttojs.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "766267696454-e6554mbm7pd1lvvjdoa93kaes0kuf0lb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tawsela.passenger"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766267696454:android:13a6cb37a1a532932ef147",
+        "android_client_info": {
+          "package_name": "com.twsila.driver.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766267696454-72m9p1otur4ht5c1nahc1prmu5avjjtn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.twsila.driver.app",
+            "certificate_hash": "e054e18140a46b3a1a23d59643c0de54defa6306"
+          }
+        },
+        {
+          "client_id": "766267696454-8ogdedv137ujmd3gmk6ek9hhmu3omifu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.twsila.driver.app",
+            "certificate_hash": "ac3dbaaf1d155d6016b49cd549cfc94a36595248"
+          }
+        },
+        {
+          "client_id": "766267696454-jm0us92mgl8b8o24tahehcc1ekk1q43c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.twsila.driver.app",
+            "certificate_hash": "2506eef08ce0ec1814627807a81be3a986e4f34b"
+          }
+        },
+        {
+          "client_id": "766267696454-re9d2mc06lvqi8f6kgo4scmptt6mq436.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.twsila.driver.app",
+            "certificate_hash": "4464a841276da0cb455effecda4bd9ae18c36ee7"
+          }
+        },
+        {
+          "client_id": "766267696454-mcnk52p1gjc47u7sv2pojf3qs46ttojs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAemSFn6fVufROQDewj0BjzuOKVw_Bxi8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766267696454-mcnk52p1gjc47u7sv2pojf3qs46ttojs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "766267696454-e6554mbm7pd1lvvjdoa93kaes0kuf0lb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tawsela.passenger"
+              }
             }
           ]
         }

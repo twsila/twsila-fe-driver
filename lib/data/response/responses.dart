@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../domain/model/driver_model.dart';
+
 part 'responses.g.dart';
 
 @JsonSerializable()
@@ -17,28 +19,18 @@ class BaseResponse {
 }
 
 @JsonSerializable()
-class LoginResponse extends BaseResponse{
-  @JsonKey(name: "firstName")
-  String? firstName;
-  @JsonKey(name: "lastName")
-  String? lastName;
-  @JsonKey(name: "mobile")
-  String? mobile;
-  @JsonKey(name: "email")
-  String? email;
-  @JsonKey(name: "gender")
-  String? gender;
-  @JsonKey(name: "dateOfBirth")
-  String? dateOfBirth;
+class LoginResponse extends BaseResponse {
+  @JsonKey(name: "driver")
+  Driver? driver;
   @JsonKey(name: "token")
   String? token;
   @JsonKey(name: "tokenExpirationTime")
   String? tokenExpirationTime;
   @JsonKey(name: "userDevice")
-  UserDeviceResponse? userDevice;
+  UserDevice? userDevice;
 
-  LoginResponse(this.firstName, this.lastName, this.mobile, this.email, this.gender,
-      this.dateOfBirth, this.token, this.tokenExpirationTime, this.userDevice);
+  LoginResponse(
+      this.driver, this.token, this.tokenExpirationTime, this.userDevice);
 
   // from json
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
@@ -71,6 +63,7 @@ class UserDeviceResponse {
   // to json
   Map<String, dynamic> toJson() => _$UserDeviceResponseToJson(this);
 }
+
 @JsonSerializable()
 class CustomerResponse {
   @JsonKey(name: "id")

@@ -39,6 +39,7 @@
   "profile": "Profile",
   "requests": "Request",
   "settings": "Settings",
+  "add_photos": "add photos",
   "transport_stuff": "Transportation of goods, furniture, freezers, cars and water",
   "transport_humans": "Transport Humans",
   "choose_wrong_vehicle_caution": "Warning: Choosing the wrong car size may cause your trip to be delayed or incomplete",
@@ -144,7 +145,7 @@
   "offer_from_client_named": "offer received from client",
   "with_price": "with price",
   "now": "Now",
-  "offer_accepted_message": "Offer accepted from your side and waiting client to accept your offer and finish payment",
+  "offer_accepted_messages": "Offer accepted from your side and waiting client to accept your offer and finish payment",
   "captain_offer_new_price": "Captain offer new price",
   "want_to_offer_price_for_trip": "want to offer price for the trip",
   "trip_details_change_regarding_its_type": "* trip details change regarding type of the trip *",
@@ -297,5 +298,9 @@
   "no_user_found": "No user found with this data",
   "are_you_sure_you_want_to_logout": "are you sure you want to logout",
   "confirm_logout": "confirm logout",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "first_name": "First name",
+  "last_name": "last name",
+  "first_name_hint": "enter first name here",
+  "last_name_hint": "enter last name here"
 }

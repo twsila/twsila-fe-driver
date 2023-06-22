@@ -49,7 +49,9 @@ class _CustomVerificationCodeState extends State<CustomVerificationCode> {
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,
       showCursor: true,
-      onCompleted: widget.onComplete,
+      onCompleted: (value){
+        widget.onComplete(value);
+      },
     );
   }
 }

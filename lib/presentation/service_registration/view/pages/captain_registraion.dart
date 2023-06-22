@@ -1,22 +1,33 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:analyzer/dart/element/type.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
+import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
+import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
-import '../../../utils/resources/color_manager.dart';
-import '../../../utils/resources/strings_manager.dart';
-import '../../common/widgets/custom_scaffold.dart';
-import '../../common/widgets/page_builder.dart';
-import '../bloc/registration_bloc.dart';
+import '../../../../utils/resources/color_manager.dart';
+import '../../../../utils/resources/strings_manager.dart';
+import '../../../common/state_renderer/dialogs.dart';
+import '../../../common/widgets/custom_scaffold.dart';
+import '../../../common/widgets/page_builder.dart';
+import '../../../captain_registration/bloc/registration_bloc.dart';
 
 class CaptainRegistrationView extends StatefulWidget {
-  const CaptainRegistrationView({Key? key}) : super(key: key);
+  String mobileNumber;
+
+  CaptainRegistrationView({Key? key, required this.mobileNumber})
+      : super(key: key);
 
   @override
   State<CaptainRegistrationView> createState() =>
@@ -29,6 +40,15 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   bool agreeWithTerms = false;
   bool isMale = false;
   bool isFemale = false;
+  XFile? captainPhoto;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? gender;
+  Function()? continueFunction;
+  ImagePicker imgpicker = ImagePicker();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -51,7 +71,6 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       pageBuilder: PageBuilder(
-        resizeToAvoidBottomInsets: false,
         appbar: true,
         context: context,
         body: _getContentWidget(context),
@@ -63,53 +82,101 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return BlocConsumer<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        if (state is RegistrationLoading) {
-          startLoading();
-        } else {
-          stopLoading();
-        }
-      },
-      builder: (context, state) {
-        return Container(
-          margin: const EdgeInsets.all(AppSize.s12),
-          child: Stack(children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _headerText(),
-                    const SizedBox(
-                      height: AppSize.s30,
-                    ),
-                    _uploadCaptainPhoto(),
-                    const SizedBox(
-                      height: AppSize.s28,
-                    ),
-                    _inputFields(),
-                  ],
-                ),
+    return BlocConsumer<ServiceRegistrationBloc, ServiceRegistrationState>(
+        listener: (context, state) {
+      if (state is captainDataAddedState) {
+        Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep);
+      }
+    }, builder: (context, state) {
+      return Container(
+        margin: EdgeInsets.all(AppSize.s8),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _headerText(),
+              const SizedBox(
+                height: AppSize.s30,
               ),
-            ),
-            Positioned(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-                left: 0,
-                right: 0,
-                child: CustomTextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep);
+              _uploadCaptainPhoto(),
+              const SizedBox(
+                height: AppSize.s28,
+              ),
+              _inputFields(),
+              CustomTextButton(
+                  onPressed: continueFunction != null ? continueFunction : null,
+                  text: AppStrings.continueStr.tr())
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  openImages() async {
+    showModalBottomSheet(
+        elevation: 10,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => Container(
+              height: 150,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16))),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      try {
+                        var pickedfile = await imgpicker.pickImage(
+                            source: ImageSource.gallery);
+                        captainPhoto = pickedfile;
+                        setState(() {});
+                      } catch (e) {
+                        ShowDialogHelper.showErrorMessage(
+                            e.toString(), context);
+                      }
+                      checkValidToContinue();
+                      Navigator.pop(context);
                     },
-                    text: AppStrings.continueStr.tr()))
-          ]),
-        );
-      },
-    );
+                    child: Text(
+                      AppStrings.gallery.tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  InkWell(
+                    onTap: () async {
+                      try {
+                        var pickedfile = await imgpicker.pickImage(
+                          source: ImageSource.camera,
+                        );
+
+                        captainPhoto = pickedfile;
+                        setState(() {});
+                      } catch (e) {
+                        ShowDialogHelper.showErrorMessage(
+                            e.toString(), context);
+                      }
+
+                      checkValidToContinue();
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      AppStrings.camera.tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                ],
+              ),
+            ));
   }
 
   Widget _headerText() {
@@ -146,22 +213,35 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   }
 
   Widget _uploadCaptainPhoto() {
-    return Row(
-      children: [
-        Image.asset(
-          ImageAssets.personIcon,
-          width: AppSize.s36,
-          height: AppSize.s36,
-        ),
-        const SizedBox(
-          width: AppSize.s12,
-        ),
-        Text(
-          AppStrings.uploadCaptainPhoto.tr(),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: ColorManager.primary, fontWeight: FontWeight.bold),
-        ),
-      ],
+    return GestureDetector(
+      onTap: () {
+        openImages();
+      },
+      child: Row(
+        children: [
+          captainPhoto != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Image.file(
+                    File(captainPhoto!.path),
+                    width: AppSize.s60,
+                    height: AppSize.s60,
+                  ))
+              : Image.asset(
+                  ImageAssets.personIcon,
+                  width: AppSize.s36,
+                  height: AppSize.s36,
+                ),
+          const SizedBox(
+            width: AppSize.s12,
+          ),
+          Text(
+            AppStrings.uploadCaptainPhoto.tr(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: ColorManager.primary, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
     );
   }
 
@@ -169,14 +249,31 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
     return Column(
       children: [
         CustomTextInputField(
-          labelText: AppStrings.userName.tr(),
+          labelText: AppStrings.firstName.tr(),
           showLabelText: true,
-          hintText: AppStrings.enterUserNameHere.tr(),
+          hintText: AppStrings.enterFirstNameHere.tr(),
+          onChanged: (value) {
+            firstName = value;
+            checkValidToContinue();
+          },
+        ),
+        CustomTextInputField(
+          labelText: AppStrings.lastName.tr(),
+          showLabelText: true,
+          hintText: AppStrings.enterLastNameHere.tr(),
+          onChanged: (value) {
+            lastName = value;
+            checkValidToContinue();
+          },
         ),
         CustomTextInputField(
           labelText: AppStrings.email.tr(),
           showLabelText: true,
           hintText: AppStrings.emailHint.tr(),
+          onChanged: (value) {
+            email = value;
+            checkValidToContinue();
+          },
         ),
         Padding(
           padding: const EdgeInsets.all(AppPadding.p12),
@@ -186,7 +283,9 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                 onTap: () {
                   setState(() {
                     isFemale = false;
-                    isMale = !isMale;
+                    isMale = true;
+                    gender = 'male';
+                    checkValidToContinue();
                   });
                 },
                 child: Container(
@@ -220,7 +319,9 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                 onTap: () {
                   setState(() {
                     isMale = false;
-                    isFemale = !isFemale;
+                    isFemale = true;
+                    gender = 'female';
+                    checkValidToContinue();
                   });
                 },
                 child: Container(
@@ -265,6 +366,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
               onChanged: (value) {
                 setState(() {
                   agreeWithTerms = value!;
+                  checkValidToContinue();
                 });
               },
             ), //
@@ -288,4 +390,31 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
       ],
     );
   }
+
+  void checkValidToContinue() {
+    setState(() {
+      if (captainPhoto != null &&
+          firstName != null &&
+          firstName!.isNotEmpty &&
+          lastName != null &&
+          lastName!.isNotEmpty &&
+          gender != null &&
+          gender!.isNotEmpty &&
+          widget.mobileNumber != "" &&
+          agreeWithTerms) {
+        continueFunction = () {
+          BlocProvider.of<ServiceRegistrationBloc>(context).add(SetCaptainData(
+              captainPhoto!,widget.mobileNumber, firstName!, lastName!, email ?? "", gender!));
+        };
+      } else {
+        continueFunction = null;
+      }
+    });
+  }
+}
+
+class captainRegistrationArgs {
+  String mobileNumber;
+
+  captainRegistrationArgs(this.mobileNumber);
 }

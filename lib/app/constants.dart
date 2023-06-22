@@ -19,6 +19,9 @@ class Constants {
       "AIzaSyCuu1VQ3jSSyDLG0m7qBxLGR1xqv6wVm1w";
   static const String UPLOAD_DOCUMENTS_TYPE = "upload_documents_type";
 
+  static const int IMAGE_QUALITY_COMPRESS = 10;
+
+
   static const int otpCountTime = 30;
   static const int otpSize = 6;
   static const bool showCursorOtpField = false;

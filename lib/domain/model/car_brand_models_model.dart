@@ -43,25 +43,25 @@ class CarBrandAndModelsModel {
 class CarModel {
   int id;
   CarManufacturerId carManufacturerId;
-  String carModel;
+  String modelName;
 
   CarModel({
     required this.id,
     required this.carManufacturerId,
-    required this.carModel,
+    required this.modelName,
   });
 
   factory CarModel.fromJson(Map<String, dynamic> json) => CarModel(
         id: json["id"],
         carManufacturerId:
             CarManufacturerId.fromJson(json["carManufacturerId"]),
-        carModel: json["carModel"],
+    modelName: json["modelName"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "carManufacturerId": carManufacturerId.toJson(),
-        "carModel": carModel,
+        "modelName": modelName,
       };
 }
 

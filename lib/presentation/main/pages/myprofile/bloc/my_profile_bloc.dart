@@ -24,8 +24,8 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
       logoutEvent event, Emitter<MyProfileState> emit) async {
     emit(MyProfileLoading());
     (await logoutUseCase.execute(LogoutUseCaseInput(
-            _appPreferences.getCachedDriver()!.userDevice.id!,
-            _appPreferences.getCachedDriver()!.userDevice.registrationId!,
+            _appPreferences.getCachedDriver()!.userDevice!.id!,
+            _appPreferences.getCachedDriver()!.userDevice!.registrationId!,
             _appPreferences.getAppLanguage())))
         .fold(
             (failure) => {
@@ -35,9 +35,6 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
                   emit(MyProfileFail(failure.message))
                 }, (logoutModel) async {
       // right -> data (success)
-      // content
-      // emit success state
-      // navigate to main screen
       _appPreferences.removeCachedDriver();
       _appPreferences.setUserLoggedOut();
       emit(LoggedOutSuccessfully());

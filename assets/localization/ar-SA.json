@@ -292,6 +292,11 @@
   "no_user_found": "لا يوجد مستخدم بهذه البيانات",
   "are_you_sure_you_want_to_logout": "هل متأكد من تسجيل الخروج من التطبيق",
   "confirm_logout": "تأكيد الخروج",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "first_name": "اسم الاول",
+  "last_name": "اللقب",
+  "first_name_hint": "ادخل الاسم الاول هنا",
+  "last_name_hint": "ادخل اللقب هنا"
+
 
 }

@@ -19,7 +19,7 @@ class CustomCard extends StatelessWidget {
           color: ColorManager.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s4),
-              side: BorderSide(color: ColorManager.grey, width: AppSize.s1)),
+              side: BorderSide(color: ColorManager.white, width: AppSize.s1)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: bodyWidget,

@@ -45,8 +45,6 @@ class RepositoryImpl implements Repository {
           // return either right
           // return data
           //save driver data
-          await _localDataSource
-              .saveDriverToCache(Driver.fromJson(response.result!));
           return Right(LoginResponse.fromJson(response.result!).toDomain());
         } else {
           // failure --return business error

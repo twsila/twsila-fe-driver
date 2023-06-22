@@ -2,9 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_view.dart';
-import 'package:taxi_for_you/presentation/main/pages/notifications/notifications_page.dart';
-import 'package:taxi_for_you/presentation/main/pages/search/search_page.dart';
-import 'package:taxi_for_you/presentation/main/pages/settings/settings_page.dart';
+import 'package:taxi_for_you/presentation/main/pages/mytrips/mytrips_page.dart';
+import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_page.dart';
 
 import '../../utils/resources/assets_manager.dart';
 import '../../utils/resources/color_manager.dart';
@@ -20,8 +19,8 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   List<Widget> pages = [
-    MyProfilePage(),
-    MyProfilePage(),
+    SearchTripsPage(),
+    MyTripsPage(),
     MyProfilePage(),
   ];
   List<String> titles = [
