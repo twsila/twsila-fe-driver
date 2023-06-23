@@ -9,8 +9,10 @@ import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
+import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/vehicleModel.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 import 'package:taxi_for_you/utils/helpers/cast_helpers.dart';
 
 import '../../domain/model/driver_model.dart';
@@ -46,35 +48,6 @@ class RepositoryImpl implements Repository {
           // return data
           //save driver data
           return Right(LoginResponse.fromJson(response.result!).toDomain());
-        } else {
-          // failure --return business error
-          // return either left
-          return Left(Failure(ApiInternalStatus.FAILURE,
-              response.message ?? ResponseMessage.DEFAULT));
-        }
-      } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
-      }
-    } else {
-      // return internet connection error
-      // return either left
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, Authentication>> register(
-      RegisterRequest registerRequest) async {
-    if (await _networkInfo.isConnected) {
-      // its connected to internet, its safe to call API
-      try {
-        final response = await _remoteDataSource.register(registerRequest);
-
-        if (response.success == ApiInternalStatus.SUCCESS) {
-          // success
-          // return either right
-          // return data
-          return Right(response.toDomain());
         } else {
           // failure --return business error
           // return either left
@@ -244,6 +217,29 @@ class RepositoryImpl implements Repository {
       // its connected to internet, its safe to call API
       try {
         final response = await _remoteDataSource.logout(logoutRequest);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, RegistrationResponse>> register(RegistrationRequest registrationRequest) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.registerCaptainWithService(registrationRequest);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/CustomAutoFullSms.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/documents_helper.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
@@ -94,8 +95,6 @@ class _ServiceRegistrationSecondStepState
     super.dispose();
   }
 
-
-
   Future<void> _animateTo(int _page) async {
     _pageController.jumpToPage(
       _page,
@@ -140,6 +139,13 @@ class _ServiceRegistrationSecondStepState
         if (state is CarBrandsAndModelsSuccess) {
           _loadingCars = false;
           carModelList = state.carModelList;
+        }
+
+        if (state is ServiceRegistrationSuccess) {
+          Navigator.pushNamed(context, Routes.mainRoute);
+        }
+        if (state is ServiceRegistrationFail) {
+          CustomDialog(context).showErrorDialog('', '', state.message);
         }
         //this state handle when user upload image the state place the correct photo in correct ui
         if (state is DocumentPickedImage) {
@@ -187,15 +193,23 @@ class _ServiceRegistrationSecondStepState
           driverLicenseDocument = state.driverLicenseDocument;
           isDriverLicValid = true;
         }
+
+        if (state is SecondStepDataAddedState) {
+          BlocProvider.of<ServiceRegistrationBloc>(context)
+              .add(RegisterCaptainWithService());
+        }
       },
       builder: (context, state) {
-        return PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: [
-              KeepAlivePage(child: SecondStepRegistration()),
-              UploadDocumentPage(selectedDocument)
-            ]);
+        return GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children: [
+                KeepAlivePage(child: SecondStepRegistration()),
+                UploadDocumentPage(selectedDocument)
+              ]),
+        );
       },
     );
   }
@@ -297,6 +311,7 @@ class _ServiceRegistrationSecondStepState
               height: AppSize.s18,
             ),
             TextFormField(
+
               onChanged: (value) {
                 carNotes = value;
               },

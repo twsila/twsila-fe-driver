@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
+import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../domain/model/registration_services_response.dart';
 import '../network/app_api.dart';
@@ -22,7 +24,8 @@ abstract class RemoteDataSource {
 
   Future<CarBrandAndModelsModel> carBrandAndModel();
 
-  Future<AuthenticationResponse> register(RegisterRequest registerRequest);
+  Future<RegistrationResponse> registerCaptainWithService(
+      RegistrationRequest registrationRequest);
 
   Future<ServiceRegisterModel> servicesStatus(String userId);
 
@@ -45,19 +48,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<ForgotPasswordResponse> forgotPassword(String email) async {
     return await _appServiceClient.forgotPassword(email);
-  }
-
-  @override
-  Future<AuthenticationResponse> register(
-      RegisterRequest registerRequest) async {
-    return await _appServiceClient.register(
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
-            "");
   }
 
   @override
@@ -92,5 +82,32 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<LogoutModel> logout(LogoutRequest logoutRequest) async {
     return await _appServiceClient.logout(logoutRequest.userId,
         logoutRequest.registrationId, logoutRequest.language);
+  }
+
+  @override
+  Future<RegistrationResponse> registerCaptainWithService(
+      RegistrationRequest registrationRequest) async {
+    return await _appServiceClient.registerCaptainWithService(
+        registrationRequest.firstName!,
+        registrationRequest.lastName!,
+        registrationRequest.mobile!,
+        registrationRequest.email!,
+        registrationRequest.gender!,
+        registrationRequest.dateOfBirth!,
+        registrationRequest.driverServiceType!,
+        registrationRequest.vehicleTypeId!,
+        registrationRequest.carManufacturerTypeId!,
+        registrationRequest.carModelId!,
+        registrationRequest.canTransportFurniture!,
+        registrationRequest.canTransportGoods!,
+        registrationRequest.canTransportFrozen!,
+        registrationRequest.hasWaterTank!,
+        registrationRequest.hasPacking!,
+        registrationRequest.hasLoading!,
+        registrationRequest.hasAssembly!,
+        registrationRequest.hasLifting!,
+        registrationRequest.plateNumber!,
+        registrationRequest.isAcknowledged!,
+        registrationRequest.driverImages!);
   }
 }

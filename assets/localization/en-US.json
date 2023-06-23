@@ -302,5 +302,7 @@
   "first_name": "First name",
   "last_name": "last name",
   "first_name_hint": "enter first name here",
-  "last_name_hint": "enter last name here"
+  "last_name_hint": "enter last name here",
+  "birth_date": "Date of birth",
+  "birth_date_hint": "press here to add birth date"
 }

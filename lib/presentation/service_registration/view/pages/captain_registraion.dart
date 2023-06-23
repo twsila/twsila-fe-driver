@@ -21,7 +21,6 @@ import '../../../../utils/resources/strings_manager.dart';
 import '../../../common/state_renderer/dialogs.dart';
 import '../../../common/widgets/custom_scaffold.dart';
 import '../../../common/widgets/page_builder.dart';
-import '../../../captain_registration/bloc/registration_bloc.dart';
 
 class CaptainRegistrationView extends StatefulWidget {
   String mobileNumber;
@@ -45,8 +44,11 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   String? lastName;
   String? email;
   String? gender;
+  String? birthDate;
   Function()? continueFunction;
   ImagePicker imgpicker = ImagePicker();
+
+  DateTime selectedDate = DateTime.now();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -88,25 +90,28 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
         Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep);
       }
     }, builder: (context, state) {
-      return Container(
-        margin: EdgeInsets.all(AppSize.s8),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _headerText(),
-              const SizedBox(
-                height: AppSize.s30,
-              ),
-              _uploadCaptainPhoto(),
-              const SizedBox(
-                height: AppSize.s28,
-              ),
-              _inputFields(),
-              CustomTextButton(
-                  onPressed: continueFunction != null ? continueFunction : null,
-                  text: AppStrings.continueStr.tr())
-            ],
+      return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Container(
+          margin: EdgeInsets.all(AppSize.s8),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _headerText(),
+                const SizedBox(
+                  height: AppSize.s30,
+                ),
+                _uploadCaptainPhoto(),
+                const SizedBox(
+                  height: AppSize.s28,
+                ),
+                _inputFields(),
+                CustomTextButton(
+                    onPressed: continueFunction != null ? continueFunction : null,
+                    text: AppStrings.continueStr.tr())
+              ],
+            ),
           ),
         ),
       );
@@ -247,6 +252,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
 
   Widget _inputFields() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomTextInputField(
           labelText: AppStrings.firstName.tr(),
@@ -275,6 +281,17 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
             checkValidToContinue();
           },
         ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: AppMargin.m12),
+          child: Text(
+            AppStrings.birtDate.tr(),
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(color: ColorManager.headersTextColor),
+          ),
+        ),
+        CustomDateOfBirth(),
         Padding(
           padding: const EdgeInsets.all(AppPadding.p12),
           child: Row(
@@ -284,7 +301,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                   setState(() {
                     isFemale = false;
                     isMale = true;
-                    gender = 'male';
+                    gender = 'M';
                     checkValidToContinue();
                   });
                 },
@@ -320,7 +337,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                   setState(() {
                     isMale = false;
                     isFemale = true;
-                    gender = 'female';
+                    gender = 'F';
                     checkValidToContinue();
                   });
                 },
@@ -391,6 +408,56 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
     );
   }
 
+  Widget CustomDateOfBirth() {
+    return GestureDetector(
+      onTap: () {
+        _selectDate(context);
+      },
+      child: Container(
+        margin: EdgeInsets.all(AppMargin.m12),
+        padding: EdgeInsets.symmetric(horizontal: AppPadding.p12),
+        height: AppSize.s46,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: ColorManager.borderColor)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p2),
+              child: Text(
+                birthDate != null ? birthDate! : AppStrings.birtDateHint.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: birthDate != null
+                        ? ColorManager.headersTextColor
+                        : ColorManager.hintTextColor),
+              ),
+            ),
+            Icon(
+              Icons.calendar_today,
+              color: ColorManager.primary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1940, 8),
+        lastDate: DateTime.now());
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        birthDate = DateFormat.yMd().format(selectedDate);
+        checkValidToContinue();
+      });
+    }
+  }
+
   void checkValidToContinue() {
     setState(() {
       if (captainPhoto != null &&
@@ -400,11 +467,18 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           lastName!.isNotEmpty &&
           gender != null &&
           gender!.isNotEmpty &&
+          birthDate != null &&
           widget.mobileNumber != "" &&
           agreeWithTerms) {
         continueFunction = () {
           BlocProvider.of<ServiceRegistrationBloc>(context).add(SetCaptainData(
-              captainPhoto!,widget.mobileNumber, firstName!, lastName!, email ?? "", gender!));
+              captainPhoto!,
+              widget.mobileNumber,
+              firstName!,
+              lastName!,
+              email ?? "",
+              gender!,
+              birthDate!));
         };
       } else {
         continueFunction = null;

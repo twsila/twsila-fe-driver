@@ -9,7 +9,11 @@ class ServiceRegistrationLoading extends ServiceRegistrationState {}
 
 class ServiceRegistrationSuccess extends ServiceRegistrationState {}
 
-class ServiceRegistrationFail extends ServiceRegistrationState {}
+class ServiceRegistrationFail extends ServiceRegistrationState {
+  final String message;
+
+  ServiceRegistrationFail(this.message);
+}
 
 class ServicesTypesSuccess extends ServiceRegistrationState {
   final List<ServiceTypeModel> serviceTypeModelList;

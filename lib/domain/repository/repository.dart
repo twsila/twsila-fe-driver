@@ -3,6 +3,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/domain/model/registration_response_model.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../data/network/failure.dart';
 import '../../data/network/requests.dart';
@@ -21,8 +23,8 @@ abstract class Repository {
 
   Future<Either<Failure, String>> forgotPassword(String email);
 
-  Future<Either<Failure, Authentication>> register(
-      RegisterRequest registerRequest);
+  Future<Either<Failure, RegistrationResponse>> register(
+      RegistrationRequest registrationRequest);
 
 
   Future<Either<Failure, GenerateOtpModel>> generateOtp(

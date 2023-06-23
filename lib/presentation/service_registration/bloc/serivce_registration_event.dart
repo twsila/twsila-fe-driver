@@ -11,6 +11,10 @@ class GetCarBrandAndModel extends ServiceRegistrationEvent {
   GetCarBrandAndModel();
 }
 
+class RegisterCaptainWithService extends ServiceRegistrationEvent {
+  RegisterCaptainWithService();
+}
+
 class NavigateToUploadDocument extends ServiceRegistrationEvent {
   final DocumentType documentTypeFront;
   final DocumentType documentTypeBack;
@@ -68,9 +72,10 @@ class SetCaptainData extends ServiceRegistrationEvent {
   String lastName;
   String email;
   String gender;
+  String birthDate;
 
   SetCaptainData(this.captainPhoto, this.mobileNumber, this.firstName,
-      this.lastName, this.email, this.gender);
+      this.lastName, this.email, this.gender,this.birthDate);
 }
 
 class SetFirstStepData extends ServiceRegistrationEvent {
@@ -86,10 +91,10 @@ class SetSecondStepData extends ServiceRegistrationEvent {
   final String plateNumber;
   final String carNotes;
   final List<XFile> carPhotos;
-   DocumentData carDocumentPhotos;
-   DocumentData carDriverLicensePhotos;
-   DocumentData carDriverIdPhotos;
-   DocumentData carOwnerIdPhotos;
+  DocumentData carDocumentPhotos;
+  DocumentData carDriverLicensePhotos;
+  DocumentData carDriverIdPhotos;
+  DocumentData carOwnerIdPhotos;
 
   SetSecondStepData(
       this.carManufacturerTypeId,

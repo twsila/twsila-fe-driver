@@ -79,7 +79,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
       case Routes.captainRegisterRoute:
         final args = settings.arguments as captainRegistrationArgs;
-        initCaptainRegisterModule();
         return MaterialPageRoute(
             builder: (_) =>  CaptainRegistrationView(
                   mobileNumber: args.mobileNumber,

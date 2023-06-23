@@ -14,6 +14,18 @@ class RegistrationRequest {
   String? carNotes;
   String? plateNumber;
   List<File>? driverImages;
+
+  bool? canTransportFurniture;
+  bool? canTransportGoods;
+  bool? canTransportFrozen;
+  bool? hasWaterTank;
+  bool? hasOtherTanks;
+  bool? hasPacking;
+  bool? hasLoading;
+  bool? hasAssembly;
+  bool? hasLifting;
+
+
   bool? isAcknowledged;
 
   RegistrationRequest.empty();
@@ -32,5 +44,14 @@ class RegistrationRequest {
       this.carNotes,
       this.plateNumber,
       this.driverImages,
+      this.canTransportFurniture,
+      this.canTransportGoods,
+      this.canTransportFrozen,
+      this.hasWaterTank,
+      this.hasOtherTanks,
+      this.hasPacking,
+      this.hasLoading,
+      this.hasAssembly,
+      this.hasLifting,
       this.isAcknowledged);
 }

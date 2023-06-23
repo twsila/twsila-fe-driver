@@ -296,7 +296,9 @@
   "first_name": "اسم الاول",
   "last_name": "اللقب",
   "first_name_hint": "ادخل الاسم الاول هنا",
-  "last_name_hint": "ادخل اللقب هنا"
+  "last_name_hint": "ادخل اللقب هنا",
+  "birth_date": "تاريخ الميلاد",
+  "birth_date_hint": "اضغط هنا لتاريخ الميلاد"
 
 
 }

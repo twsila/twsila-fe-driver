@@ -6,6 +6,7 @@ import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../../app/app_prefs.dart';
@@ -25,6 +26,7 @@ class ServiceRegistrationBloc
     extends Bloc<ServiceRegistrationEvent, ServiceRegistrationState> {
   RegistrationServiceUseCase registrationServiceUseCase;
   CarBrandsAndModelsUseCase carBrandsAndModelsUseCase;
+  RegistrationUseCase registrationUseCase;
   final AppPreferences _appPreferences = instance<AppPreferences>();
   RegistrationRequest registrationRequest = RegistrationRequest.empty();
   static DocumentData carDocument = DocumentData();
@@ -38,7 +40,8 @@ class ServiceRegistrationBloc
 
   ServiceRegistrationBloc(
       {required this.registrationServiceUseCase,
-      required this.carBrandsAndModelsUseCase})
+      required this.carBrandsAndModelsUseCase,
+      required this.registrationUseCase})
       : super(ServiceRegistrationInitial()) {
     on<GetServiceTypes>(_getServicesTypes);
     on<GetCarBrandAndModel>(_getCarBrandsAndModels);
@@ -49,6 +52,7 @@ class ServiceRegistrationBloc
     on<SetCaptainData>(_setCaptainData);
     on<SetFirstStepData>(_setFirstStepData);
     on<SetSecondStepData>(_setSecondStepData);
+    on<RegisterCaptainWithService>(_registerCaptainWithService);
   }
 
   FutureOr<void> _getServicesTypes(
@@ -90,6 +94,42 @@ class ServiceRegistrationBloc
       // navigate to main screen
       print(registrationRequest.vehicleTypeId);
       emit(CarBrandsAndModelsSuccess(carModelsList));
+      // isUserLoggedInSuccessfullyStreamController.add(true);
+    });
+  }
+
+  FutureOr<void> _registerCaptainWithService(RegisterCaptainWithService event,
+      Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    (await registrationUseCase.execute(RegistrationUseCaseInput(
+            firstName: registrationRequest.firstName!,
+            lastName: registrationRequest.lastName!,
+            // mobile: registrationRequest.mobile!,
+            mobile: "+96622556631",
+            email: registrationRequest.email!,
+            gender: registrationRequest.gender!,
+            dateOfBirth: registrationRequest.dateOfBirth ?? "12/1/1999",
+            driverServiceType: registrationRequest.driverServiceType!,
+            vehicleTypeId: registrationRequest.vehicleTypeId!,
+            carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
+            carModelId: registrationRequest.carModelId!,
+            carNotes: registrationRequest.carNotes!,
+            plateNumber: registrationRequest.plateNumber!,
+            driverImages: registrationRequest.driverImages!,
+            isAcknowledged: registrationRequest.isAcknowledged ?? true)))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(ServiceRegistrationFail(failure.message))
+                }, (carModelsList) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      // navigate to main screen
+      print(registrationRequest.vehicleTypeId);
+      emit(ServiceRegistrationSuccess());
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }
@@ -221,6 +261,7 @@ class ServiceRegistrationBloc
     registrationRequest.lastName = event.lastName;
     registrationRequest.gender = event.gender;
     registrationRequest.email = event.email;
+    registrationRequest.dateOfBirth = event.birthDate;
     emit(captainDataAddedState());
   }
 
@@ -233,6 +274,7 @@ class ServiceRegistrationBloc
 
   FutureOr<void> _setSecondStepData(
       SetSecondStepData event, Emitter<ServiceRegistrationState> emit) async {
+    List<File> carPhotos = await prepareCarPhotosList(event.carPhotos);
     List<DocumentData> documents = [
       event.carDocumentPhotos,
       event.carDriverIdPhotos,
@@ -246,6 +288,7 @@ class ServiceRegistrationBloc
     registrationRequest.carModelId = event.carModelId;
     registrationRequest.plateNumber = event.plateNumber;
     registrationRequest.carNotes = event.carNotes;
+    registrationRequest.driverImages?.addAll(carPhotos);
     registrationRequest.driverImages?.addAll(driverImages);
 
     emit(SecondStepDataAddedState());
@@ -262,6 +305,18 @@ class ServiceRegistrationBloc
   Future<bool> isFileExist(XFile image) async {
     File file = File(image.path);
     return await file.existsSync();
+  }
+
+  Future<List<File>> prepareCarPhotosList(List<XFile> carPhotosList) async {
+    List<File> carPhotos = [];
+    int counter = 1;
+    await Future.forEach(carPhotosList, (XFile carPhoto) async {
+      File imageFile = await changeFileNameOnly(
+          carPhoto, 'driver_car_photo_' + counter.toString() + '.jpg');
+      counter++;
+      carPhotos.add(imageFile);
+    });
+    return carPhotos;
   }
 
   Future<List<File>> prepareDocumentsPhotosList(

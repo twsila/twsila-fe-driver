@@ -98,6 +98,8 @@ class AppStrings {
   static const fromKhobarToElDmam = 'from_dmam_to_khobar';
   static const registerPersonsTrips = 'register_persons_trips';
   static const registerGoodsTrips = 'register_goods_trips';
+  static const birtDate = 'birth_date';
+  static const birtDateHint = 'birth_date_hint';
 
   static const carType = 'car_type';
   static const largeVehicleOpened = 'large_vehicle_opened';

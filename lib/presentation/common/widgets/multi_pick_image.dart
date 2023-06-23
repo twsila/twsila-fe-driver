@@ -53,6 +53,7 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                   InkWell(
                     onTap: () async {
                       try {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         var pickedfiles = await imgpicker.pickMultiImage(
                             imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
 

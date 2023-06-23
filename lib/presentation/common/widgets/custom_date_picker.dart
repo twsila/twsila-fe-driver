@@ -7,6 +7,7 @@ import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/styles_manager.dart';
+import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 class CustomDatePickerWidget extends StatefulWidget {
   final Function(String date) onSelectDate;
@@ -37,7 +38,7 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
           flex: 1,
           child: Text(
             widget.labelText ?? AppStrings.scheduleAppoinment.tr(),
-            style: getMediumStyle(color: ColorManager.lightGrey, fontSize: 12),
+            style: getMediumStyle(color: ColorManager.lightGrey, fontSize: AppSize.s14),
           ),
         ),
         const SizedBox(width: 6),
@@ -97,9 +98,9 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                           return Theme(
                             data: Theme.of(context).copyWith(
                                 colorScheme: ColorScheme.fromSwatch(
-                              primarySwatch: Colors.indigo,
+                              primarySwatch: Colors.green,
                               accentColor: ColorManager.lightGrey,
-                              backgroundColor: Colors.lightBlue,
+                              backgroundColor: Colors.blue,
                               cardColor: Colors.white,
                             )),
                             child: child!,
@@ -113,7 +114,7 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                             return Theme(
                               data: Theme.of(context).copyWith(
                                   colorScheme: ColorScheme.fromSwatch(
-                                primarySwatch: Colors.indigo,
+                                primarySwatch: Colors.green,
                                 accentColor: ColorManager.lightGrey,
                                 backgroundColor: Colors.lightBlue,
                                 cardColor: Colors.white,

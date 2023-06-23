@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/app/di.dart';
-import 'package:taxi_for_you/presentation/captain_registration/bloc/registration_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
@@ -24,11 +23,9 @@ blocProviders(BuildContext context) {
             generateOtpUseCase: instance(),
             loginUseCase: instance())),
     BlocProvider.value(
-        value: RegistrationBloc(registrationServiceUseCase: instance())),
-    BlocProvider.value(
         value: ServiceRegistrationBloc(
             registrationServiceUseCase: instance(),
-            carBrandsAndModelsUseCase: instance())),
+            carBrandsAndModelsUseCase: instance(),registrationUseCase: instance())),
     BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
     BlocProvider.value(value: MyProfileBloc(logoutUseCase: instance())),
     ChangeNotifierProvider(create: (_) => MapProvider())
