@@ -142,7 +142,7 @@ class _ServiceRegistrationSecondStepState
         }
 
         if (state is ServiceRegistrationSuccess) {
-          Navigator.pushNamed(context, Routes.mainRoute);
+          Navigator.pushNamed(context, Routes.loginRoute);
         }
         if (state is ServiceRegistrationFail) {
           CustomDialog(context).showErrorDialog('', '', state.message);
@@ -311,7 +311,6 @@ class _ServiceRegistrationSecondStepState
               height: AppSize.s18,
             ),
             TextFormField(
-
               onChanged: (value) {
                 carNotes = value;
               },
@@ -525,16 +524,74 @@ class _ServiceRegistrationSecondStepState
                       const SizedBox(
                         height: AppSize.s8,
                       ),
-                      CustomDatePickerWidget(
-                          labelText: AppStrings.selectDate.tr(),
-                          onSelectDate: (date) {
-                            expiryDate = date;
-                            documentData.expireDate = date;
-                            BlocProvider.of<ServiceRegistrationBloc>(context)
-                                .add(SetDocumentForView(
-                                    documentPicked: 2, expireDate: date));
-                          },
-                          pickTime: false)
+                      expiryDate != null && expiryDate!.isNotEmpty
+                          ? Row(
+                              children: [
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    AppStrings.selectDate.tr(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            color:
+                                                ColorManager.headersTextColor),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: AppSize.s6,
+                                ),
+                                Flexible(
+                                  flex: 4,
+                                  child: Container(
+                                    padding: EdgeInsets.all(AppPadding.p8),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: ColorManager.borderColor),
+                                        borderRadius: BorderRadius.circular(2)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          expiryDate!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                  color: ColorManager
+                                                      .headersTextColor),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              expiryDate = null;
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: ColorManager.error,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : CustomDatePickerWidget(
+                              labelText: AppStrings.selectDate.tr(),
+                              onSelectDate: (date) {
+                                expiryDate = date;
+                                documentData.expireDate = date;
+
+                                BlocProvider.of<ServiceRegistrationBloc>(
+                                        context)
+                                    .add(SetDocumentForView(
+                                        documentPicked: 2, expireDate: date));
+                              },
+                              pickTime: false)
                     ],
                   ),
                   onClick: () {}),

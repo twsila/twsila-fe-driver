@@ -104,11 +104,10 @@ class ServiceRegistrationBloc
     (await registrationUseCase.execute(RegistrationUseCaseInput(
             firstName: registrationRequest.firstName!,
             lastName: registrationRequest.lastName!,
-            // mobile: registrationRequest.mobile!,
-            mobile: "+96622556631",
+            mobile: registrationRequest.mobile!,
             email: registrationRequest.email!,
             gender: registrationRequest.gender!,
-            dateOfBirth: registrationRequest.dateOfBirth ?? "12/1/1999",
+            dateOfBirth: registrationRequest.dateOfBirth!,
             driverServiceType: registrationRequest.driverServiceType!,
             vehicleTypeId: registrationRequest.vehicleTypeId!,
             carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,

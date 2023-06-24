@@ -43,6 +43,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   String? firstName;
   String? lastName;
   String? email;
+  String? email_validation;
   String? gender;
   String? birthDate;
   Function()? continueFunction;
@@ -92,25 +93,30 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
     }, builder: (context, state) {
       return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Container(
-          margin: EdgeInsets.all(AppSize.s8),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _headerText(),
-                const SizedBox(
-                  height: AppSize.s30,
-                ),
-                _uploadCaptainPhoto(),
-                const SizedBox(
-                  height: AppSize.s28,
-                ),
-                _inputFields(),
-                CustomTextButton(
-                    onPressed: continueFunction != null ? continueFunction : null,
-                    text: AppStrings.continueStr.tr())
-              ],
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Container(
+            margin: EdgeInsets.all(AppSize.s8),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _headerText(),
+                  const SizedBox(
+                    height: AppSize.s30,
+                  ),
+                  _uploadCaptainPhoto(),
+                  const SizedBox(
+                    height: AppSize.s28,
+                  ),
+                  _inputFields(),
+                  CustomTextButton(
+                      onPressed:
+                          continueFunction != null ? continueFunction : null,
+                      text: AppStrings.continueStr.tr())
+                ],
+              ),
             ),
           ),
         ),
@@ -276,6 +282,15 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           labelText: AppStrings.email.tr(),
           showLabelText: true,
           hintText: AppStrings.emailHint.tr(),
+          validateEmail: true,
+          validationMethod: (value) {
+            if (value!.isEmpty ||
+                !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value)) {
+              return 'Enter a valid email';
+            }
+            return null;
+          },
           onChanged: (value) {
             email = value;
             checkValidToContinue();
@@ -471,14 +486,12 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           widget.mobileNumber != "" &&
           agreeWithTerms) {
         continueFunction = () {
-          BlocProvider.of<ServiceRegistrationBloc>(context).add(SetCaptainData(
-              captainPhoto!,
-              widget.mobileNumber,
-              firstName!,
-              lastName!,
-              email ?? "",
-              gender!,
-              birthDate!));
+          bool validate = _formKey.currentState!.validate();
+          if (validate) {
+            BlocProvider.of<ServiceRegistrationBloc>(context).add(
+                SetCaptainData(captainPhoto!, widget.mobileNumber, firstName!,
+                    lastName!, email ?? "", gender!, birthDate!));
+          }
         };
       } else {
         continueFunction = null;

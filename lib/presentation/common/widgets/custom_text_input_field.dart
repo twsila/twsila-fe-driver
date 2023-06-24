@@ -171,6 +171,11 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
               keyboardType: widget.keyboardType,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               autocorrect: false,
+              validator: (value) {
+                widget.validationMethod != null
+                    ? widget.validationMethod!(value)
+                    : null;
+              },
               onFieldSubmitted: widget.onFieldSubmitted,
               inputFormatters: widget.inputFormatter ??
                   <TextInputFormatter>[

@@ -127,17 +127,14 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
           await _appPreferences.setDriver(state.driver);
           Driver? driver = _appPreferences.getCachedDriver();
           if (driver != null) {
-            Navigator.pushNamed(context, Routes.captainRegisterRoute,
-                arguments: captainRegistrationArgs(widget.mobileNumberForApi));
+            Navigator.pushReplacementNamed(context, Routes.mainRoute);
           }
         }
         if (state is LoginFailState) {
           if (state.errorCode == ResponseCode.NOT_FOUND.toString()) {
-            // Navigator.pushNamed(context, Routes.noServicesAdded);
-            CustomDialog(context).showErrorDialog(
-                '', '', AppStrings.noUserFound.tr(), onBtnPressed: () {
-              Navigator.pop(context);
-            });
+            Navigator.pushReplacementNamed(context, Routes.captainRegisterRoute,
+                arguments:
+                captainRegistrationArgs(widget.mobileNumberForApi));
           } else {
             CustomDialog(context).showErrorDialog('', '', state.message);
           }

@@ -31,7 +31,8 @@ Failure _handleError(DioError error) {
           error.response?.statusCode != null &&
           error.response?.statusMessage != null) {
         return Failure(error.response?.statusCode ?? 0,
-            error.response?.statusMessage ?? "");
+            error.response?.data["message"] ?? "");
+
       } else {
         return DataSource.DEFAULT.getFailure();
       }
