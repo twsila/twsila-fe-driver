@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
-import 'package:taxi_for_you/domain/model/vehicleModel.dart';
+import 'package:taxi_for_you/domain/model/service_type_model.dart';
+import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/services_card_widget.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';

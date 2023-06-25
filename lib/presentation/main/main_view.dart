@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_view.dart';
 import 'package:taxi_for_you/presentation/main/pages/mytrips/mytrips_page.dart';
-import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_page.dart';
+import 'package:taxi_for_you/presentation/main/pages/search_trips/view/search_trips_page.dart';
 
 import '../../utils/resources/assets_manager.dart';
 import '../../utils/resources/color_manager.dart';

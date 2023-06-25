@@ -298,7 +298,15 @@
   "first_name_hint": "ادخل الاسم الاول هنا",
   "last_name_hint": "ادخل اللقب هنا",
   "birth_date": "تاريخ الميلاد",
-  "birth_date_hint": "اضغط هنا لتاريخ الميلاد"
-
-
+  "birth_date_hint": "اضغط هنا لتاريخ الميلاد",
+  "all_trips": "كل الرحلات",
+  "today_trips": "رحلات مجدولة",
+  "goods_trips": "رحلات بضائع",
+  "as_soon_as_possible": "في اسرع وقت",
+  "scheduled": "مجدولة",
+  "goods_trip_request": "طلب نقل بضاعة",
+  "waiting_captains_offer": "في انتظار العروض من الكباتن",
+  "offer_has_been_sent": "تم ارسال عرض",
+  "client_reject_your_offer": "العميل رفض عرضك",
+  "send_another_offer": "إرسل عرض أخر؟"
 }

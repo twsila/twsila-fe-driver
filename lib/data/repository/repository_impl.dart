@@ -5,13 +5,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/data/mapper/driver.dart';
 import 'package:taxi_for_you/data/mapper/mapper.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
-import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
+import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
-import 'package:taxi_for_you/domain/model/vehicleModel.dart';
+import 'package:taxi_for_you/domain/model/trip_model.dart';
+import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 import 'package:taxi_for_you/utils/helpers/cast_helpers.dart';
 
@@ -64,13 +65,11 @@ class RepositoryImpl implements Repository {
     }
   }
 
-
   @override
   Future<Either<Failure, String>> forgotPassword(String email) {
     // TODO: implement forgotPassword
     throw UnimplementedError();
   }
-
 
   @override
   Future<Either<Failure, GenerateOtpModel>> generateOtp(
@@ -235,14 +234,41 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, RegistrationResponse>> register(RegistrationRequest registrationRequest) async {
+  Future<Either<Failure, RegistrationResponse>> register(
+      RegistrationRequest registrationRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.registerCaptainWithService(registrationRequest);
+        final response = await _remoteDataSource
+            .registerCaptainWithService(registrationRequest);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<TripModel>>> getTrips(
+      int tripTypeModuleId, int userId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.tripsByModuleId(tripTypeModuleId, userId);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response.result);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));

@@ -5,7 +5,7 @@ import 'package:taxi_for_you/data/network/requests.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
-import '../model/ServiceTypeModel.dart';
+import '../model/service_type_model.dart';
 import '../model/models.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';

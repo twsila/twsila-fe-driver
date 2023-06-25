@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
+import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 
 import '../../app/constants.dart';
@@ -49,30 +50,34 @@ abstract class AppServiceClient {
   @POST("/drivers/register")
   @MultiPart()
   Future<RegistrationResponse> registerCaptainWithService(
-      @Part(name:"firstName") String firstName,
-      @Part(name:"lastName") String lastName,
-      @Part(name:"mobile") String mobile,
-      @Part(name:"email")String email,
-      @Part(name:"gender") String gender,
-      @Part(name:"dateOfBirth") String dateOfBirth,
-      @Part(name:"driverServiceType") String driverServiceType,
-      @Part(name:"vehicleType.id") String vehicleTypeId,
-      @Part(name:"carManufacturerType.id") String carManufacturerTypeId,
-      @Part(name:"carModel.id") String carModelId,
-      @Part(name:"canTransportFurniture") bool canTransportFurniture,
-      @Part(name:"canTransportGoods") bool canTransportGoods,
-      @Part(name:"canTransportFrozen") bool canTransportFrozen,
-      @Part(name:"hasWaterTank") bool hasWaterTank,
-      @Part(name:"hasPacking") bool hasPacking,
-      @Part(name:"hasLoading") bool hasLoading,
-      @Part(name:"hasAssembly") bool hasAssembly,
-      @Part(name:"hasLifting") bool hasLifting,
-      @Part(name:"plateNumber") String plateNumber,
-      @Part(name:"isAcknowledged") bool isAcknowledged,
-      @Part(name:"driverImages") List<File> driverImages);
+      @Part(name: "firstName") String firstName,
+      @Part(name: "lastName") String lastName,
+      @Part(name: "mobile") String mobile,
+      @Part(name: "email") String email,
+      @Part(name: "gender") String gender,
+      @Part(name: "dateOfBirth") String dateOfBirth,
+      @Part(name: "driverServiceType") String driverServiceType,
+      @Part(name: "vehicleType.id") String vehicleTypeId,
+      @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
+      @Part(name: "carModel.id") String carModelId,
+      @Part(name: "canTransportFurniture") bool canTransportFurniture,
+      @Part(name: "canTransportGoods") bool canTransportGoods,
+      @Part(name: "canTransportFrozen") bool canTransportFrozen,
+      @Part(name: "hasWaterTank") bool hasWaterTank,
+      @Part(name: "hasPacking") bool hasPacking,
+      @Part(name: "hasLoading") bool hasLoading,
+      @Part(name: "hasAssembly") bool hasAssembly,
+      @Part(name: "hasLifting") bool hasLifting,
+      @Part(name: "plateNumber") String plateNumber,
+      @Part(name: "isAcknowledged") bool isAcknowledged,
+      @Part(name: "driverImages") List<File> driverImages);
 
   @POST("/drivers/registration-status")
   Future<ServiceRegisterModel> serviceStatus(@Field("userId") String userId);
+
+  @POST("/drivers/offers/select-trip")
+  Future<TripModelResponse> getTripsByModuleId(
+      @Field("tripModelType") int tripModelType, @Field("userId") int userId);
 
   @POST("/drivers/logout")
   Future<LogoutModel> logout(

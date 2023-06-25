@@ -11,7 +11,7 @@ import 'package:taxi_for_you/presentation/service_registration/view/helpers/regi
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
-import '../../../domain/model/ServiceTypeModel.dart';
+import '../../../domain/model/service_type_model.dart';
 import '../../../domain/model/car_brand_models_model.dart';
 import '../../../domain/usecase/registration_services_usecase.dart';
 import '../view/helpers/documents_helper.dart';

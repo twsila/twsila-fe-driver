@@ -76,6 +76,12 @@ class ImageAssets {
   static const String logout = "$imagePath/ic_logout.svg";
   static const String placeholeder = "$imagePath/img.png";
 
+  //search for trips
+
+
+  static const String asSoonAsPossibleTripIc = "$imagePath/asap_trip_ic.svg";
+  static const String scheduledTripIc = "$imagePath/schudeled_trip_ic.svg";
+  static const String truckIc = "$imagePath/truck_ic.svg";
 
 
 

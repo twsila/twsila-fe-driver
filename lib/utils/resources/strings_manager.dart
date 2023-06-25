@@ -323,6 +323,20 @@ class AppStrings {
   static const approved = 'approved';
   static const rejected = 'rejected';
 
+  // search for trips
+
+  static const asSoonAsPossible = 'as_soon_as_possible';
+  static const scheduled = 'scheduled';
+  static const goodsTripRequest = 'goods_trip_request';
+  static const waitingCaptainsOffers = 'waiting_captains_offer';
+  static const offerHasBeenSent = 'offer_has_been_sent';
+  static const clientRejectYourOffer = 'client_reject_your_offer';
+  static const sendAnotherOffer = 'send_another_offer';
+
+  static const allTrips = 'all_trips';
+  static const todayTrips = 'today_trips';
+  static const goodsTrips = 'goods_trips';
+
 
   //logout
   static const areYouSureYouWantToLogout = 'are_you_sure_you_want_to_logout';

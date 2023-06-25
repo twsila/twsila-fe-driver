@@ -5,6 +5,7 @@ import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
+import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
@@ -28,6 +29,8 @@ abstract class RemoteDataSource {
       RegistrationRequest registrationRequest);
 
   Future<ServiceRegisterModel> servicesStatus(String userId);
+
+  Future<TripModelResponse> tripsByModuleId(int tripTypeModuleId, int userId);
 
   Future<LogoutModel> logout(LogoutRequest logoutRequest);
 
@@ -109,5 +112,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.plateNumber!,
         registrationRequest.isAcknowledged!,
         registrationRequest.driverImages!);
+  }
+
+  @override
+  Future<TripModelResponse> tripsByModuleId(int tripTypeModuleId, int userId) async {
+    return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId);
   }
 }

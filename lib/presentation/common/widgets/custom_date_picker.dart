@@ -29,7 +29,7 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
   final _appPrefs = instance<AppPreferences>();
   final ValueNotifier<DateTime?> dateSub = ValueNotifier(null);
 
-  String dateFormatterString = 'dd MMM, yyyy hh:mm a';
+  String dateFormatterString = 'dd MMM, yyyy';
 
   Widget buildDateTimePicker(String data) {
     return Row(

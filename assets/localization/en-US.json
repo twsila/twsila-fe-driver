@@ -304,5 +304,15 @@
   "first_name_hint": "enter first name here",
   "last_name_hint": "enter last name here",
   "birth_date": "Date of birth",
-  "birth_date_hint": "press here to add birth date"
+  "birth_date_hint": "press here to add birth date",
+  "all_trips": "All Trips",
+  "today_trips": "Scheduled Trips",
+  "goods_trips": "Goods Trips",
+  "as_soon_as_possible": "fastest time",
+  "scheduled": "Scheduled",
+  "goods_trip_request": "deliver goods",
+  "waiting_captains_offer": "waiting captains offers",
+  "offer_has_been_sent": "offer has been sent",
+  "client_reject_your_offer": "client reject your offer",
+  "send_another_offer": "send another offer?"
 }

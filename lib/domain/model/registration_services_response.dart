@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:taxi_for_you/domain/model/vehicleModel.dart';
+import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 
 RegistrationServicesTypesResponse registrationServicesTypesResponseFromJson(
         String str) =>

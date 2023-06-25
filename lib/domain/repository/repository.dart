@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:taxi_for_you/domain/model/ServiceTypeModel.dart';
+import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
+import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../data/network/failure.dart';
@@ -34,6 +35,8 @@ abstract class Repository {
       VerifyOTPRequest verifyOTPRequest);
 
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
+
+  Future<Either<Failure, List<TripModel>>> getTrips(int tripTypeModuleId,int userId);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 }

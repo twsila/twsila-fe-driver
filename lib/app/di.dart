@@ -8,6 +8,7 @@ import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/trips_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/login/bloc/login_bloc.dart';
@@ -75,6 +76,7 @@ Future<void> initAppModule() async {
       () => ServiceStatusUseCase(instance()));
   instance.registerFactory<LogoutUseCase>(() => LogoutUseCase(instance()));
   instance.registerFactory<RegistrationUseCase>(() => RegistrationUseCase(instance()));
+  instance.registerFactory<TripsUseCase>(() => TripsUseCase(instance()));
 }
 
 initLoginModule() {

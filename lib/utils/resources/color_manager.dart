@@ -17,6 +17,7 @@ class ColorManager {
   static Color purpleFade = const Color(0xffEAEAFF);
   static Color borderColor = const Color(0xffD8D8ED);
   static Color primaryBlueBackgroundColor = const Color(0xffEFEFFE);
+  static Color dividerColor = const Color(0xffC1C1DD);
 
   //text
 
@@ -28,6 +29,7 @@ class ColorManager {
   static Color hintTextColor = const Color(0xff9393BB);
   static Color titlesTextColor = const Color(0xff363778);
   static Color accentTextColor = const Color(0xffFF862E);
+  static Color supportTextColor = const Color(0xffFDB808);
   static Color warningTextColor = const Color(0xffFF0B1B);
   static Color purpleMainTextColor = const Color(0xff7577CD);
   static Color lineColor = const Color(0xffE1E1E4);
