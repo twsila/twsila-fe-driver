@@ -336,6 +336,20 @@ class AppStrings {
   static const allTrips = 'all_trips';
   static const todayTrips = 'today_trips';
   static const goodsTrips = 'goods_trips';
+  static const noTripsAvailable = 'no_trips_available';
+
+  //trip details
+
+  static const requestDetails = 'request_details';
+  static const from = 'from';
+  static const to = 'to';
+  static const showTripRoute = 'show_trips_routes';
+  static const withBudget = 'with_budget';
+  static const goodsToDeliver = 'goods_to_deliver';
+  static const anotherRequestsFromClient = 'another_request_from_client';
+  static const price = 'price';
+  static const request = 'request';
+
 
 
   //logout

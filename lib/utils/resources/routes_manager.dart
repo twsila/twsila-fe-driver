@@ -5,6 +5,7 @@ import 'package:taxi_for_you/presentation/my_serivces/view/my_services_view.dart
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_applyed_success_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
+import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/presentation/otp/view/verify_otp_view.dart';
 import '../../app/constants.dart';
@@ -50,6 +51,7 @@ class Routes {
       "/serviceAppliedSuccessfullyView";
   static const String myServices = "/myServices";
   static const String uploadDocument = "/uploadDocument";
+  static const String tripDetails = "/tripDetails";
 }
 
 class RouteGenerator {
@@ -80,20 +82,11 @@ class RouteGenerator {
       case Routes.captainRegisterRoute:
         final args = settings.arguments as captainRegistrationArgs;
         return MaterialPageRoute(
-            builder: (_) =>  CaptainRegistrationView(
+            builder: (_) => CaptainRegistrationView(
                   mobileNumber: args.mobileNumber,
                 ));
       case Routes.mainRoute:
         return MaterialPageRoute(builder: (_) => const MainView());
-      // case Routes.uploadDocument:
-      //   final args = settings.arguments as UploadDocumentsArguments;
-      //   return MaterialPageRoute(
-      //       builder: (_) => UploadDocuments(
-      //             frontImageTitle: args.frontImageTitle,
-      //             backImageTitle: args.backImageTitle,
-      //             expirationDateTitle: args.expirationDateTitle,
-      //             pageController: args.pageController,
-      //           ));
       case Routes.verifyOtpRoute:
         final args = settings.arguments as VerifyArguments;
         initVerifyOtpModule();
@@ -101,6 +94,13 @@ class RouteGenerator {
             builder: (_) => VerifyOtpView(
                   args.mobileNumberForApi,
                   args.mobileNumberForDisplay,
+                ));
+      case Routes.tripDetails:
+        final args = settings.arguments as TripDetailsArguments;
+        initVerifyOtpModule();
+        return MaterialPageRoute(
+            builder: (_) => TripDetailsView(
+                  tripModel: args.tripModel,
                 ));
       case Routes.noServicesAdded:
         return MaterialPageRoute(builder: (_) => const NoServiceAddedView());

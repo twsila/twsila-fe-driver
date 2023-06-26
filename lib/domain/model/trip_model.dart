@@ -98,7 +98,7 @@ class TripModel {
         tripStatus: tripStatusValues.map[json["tripStatus"]]!,
         tripType: json["tripType"],
         date: json["date"] != null ? json["date"] : null,
-        tripNumber: json["tripNumber"],
+        tripNumber: json["tripNumber"] ?? "",
         passenger: Passenger.fromJson(json["passenger"]),
         notes: json["notes"] != null ? json["notes"] : null,
         clientOffer: json["clientOffer"]?.toDouble(),
@@ -132,7 +132,7 @@ class TripModel {
         "destination": destination.toJson(),
         "tripStatus": tripStatusValues.reverse[tripStatus],
         "tripType": tripType,
-        "date": dateValues.reverse[date],
+        "date": date,
         "tripNumber": tripNumber,
         "passenger": passenger.toJson(),
         "notes": notes,
@@ -154,13 +154,7 @@ class TripModel {
       };
 }
 
-enum Date { THE_01121999, THE_31052025, THE_06062025 }
 
-final dateValues = EnumValues({
-  "01/12/1999": Date.THE_01121999,
-  "06/06/2025": Date.THE_06062025,
-  "31/05/2025": Date.THE_31052025
-});
 
 class Ation {
   double latitude;
@@ -188,7 +182,7 @@ class Ation {
 
 class FrozenMaterial {
   int id;
-  Description description;
+  String description;
 
   FrozenMaterial({
     required this.id,
@@ -197,23 +191,17 @@ class FrozenMaterial {
 
   factory FrozenMaterial.fromJson(Map<String, dynamic> json) => FrozenMaterial(
         id: json["id"],
-        description: descriptionValues.map[json["description"]]!,
+        description: json["description"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "description": descriptionValues.reverse[description],
+        "description":description,
       };
 }
 
-enum Description { VEGETABLES, ASDASDASD, EMPTY, DESCRIPTION }
 
-final descriptionValues = EnumValues({
-  "asdasdasd": Description.ASDASDASD,
-  "مواد بناء": Description.DESCRIPTION,
-  "أكياس": Description.EMPTY,
-  "vegetables": Description.VEGETABLES
-});
+
 
 class TripImage {
   int id;

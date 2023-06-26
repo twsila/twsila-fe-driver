@@ -110,7 +110,6 @@
   "request_details_screen_request_details": "Request Details",
   "yes": "Yes",
   "no": "No",
-  "price": "Price {}",
   "not_found_error": "No user found",
   "request_details_screen_price": "Price",
   "request_details_screen_price_not_defined": "Price not defined",
@@ -314,5 +313,16 @@
   "waiting_captains_offer": "waiting captains offers",
   "offer_has_been_sent": "offer has been sent",
   "client_reject_your_offer": "client reject your offer",
-  "send_another_offer": "send another offer?"
+  "send_another_offer": "send another offer?",
+  "no_trips_available": "No available trips for now",
+  "request_details": "Request Details",
+  "from": "From",
+  "to": "To",
+  "show_trips_routes": "show route to the client",
+  "with_budget": "with budget",
+  "goods_to_deliver": "Goods to deliver",
+  "another_request_from_client": "another requests from clients",
+  "price": "price",
+  "request": "Request"
+
 }

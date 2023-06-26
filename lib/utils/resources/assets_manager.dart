@@ -79,9 +79,9 @@ class ImageAssets {
   //search for trips
 
 
-  static const String asSoonAsPossibleTripIc = "$imagePath/asap_trip_ic.svg";
-  static const String scheduledTripIc = "$imagePath/schudeled_trip_ic.svg";
-  static const String truckIc = "$imagePath/truck_ic.svg";
+  static const String asSoonAsPossibleTripIc = "$imagePath/asap_ic.png";
+  static const String scheduledTripIc = "$imagePath/scheduled_ic.png";
+  static const String truckX4Ic = "$imagePath/truck_x4.png";
 
 
 

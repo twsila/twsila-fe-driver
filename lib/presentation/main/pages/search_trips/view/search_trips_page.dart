@@ -5,9 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
+import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
+import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/di.dart';
@@ -20,8 +22,6 @@ List<TripTitleModel> tripsTitles = [
   TripTitleModel(1, "كل الرحلات"),
   TripTitleModel(2, "رحلات اليوم"),
   TripTitleModel(3, "رحلات مجدولة"),
-  TripTitleModel(4, "تم ارسال عرض"),
-  TripTitleModel(5, "رحلات مجدولة"),
 ];
 
 class SearchTripsPage extends StatefulWidget {
@@ -68,6 +68,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
 
   @override
   void initState() {
+    selectedTripModule.isSelected = true;
     BlocProvider.of<SearchTripsBloc>(context)
         .add(GetTripsTripModuleId(selectedTripModule.id));
     super.initState();
@@ -115,7 +116,17 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                           color: ColorManager.purpleMainTextColor,
                         ),
                       )
-                    : Container(child: _TripsListView(trips)),
+                    : trips.length == 0
+                        ? Center(
+                            child: Text(
+                              AppStrings.noTripsAvailable.tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(color: ColorManager.error),
+                            ),
+                          )
+                        : Container(child: _TripsListView(trips)),
               )
             ],
           ),
@@ -129,7 +140,16 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            titleModel.isSelected = !titleModel.isSelected!;
+            tripsTitles.forEach((tripModule) {
+              if (titleModel == tripModule) {
+                selectedTripModule = titleModel;
+                selectedTripModule.isSelected = true;
+                BlocProvider.of<SearchTripsBloc>(context)
+                    .add(GetTripsTripModuleId(selectedTripModule.id));
+              } else {
+                tripModule.isSelected = false;
+              }
+            });
           });
         },
         child: Container(
@@ -163,6 +183,10 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
       date = handleDateString(trip.date!);
     }
     return CustomCard(
+      onClick: () {
+        Navigator.pushNamed(context, Routes.tripDetails,
+            arguments: TripDetailsArguments(tripModel: trip));
+      },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
         padding: EdgeInsets.only(
@@ -179,28 +203,44 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                 Container(
                   color: ColorManager.primaryBlueBackgroundColor,
                   padding: EdgeInsets.all(AppPadding.p2),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(trip.date != null && trip.date != ""
-                          ? ImageAssets.scheduledTripIc
-                          : ImageAssets.asSoonAsPossibleTripIc),
-                      SizedBox(
-                        width: AppSize.s4,
-                      ),
-                      Text(
-                        date != null && date != ""
-                            ? AppStrings.scheduled.tr() + " : ${date}"
-                            : AppStrings.asSoonAsPossible.tr(),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: ColorManager.headersTextColor,
-                            fontSize: FontSize.s12,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppPadding.p4),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          trip.date != null && trip.date != ""
+                              ? ImageAssets.scheduledTripIc
+                              : ImageAssets.asSoonAsPossibleTripIc,
+                          width: AppSize.s14,
+                        ),
+                        SizedBox(
+                          width: AppSize.s4,
+                        ),
+                        Text(
+                          date != null && date != ""
+                              ? AppStrings.scheduled.tr() + " : ${date}"
+                              : AppStrings.asSoonAsPossible.tr(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                  color: ColorManager.headersTextColor,
+                                  fontSize: FontSize.s12,
+                                  fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                SvgPicture.asset(ImageAssets.truckIc,),
+                // SvgPicture.asset(ImageAssets.truckIc,),
+                Image.asset(
+                  ImageAssets.truckX4Ic,
+                  width: AppSize.s40,
+                ),
               ],
+            ),
+            SizedBox(
+              height: AppSize.s4,
             ),
             Text(
               trip.tripType,
@@ -208,6 +248,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
                   fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: AppSize.s4,
             ),
             Text(
               "${trip.pickupLocation.locationName} - ${trip.destination.locationName}",
@@ -219,6 +262,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
             Divider(
               color: ColorManager.dividerColor,
               thickness: 1,
+            ),
+            SizedBox(
+              height: AppSize.s4,
             ),
             Text(
               trip.tripStatus == TripStatus.DRAFT
@@ -232,7 +278,6 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           ],
         ),
       ),
-      onClick: () {},
     );
   }
 

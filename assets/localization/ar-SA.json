@@ -144,7 +144,7 @@
   "offer_accepted_message": "تم قبول العرض من قبلكم و جارى انتظار العميل لقبول العرض المقدم من قبلكم وإتمام الدفع مع العميل للبدء فى الرحلة",
   "accept_client_offer": "(قبول عرض العميل)",
   "offer_from_client_named": "تم تقديم عرض من قبل العميل",
-  "with_price": "بمبلغ",
+  "with_price": "بميزانية",
   "captain_offer_new_price": "(الكابتن تقدم بسعر جديد)",
   "want_to_offer_price_for_trip": "ارغب فى عرض سعر الرحلة",
   "now": "الآن",
@@ -308,5 +308,17 @@
   "waiting_captains_offer": "في انتظار العروض من الكباتن",
   "offer_has_been_sent": "تم ارسال عرض",
   "client_reject_your_offer": "العميل رفض عرضك",
-  "send_another_offer": "إرسل عرض أخر؟"
+  "send_another_offer": "إرسل عرض أخر؟",
+  "no_trips_available": "لا توجد رحلات متاحة الان",
+
+  "request_details": "تفاصيل الطلب",
+  "from": "من",
+  "to": "الى",
+  "show_trips_routes": "إعرض مسار الرحلة",
+  "with_budget": "بميزانية",
+  "goods_to_deliver": "العناصر المراد نقلها",
+  "another_request_from_client": "طلبات اضافية من العميل",
+  "price": "سعر",
+  "request": "طلب"
+
 }
