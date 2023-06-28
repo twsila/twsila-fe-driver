@@ -349,6 +349,12 @@ class AppStrings {
   static const anotherRequestsFromClient = 'another_request_from_client';
   static const price = 'price';
   static const request = 'request';
+  static const acceptRequestWith = 'accept_request_with';
+  static const sendAnotherPrice = 'send_another_price';
+  static const back = 'back';
+  static const sendOfferWithPrice = 'send_offer_with_price';
+  static const ryalSuadi = 'ryal_suadi';
+  static const sendOffer = 'send_offer';
 
 
 

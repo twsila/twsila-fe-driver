@@ -323,6 +323,11 @@
   "goods_to_deliver": "Goods to deliver",
   "another_request_from_client": "another requests from clients",
   "price": "price",
-  "request": "Request"
-
+  "request": "Request",
+  "accept_request_with": "Accept offer with",
+  "send_another_price": "Send another price",
+  "back": "Back",
+  "send_offer_with_price": "Send Offer With Price",
+  "ryal_suadi": "SAR",
+  "send_offer": "Send offer"
 }

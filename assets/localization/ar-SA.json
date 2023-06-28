@@ -310,7 +310,6 @@
   "client_reject_your_offer": "العميل رفض عرضك",
   "send_another_offer": "إرسل عرض أخر؟",
   "no_trips_available": "لا توجد رحلات متاحة الان",
-
   "request_details": "تفاصيل الطلب",
   "from": "من",
   "to": "الى",
@@ -318,7 +317,11 @@
   "with_budget": "بميزانية",
   "goods_to_deliver": "العناصر المراد نقلها",
   "another_request_from_client": "طلبات اضافية من العميل",
-  "price": "سعر",
-  "request": "طلب"
-
+  "request": "طلب",
+  "accept_request_with": "قبول الطلب مقابل",
+  "send_another_price": "ارسل عرض سعر اخر",
+  "back": "رجوع",
+  "send_offer_with_price": "ارسل عرض سعر مقابل",
+  "ryal_suadi": "ريال سعودي",
+  "send_offer": "إرسال العرض"
 }

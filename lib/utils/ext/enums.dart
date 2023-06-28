@@ -1,0 +1,49 @@
+enum AcceptanceType { PROPOSED, ACCEPTED, EXPIRED }
+
+enum ShippingType { CHILLER, FROZEN, DRY }
+
+enum DriverServiceType { PROPOSED, ACCEPTED, EXPIRED }
+
+enum TankType { PROPOSED, ACCEPTED, EXPIRED }
+
+enum SubmitStatus { SUBMITTED, NOT_SUBMITTED }
+
+enum RegistrationStatus { PENDING, APPROVED }
+
+enum NotificationType {
+  REQUEST_EXECUTION,
+  EARLY_NOTIFICATION_ON_TRIP_DAY,
+  DRIVER_ON_HIS_WAY,
+  DRIVER_ARRIVED,
+  TRIP_LAUNCHED,
+  TRIP_FINISHED
+}
+
+enum TripType {
+  CAR_AID,
+  DRINK_WATER_TANK,
+  FROZEN,
+  FURNITURE,
+  GOODS,
+  OTHER_TANK
+}
+
+enum TripModelType {
+  ALL_TRIPS,
+  SCHEDULED_TRIPS,
+  TODAY_TRIPS,
+  OFFERED_TRIPS,
+  OLD_TRIPS
+}
+
+enum TripStatus {
+  DRAFT,
+  SUBMITTED,
+  EVALUATION,
+  PAYMENT,
+  WAIT_FOR_TAKEOFF,
+  TAKEOFF,
+  EXECUTED,
+  COMPLETED,
+  CANCELLED
+}

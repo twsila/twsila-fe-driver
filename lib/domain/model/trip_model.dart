@@ -102,7 +102,8 @@ class TripModel {
         passenger: Passenger.fromJson(json["passenger"]),
         notes: json["notes"] != null ? json["notes"] : null,
         clientOffer: json["clientOffer"]?.toDouble(),
-        images: List<TripImage>.from(json["images"].map((x) => TripImage.fromJson(x))),
+        images: List<TripImage>.from(
+            json["images"].map((x) => TripImage.fromJson(x))),
         containsPacking: json["containsPacking"],
         containsLoading: json["containsLoading"],
         containsLift: json["containsLift"],
@@ -154,8 +155,6 @@ class TripModel {
       };
 }
 
-
-
 class Ation {
   double latitude;
   double longitude;
@@ -196,12 +195,9 @@ class FrozenMaterial {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "description":description,
+        "description": description,
       };
 }
-
-
-
 
 class TripImage {
   int id;
@@ -225,12 +221,12 @@ class TripImage {
 
 class Passenger {
   int id;
-  FirstName firstName;
-  LastName lastName;
+  String firstName;
+  String lastName;
   String mobile;
-  Email email;
-  Gender gender;
-  DateOfBirth dateOfBirth;
+  String email;
+  String gender;
+  String dateOfBirth;
   double rating;
 
   Passenger({
@@ -246,53 +242,26 @@ class Passenger {
 
   factory Passenger.fromJson(Map<String, dynamic> json) => Passenger(
         id: json["id"],
-        firstName: firstNameValues.map[json["firstName"]]!,
-        lastName: lastNameValues.map[json["lastName"]]!,
+        firstName: json["firstName"] ?? "",
+        lastName: json["lastName"] ?? " ",
         mobile: json["mobile"],
-        email: emailValues.map[json["email"]]!,
-        gender: genderValues.map[json["gender"]]!,
-        dateOfBirth: dateOfBirthValues.map[json["dateOfBirth"]]!,
+        email: json["email"] ?? "",
+        gender: json["gender"] ?? "",
+        dateOfBirth: json["dateOfBirth"] ?? "",
         rating: json["rating"]?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "firstName": firstNameValues.reverse[firstName],
-        "lastName": lastNameValues.reverse[lastName],
+        "firstName": firstName,
+        "lastName": lastName,
         "mobile": mobile,
-        "email": emailValues.reverse[email],
-        "gender": genderValues.reverse[gender],
-        "dateOfBirth": dateOfBirthValues.reverse[dateOfBirth],
+        "email": email,
+        "gender": gender,
+        "dateOfBirth": dateOfBirth,
         "rating": rating,
       };
 }
-
-enum DateOfBirth { THE_02011980, THE_26122022 }
-
-final dateOfBirthValues = EnumValues({
-  "02/01/1980": DateOfBirth.THE_02011980,
-  "26/12/2022": DateOfBirth.THE_26122022
-});
-
-enum Email { GAMALELSAWY_GMAIL_COM, A_A_COM }
-
-final emailValues = EnumValues({
-  "a@a.com": Email.A_A_COM,
-  "gamalelsawy@gmail.com": Email.GAMALELSAWY_GMAIL_COM
-});
-
-enum FirstName { AMIR }
-
-final firstNameValues = EnumValues({"amir": FirstName.AMIR});
-
-enum Gender { M }
-
-final genderValues = EnumValues({"M": Gender.M});
-
-enum LastName { SAMAIR, SAMIR }
-
-final lastNameValues =
-    EnumValues({"samair": LastName.SAMAIR, "samir": LastName.SAMIR});
 
 class TankDetails {
   int id;
