@@ -6,12 +6,15 @@ import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_b
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
+import 'package:taxi_for_you/presentation/trip_execution/bloc/trip_execution_bloc.dart';
 
 import '../presentation/google_maps/bloc/maps_bloc.dart';
 import '../presentation/google_maps/model/maps_repo.dart';
 import '../presentation/login/bloc/login_bloc.dart';
+import '../presentation/main/pages/mytrips/bloc/my_trips_bloc.dart';
 import '../presentation/my_serivces/bloc/my_services_bloc.dart';
 import '../presentation/otp/bloc/verify_otp_bloc.dart';
+import '../presentation/trip_details/bloc/trip_details_bloc.dart';
 import '../utils/location/map_provider.dart';
 
 blocProviders(BuildContext context) {
@@ -26,10 +29,18 @@ blocProviders(BuildContext context) {
     BlocProvider.value(
         value: ServiceRegistrationBloc(
             registrationServiceUseCase: instance(),
-            carBrandsAndModelsUseCase: instance(),registrationUseCase: instance())),
+            carBrandsAndModelsUseCase: instance(),
+            registrationUseCase: instance())),
     BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
     BlocProvider.value(value: MyProfileBloc(logoutUseCase: instance())),
     BlocProvider.value(value: SearchTripsBloc(tripsUseCase: instance())),
+    BlocProvider.value(value: MyTripsBloc(tripsUseCase: instance())),
+    BlocProvider.value(value: TripExecutionBloc()),
+    BlocProvider.value(
+        value: TripDetailsBloc(
+            acceptOfferUseCase: instance(),
+            addOfferUseCase: instance(),
+            tripSummaryUseCase: instance())),
     ChangeNotifierProvider(create: (_) => MapProvider())
   ];
 }

@@ -49,3 +49,25 @@ class LogoutRequest {
 
   LogoutRequest(this.userId, this.registrationId, this.language);
 }
+
+class AcceptOfferRequest {
+  int userId;
+  int tripId;
+
+  AcceptOfferRequest(this.userId, this.tripId);
+}
+
+class AddOfferRequest {
+  int userId;
+  int tripId;
+  int driverOffer;
+
+  AddOfferRequest(this.userId, this.tripId, this.driverOffer);
+}
+
+class TripSummaryRequest {
+  int userId;
+  int tripId;
+
+  TripSummaryRequest(this.userId, this.tripId);
+}

@@ -14,10 +14,12 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../../presentation/login/view/login_view.dart';
 import '../../presentation/main/main_view.dart';
+import '../../presentation/main/pages/search_trips/view/navigation_tracking_view.dart';
 import '../../presentation/onboarding/onboarding_view.dart';
 import '../../presentation/select_registation_type/view/registration_type_view.dart';
 import '../../presentation/service_registration/view/pages/no_service_added_view.dart';
 import '../../presentation/splash/splash_view.dart';
+import '../../presentation/trip_execution/view/trip_execution_view.dart';
 
 class Routes {
   static const String splashRoute = "/";
@@ -52,6 +54,8 @@ class Routes {
   static const String myServices = "/myServices";
   static const String uploadDocument = "/uploadDocument";
   static const String tripDetails = "/tripDetails";
+  static const String tripExecution = "/tripExecution";
+  static const String locationTrackingPage = "/locationTrackingPage";
 }
 
 class RouteGenerator {
@@ -97,9 +101,14 @@ class RouteGenerator {
                 ));
       case Routes.tripDetails:
         final args = settings.arguments as TripDetailsArguments;
-        initVerifyOtpModule();
         return MaterialPageRoute(
             builder: (_) => TripDetailsView(
+                  tripModel: args.tripModel,
+                ));
+      case Routes.tripExecution:
+        final args = settings.arguments as TripExecutionArguments;
+        return MaterialPageRoute(
+            builder: (_) => TripExecutionView(
                   tripModel: args.tripModel,
                 ));
       case Routes.noServicesAdded:
@@ -111,6 +120,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const CustomWidgetsView());
       case Routes.selectRegistrationType:
         return MaterialPageRoute(builder: (_) => const RegistrationTypesView());
+      case Routes.locationTrackingPage:
+        return MaterialPageRoute(builder: (_) => const TrackingPage());
       default:
         return unDefinedRoute();
     }

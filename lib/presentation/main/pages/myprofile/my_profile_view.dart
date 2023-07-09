@@ -136,7 +136,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       AppStrings.logout.tr(),
                       AppStrings.areYouSureYouWantToLogout.tr(),
                       AppStrings.confirmLogout.tr(),
-                      AppStrings.cancel.tr(), () {
+                      AppStrings.cancel.tr(),
+                      ColorManager.error, () {
                     BlocProvider.of<MyProfileBloc>(context).add(logoutEvent());
                     Navigator.pop(context);
                   }, () {

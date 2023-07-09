@@ -1,59 +1,45 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:taxi_for_you/domain/model/trip_model.dart';
-import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
-import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
-import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
-import 'package:taxi_for_you/utils/ext/enums.dart';
-import 'package:taxi_for_you/utils/resources/assets_manager.dart';
+import 'package:taxi_for_you/app/constants.dart';
+import 'package:taxi_for_you/presentation/trip_execution/view/trip_execution_view.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
-import 'package:taxi_for_you/utils/resources/routes_manager.dart';
+import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../../../app/app_prefs.dart';
-import '../../../../../app/constants.dart';
 import '../../../../../app/di.dart';
+import '../../../../../domain/model/trip_model.dart';
+import '../../../../../utils/ext/enums.dart';
+import '../../../../../utils/resources/assets_manager.dart';
+import '../../../../../utils/resources/routes_manager.dart';
 import '../../../../../utils/resources/strings_manager.dart';
-import '../../../../../utils/resources/values_manager.dart';
+import '../../../../common/widgets/custom_card.dart';
 import '../../../../common/widgets/custom_scaffold.dart';
 import '../../../../common/widgets/page_builder.dart';
+import '../../../../trip_details/view/trip_details_view.dart';
+import '../bloc/my_trips_bloc.dart';
 
-List<TripTitleModel> tripsTitles = [
-  TripTitleModel(0, "كل الرحلات"),
-  TripTitleModel(1, "رحلات اليوم"),
-  TripTitleModel(2, "رحلات مجدولة"),
-];
-
-class SearchTripsPage extends StatefulWidget {
-  const SearchTripsPage({Key? key}) : super(key: key);
+class MyTripsPage extends StatefulWidget {
+  const MyTripsPage({Key? key}) : super(key: key);
 
   @override
-  _SearchTripsPageState createState() => _SearchTripsPageState();
+  _MyTripsPageState createState() => _MyTripsPageState();
 }
 
-class _SearchTripsPageState extends State<SearchTripsPage> {
+class _MyTripsPageState extends State<MyTripsPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
-  bool _displayLoadingIndicator = false;
   bool _loadingTripsList = false;
-  TripTitleModel selectedTripModule = tripsTitles[0];
   List<TripModel> trips = [];
-
-  ListView _TripsTitleListView(List<TripTitleModel> tripsTitles) {
-    return ListView(
-        scrollDirection: Axis.horizontal,
-        children: List.generate(tripsTitles.length,
-            (index) => tripTitleItemView(tripsTitles[index])));
-  }
-
-  ListView _TripsListView(List<TripModel> tripsTitles) {
-    return ListView(
-        scrollDirection: Axis.vertical,
-        children:
-            List.generate(trips.length, (index) => tripItemView(trips[index])));
-  }
+  bool _displayLoadingIndicator = false;
+  List<MyTripsListModel> items = [
+    MyTripsListModel(0, AppStrings.onGoing.tr()),
+    MyTripsListModel(1, AppStrings.scheduled.tr()),
+    MyTripsListModel(2, AppStrings.last.tr()),
+  ];
+  int current = 0;
 
   void startLoading() {
     setState(() {
@@ -69,9 +55,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
 
   @override
   void initState() {
-    selectedTripModule.isSelected = true;
-    BlocProvider.of<SearchTripsBloc>(context)
-        .add(GetTripsTripModuleId(selectedTripModule.id));
+    BlocProvider.of<MyTripsBloc>(context)
+        .add(GetTripsTripModuleId(items[current].tripModelTypeId));
     super.initState();
   }
 
@@ -90,50 +75,37 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return BlocConsumer<SearchTripsBloc, SearchTripsState>(
+    return BlocConsumer<MyTripsBloc, MyTripsState>(
       listener: (context, state) {
-        if (state is SearchTripsLoading) {
+        if (state is MyTripsLoading) {
           _loadingTripsList = true;
         } else {
           _loadingTripsList = false;
         }
 
-        if (state is SearchTripsSuccess) {
+        if (state is MyTripsSuccess) {
           trips = state.trips;
-          trips.forEach((element) {
-            if (element.tripType == null) {
-              print('null is here ${element.id}');
-            }
-          });
         }
       },
       builder: (context, state) {
         return Container(
-          margin: EdgeInsets.symmetric(vertical: AppSize.s8),
+          margin: EdgeInsets.all(AppSize.s12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                  height: AppSize.s40, child: _TripsTitleListView(tripsTitles)),
-              Expanded(
-                child: _loadingTripsList
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: ColorManager.purpleMainTextColor,
-                        ),
-                      )
-                    : trips.length == 0
-                        ? Center(
-                            child: Text(
-                              AppStrings.noTripsAvailable.tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(color: ColorManager.error),
-                            ),
-                          )
-                        : Container(child: _TripsListView(trips)),
-              )
+              SizedBox(
+                height: AppSize.s20,
+              ),
+              _headerText(),
+              SizedBox(
+                height: AppSize.s20,
+              ),
+
+              /// CUSTOM TABBAR
+              _MyTripsTitlesTabsBar(),
+
+              /// MAIN BODY
+              _tripsListView(),
             ],
           ),
         );
@@ -141,46 +113,33 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     );
   }
 
-  tripTitleItemView(TripTitleModel titleModel) {
-    return Container(
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            tripsTitles.forEach((tripModule) {
-              if (titleModel == tripModule) {
-                selectedTripModule = titleModel;
-                selectedTripModule.isSelected = true;
-                BlocProvider.of<SearchTripsBloc>(context)
-                    .add(GetTripsTripModuleId(selectedTripModule.id));
-              } else {
-                tripModule.isSelected = false;
-              }
-            });
-          });
-        },
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: AppSize.s3),
-          padding: EdgeInsets.symmetric(horizontal: AppSize.s6),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(2),
-              color: titleModel.isSelected!
-                  ? ColorManager.purpleMainTextColor
-                  : ColorManager.white,
-              border: Border.all(color: ColorManager.borderColor)),
-          child: Center(
-            child: Text(
-              titleModel.title,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: titleModel.isSelected!
-                      ? ColorManager.white
-                      : ColorManager.headersTextColor,
-                  fontSize: FontSize.s14,
-                  fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ),
+  Widget _tripsListView() {
+    return Expanded(
+      child: _loadingTripsList
+          ? Center(
+              child: CircularProgressIndicator(
+                color: ColorManager.purpleMainTextColor,
+              ),
+            )
+          : trips.length == 0
+              ? Center(
+                  child: Text(
+                    AppStrings.noTripsAvailable.tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(color: ColorManager.error),
+                  ),
+                )
+              : Container(child: _TripsListView(trips)),
     );
+  }
+
+  ListView _TripsListView(List<TripModel> tripsTitles) {
+    return ListView(
+        scrollDirection: Axis.vertical,
+        children:
+            List.generate(trips.length, (index) => tripItemView(trips[index])));
   }
 
   tripItemView(TripModel trip) {
@@ -190,8 +149,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     }
     return CustomCard(
       onClick: () {
-        Navigator.pushNamed(context, Routes.tripDetails,
-            arguments: TripDetailsArguments(tripModel: trip));
+        Navigator.pushNamed(context, Routes.tripExecution,
+            arguments: TripExecutionArguments(trip));
       },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
@@ -287,6 +246,70 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     );
   }
 
+  Widget _headerText() {
+    return Text(
+      AppStrings.myTrips.tr(),
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: ColorManager.headersTextColor, fontSize: FontSize.s28),
+    );
+  }
+
+  Widget _MyTripsTitlesTabsBar() {
+    return Container(
+      height: AppSize.s39,
+      color: ColorManager.purpleFade,
+      alignment: Alignment.center,
+      child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: items.length,
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (ctx, index) {
+            return tabsTitleWidget(index);
+          }),
+    );
+  }
+
+  Widget tabsTitleWidget(int index) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              current = index;
+              BlocProvider.of<MyTripsBloc>(context)
+                  .add(GetTripsTripModuleId(items[current].tripModelTypeId));
+            });
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            margin: const EdgeInsets.all(5),
+            width: AppSize.s100,
+            height: AppSize.s28,
+            decoration: BoxDecoration(
+                color:
+                    current == index ? Colors.white : ColorManager.purpleFade,
+                borderRadius: BorderRadius.circular(2),
+                border: Border.all(
+                    color: current == index ? Colors.white : Colors.transparent,
+                    width: 2)),
+            child: Center(
+              child: Text(
+                items[index].title,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: FontSize.s14,
+                    color: current == index
+                        ? ColorManager.headersTextColor
+                        : ColorManager.purpleMainTextColor),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   String handleDateString(String dateString) {
     DateTime parseDate =
         new DateFormat(Constants.dateFormatterString).parse(dateString);
@@ -297,10 +320,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   }
 }
 
-class TripTitleModel {
-  int id;
+class MyTripsListModel {
+  int tripModelTypeId;
   String title;
-  bool? isSelected;
 
-  TripTitleModel(this.id, this.title, {this.isSelected = false});
+  MyTripsListModel(this.tripModelTypeId, this.title);
 }

@@ -359,6 +359,95 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
+  Future<GeneralResponse> addOffer(
+    userId,
+    tripId,
+    driverOffer,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'userId': userId,
+      'tripId': tripId,
+      'driverOffer': driverOffer,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GeneralResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/drivers/offers/add',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GeneralResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GeneralResponse> acceptOffer(
+    userId,
+    tripId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'userId': userId,
+      'tripId': tripId,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GeneralResponse>(Options(
+      method: 'PUT',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/drivers/offers/accept',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GeneralResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<GeneralResponse> tripSummary(
+    userId,
+    tripId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'userId': userId,
+      'tripId': tripId,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GeneralResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/drivers/trip-summary',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GeneralResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<LogoutModel> logout(
     userId,
     registrationId,

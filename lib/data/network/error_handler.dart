@@ -30,9 +30,13 @@ Failure _handleError(DioError error) {
       if (error.response != null &&
           error.response?.statusCode != null &&
           error.response?.statusMessage != null) {
-        return Failure(error.response?.statusCode ?? 0,
-            error.response?.data["message"] ?? "");
-
+        try {
+          return Failure(error.response?.statusCode ?? 0,
+              error.response?.data["message"] ?? "");
+        } catch (e) {
+          return Failure(
+              error.response?.statusCode ?? 0, error.response?.data ?? "");
+        }
       } else {
         return DataSource.DEFAULT.getFailure();
       }
@@ -99,9 +103,8 @@ extension DataSourceExtension on DataSource {
       case DataSource.NO_INTERNET_CONNECTION:
         return Failure(ResponseCode.NO_INTERNET_CONNECTION,
             ResponseMessage.NO_INTERNET_CONNECTION.tr());
-        case DataSource.WRON_OTP:
-        return Failure(ResponseCode.WRONG_OTP,
-            ResponseMessage.WRONG_OTP.tr());
+      case DataSource.WRON_OTP:
+        return Failure(ResponseCode.WRONG_OTP, ResponseMessage.WRONG_OTP.tr());
       case DataSource.DEFAULT:
         return Failure(ResponseCode.DEFAULT, ResponseMessage.DEFAULT.tr());
     }

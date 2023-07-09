@@ -89,6 +89,15 @@ class ImageAssets {
   static const String tripDetailsVisaIcon = "$imagePath/visa_icon.png";
   static const String tripDetailsAsapIcon = "$imagePath/asap_trip_details_ic.png";
 
+  static const String tripPersonsIc = "$imagePath/trip_persons_ic.png";
+  static const String tripGoodsIc = "$imagePath/trip_goods_ic.png";
+  static const String tripWaterTankIc = "$imagePath/trip_water_tank_ic.png";
+  static const String tripFrozenIc = "$imagePath/trip_frozen_ic.png";
+  static const String tripSatahatIc = "$imagePath/trip_stahat_ic.png";
+  static const String tripSwarekIc = "$imagePath/trip_swarek_ic.png";
+  static const String driverCar = "$imagePath/driver_car.png";
+  static const String locationPin = "$imagePath/location_pin.png";
+
 
 
 }

@@ -8,7 +8,6 @@ import '../domain/model/driver_model.dart';
 import '../domain/model/models.dart';
 
 class Constants {
-
   static const String baseUrl =
       "https://twsila-dev-service-f33wiujt7a-lm.a.run.app";
   static const String empty = "";
@@ -21,6 +20,7 @@ class Constants {
 
   static const int IMAGE_QUALITY_COMPRESS = 10;
 
+  static const String dateFormatterString = 'dd/MM/yyyy';
 
   static const int otpCountTime = 30;
   static const int otpSize = 6;

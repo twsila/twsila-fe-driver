@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
@@ -78,6 +79,27 @@ abstract class AppServiceClient {
   @POST("/drivers/offers/select-trip")
   Future<TripModelResponse> getTripsByModuleId(
       @Field("tripModelType") int tripModelType, @Field("userId") int userId);
+
+  @POST("/drivers/offers/add")
+  Future<GeneralResponse> addOffer(
+    @Field("userId") int userId,
+    @Field("tripId") int tripId,
+    @Field("driverOffer") double driverOffer,
+  );
+
+
+  @PUT("/drivers/offers/accept")
+  Future<GeneralResponse> acceptOffer(
+      @Field("userId") int userId,
+      @Field("tripId") int tripId,
+      );
+
+  @POST("/drivers/trip-summary")
+  Future<GeneralResponse> tripSummary(
+    @Field("userId") int userId,
+    @Field("tripId") int tripId,
+  );
+
 
   @POST("/drivers/logout")
   Future<LogoutModel> logout(

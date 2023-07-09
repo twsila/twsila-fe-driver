@@ -3,11 +3,14 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/domain/usecase/accept_offer_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/add_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/trip_summary_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/trips_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
@@ -75,8 +78,14 @@ Future<void> initAppModule() async {
   instance.registerFactory<ServiceStatusUseCase>(
       () => ServiceStatusUseCase(instance()));
   instance.registerFactory<LogoutUseCase>(() => LogoutUseCase(instance()));
-  instance.registerFactory<RegistrationUseCase>(() => RegistrationUseCase(instance()));
+  instance.registerFactory<RegistrationUseCase>(
+      () => RegistrationUseCase(instance()));
   instance.registerFactory<TripsUseCase>(() => TripsUseCase(instance()));
+  instance.registerFactory<AcceptOfferUseCase>(
+      () => AcceptOfferUseCase(instance()));
+  instance.registerFactory<AddOfferUseCase>(() => AddOfferUseCase(instance()));
+  instance.registerFactory<TripSummaryUseCase>(
+      () => TripSummaryUseCase(instance()));
 }
 
 initLoginModule() {
@@ -88,7 +97,6 @@ initLoginModule() {
         () => LoginBloc(loginUseCase: instance()));
   }
 }
-
 
 initServiceRegistrationModule() {
   if (!GetIt.I.isRegistered<RegistrationServiceUseCase>()) {

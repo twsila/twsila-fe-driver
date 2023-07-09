@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
@@ -9,6 +10,7 @@ import 'package:taxi_for_you/presentation/service_registration/view/helpers/regi
 
 import '../../data/network/failure.dart';
 import '../../data/network/requests.dart';
+import '../model/general_response.dart';
 import '../model/generate_otp_model.dart';
 import '../model/logout_model.dart';
 import '../model/models.dart';
@@ -27,7 +29,6 @@ abstract class Repository {
   Future<Either<Failure, RegistrationResponse>> register(
       RegistrationRequest registrationRequest);
 
-
   Future<Either<Failure, GenerateOtpModel>> generateOtp(
       GenerateOTPRequest otpRequest);
 
@@ -36,7 +37,15 @@ abstract class Repository {
 
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
 
-  Future<Either<Failure, List<TripModel>>> getTrips(int tripTypeModuleId,int userId);
+  Future<Either<Failure, List<TripModel>>> getTrips(
+      int tripTypeModuleId, int userId);
+
+  Future<Either<Failure, GeneralResponse>> acceptOffer(int userId, int tripId);
+
+  Future<Either<Failure, GeneralResponse>> addOffer(
+      int userId, int tripId, double driverOffer);
+
+  Future<Either<Failure, TripModel>> tripSummary(int userId, int tripId);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 }

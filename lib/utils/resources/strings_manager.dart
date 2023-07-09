@@ -16,6 +16,7 @@ class AppStrings {
   static const thinkingOfTravel = "thinking_of_travel";
   static const whichGoods = "which_goods";
   static const goods = "goods";
+  static const goodsDeliver = "goods_deliver";
   static const freezers = "freezers";
   static const surfaces = "surfaces";
   static const cisterns = "cisterns";
@@ -65,6 +66,8 @@ class AppStrings {
   static const String searchForTrips = "search_for_trips";
   static const String selectFromHereHint = "select_from_here_hint";
   static const String ongoingTrips = "ongoing_trips";
+  static const String onGoing = "ongoing";
+  static const String last = "last";
   static const String scheduledTrips = "scheduled_trips";
   static const String nearFromMeTrips = "near_from_me_trips";
   static const String fromToTrips = "from_to_trips";
@@ -316,6 +319,7 @@ class AppStrings {
   static const WalletAndRevenue = 'wallet_and_revenue';
   static const inviteFriendsAndWin = 'invite_friends_and_win';
   static const getHelp = 'get_help';
+
   // static const logout = 'search_trips';
 
   //my services
@@ -355,13 +359,29 @@ class AppStrings {
   static const sendOfferWithPrice = 'send_offer_with_price';
   static const ryalSuadi = 'ryal_suadi';
   static const sendOffer = 'send_offer';
+  static const rs = 'rs';
+  static const offerAccepted = 'offer_accepted';
 
+  static const confirmSendOffer = 'confirm_send_offer';
+  static const areYouSureToSendNewOffer = 'are_you_sure_to_send_new_offer';
 
+  //trip execution
+
+  static const startTripNowAndMoveToPickupLocation = 'start_trip_now_and_move_to_pickup_location';
+  static const moveToClient = 'move_to_client';
+  static const tripStartedMoveNow = 'trip_started_move_now';
+  static const estimatedTimeToArrivePickupLocationIs = 'estimated_time_to_arrive_pickup_location_is';
+  static const minute = 'minute';
+  static const navigationToPickupLocation = 'navigate_to_pickup_location';
+  static const youArrivedPickupLocation = 'you_arrived_pickup_location';
+  static const pleaseShipGoodsAndMoveToDestinationLocation = 'please_ship_goods_and_move_to_destination_location';
+  static const youArrivedDestinationLocation = 'you_arrived_destination_location';
+  static const pleaseLeaveGoodsAndCloseTheTrip = 'please_leave_goods_and_close_the_trip';
+  static const client = 'client';
+  static const loadingMaps = 'loading_maps';
 
   //logout
   static const areYouSureYouWantToLogout = 'are_you_sure_you_want_to_logout';
   static const confirmLogout = 'confirm_logout';
   static const cancel = 'cancel';
-
-
 }

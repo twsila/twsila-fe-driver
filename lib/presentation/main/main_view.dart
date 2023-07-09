@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_view.dart';
-import 'package:taxi_for_you/presentation/main/pages/mytrips/mytrips_page.dart';
+import 'package:taxi_for_you/presentation/main/pages/mytrips/view/mytrips_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/view/search_trips_page.dart';
 
 import '../../utils/resources/assets_manager.dart';

@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:taxi_for_you/utils/ext/enums.dart';
+
 TripModel tripModelFromJson(String str) => TripModel.fromJson(json.decode(str));
 
 String tripModelToJson(TripModel data) => json.encode(data.toJson());
@@ -39,17 +41,17 @@ class TripModelResponse {
 }
 
 class TripModel {
-  int id;
-  Ation pickupLocation;
-  Ation destination;
-  TripStatus tripStatus;
-  String tripType;
+  int? id;
+  Ation? pickupLocation;
+  Ation? destination;
+  TripStatus? tripStatus;
+  TripType? tripType;
   String? date;
-  dynamic tripNumber;
-  Passenger passenger;
+  dynamic? tripNumber;
+  Passenger? passenger;
   String? notes;
-  double clientOffer;
-  List<TripImage> images;
+  double? clientOffer;
+  List<TripImage>? images;
   bool? containsPacking;
   bool? containsLoading;
   bool? containsLift;
@@ -65,17 +67,17 @@ class TripModel {
   String? furnitureItems;
 
   TripModel({
-    required this.id,
-    required this.pickupLocation,
-    required this.destination,
-    required this.tripStatus,
-    required this.tripType,
-    required this.date,
+    this.id,
+    this.pickupLocation,
+    this.destination,
+    this.tripStatus,
+    this.tripType,
+    this.date,
     this.tripNumber,
-    required this.passenger,
+    this.passenger,
     this.notes,
-    required this.clientOffer,
-    required this.images,
+    this.clientOffer,
+    this.images,
     this.containsPacking,
     this.containsLoading,
     this.containsLift,
@@ -92,18 +94,32 @@ class TripModel {
   });
 
   factory TripModel.fromJson(Map<String, dynamic> json) => TripModel(
-        id: json["id"],
-        pickupLocation: Ation.fromJson(json["pickupLocation"]),
-        destination: Ation.fromJson(json["destination"]),
-        tripStatus: tripStatusValues.map[json["tripStatus"]]!,
-        tripType: json["tripType"],
+        id: json["id"] != null ? json["id"] : null,
+        pickupLocation: json["pickupLocation"] != null
+            ? Ation.fromJson(json["pickupLocation"])
+            : null,
+        destination: json["destination"] != null
+            ? Ation.fromJson(json["destination"])
+            : null,
+        tripStatus: json["tripStatus"] != null
+            ? tripStatusValues.map[json["tripStatus"]]
+            : null,
+        tripType: json["tripType"] != null
+            ? tripTypesValues.map[json["tripType"]]
+            : null,
         date: json["date"] != null ? json["date"] : null,
-        tripNumber: json["tripNumber"] ?? "",
-        passenger: Passenger.fromJson(json["passenger"]),
+        tripNumber: json["tripNumber"] != null ? json["tripNumber"] : null,
+        passenger: json["passenger"] != null
+            ? Passenger.fromJson(json["passenger"])
+            : null,
         notes: json["notes"] != null ? json["notes"] : null,
-        clientOffer: json["clientOffer"]?.toDouble(),
-        images: List<TripImage>.from(
-            json["images"].map((x) => TripImage.fromJson(x))),
+        clientOffer: json["clientOffer"] != null
+            ? json["clientOffer"]?.toDouble()
+            : null,
+        images: json["images"] != null && json["images"].isNotEmpty
+            ? List<TripImage>.from(
+                json["images"].map((x) => TripImage.fromJson(x)))
+            : [],
         containsPacking: json["containsPacking"],
         containsLoading: json["containsLoading"],
         containsLift: json["containsLift"],
@@ -129,16 +145,16 @@ class TripModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "pickupLocation": pickupLocation.toJson(),
-        "destination": destination.toJson(),
+        "pickupLocation": pickupLocation!.toJson(),
+        "destination": destination!.toJson(),
         "tripStatus": tripStatusValues.reverse[tripStatus],
-        "tripType": tripType,
+        "tripType": tripTypesValues.reverse[tripType],
         "date": date,
         "tripNumber": tripNumber,
-        "passenger": passenger.toJson(),
+        "passenger": passenger!.toJson(),
         "notes": notes,
         "clientOffer": clientOffer,
-        "images": List<dynamic>.from(images.map((x) => x.toJson())),
+        "images": List<dynamic>.from(images!.map((x) => x.toJson())),
         "containsPacking": containsPacking,
         "containsLoading": containsLoading,
         "containsLift": containsLift,
@@ -154,6 +170,16 @@ class TripModel {
         "furnitureItems": furnitureItems,
       };
 }
+
+final tripTypesValues = EnumValues({
+  "PERSON": TripType.PERSON,
+  "CAR_AID": TripType.CAR_AID,
+  "DRINK_WATER_TANK": TripType.DRINK_WATER_TANK,
+  "FROZEN": TripType.FROZEN,
+  "GOODS": TripType.GOODS,
+  "FURNITURE": TripType.FURNITURE,
+  "OTHER_TANK": TripType.OTHER_TANK,
+});
 
 class Ation {
   double latitude;
@@ -283,10 +309,17 @@ class TankDetails {
       };
 }
 
-enum TripStatus { DRAFT, COMPLETED }
-
-final tripStatusValues =
-    EnumValues({"COMPLETED": TripStatus.COMPLETED, "DRAFT": TripStatus.DRAFT});
+final tripStatusValues = EnumValues({
+  "DRAFT": TripStatus.DRAFT,
+  "SUBMITTED": TripStatus.SUBMITTED,
+  "EVALUATION": TripStatus.EVALUATION,
+  "PAYMENT": TripStatus.PAYMENT,
+  "WAIT_FOR_TAKEOFF": TripStatus.WAIT_FOR_TAKEOFF,
+  "TAKEOFF": TripStatus.TAKEOFF,
+  "EXECUTED": TripStatus.EXECUTED,
+  "COMPLETED": TripStatus.COMPLETED,
+  "CANCELLED": TripStatus.CANCELLED
+});
 
 class EnumValues<T> {
   Map<String, T> map;

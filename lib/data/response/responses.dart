@@ -16,6 +16,8 @@ class BaseResponse {
   Map<String, dynamic>? result;
   @JsonKey(name: "errorCode")
   String? errorCode;
+
+
 }
 
 @JsonSerializable()

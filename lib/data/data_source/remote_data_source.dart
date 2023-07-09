@@ -7,8 +7,10 @@ import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
+import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
+import '../../domain/model/general_response.dart';
 import '../../domain/model/registration_services_response.dart';
 import '../network/app_api.dart';
 import '../network/requests.dart';
@@ -31,6 +33,12 @@ abstract class RemoteDataSource {
   Future<ServiceRegisterModel> servicesStatus(String userId);
 
   Future<TripModelResponse> tripsByModuleId(int tripTypeModuleId, int userId);
+
+  Future<GeneralResponse> acceptOffer(int userId, int tripId);
+
+  Future<GeneralResponse> addOffer(int userId, int tripId, double driverOffer);
+
+  Future<GeneralResponse> tripSummary(int userId, int tripId);
 
   Future<LogoutModel> logout(LogoutRequest logoutRequest);
 
@@ -115,7 +123,24 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<TripModelResponse> tripsByModuleId(int tripTypeModuleId, int userId) async {
+  Future<TripModelResponse> tripsByModuleId(
+      int tripTypeModuleId, int userId) async {
     return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId);
+  }
+
+  @override
+  Future<GeneralResponse> acceptOffer(int userId, int tripId) async {
+    return await _appServiceClient.acceptOffer(userId, tripId);
+  }
+
+  @override
+  Future<GeneralResponse> addOffer(
+      int userId, int tripId, double driverOffer) async {
+    return await _appServiceClient.addOffer(userId, tripId, driverOffer);
+  }
+
+  @override
+  Future<GeneralResponse> tripSummary(int userId, int tripId) async {
+    return await _appServiceClient.tripSummary(userId, tripId);
   }
 }

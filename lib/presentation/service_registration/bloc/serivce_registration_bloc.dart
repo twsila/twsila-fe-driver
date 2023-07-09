@@ -311,7 +311,7 @@ class ServiceRegistrationBloc
     int counter = 1;
     await Future.forEach(carPhotosList, (XFile carPhoto) async {
       File imageFile = await changeFileNameOnly(
-          carPhoto, 'driver_car_photo_' + counter.toString() + '.jpg');
+          carPhoto, 'driver-car-photo-' + counter.toString() + '.jpg');
       counter++;
       carPhotos.add(imageFile);
     });
@@ -323,9 +323,9 @@ class ServiceRegistrationBloc
     List<File> documentsImageList = [];
     await Future.forEach(documentsList, (DocumentData documentData) async {
       File frontImage = await changeFileNameOnly(documentData.frontImage!,
-          documentData.document.toString() + '_front.jpg');
+          documentData.document.toString() + '-front.jpg');
       File backImage = await changeFileNameOnly(documentData.backImage!,
-          documentData.document.toString() + '_back.jpg');
+          documentData.document.toString() + '-back.jpg');
       documentsImageList.add(frontImage);
       documentsImageList.add(backImage);
     });
