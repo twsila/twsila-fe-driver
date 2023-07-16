@@ -22,6 +22,7 @@ import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
 import '../../trip_details/widgets/dotted_seperator.dart';
 import '../bloc/trip_execution_bloc.dart';
+import 'navigation_tracking_view.dart';
 
 class TripExecutionView extends StatefulWidget {
   TripModel tripModel;
@@ -249,15 +250,13 @@ class _TripExecutionViewState extends State<TripExecutionView> {
         SizedBox(
           width: 10,
         ),
-        Expanded(
-          child: Text(
-            "${AppStrings.from.tr()} ${widget.tripModel.pickupLocation!.locationName} - ${widget.tripModel.destination!.locationName}",
-            overflow: TextOverflow.clip,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: ColorManager.headersTextColor,
-                fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
+        Text(
+          "${AppStrings.from.tr()} ${widget.tripModel.pickupLocation!.locationName} - ${widget.tripModel.destination!.locationName}",
+          overflow: TextOverflow.clip,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: ColorManager.headersTextColor,
+              fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
         ),
       ],
     );
@@ -289,7 +288,8 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             }
           },
           onStepContinue: () {
-            Navigator.pushNamed(context, Routes.locationTrackingPage);
+            Navigator.pushNamed(context, Routes.locationTrackingPage,
+                arguments: NavigationTrackingArguments(widget.tripModel));
             if (_index >= 0 && _index < 3) {
               setState(() {
                 _index += 1;

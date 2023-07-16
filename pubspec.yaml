@@ -85,6 +85,8 @@ dependencies:
   url_launcher: ^6.1.11
   location: ^4.4.0
   flutter_compass: ^0.6.0
+  flutter_rating_bar: ^4.0.1
+  expandable_bottom_sheet: ^1.1.1+1
 
 
 dev_dependencies:

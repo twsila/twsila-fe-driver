@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:taxi_for_you/utils/ext/enums.dart';
 
+import 'driver_model.dart';
+
 TripModel tripModelFromJson(String str) => TripModel.fromJson(json.decode(str));
 
 String tripModelToJson(TripModel data) => json.encode(data.toJson());
@@ -51,6 +53,8 @@ class TripModel {
   Passenger? passenger;
   String? notes;
   double? clientOffer;
+  List<Offer>? offers;
+  AcceptedOffer? acceptedOffer;
   List<TripImage>? images;
   bool? containsPacking;
   bool? containsLoading;
@@ -86,6 +90,8 @@ class TripModel {
     this.packingDetails,
     this.containsBoxes,
     this.shippingType,
+    this.offers,
+    this.acceptedOffer,
     this.frozenMaterial,
     this.tankDetails,
     this.tankType,
@@ -106,6 +112,12 @@ class TripModel {
             : null,
         tripType: json["tripType"] != null
             ? tripTypesValues.map[json["tripType"]]
+            : null,
+        offers: json["offers"] != null
+            ? List<Offer>.from(json["offers"].map((x) => Offer.fromJson(x)))
+            : [],
+        acceptedOffer: json["acceptedOffer"] != null
+            ? AcceptedOffer.fromJson(json["acceptedOffer"])
             : null,
         date: json["date"] != null ? json["date"] : null,
         tripNumber: json["tripNumber"] != null ? json["tripNumber"] : null,
@@ -168,6 +180,62 @@ class TripModel {
         "tankType": tankType,
         "containsAssemble": containsAssemble,
         "furnitureItems": furnitureItems,
+      };
+}
+
+class AcceptedOffer {
+  int id;
+  Offer offer;
+
+  AcceptedOffer({
+    required this.id,
+    required this.offer,
+  });
+
+  factory AcceptedOffer.fromJson(Map<String, dynamic> json) => AcceptedOffer(
+        id: json["id"],
+        offer: Offer.fromJson(json["offer"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "offer": offer.toJson(),
+      };
+}
+
+class Offer {
+  int id;
+  Driver driver;
+  String driverTripUniqueConstraint;
+  double driverOffer;
+  String acceptanceStatus;
+  DateTime creationDate;
+
+  Offer({
+    required this.id,
+    required this.driver,
+    required this.driverTripUniqueConstraint,
+    required this.driverOffer,
+    required this.acceptanceStatus,
+    required this.creationDate,
+  });
+
+  factory Offer.fromJson(Map<String, dynamic> json) => Offer(
+        id: json["id"],
+        driver: Driver.fromJson(json["driver"]),
+        driverTripUniqueConstraint: json["driverTripUniqueConstraint"],
+        driverOffer: json["driverOffer"],
+        acceptanceStatus: json["acceptanceStatus"],
+        creationDate: DateTime.parse(json["creationDate"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "driver": driver.toJson(),
+        "driverTripUniqueConstraint": driverTripUniqueConstraint,
+        "driverOffer": driverOffer,
+        "acceptanceStatus": acceptanceStatus,
+        "creationDate": creationDate.toIso8601String(),
       };
 }
 
@@ -319,6 +387,11 @@ final tripStatusValues = EnumValues({
   "EXECUTED": TripStatus.EXECUTED,
   "COMPLETED": TripStatus.COMPLETED,
   "CANCELLED": TripStatus.CANCELLED
+});
+final acceptanceStatusValues = EnumValues({
+  "PROPOSED": AcceptanceType.PROPOSED,
+  "ACCEPTED": AcceptanceType.ACCEPTED,
+  "EXPIRED": AcceptanceType.EXPIRED,
 });
 
 class EnumValues<T> {

@@ -14,7 +14,7 @@ import 'package:easy_localization/easy_localization.dart';
 
 import '../../presentation/login/view/login_view.dart';
 import '../../presentation/main/main_view.dart';
-import '../../presentation/main/pages/search_trips/view/navigation_tracking_view.dart';
+import '../../presentation/trip_execution/view/navigation_tracking_view.dart';
 import '../../presentation/onboarding/onboarding_view.dart';
 import '../../presentation/select_registation_type/view/registration_type_view.dart';
 import '../../presentation/service_registration/view/pages/no_service_added_view.dart';
@@ -121,7 +121,12 @@ class RouteGenerator {
       case Routes.selectRegistrationType:
         return MaterialPageRoute(builder: (_) => const RegistrationTypesView());
       case Routes.locationTrackingPage:
-        return MaterialPageRoute(builder: (_) => const TrackingPage());
+        final args = settings.arguments as NavigationTrackingArguments;
+
+        return MaterialPageRoute(
+            builder: (_) => TrackingPage(
+                  tripModel: args.tripModel,
+                ));
       default:
         return unDefinedRoute();
     }

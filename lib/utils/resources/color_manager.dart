@@ -10,29 +10,29 @@ class ColorManager {
 
   //accent
 
-  static Color accentColor = const Color(0xffFFECDD);
-  static Color secondaryAccentColor = const Color(0xffD5FFD5);
-  static Color thirdAccentColor = const Color(0xffEFEFFE);
-  static Color forthAccentColor = const Color(0xffF0F0F1);
-  static Color purpleFade = const Color(0xffEAEAFF);
-  static Color borderColor = const Color(0xffD8D8ED);
-  static Color primaryBlueBackgroundColor = const Color(0xffEFEFFE);
-  static Color dividerColor = const Color(0xffC1C1DD);
+  static const Color accentColor = const Color(0xffFFECDD);
+  static const Color secondaryAccentColor = const Color(0xffD5FFD5);
+  static const Color thirdAccentColor = const Color(0xffEFEFFE);
+  static const Color forthAccentColor = const Color(0xffF0F0F1);
+  static const Color purpleFade = const Color(0xffEAEAFF);
+  static const Color borderColor = const Color(0xffD8D8ED);
+  static const Color primaryBlueBackgroundColor = const Color(0xffEFEFFE);
+  static const Color dividerColor = const Color(0xffC1C1DD);
 
   //text
 
-  static Color blackTextColor = const Color(0xff02031A);
-  static Color buttonTextColor = const Color(0xffffffff);
-  static Color headersTextColor = const Color(0xff080957);
-  static Color formHintTextColor = const Color(0xffA4A4AD);
-  static Color formLabelTextColor = const Color(0xff676876);
-  static Color hintTextColor = const Color(0xff9393BB);
-  static Color titlesTextColor = const Color(0xff363778);
-  static Color accentTextColor = const Color(0xffFF862E);
-  static Color supportTextColor = const Color(0xffFDB808);
-  static Color warningTextColor = const Color(0xffFF0B1B);
-  static Color purpleMainTextColor = const Color(0xff7577CD);
-  static Color lineColor = const Color(0xffE1E1E4);
+  static const Color blackTextColor = const Color(0xff02031A);
+  static const Color buttonTextColor = const Color(0xffffffff);
+  static const Color headersTextColor = const Color(0xff080957);
+  static const Color formHintTextColor = const Color(0xffA4A4AD);
+  static const Color formLabelTextColor = const Color(0xff676876);
+  static const Color hintTextColor = const Color(0xff9393BB);
+  static const Color titlesTextColor = const Color(0xff363778);
+  static const Color accentTextColor = const Color(0xffFF862E);
+  static const Color supportTextColor = const Color(0xffFDB808);
+  static const Color warningTextColor = const Color(0xffFF0B1B);
+  static const Color purpleMainTextColor = const Color(0xff7577CD);
+  static const Color lineColor = const Color(0xffE1E1E4);
 
   //disable color
 

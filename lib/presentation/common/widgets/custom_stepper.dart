@@ -508,36 +508,42 @@ class _CustomStepperState extends State<CustomStepper>
           // and cancel button styles have been configured to match the original
           // version of this widget.
           children: <Widget>[
-            Expanded(
-              child: TextButton(
-                onPressed: widget.onStepContinue,
-                style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
-                    return states.contains(MaterialState.disabled)
-                        ? null
-                        : (_isDark()
-                            ? colorScheme.onSurface
-                            : colorScheme.onPrimary);
-                  }),
-                  backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
-                    return _isDark() || states.contains(MaterialState.disabled)
-                        ? null
-                        : colorScheme.primary;
-                  }),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                      buttonPadding),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(buttonShape),
-                ),
-                child: Text(
-                  (widget.steps[index].continueButtonLabel != null)
-                      ? widget.steps[index].continueButtonLabel!
-                      : localizations.continueButtonLabel,
-                  style: TextStyle(fontSize: 12),
-                ),
-              ),
-            ),
+            widget.steps[index].continueButtonLabel != ''
+                ? Expanded(
+                    child: TextButton(
+                      onPressed: widget.onStepContinue,
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                          return states.contains(MaterialState.disabled)
+                              ? null
+                              : (_isDark()
+                                  ? colorScheme.onSurface
+                                  : colorScheme.onPrimary);
+                        }),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                          return _isDark() ||
+                                  states.contains(MaterialState.disabled)
+                              ? null
+                              : colorScheme.primary;
+                        }),
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            buttonPadding),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            buttonShape),
+                      ),
+                      child: Text(
+                        (widget.steps[index].continueButtonLabel != null)
+                            ? widget.steps[index].continueButtonLabel!
+                            : localizations.continueButtonLabel,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  )
+                : Container(),
             Container(
               margin: const EdgeInsetsDirectional.only(start: 8.0),
               child: TextButton(
