@@ -83,24 +83,27 @@ class _TripExecutionViewState extends State<TripExecutionView> {
         }
       },
       builder: (context, state) {
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: AppSize.s16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              tripDataHeader(),
-              _fromToWidget(),
-              Divider(
-                color: ColorManager.lineColor,
-                thickness: 1.0,
-              ),
-              TripStepperWidget(),
-              Divider(
-                color: ColorManager.lineColor,
-                thickness: 1.0,
-              ),
-              TripDetailsWidget(),
-            ],
+        return SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: AppSize.s16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                tripDataHeader(),
+                _fromToWidget(),
+                Divider(
+                  color: ColorManager.lineColor,
+                  thickness: 1.0,
+                ),
+                TripStepperWidget(),
+                Divider(
+                  color: ColorManager.lineColor,
+                  thickness: 1.0,
+                ),
+                TripDetailsWidget(),
+                SizedBox(height: 20,)
+              ],
+            ),
           ),
         );
       },
@@ -250,13 +253,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
         SizedBox(
           width: 10,
         ),
-        Text(
-          "${AppStrings.from.tr()} ${widget.tripModel.pickupLocation!.locationName} - ${widget.tripModel.destination!.locationName}",
-          overflow: TextOverflow.clip,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: ColorManager.headersTextColor,
-              fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+        Expanded(
+          child: Text(
+            "${AppStrings.from.tr()} ${widget.tripModel.pickupLocation!.locationName} - ${widget.tripModel.destination!.locationName}",
+            overflow: TextOverflow.clip,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ColorManager.headersTextColor,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );
