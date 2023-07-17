@@ -348,5 +348,6 @@
   "you_arrived_destination_location": "you arrived destination location",
   "please_leave_goods_and_close_the_trip": "please leave goods and close the trip",
   "client": "client",
-  "loading_maps": "Loading Maps..."
+  "loading_maps": "Loading Maps...",
+  "call_client": "call client"
 }

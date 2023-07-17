@@ -28,15 +28,16 @@ class UserCurrentLocation {
 
     Position currentLocation = await Geolocator.getCurrentPosition();
 
-    final coordinates =
-        Coordinates(currentLocation.latitude, currentLocation.longitude);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    print(
-        ' ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
+    // final coordinates =
+    //     Coordinates(currentLocation.latitude, currentLocation.longitude);
+    // var addresses =
+    //     await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    // var first = addresses.first;
+    // print(
+    //     ' ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
     LocationModel locationModel = LocationModel(
-      locationName: first.addressLine!,
+      locationName: "",
+      // locationName: first.addressLine!,
       latitude: currentLocation.latitude,
       longitude: currentLocation.longitude,
     );

@@ -379,6 +379,7 @@ class AppStrings {
   static const pleaseLeaveGoodsAndCloseTheTrip = 'please_leave_goods_and_close_the_trip';
   static const client = 'client';
   static const loadingMaps = 'loading_maps';
+  static const callClient = 'call_client';
 
   //logout
   static const areYouSureYouWantToLogout = 'are_you_sure_you_want_to_logout';

@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
@@ -100,11 +99,6 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
 
         if (state is SearchTripsSuccess) {
           trips = state.trips;
-          trips.forEach((element) {
-            if (element.tripType == null) {
-              print('null is here ${element.id}');
-            }
-          });
         }
       },
       builder: (context, state) {
