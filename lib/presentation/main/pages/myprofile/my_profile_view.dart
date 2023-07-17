@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
-import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/widget/menu_widget.dart';

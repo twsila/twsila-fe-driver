@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animarker/core/ripple_marker.dart';
+import 'package:flutter_animarker/widgets/animarker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'dart:typed_data';
@@ -20,6 +22,7 @@ import '../../../google_maps/model/maps_repo.dart';
 
 class MapWidget extends StatefulWidget {
   TripModel tripModel;
+
   MapWidget({required this.tripModel});
 
   @override
@@ -27,17 +30,18 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-
-
   int _index = 0;
   GoogleMapController? mapController;
-  static const LatLng sourceLocation = LatLng(30.037628, 31.355374);
-  static const LatLng destination = LatLng(30.044796, 31.340440);
+
+  final controller = Completer<GoogleMapController>();
   MapsRepo mapsRepo = MapsRepo();
   Duration oneSec = Duration(seconds: 2);
   late Timer _timer;
   late double distanceBetweenCurrentAndSource;
+  late double distanceBetweenCurrentAndDestination;
   late CompassEvent _driverDirection;
+  bool isUserArrivedSource = false;
+  bool isUserArrivedDestination = false;
 
   List<LatLng> polylineCoordinates = [];
 
@@ -45,31 +49,31 @@ class _MapWidgetState extends State<MapWidget> {
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+  // void _onMapCreated(GoogleMapController controller) {
+  //   mapController = controller;
+  // }
 
   Future<void> setCustomMarkerIcon() async {
     BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(devicePixelRatio: 2, size: Size(10, 10)),
-        ImageAssets.locationPin)
+            const ImageConfiguration(devicePixelRatio: 2, size: Size(10, 10)),
+            ImageAssets.locationPin)
         .then(
-          (icon) {
+      (icon) {
         sourceIcon = icon;
       },
     );
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, ImageAssets.locationPin)
+            ImageConfiguration.empty, ImageAssets.locationPin)
         .then(
-          (icon) {
+      (icon) {
         destinationIcon = icon;
       },
     );
     BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(devicePixelRatio: 2, size: Size(10, 10)),
-        ImageAssets.driverCar)
+            const ImageConfiguration(devicePixelRatio: 2, size: Size(10, 10)),
+            ImageAssets.driverCar)
         .then(
-          (icon) {
+      (icon) {
         currentLocationIcon = icon;
       },
     );
@@ -87,14 +91,26 @@ class _MapWidgetState extends State<MapWidget> {
 
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints();
+    PointLatLng sourceLocation;
+
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       Constants.GOOGLE_API_KEY, // Your Google Map Key
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-      PointLatLng(destination.latitude, destination.longitude),
+      PointLatLng(
+          isUserArrivedSource
+              ? widget.tripModel.pickupLocation!.latitude
+              : currentLocation?.latitude ??
+                  widget.tripModel.pickupLocation!.latitude,
+          isUserArrivedSource
+              ? widget.tripModel.pickupLocation!.longitude
+              : currentLocation?.longitude ??
+                  widget.tripModel.pickupLocation!.longitude),
+      PointLatLng(widget.tripModel.destination!.latitude,
+          widget.tripModel.destination!.longitude),
     );
+    polylineCoordinates.clear();
     if (result.points.isNotEmpty) {
       result.points.forEach(
-            (PointLatLng point) => polylineCoordinates.add(
+        (PointLatLng point) => polylineCoordinates.add(
           LatLng(point.latitude, point.longitude),
         ),
       );
@@ -108,16 +124,26 @@ class _MapWidgetState extends State<MapWidget> {
     currentLocation = await mapsRepo.getUserCurrentLocation();
     distanceBetweenCurrentAndSource = LocationHelper()
         .distanceBetweenTwoLocationInMeters(
-        lat1: currentLocation!.latitude,
-        long1: currentLocation!.longitude,
-        lat2: sourceLocation.latitude,
-        long2: sourceLocation.longitude);
+            lat1: currentLocation!.latitude,
+            long1: currentLocation!.longitude,
+            lat2: widget.tripModel.pickupLocation!.latitude,
+            long2: widget.tripModel.pickupLocation!.longitude);
+    distanceBetweenCurrentAndDestination = LocationHelper()
+        .distanceBetweenTwoLocationInMeters(
+            lat1: currentLocation!.latitude,
+            long1: currentLocation!.longitude,
+            lat2: widget.tripModel.destination!.latitude,
+            long2: widget.tripModel.destination!.longitude);
     LocationHelper().getArrivalTimeFromCurrentToLocation(
         currentLocation: currentLocation!,
         destinationLocation: LocationModel(
             locationName: '',
-            latitude: sourceLocation.latitude,
-            longitude: sourceLocation.longitude));
+            latitude: widget.tripModel.pickupLocation!.latitude,
+            longitude: widget.tripModel.pickupLocation!.longitude));
+
+    if (distanceBetweenCurrentAndSource <= 100) isUserArrivedSource = true;
+    if (distanceBetweenCurrentAndDestination <= 100)
+      isUserArrivedDestination = true;
     print(
         "distance between current and source ${distanceBetweenCurrentAndSource}");
     setState(() {});
@@ -135,64 +161,72 @@ class _MapWidgetState extends State<MapWidget> {
     setState(() {});
   }
 
-
   @override
   void initState() {
     setCustomMarkerIcon();
     _timer = Timer.periodic(oneSec, (Timer t) async {
       getCurrentLocation();
+      getPolyPoints();
     });
-    getPolyPoints();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  currentLocation == null
+    return currentLocation == null
         ? Center(
-        child: Text(
-          AppStrings.loadingMaps.tr(),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: ColorManager.headersTextColor,
-              fontSize: FontSize.s14,
-              fontWeight: FontWeight.bold),
-        ))
+            child: Text(
+            AppStrings.loadingMaps.tr(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: ColorManager.headersTextColor,
+                fontSize: FontSize.s14,
+                fontWeight: FontWeight.bold),
+          ))
         : Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: LatLng(currentLocation!.latitude, currentLocation!.longitude),
-          zoom: 13.5,
-        ),
-        markers: {
-          Marker(
-            markerId: const MarkerId("currentLocation"),
-            icon: currentLocationIcon,
-            // rotation: _driverDirection.heading!,
-            position:
-            LatLng(currentLocation!.latitude, currentLocation!.longitude!),
-          ),
-          Marker(
-            markerId: MarkerId("source"),
-            icon: sourceIcon,
-            position: sourceLocation,
-          ),
-          Marker(
-            markerId: MarkerId("destination"),
-            icon: destinationIcon,
-            position: destination,
-          ),
-        },
-        onMapCreated: _onMapCreated,
-        polylines: {
-          Polyline(
-            polylineId: const PolylineId("route"),
-            points: polylineCoordinates,
-            color: ColorManager.headersTextColor,
-            width: 6,
-          ),
-        },
-      ),
-    );
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Animarker(
+              shouldAnimateCamera: false,
+              mapId: controller.future.then<int>((value) => value.mapId),
+              useRotation: true,
+              markers: {
+                RippleMarker(
+                  markerId: const MarkerId("currentLocation"),
+                  icon: currentLocationIcon,
+                  ripple: false,
+                  position: LatLng(
+                      currentLocation!.latitude, currentLocation!.longitude!),
+                ),
+                Marker(
+                  markerId: MarkerId("source"),
+                  icon: sourceIcon,
+                  position: LatLng(widget.tripModel.pickupLocation!.latitude,
+                      widget.tripModel.pickupLocation!.longitude),
+                ),
+                Marker(
+                  markerId: MarkerId("destination"),
+                  icon: destinationIcon,
+                  position: LatLng(widget.tripModel.destination!.latitude,
+                      widget.tripModel.destination!.longitude),
+                ),
+              },
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                      currentLocation!.latitude, currentLocation!.longitude),
+                  zoom: 13.5,
+                ),
+                onMapCreated: (gController) => controller.complete(gController),
+                polylines: {
+                  Polyline(
+                    polylineId: const PolylineId("route"),
+                    points: polylineCoordinates,
+                    color: ColorManager.headersTextColor,
+                    width: 6,
+                  ),
+                },
+              ),
+            ),
+          );
   }
 }
