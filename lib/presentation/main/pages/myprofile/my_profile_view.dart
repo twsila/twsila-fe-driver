@@ -78,78 +78,80 @@ class _MyProfilePageState extends State<MyProfilePage> {
         }
       },
       builder: (context, state) {
-        return Container(
-          margin: EdgeInsets.all(AppMargin.m12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                AppStrings.myProfile.tr(),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: ColorManager.headersTextColor,
-                    fontSize: FontSize.s28),
-              ),
-              _profileDataHeader(),
-              MenuWidget(
-                menuImage: ImageAssets.MyServicesIc,
-                menuLabel: AppStrings.myServices.tr(),
-                onPressed: () {
-                  Navigator.pushNamed(context, Routes.myServices);
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: const Divider(),
-              ),
-              MenuWidget(
-                menuImage: ImageAssets.walletAndRevenueIc,
-                menuLabel: AppStrings.WalletAndRevenue.tr(),
-                onPressed: () {},
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: const Divider(),
-              ),
-              MenuWidget(
-                menuImage: ImageAssets.inviteFriends,
-                menuLabel: AppStrings.inviteFriendsAndWin.tr(),
-                onPressed: () {},
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: const Divider(),
-              ),
-              MenuWidget(
-                menuImage: ImageAssets.getHelpIc,
-                menuLabel: AppStrings.getHelp.tr(),
-                onPressed: () {},
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: const Divider(),
-              ),
-              MenuWidget(
-                menuImage: ImageAssets.logout,
-                menuLabel: AppStrings.logout.tr(),
-                onPressed: () {
-                  CustomDialog(context).showCupertinoDialog(
-                      AppStrings.logout.tr(),
-                      AppStrings.areYouSureYouWantToLogout.tr(),
-                      AppStrings.confirmLogout.tr(),
-                      AppStrings.cancel.tr(),
-                      ColorManager.error, () {
-                    BlocProvider.of<MyProfileBloc>(context).add(logoutEvent());
-                    Navigator.pop(context);
-                  }, () {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                child: const Divider(),
-              ),
-            ],
+        return SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.all(AppMargin.m12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  AppStrings.myProfile.tr(),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: ColorManager.headersTextColor,
+                      fontSize: FontSize.s28),
+                ),
+                _profileDataHeader(),
+                MenuWidget(
+                  menuImage: ImageAssets.MyServicesIc,
+                  menuLabel: AppStrings.myServices.tr(),
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.myServices);
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: const Divider(),
+                ),
+                MenuWidget(
+                  menuImage: ImageAssets.walletAndRevenueIc,
+                  menuLabel: AppStrings.WalletAndRevenue.tr(),
+                  onPressed: () {},
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: const Divider(),
+                ),
+                MenuWidget(
+                  menuImage: ImageAssets.inviteFriends,
+                  menuLabel: AppStrings.inviteFriendsAndWin.tr(),
+                  onPressed: () {},
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: const Divider(),
+                ),
+                MenuWidget(
+                  menuImage: ImageAssets.getHelpIc,
+                  menuLabel: AppStrings.getHelp.tr(),
+                  onPressed: () {},
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: const Divider(),
+                ),
+                MenuWidget(
+                  menuImage: ImageAssets.logout,
+                  menuLabel: AppStrings.logout.tr(),
+                  onPressed: () {
+                    CustomDialog(context).showCupertinoDialog(
+                        AppStrings.logout.tr(),
+                        AppStrings.areYouSureYouWantToLogout.tr(),
+                        AppStrings.confirmLogout.tr(),
+                        AppStrings.cancel.tr(),
+                        ColorManager.error, () {
+                      BlocProvider.of<MyProfileBloc>(context).add(logoutEvent());
+                      Navigator.pop(context);
+                    }, () {
+                      Navigator.pop(context);
+                    });
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: const Divider(),
+                ),
+              ],
+            ),
           ),
         );
       },
