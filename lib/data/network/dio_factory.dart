@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/domain/model/general_response.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/constants.dart';
@@ -38,7 +39,32 @@ class DioFactory {
         receiveTimeout: Constants.apiTimeOut,
         sendTimeout: Constants.apiTimeOut);
 
-    dio.interceptors.add(TokenInterceptor());
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Add the access token to the request header
+          String token = await _appPreferences.isUserLoggedIn()
+              ? "Bearer " + (_appPreferences.getCachedDriver()?.token ?? "")
+              : "";
+          options.headers[AUTHORIZATION] = token;
+          return handler.next(options);
+        },
+        onError: (DioError e, handler) async {
+          if (e.response?.statusCode == 401) {
+            // If a 401 response is received, refresh the access token
+            String newAccessToken = await refreshToken();
+
+            // Update the request header with the new access token
+            e.requestOptions.headers['Authorization'] =
+                'Bearer $newAccessToken';
+
+            // Repeat the request with the updated header
+            return handler.resolve(await dio.fetch(e.requestOptions));
+          }
+          return handler.next(e);
+        },
+      ),
+    );
 
     if (!kReleaseMode) {
       // its debug mode so print app logs
@@ -51,18 +77,41 @@ class DioFactory {
 
     return dio;
   }
-}
 
-class TokenInterceptor extends Interceptor {
-  final AppPreferences _appPreferences = instance<AppPreferences>();
+  Future<String> refreshToken() async {
+    Response response =
+        await Dio(BaseOptions(headers: {"Content-Type": "application/json"}))
+            .post(Constants.baseUrl + '/refresh-token',
+                data: {"mobileNumber": _appPreferences.getCachedDriver()?.mobile ?? ""});
+    print(response.data["result"]);
 
-  @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
-    String token = await  _appPreferences.isUserLoggedIn()
-        ? "Bearer " + (_appPreferences.getCachedDriver()?.token ?? "")
-        : "";
-    options.headers[AUTHORIZATION] = token;
-    super.onRequest(options, handler);
+    return response.data["result"];
   }
 }
+
+// class TokenInterceptor extends Interceptor {
+//   final AppPreferences _appPreferences = instance<AppPreferences>();
+//
+//   @override
+//   void onRequest(
+//       RequestOptions options, RequestInterceptorHandler handler) async {
+//
+//     super.onRequest(options, handler);
+//   }
+//
+//   @override
+//   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+//     if (err.response?.statusCode == 401) {
+//       // If a 401 response is received, refresh the access token
+//       String newAccessToken = await refreshToken();
+//
+//       // Update the request header with the new access token
+//       err.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+//
+//       // Repeat the request with the updated header
+//       return handler.resolve(await dio.fetch(e.requestOptions));
+//     }
+//     return handler.next(e);
+//     super.onError(err, handler);
+//   }
+// }
