@@ -336,6 +336,7 @@ class AppStrings {
   static const offerHasBeenSent = 'offer_has_been_sent';
   static const clientRejectYourOffer = 'client_reject_your_offer';
   static const sendAnotherOffer = 'send_another_offer';
+  static const waitingClientReplay = 'waiting_client_replay';
 
   static const allTrips = 'all_trips';
   static const todayTrips = 'today_trips';

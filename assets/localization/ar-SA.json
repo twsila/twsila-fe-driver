@@ -344,5 +344,7 @@
   "please_leave_goods_and_close_the_trip": "برجاء تفريغ الاغراض و انهاء الرحلة",
   "client": "العميل",
   "loading_maps": "جارى تحميل الخرائط...",
-  "call_client": "الاتصال بالعميل"
+  "call_client": "الاتصال بالعميل",
+  "waiting_client_replay": "في انتظار رد العميل ..."
+
 }

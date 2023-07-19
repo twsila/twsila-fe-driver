@@ -3,7 +3,7 @@ part of 'my_trips_bloc.dart';
 @immutable
 abstract class MyTripsEvent {}
 class GetTripsTripModuleId extends MyTripsEvent {
-  final int tripTypeId;
+  final String tripTypeId;
 
   GetTripsTripModuleId(this.tripTypeId);
 }

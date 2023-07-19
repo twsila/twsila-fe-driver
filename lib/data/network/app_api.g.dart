@@ -448,6 +448,29 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
+  Future<LookupsModel> getLookups() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<LookupsModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/lookup',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = LookupsModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<LogoutModel> logout(
     userId,
     registrationId,

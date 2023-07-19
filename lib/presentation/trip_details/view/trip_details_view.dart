@@ -17,7 +17,6 @@ import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
-import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../../common/widgets/custom_bottom_sheet.dart';
@@ -169,7 +168,6 @@ class _TripDetailsViewState extends State<TripDetailsView> {
 
         if (state is TripDetailsSuccess) {}
 
-
         if (state is NewOfferSentSuccess) {
           Navigator.pop(context);
         }
@@ -225,7 +223,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 Container(
                   height: AppSize.s60,
                 ),
-                _actionWithTripWidget(widget.tripModel.tripStatus!),
+                Center(child: _actionWithTripWidget(widget.tripModel)),
               ],
             ),
           ),
@@ -234,32 +232,102 @@ class _TripDetailsViewState extends State<TripDetailsView> {
     );
   }
 
-  Widget _actionWithTripWidget(TripStatus tripStatus) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CustomTextButton(
-            text:
-                "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.clientOffer} (${AppStrings.rs.tr()})",
-            onPressed: () {
-              BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                  _appPreferences.getCachedDriver()!.id, widget.tripModel.id!));
-            },
-          ),
-          CustomTextButton(
-            isWaitToEnable: false,
-            backgroundColor: ColorManager.white,
-            textColor: ColorManager.headersTextColor,
-            borderColor: ColorManager.purpleMainTextColor,
-            text: AppStrings.sendAnotherPrice.tr(),
-            onPressed: () {
-              _showAnotherOfferBottomSheet();
-            },
-          ),
-        ],
-      ),
-    );
+  Widget _actionWithTripWidget(TripModel trip) {
+    if (trip.acceptedOffer == null && trip.offers!.length > 0) {
+      if (trip.offers![0].acceptanceStatus == AcceptanceType.PROPOSED.name) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: ColorManager.purpleMainTextColor,
+                ),
+                SizedBox(
+                  width: 7,
+                ),
+                Text(
+                    "${AppStrings.offerHasBeenSent.tr()} (${trip.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: ColorManager.purpleMainTextColor,
+                        fontSize: FontSize.s16,
+                        fontWeight: FontWeight.bold)),
+              ],
+            ),
+            Text("${AppStrings.waitingClientReplay.tr()}",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: ColorManager.accentTextColor,
+                    fontSize: FontSize.s14,
+                    fontWeight: FontWeight.bold))
+          ],
+        );
+      } else if (trip.offers![0].acceptanceStatus ==
+          AcceptanceType.EXPIRED.name) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.error_outlined,
+                  color: ColorManager.error,
+                ),
+                SizedBox(
+                  width: 7,
+                ),
+                Text(
+                    "${AppStrings.clientRejectYourOffer.tr()} (${trip.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: ColorManager.error,
+                        fontSize: FontSize.s16,
+                        fontWeight: FontWeight.bold)),
+              ],
+            ),
+            CustomTextButton(
+              isWaitToEnable: false,
+              backgroundColor: ColorManager.white,
+              textColor: ColorManager.headersTextColor,
+              borderColor: ColorManager.purpleMainTextColor,
+              text: AppStrings.sendAnotherPrice.tr(),
+              onPressed: () {
+                _showAnotherOfferBottomSheet();
+              },
+            ),
+          ],
+        );
+      } else {
+        return Container();
+      }
+    } else {
+      return Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomTextButton(
+              text:
+                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.clientOffer} (${AppStrings.rs.tr()})",
+              onPressed: () {
+                BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                    _appPreferences.getCachedDriver()!.id,
+                    widget.tripModel.id!));
+              },
+            ),
+            CustomTextButton(
+              isWaitToEnable: false,
+              backgroundColor: ColorManager.white,
+              textColor: ColorManager.headersTextColor,
+              borderColor: ColorManager.purpleMainTextColor,
+              text: AppStrings.sendAnotherPrice.tr(),
+              onPressed: () {
+                _showAnotherOfferBottomSheet();
+              },
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Widget _thingsToDeliver() {

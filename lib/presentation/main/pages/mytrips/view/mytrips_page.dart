@@ -35,9 +35,9 @@ class _MyTripsPageState extends State<MyTripsPage> {
   List<TripModel> trips = [];
   bool _displayLoadingIndicator = false;
   List<MyTripsListModel> items = [
-    MyTripsListModel(0, AppStrings.onGoing.tr()),
-    MyTripsListModel(1, AppStrings.scheduled.tr()),
-    MyTripsListModel(2, AppStrings.last.tr()),
+    MyTripsListModel("TODAY_TRIPS", AppStrings.onGoing.tr()),
+    MyTripsListModel("SCHEDULED_TRIPS", AppStrings.scheduled.tr()),
+    MyTripsListModel("OLD_TRIPS", AppStrings.last.tr()),
   ];
   int current = 0;
 
@@ -321,7 +321,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
 }
 
 class MyTripsListModel {
-  int tripModelTypeId;
+  String tripModelTypeId;
   String title;
 
   MyTripsListModel(this.tripModelTypeId, this.title);

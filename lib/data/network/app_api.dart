@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
+import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
@@ -78,7 +79,7 @@ abstract class AppServiceClient {
 
   @POST("/drivers/offers/select-trip")
   Future<TripModelResponse> getTripsByModuleId(
-      @Field("tripModelType") int tripModelType, @Field("userId") int userId);
+      @Field("tripModelType") String tripModelType, @Field("userId") int userId);
 
   @POST("/drivers/offers/add")
   Future<GeneralResponse> addOffer(
@@ -87,12 +88,11 @@ abstract class AppServiceClient {
     @Field("driverOffer") double driverOffer,
   );
 
-
   @PUT("/drivers/offers/accept")
   Future<GeneralResponse> acceptOffer(
-      @Field("userId") int userId,
-      @Field("tripId") int tripId,
-      );
+    @Field("userId") int userId,
+    @Field("tripId") int tripId,
+  );
 
   @POST("/drivers/trip-summary")
   Future<GeneralResponse> tripSummary(
@@ -100,6 +100,8 @@ abstract class AppServiceClient {
     @Field("tripId") int tripId,
   );
 
+  @GET("/lookup")
+  Future<LookupsModel> getLookups();
 
   @POST("/drivers/logout")
   Future<LogoutModel> logout(

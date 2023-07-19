@@ -11,6 +11,7 @@ import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_regi
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../domain/model/general_response.dart';
+import '../../domain/model/lookups_model.dart';
 import '../../domain/model/registration_services_response.dart';
 import '../network/app_api.dart';
 import '../network/requests.dart';
@@ -32,13 +33,15 @@ abstract class RemoteDataSource {
 
   Future<ServiceRegisterModel> servicesStatus(String userId);
 
-  Future<TripModelResponse> tripsByModuleId(int tripTypeModuleId, int userId);
+  Future<TripModelResponse> tripsByModuleId(String tripTypeModuleId, int userId);
 
   Future<GeneralResponse> acceptOffer(int userId, int tripId);
 
   Future<GeneralResponse> addOffer(int userId, int tripId, double driverOffer);
 
   Future<GeneralResponse> tripSummary(int userId, int tripId);
+
+  Future<LookupsModel> getLookups();
 
   Future<LogoutModel> logout(LogoutRequest logoutRequest);
 
@@ -124,7 +127,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<TripModelResponse> tripsByModuleId(
-      int tripTypeModuleId, int userId) async {
+      String tripTypeModuleId, int userId) async {
     return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId);
   }
 
@@ -142,5 +145,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<GeneralResponse> tripSummary(int userId, int tripId) async {
     return await _appServiceClient.tripSummary(userId, tripId);
+  }
+
+  @override
+  Future<LookupsModel> getLookups() async {
+    return await _appServiceClient.getLookups();
   }
 }

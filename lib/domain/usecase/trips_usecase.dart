@@ -19,7 +19,7 @@ class TripsUseCase implements BaseUseCase<TripsInput, List<TripModel>> {
 }
 
 class TripsInput {
-  int tripModuleId;
+  String tripModuleId;
   int userId;
 
   TripsInput(this.tripModuleId, this.userId);

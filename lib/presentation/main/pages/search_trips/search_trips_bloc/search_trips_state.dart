@@ -13,9 +13,17 @@ class SearchTripsSuccess extends SearchTripsState {
   SearchTripsSuccess(this.trips);
 }
 
+class GetLookupsSuccessState extends SearchTripsState {
+  final List<String> englishTripTitles;
+  final List<String> arabicTripTitles;
+
+  GetLookupsSuccessState(
+      {required this.englishTripTitles, required this.arabicTripTitles});
+}
+
 class SearchTripsFailure extends SearchTripsState {
-  String message;
-  String code;
+  final String message;
+  final String code;
 
   SearchTripsFailure(this.message, this.code);
 }

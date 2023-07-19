@@ -33,7 +33,7 @@ blocProviders(BuildContext context) {
             registrationUseCase: instance())),
     BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
     BlocProvider.value(value: MyProfileBloc(logoutUseCase: instance())),
-    BlocProvider.value(value: SearchTripsBloc(tripsUseCase: instance())),
+    BlocProvider.value(value: SearchTripsBloc(tripsUseCase: instance(),lookupsUseCase: instance())),
     BlocProvider.value(value: MyTripsBloc(tripsUseCase: instance())),
     BlocProvider.value(value: TripExecutionBloc()),
     BlocProvider.value(

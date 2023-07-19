@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
+import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
@@ -38,7 +39,7 @@ abstract class Repository {
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
 
   Future<Either<Failure, List<TripModel>>> getTrips(
-      int tripTypeModuleId, int userId);
+      String tripTypeModuleId, int userId);
 
   Future<Either<Failure, GeneralResponse>> acceptOffer(int userId, int tripId);
 
@@ -48,4 +49,6 @@ abstract class Repository {
   Future<Either<Failure, TripModel>> tripSummary(int userId, int tripId);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
+
+  Future<Either<Failure, LookupsModel>> getLookups();
 }

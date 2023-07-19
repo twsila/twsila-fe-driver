@@ -6,6 +6,7 @@ import 'package:taxi_for_you/data/mapper/driver.dart';
 import 'package:taxi_for_you/data/mapper/mapper.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
+import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
@@ -261,7 +262,7 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, List<TripModel>>> getTrips(
-      int tripTypeModuleId, int userId) async {
+      String tripTypeModuleId, int userId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
@@ -342,6 +343,29 @@ class RepositoryImpl implements Repository {
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(TripModel.fromJson(response.result));
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, LookupsModel>> getLookups() async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.getLookups();
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));

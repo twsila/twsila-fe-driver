@@ -5,10 +5,12 @@ import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
+import 'package:taxi_for_you/presentation/trip_execution/view/trip_execution_view.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
+import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 
 import '../../../../../app/app_prefs.dart';
@@ -19,11 +21,8 @@ import '../../../../../utils/resources/values_manager.dart';
 import '../../../../common/widgets/custom_scaffold.dart';
 import '../../../../common/widgets/page_builder.dart';
 
-List<TripTitleModel> tripsTitles = [
-  TripTitleModel(0, "كل الرحلات"),
-  TripTitleModel(1, "رحلات اليوم"),
-  TripTitleModel(2, "رحلات مجدولة"),
-];
+List<String> tripsTitles = [];
+List<String> englishTripTitles = [];
 
 class SearchTripsPage extends StatefulWidget {
   const SearchTripsPage({Key? key}) : super(key: key);
@@ -37,14 +36,14 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   bool _loadingTripsList = false;
-  TripTitleModel selectedTripModule = tripsTitles[0];
   List<TripModel> trips = [];
+  int currentIndex = 0;
 
-  ListView _TripsTitleListView(List<TripTitleModel> tripsTitles) {
+  ListView _TripsTitleListView(List<String> tripsTitles) {
     return ListView(
         scrollDirection: Axis.horizontal,
-        children: List.generate(tripsTitles.length,
-            (index) => tripTitleItemView(tripsTitles[index])));
+        children: List.generate(
+            tripsTitles.length, (index) => tripTitleItemView(index)));
   }
 
   ListView _TripsListView(List<TripModel> tripsTitles) {
@@ -68,9 +67,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
 
   @override
   void initState() {
-    selectedTripModule.isSelected = true;
-    BlocProvider.of<SearchTripsBloc>(context)
-        .add(GetTripsTripModuleId(selectedTripModule.id));
+    BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
     super.initState();
   }
 
@@ -95,6 +92,18 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           _loadingTripsList = true;
         } else {
           _loadingTripsList = false;
+        }
+        if (state is GetLookupsSuccessState) {
+          englishTripTitles.addAll(state.englishTripTitles);
+          tripsTitles.clear();
+          if (_appPreferences.getAppLanguage() ==
+              LanguageType.ARABIC.getValue()) {
+            tripsTitles.addAll(state.arabicTripTitles);
+          } else {
+            tripsTitles.addAll(state.englishTripTitles);
+          }
+          BlocProvider.of<SearchTripsBloc>(context)
+              .add(GetTripsTripModuleId(englishTripTitles[0]));
         }
 
         if (state is SearchTripsSuccess) {
@@ -135,21 +144,14 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     );
   }
 
-  tripTitleItemView(TripTitleModel titleModel) {
+  tripTitleItemView(int index) {
     return Container(
       child: GestureDetector(
         onTap: () {
           setState(() {
-            tripsTitles.forEach((tripModule) {
-              if (titleModel == tripModule) {
-                selectedTripModule = titleModel;
-                selectedTripModule.isSelected = true;
-                BlocProvider.of<SearchTripsBloc>(context)
-                    .add(GetTripsTripModuleId(selectedTripModule.id));
-              } else {
-                tripModule.isSelected = false;
-              }
-            });
+            currentIndex = index;
+            BlocProvider.of<SearchTripsBloc>(context)
+                .add(GetTripsTripModuleId(englishTripTitles[index]));
           });
         },
         child: Container(
@@ -157,15 +159,15 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           padding: EdgeInsets.symmetric(horizontal: AppSize.s6),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(2),
-              color: titleModel.isSelected!
+              color: currentIndex == index
                   ? ColorManager.purpleMainTextColor
                   : ColorManager.white,
               border: Border.all(color: ColorManager.borderColor)),
           child: Center(
             child: Text(
-              titleModel.title,
+              tripsTitles[index],
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: titleModel.isSelected!
+                  color: currentIndex == index
                       ? ColorManager.white
                       : ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
@@ -184,8 +186,14 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     }
     return CustomCard(
       onClick: () {
-        Navigator.pushNamed(context, Routes.tripDetails,
-            arguments: TripDetailsArguments(tripModel: trip));
+        if (trip.acceptedOffer != null)
+          Navigator.pushNamed(context, Routes.tripExecution,
+              arguments: TripExecutionArguments(trip));
+        else
+          Navigator.pushNamed(context, Routes.tripDetails,
+              arguments: TripDetailsArguments(tripModel: trip)).then((value) =>
+              BlocProvider.of<SearchTripsBloc>(context)
+                  .add(GetTripsTripModuleId(englishTripTitles[currentIndex])));
       },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
@@ -266,19 +274,60 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
             SizedBox(
               height: AppSize.s4,
             ),
-            Text(
-              trip.tripStatus == TripStatus.DRAFT
-                  ? AppStrings.waitingCaptainsOffers.tr()
-                  : "",
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorManager.supportTextColor,
-                  fontSize: FontSize.s14,
-                  fontWeight: FontWeight.bold),
-            ),
+            tripStatusWidget(trip),
           ],
         ),
       ),
     );
+  }
+
+  Widget tripStatusWidget(TripModel trip) {
+    if (trip.offers!.length == 0 && trip.acceptedOffer == null) {
+      return Text(
+        AppStrings.waitingCaptainsOffers.tr(),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: ColorManager.supportTextColor,
+            fontSize: FontSize.s16,
+            fontWeight: FontWeight.bold),
+      );
+    } else if (trip.offers!.length > 0 && trip.acceptedOffer == null) {
+      return handleOfferStatus(trip.offers![0]);
+    } else if (trip.acceptedOffer != null) {
+      return Text(
+        AppStrings.offerAccepted.tr(),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: ColorManager.primary,
+            fontSize: FontSize.s16,
+            fontWeight: FontWeight.bold),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Text handleOfferStatus(Offer offer) {
+    if (offer.acceptanceStatus == AcceptanceType.PROPOSED.name) {
+      return Text(
+          "${AppStrings.offerHasBeenSent.tr()} (${offer.driverOffer} ${AppStrings.ryalSuadi.tr()})",
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: ColorManager.purpleMainTextColor,
+              fontSize: FontSize.s16,
+              fontWeight: FontWeight.bold));
+    } else if (offer.acceptanceStatus == AcceptanceType.EXPIRED.name) {
+      return Text(
+          "${AppStrings.clientRejectYourOffer.tr()} (${offer.driverOffer} ${AppStrings.ryalSuadi.tr()})",
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: ColorManager.error,
+              fontSize: FontSize.s16,
+              fontWeight: FontWeight.bold));
+    } else {
+      return Text(
+          "${AppStrings.offerAccepted.tr()} (${offer.driverOffer} ${AppStrings.ryalSuadi.tr()})",
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: ColorManager.primary,
+              fontSize: FontSize.s16,
+              fontWeight: FontWeight.bold));
+    }
   }
 
   String handleDateString(String dateString) {
