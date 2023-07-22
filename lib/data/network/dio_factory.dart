@@ -53,6 +53,8 @@ class DioFactory {
           if (e.response?.statusCode == 401) {
             // If a 401 response is received, refresh the access token
             String newAccessToken = await refreshToken();
+            await _appPreferences.setRefreshedToken(newAccessToken);
+
 
             // Update the request header with the new access token
             e.requestOptions.headers['Authorization'] =

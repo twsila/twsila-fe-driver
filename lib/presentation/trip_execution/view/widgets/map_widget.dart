@@ -104,8 +104,8 @@ class _MapWidgetState extends State<MapWidget> {
               ? widget.tripModel.pickupLocation!.longitude
               : currentLocation?.longitude ??
                   widget.tripModel.pickupLocation!.longitude),
-      PointLatLng(widget.tripModel.destination!.latitude,
-          widget.tripModel.destination!.longitude),
+      PointLatLng(isUserArrivedSource ? widget.tripModel.destination!.latitude : widget.tripModel.pickupLocation!.latitude,
+          isUserArrivedSource ?   widget.tripModel.destination!.longitude : widget.tripModel.pickupLocation!.longitude),
     );
     polylineCoordinates.clear();
     if (result.points.isNotEmpty) {
