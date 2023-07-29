@@ -76,11 +76,11 @@ class AppPreferences {
       driverMap = jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!);
       driverMap["userDevice"] = UserDevice.fromJson(driverMap["userDevice"]);
     }
-    return Driver.fromJson(driverMap);
+    return driverMap.length != 0 ? Driver.fromJson(driverMap) : null;
   }
 
   Future<bool> setRefreshedToken(String newToken) async {
-    Driver? driver = getCachedDriver() != null ? getCachedDriver() : null;
+    Driver? driver = getCachedDriver();
     if (driver != null) {
       driver.token = newToken;
       await setDriver(driver);

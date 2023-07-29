@@ -53,6 +53,7 @@ class AppStrings {
   static const String about = "about";
   static const String storeDetails = "store_details";
   static const String changeLanguage = "change_language";
+  static const String language = "language";
   static const String contactUs = "contact_us";
   static const String inviteYourFriends = "invite_your_friends";
   static const String logout = "logout";
@@ -63,6 +64,12 @@ class AppStrings {
   static const String sendOtpAgainHint = "send_otp_again_hint";
   static const String driverLabel = "driver_label";
   static const String trips = "trips";
+  static const String required = "required";
+  static const String wrongEmailFormatError = "error_wrong_email_format";
+  static const String errorPleaseEnter = "error_please_enter";
+  static const String correct = "correct";
+  static const String mustNotBeZero = "must_not_be_zero";
+  static const String plateNumberValidationMessage = "platenumber_validation_message";
   static const String searchForTrips = "search_for_trips";
   static const String selectFromHereHint = "select_from_here_hint";
   static const String ongoingTrips = "ongoing_trips";

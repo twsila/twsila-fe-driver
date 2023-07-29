@@ -15,6 +15,25 @@ class RegisterCaptainWithService extends ServiceRegistrationEvent {
   RegisterCaptainWithService();
 }
 
+class addCaptainData extends ServiceRegistrationEvent {
+  XFile? captainPhoto;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? gender;
+  String? birthDate;
+  bool? agreeWithTerms;
+
+  addCaptainData(
+      {this.captainPhoto,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.gender,
+      this.birthDate,
+      this.agreeWithTerms});
+}
+
 class NavigateToUploadDocument extends ServiceRegistrationEvent {
   final DocumentType documentTypeFront;
   final DocumentType documentTypeBack;
@@ -70,12 +89,12 @@ class SetCaptainData extends ServiceRegistrationEvent {
   String mobileNumber;
   String firstName;
   String lastName;
-  String email;
+  String? email;
   String gender;
   String birthDate;
 
   SetCaptainData(this.captainPhoto, this.mobileNumber, this.firstName,
-      this.lastName, this.email, this.gender,this.birthDate);
+      this.lastName, this.email, this.gender, this.birthDate);
 }
 
 class SetFirstStepData extends ServiceRegistrationEvent {

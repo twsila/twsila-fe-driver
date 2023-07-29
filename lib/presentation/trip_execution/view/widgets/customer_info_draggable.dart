@@ -54,7 +54,7 @@ class _CustomerInfoHeaderState extends State<CustomerInfoHeader> {
                         fontWeight: FontWeight.bold),
                   ),
                   RatingBarIndicator(
-                    rating: 2.75,
+                    rating: widget.tripModel.passenger!.rating,
                     itemBuilder: (context, index) => Icon(
                       Icons.star,
                       color: Colors.amber,

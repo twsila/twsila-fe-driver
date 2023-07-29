@@ -22,6 +22,8 @@ class Constants {
 
   static const String dateFormatterString = 'dd/MM/yyyy';
 
+  static const int refreshCurrentLocationSeconds= 2;
+
   static const int otpCountTime = 30;
   static const int otpSize = 6;
   static const bool showCursorOtpField = false;

@@ -9,6 +9,10 @@ class ServiceRegistrationLoading extends ServiceRegistrationState {}
 
 class ServiceRegistrationSuccess extends ServiceRegistrationState {}
 
+class CaptainDataIsValid extends ServiceRegistrationState {}
+
+class CaptainDataIsNotValid extends ServiceRegistrationState {}
+
 class ServiceRegistrationFail extends ServiceRegistrationState {
   final String message;
 

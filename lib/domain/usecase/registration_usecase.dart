@@ -52,7 +52,7 @@ class RegistrationUseCaseInput {
   String firstName;
   String lastName;
   String mobile;
-  String email;
+  String? email;
   String gender;
   String dateOfBirth;
   String driverServiceType;
@@ -79,7 +79,7 @@ class RegistrationUseCaseInput {
       {required this.firstName,
       required this.lastName,
       required this.mobile,
-      required this.email,
+       this.email,
       required this.gender,
       required this.dateOfBirth,
       required this.driverServiceType,

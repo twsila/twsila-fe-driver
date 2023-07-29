@@ -41,6 +41,7 @@ class DioFactory {
 
     dio.interceptors.add(
       InterceptorsWrapper(
+
         onRequest: (options, handler) async {
           // Add the access token to the request header
           String token = await _appPreferences.isUserLoggedIn()

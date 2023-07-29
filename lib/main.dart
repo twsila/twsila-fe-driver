@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:taxi_for_you/utils/push_notification/firebase_messaging_helper.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 
 import 'app/app.dart';

@@ -35,7 +35,6 @@ class _MapWidgetState extends State<MapWidget> {
 
   final controller = Completer<GoogleMapController>();
   MapsRepo mapsRepo = MapsRepo();
-  Duration oneSec = Duration(seconds: 2);
   late Timer _timer;
   late double distanceBetweenCurrentAndSource;
   late double distanceBetweenCurrentAndDestination;
@@ -104,8 +103,13 @@ class _MapWidgetState extends State<MapWidget> {
               ? widget.tripModel.pickupLocation!.longitude
               : currentLocation?.longitude ??
                   widget.tripModel.pickupLocation!.longitude),
-      PointLatLng(isUserArrivedSource ? widget.tripModel.destination!.latitude : widget.tripModel.pickupLocation!.latitude,
-          isUserArrivedSource ?   widget.tripModel.destination!.longitude : widget.tripModel.pickupLocation!.longitude),
+      PointLatLng(
+          isUserArrivedSource
+              ? widget.tripModel.destination!.latitude
+              : widget.tripModel.pickupLocation!.latitude,
+          isUserArrivedSource
+              ? widget.tripModel.destination!.longitude
+              : widget.tripModel.pickupLocation!.longitude),
     );
     polylineCoordinates.clear();
     if (result.points.isNotEmpty) {
@@ -144,8 +148,7 @@ class _MapWidgetState extends State<MapWidget> {
     if (distanceBetweenCurrentAndSource <= 100) isUserArrivedSource = true;
     if (distanceBetweenCurrentAndDestination <= 100)
       isUserArrivedDestination = true;
-    print(
-        "distance between current and source ${distanceBetweenCurrentAndSource}");
+
     setState(() {});
   }
 
@@ -164,7 +167,9 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   void initState() {
     setCustomMarkerIcon();
-    _timer = Timer.periodic(oneSec, (Timer t) async {
+    _timer = Timer.periodic(
+        Duration(seconds: Constants.refreshCurrentLocationSeconds),
+        (Timer t) async {
       getCurrentLocation();
       getPolyPoints();
     });

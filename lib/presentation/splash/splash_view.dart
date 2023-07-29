@@ -8,6 +8,7 @@ import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../app/app_prefs.dart';
+import '../../app/constants.dart';
 import '../../app/di.dart';
 import '../../utils/location/map_provider.dart';
 import '../../utils/resources/assets_manager.dart';
@@ -30,13 +31,14 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   bool _isInit = true;
   final AppPreferences _appPreferences = instance<AppPreferences>();
-
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
+    new Future.delayed(const Duration(seconds: 3), () {
+      _goNext();
+    });
     super.initState();
-    getCurrentLocation();
   }
 
   @override
@@ -46,10 +48,6 @@ class _SplashViewState extends State<SplashView> {
       setCountry();
     }
     super.didChangeDependencies();
-  }
-
-  getCurrentLocation() async {
-    BlocProvider.of<MapsBloc>(context, listen: false).add(GetCurrentLocation());
   }
 
   setCountry() {
@@ -78,17 +76,12 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       pageBuilder: PageBuilder(
-          appbar: true,
-          context: context,
-          body: _getContentWidget(context),
-          scaffoldKey: _key,
-          allowBackButtonInAppBar: false,
-          appBarActions: [
-            const Padding(
-              padding: EdgeInsets.all(AppSize.s16),
-              child: LanguageWidget(),
-            ),
-          ]),
+        appbar: true,
+        context: context,
+        body: _getContentWidget(context),
+        scaffoldKey: _key,
+        allowBackButtonInAppBar: false,
+      ),
     );
   }
 
@@ -104,21 +97,8 @@ class _SplashViewState extends State<SplashView> {
         Image.asset(ImageAssets.splashIcon),
         const SizedBox(height: 16),
         const Spacer(),
-        CustomTextButton(
-          text: AppStrings.getStarted.tr(),
-          onPressed: () {
-            _goNext();
-          },
-        ),
         BlocConsumer<MapsBloc, MapsState>(
-          listener: ((context, state) {
-            if (state is CurrentLocationFailed) {
-              ShowDialogHelper.showErrorMessage(state.errorMessage, context);
-            } else if (state is CurrentLocationLoadedSuccessfully) {
-              Provider.of<MapProvider>(context, listen: false).currentLocation =
-                  state.currentLocation;
-            }
-          }),
+          listener: ((context, state) async {}),
           builder: ((context, state) {
             return const SizedBox();
           }),

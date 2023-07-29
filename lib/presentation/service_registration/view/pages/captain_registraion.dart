@@ -1,7 +1,4 @@
 import 'dart:io';
-import 'dart:math';
-
-import 'package:analyzer/dart/element/type.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
-import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
@@ -39,11 +35,10 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   bool agreeWithTerms = false;
   bool isMale = false;
   bool isFemale = false;
-  XFile? captainPhoto;
+  XFile? captainPhoto = XFile('');
   String? firstName;
   String? lastName;
   String? email;
-  String? email_validation;
   String? gender;
   String? birthDate;
   Function()? continueFunction;
@@ -90,12 +85,25 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
       if (state is captainDataAddedState) {
         Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep);
       }
+      if (state is CaptainDataIsValid) {
+        continueFunction = () {
+          bool validate = _formKey.currentState!.validate();
+          if (validate) {
+            BlocProvider.of<ServiceRegistrationBloc>(context).add(
+                SetCaptainData(captainPhoto!, widget.mobileNumber, firstName!,
+                    lastName!, email ?? "", gender!, birthDate!));
+          }
+        };
+      }
+      if (state is CaptainDataIsNotValid) {
+        continueFunction = null;
+      }
     }, builder: (context, state) {
       return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Form(
           key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: AutovalidateMode.disabled,
           child: Container(
             margin: EdgeInsets.all(AppSize.s8),
             child: SingleChildScrollView(
@@ -147,12 +155,13 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                         var pickedfile = await imgpicker.pickImage(
                             source: ImageSource.gallery);
                         captainPhoto = pickedfile;
+                        validateInputsToContinue();
                         setState(() {});
                       } catch (e) {
                         ShowDialogHelper.showErrorMessage(
                             e.toString(), context);
                       }
-                      checkValidToContinue();
+
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -168,15 +177,14 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                         var pickedfile = await imgpicker.pickImage(
                           source: ImageSource.camera,
                         );
-
                         captainPhoto = pickedfile;
+                        validateInputsToContinue();
                         setState(() {});
                       } catch (e) {
                         ShowDialogHelper.showErrorMessage(
                             e.toString(), context);
                       }
 
-                      checkValidToContinue();
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -230,7 +238,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
       },
       child: Row(
         children: [
-          captainPhoto != null
+          captainPhoto != null && captainPhoto!.path != ""
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: Image.file(
@@ -266,7 +274,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           hintText: AppStrings.enterFirstNameHere.tr(),
           onChanged: (value) {
             firstName = value;
-            checkValidToContinue();
+            validateInputsToContinue();
           },
         ),
         CustomTextInputField(
@@ -275,25 +283,18 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           hintText: AppStrings.enterLastNameHere.tr(),
           onChanged: (value) {
             lastName = value;
-            checkValidToContinue();
+            validateInputsToContinue();
           },
         ),
         CustomTextInputField(
           labelText: AppStrings.email.tr(),
           showLabelText: true,
           hintText: AppStrings.emailHint.tr(),
+          validateEmptyString: false,
           validateEmail: true,
-          validationMethod: (value) {
-            if (value!.isEmpty ||
-                !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-              return 'Enter a valid email';
-            }
-            return null;
-          },
           onChanged: (value) {
             email = value;
-            checkValidToContinue();
+            validateInputsToContinue();
           },
         ),
         Container(
@@ -317,7 +318,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                     isFemale = false;
                     isMale = true;
                     gender = 'M';
-                    checkValidToContinue();
+                    validateInputsToContinue();
                   });
                 },
                 child: Container(
@@ -353,7 +354,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
                     isMale = false;
                     isFemale = true;
                     gender = 'F';
-                    checkValidToContinue();
+                    validateInputsToContinue();
                   });
                 },
                 child: Container(
@@ -398,7 +399,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
               onChanged: (value) {
                 setState(() {
                   agreeWithTerms = value!;
-                  checkValidToContinue();
+                  validateInputsToContinue();
                 });
               },
             ), //
@@ -468,35 +469,20 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
       setState(() {
         selectedDate = picked;
         birthDate = DateFormat.yMd().format(selectedDate);
-        checkValidToContinue();
+        validateInputsToContinue();
       });
     }
   }
 
-  void checkValidToContinue() {
-    setState(() {
-      if (captainPhoto != null &&
-          firstName != null &&
-          firstName!.isNotEmpty &&
-          lastName != null &&
-          lastName!.isNotEmpty &&
-          gender != null &&
-          gender!.isNotEmpty &&
-          birthDate != null &&
-          widget.mobileNumber != "" &&
-          agreeWithTerms) {
-        continueFunction = () {
-          bool validate = _formKey.currentState!.validate();
-          if (validate) {
-            BlocProvider.of<ServiceRegistrationBloc>(context).add(
-                SetCaptainData(captainPhoto!, widget.mobileNumber, firstName!,
-                    lastName!, email ?? "", gender!, birthDate!));
-          }
-        };
-      } else {
-        continueFunction = null;
-      }
-    });
+  void validateInputsToContinue() {
+    BlocProvider.of<ServiceRegistrationBloc>(context).add(addCaptainData(
+        captainPhoto: captainPhoto!,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        gender: gender,
+        birthDate: birthDate,
+        agreeWithTerms: agreeWithTerms));
   }
 }
 

@@ -101,13 +101,10 @@ class _ServiceCardState extends State<ServiceCard> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                FadeInImage(
-                                  height: AppSize.s30,
-                                  width: AppSize.s30,
-                                  image: NetworkImage(
-                                      'https://icons-for-free.com/iconfiles/png/512/mountains+photo+photos+placeholder+sun+icon-1320165661388177228.png'),
-                                  placeholder:
-                                      AssetImage(ImageAssets.appBarLogo),
+                                Image.asset(
+                                  ImageAssets.appBarLogo,
+                                  height: AppSize.s33,
+                                  width: AppSize.s33,
                                 ),
                                 SizedBox(
                                   width: AppSize.s8,
@@ -184,13 +181,10 @@ class _ServiceCardState extends State<ServiceCard> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  FadeInImage(
+                                  Image.asset(
+                                    ImageAssets.appBarLogo,
                                     height: AppSize.s33,
                                     width: AppSize.s33,
-                                    image: NetworkImage(
-                                        'https://icons-for-free.com/iconfiles/png/512/mountains+photo+photos+placeholder+sun+icon-1320165661388177228.png'),
-                                    placeholder:
-                                        AssetImage(ImageAssets.appBarLogo),
                                   ),
                                   SizedBox(
                                     width: AppSize.s8,

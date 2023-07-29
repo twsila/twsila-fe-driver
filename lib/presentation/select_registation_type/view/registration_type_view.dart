@@ -8,6 +8,7 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
+import '../../common/widgets/custom_language_widget.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
 import '../../login/view/login_view.dart';
@@ -33,7 +34,8 @@ class _RegistrationTypesViewState extends State<RegistrationTypesView> {
           allowBackButtonInAppBar: false,
           appBarActions: [
             SizedBox(
-                width: AppSize.s120, child: Image.asset(ImageAssets.appBarLogo))
+                width: AppSize.s120,
+                child: Image.asset(ImageAssets.appBarLogo)),
           ]),
     );
   }
@@ -50,7 +52,10 @@ class _RegistrationTypesViewState extends State<RegistrationTypesView> {
           ),
           Text(
             AppStrings.whichRegistrationTypeYouWant.tr(),
-            style: Theme.of(context).textTheme.displayLarge?.copyWith(color: ColorManager.headersTextColor),
+            style: Theme.of(context)
+                .textTheme
+                .displayLarge
+                ?.copyWith(color: ColorManager.headersTextColor),
           ),
           const SizedBox(
             height: AppSize.s16,
@@ -106,14 +111,16 @@ class _RegistrationTypesViewState extends State<RegistrationTypesView> {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: ColorManager.headersTextColor,
-                        fontWeight: FontWeight.bold, fontSize: FontSize.s14),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: ColorManager.headersTextColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: FontSize.s14),
                   ),
                   Text(subTitle,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(fontSize: FontSize.s12,color: ColorManager.headersTextColor,))
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontSize: FontSize.s12,
+                            color: ColorManager.headersTextColor,
+                          ))
                 ],
               )
             ],

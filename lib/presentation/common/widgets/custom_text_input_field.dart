@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
+import '../../../utils/helpers/validators.dart';
 import '../../../utils/resources/color_manager.dart';
 
 class CustomTextInputField extends StatefulWidget {
@@ -29,6 +32,8 @@ class CustomTextInputField extends StatefulWidget {
   final bool validateZeroNumber;
   final bool clearIcon;
   final double? borderRadius;
+  final bool isCharacterOnly;
+  final int minimumNumberOfCharacters;
   final Color? borderColor;
   final Color? clearIconColor;
   final bool isKeyboardDigitsOnly;
@@ -37,6 +42,7 @@ class CustomTextInputField extends StatefulWidget {
   final bool showLabelText;
   final String? labelText;
   final Color fillColor;
+  final String? customSpecialCharachterMessage;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final String? helperText;
@@ -51,6 +57,8 @@ class CustomTextInputField extends StatefulWidget {
   final Function(String?)? onSaved;
   final Color? backgroundColor;
   final bool? istitleBold;
+
+  final Function? shouldRequestFocus;
 
   // final String? key;
 
@@ -67,6 +75,7 @@ class CustomTextInputField extends StatefulWidget {
       // this.initialValue = "",
       this.prefixIcon,
       this.clearIcon = false,
+      this.isCharacterOnly = false,
       this.suffixIcon,
       this.keyboardType = TextInputType.text,
       this.validationMethod,
@@ -76,6 +85,7 @@ class CustomTextInputField extends StatefulWidget {
       this.errorLabel,
       this.textInputAction = TextInputAction.next,
       this.onEditingComplete,
+      this.minimumNumberOfCharacters = 0,
       this.controller,
       this.onChanged,
       this.focusNode,
@@ -88,10 +98,12 @@ class CustomTextInputField extends StatefulWidget {
       this.validateEmptyString = false,
       this.borderRadius,
       this.borderColor,
+      this.shouldRequestFocus,
       this.validateZeroNumber = false,
       this.showLabelText = false,
       this.labelText,
       this.fillColor = Colors.white,
+      this.customSpecialCharachterMessage,
       this.helperText,
       this.onFieldSubmitted,
       this.onClearIconTapped,
@@ -171,10 +183,93 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
               keyboardType: widget.keyboardType,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               autocorrect: false,
-              validator: (value) {
-                widget.validationMethod != null
-                    ? widget.validationMethod!(value)
-                    : null;
+              validator: (val) {
+                if (widget.validateEmail && val != "") {
+                  if (!Validators.isValidEmail(val!)) {
+                    if (widget.shouldRequestFocus != null &&
+                        widget.shouldRequestFocus!())
+                      _myFocusNode!.requestFocus();
+                    return AppStrings.wrongEmailFormatError.tr();
+                  }
+                }
+                if (val == null ||
+                    (widget.validateEmptyString && val.isEmpty)) {
+                  if (widget.shouldRequestFocus != null &&
+                      widget.shouldRequestFocus!())
+                    _myFocusNode!.requestFocus();
+                  return AppStrings.errorPleaseEnter.tr() +
+                      " " +
+                      widget.labelText.toString();
+                }
+
+                if (widget.checkMinimumCharacter) {
+                  if (widget.shouldRequestFocus != null &&
+                      widget.shouldRequestFocus!())
+                    _myFocusNode!.requestFocus();
+
+                  return val.length < widget.minimumNumberOfCharacters
+                      ? AppStrings.errorPleaseEnter.tr() +
+                          ' ' +
+                          (widget.errorLabel ?? widget.labelText!) +
+                          " " +
+                          AppStrings.correct.tr()
+                      : null;
+                }
+                if (widget.validateEmptyString &&
+                    (val.isEmpty || val.trim().length == 0)) {
+                  widget.shouldRequestFocus != null
+                      ? widget.shouldRequestFocus!()
+                          ? _myFocusNode!.requestFocus()
+                          : 0
+                      : 0;
+                  return AppStrings.errorPleaseEnter.tr() +
+                      ' ' +
+                      (widget.errorLabel ?? widget.labelText!);
+                } else if (widget.validateZeroNumber &&
+                    widget.keyboardType.index == 2 &&
+                    Validators.checkIFAllZero(val)) {
+                  widget.shouldRequestFocus != null
+                      ? widget.shouldRequestFocus!()
+                          ? _myFocusNode!.requestFocus()
+                          : 0
+                      : 0;
+                  return (widget.labelText!) + AppStrings.mustNotBeZero.tr();
+                }
+                //will check for validation method lastly
+                if (widget.validationMethod != null) {
+                  return widget.validationMethod!(val);
+                }
+                if (widget.isCharacterOnly == true) {
+                  widget.shouldRequestFocus != null
+                      ? widget.shouldRequestFocus!()
+                          ? _myFocusNode!.requestFocus()
+                          : 0
+                      : 0;
+                  return RegExp(
+                    r"^[a-zA-Z]+$",
+                  ).hasMatch(val)
+                      ? null
+                      : widget.customSpecialCharachterMessage ??
+                          AppStrings.errorPleaseEnter.tr() +
+                              ' ' +
+                              (widget.errorLabel ?? widget.labelText!) +
+                              AppStrings.errorPleaseEnter.tr();
+                }
+                if (widget.validateSpecialCharacter == true) {
+                  widget.shouldRequestFocus != null
+                      ? widget.shouldRequestFocus!()
+                          ? _myFocusNode!.requestFocus()
+                          : 0
+                      : 0;
+                  return RegExp(r"^[a-zA-Z0-9]+$").hasMatch(val)
+                      ? null
+                      : widget.customSpecialCharachterMessage ??
+                          AppStrings.errorPleaseEnter.tr() +
+                              ' ' +
+                              (widget.errorLabel ?? widget.labelText!) +
+                              AppStrings.correct.tr();
+                }
+                return null;
               },
               onFieldSubmitted: widget.onFieldSubmitted,
               inputFormatters: widget.inputFormatter ??

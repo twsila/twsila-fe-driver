@@ -18,6 +18,13 @@
   "which_goods": "اي نوع من البضائع تفكر بالنقل؟",
   "goods": "بضائع",
   "goods_deliver": "نقل بضائع",
+  "language": "لغة التطبيق",
+  "required": "مطلوب",
+  "error_wrong_email_format": "صيغة الاميل غير صحيحة",
+  "error_please_enter": "من فضلك ادخل",
+  "correct": "صحيح",
+  "must_not_be_zero": "لا يمكن ان يكون صفر",
+  "platenumber_validation_message": "برجاء ادخال رقم اللوحة الصحيح",
   "freezers": "مجمدات",
   "surfaces": "مسطحات",
   "cisterns": "صهاريج",
@@ -331,7 +338,6 @@
   "offer_accepted": "تم قبول الطلب بنجاح",
   "confirm_send_offer": "تأكيد الارسال",
   "are_you_sure_to_send_new_offer": "هل انت متأكد من ارسال عرض السعر",
-
   "start_trip_now_and_move_to_pickup_location": "ابدأ الرحلة الآن ثم تحرك الي نقطة الالتقاط",
   "move_to_client": "تحركت الي العميل",
   "trip_started_move_now": "بدأت الرحلة, تحرك الآن",
@@ -346,5 +352,4 @@
   "loading_maps": "جارى تحميل الخرائط...",
   "call_client": "الاتصال بالعميل",
   "waiting_client_replay": "في انتظار رد العميل ..."
-
 }

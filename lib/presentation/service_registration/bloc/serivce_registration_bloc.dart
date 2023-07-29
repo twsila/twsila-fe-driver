@@ -49,10 +49,30 @@ class ServiceRegistrationBloc
     on<SelectToUploadEvent>(_selectToUpload);
     on<SetDocumentForView>(_setDocumentDataForView);
     on<ChangeDocumentStatus>(_changeDocumentStatus);
+    on<addCaptainData>(_addCaptainData);
     on<SetCaptainData>(_setCaptainData);
     on<SetFirstStepData>(_setFirstStepData);
     on<SetSecondStepData>(_setSecondStepData);
     on<RegisterCaptainWithService>(_registerCaptainWithService);
+  }
+
+  FutureOr<void> _addCaptainData(
+      addCaptainData event, Emitter<ServiceRegistrationState> emit) async {
+    if (event.captainPhoto != null && event.captainPhoto!.path != "" &&
+        event.firstName != null &&
+        event.firstName!.isNotEmpty &&
+        event.lastName != null &&
+        event.lastName!.isNotEmpty &&
+        event.email != null &&
+        event.email!.isNotEmpty &&
+        event.gender != null &&
+        event.gender!.isNotEmpty &&
+        event.birthDate != null &&
+        event.agreeWithTerms != null && event.agreeWithTerms != false) {
+      emit(CaptainDataIsValid());
+    }else{
+      emit(CaptainDataIsNotValid());
+    }
   }
 
   FutureOr<void> _getServicesTypes(

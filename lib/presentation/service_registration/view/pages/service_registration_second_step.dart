@@ -52,6 +52,7 @@ class _ServiceRegistrationSecondStepState
   bool _loadingCars = false;
   List<CarModel>? carModelList;
   CarModel? selectedCarModel;
+  String plateNumberValidation = "";
 
   final ImagePicker _imagePicker = ImagePicker();
   List<XFile> carPhotos = [];
@@ -274,7 +275,7 @@ class _ServiceRegistrationSecondStepState
                             Text(
                               selectedCarModel
                                       ?.carManufacturerId.carManufacturer ??
-                                  AppStrings.carModelAndBrand.tr(),
+                                  "${AppStrings.carModelAndBrand.tr()} (${AppStrings.required.tr()})",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -303,10 +304,28 @@ class _ServiceRegistrationSecondStepState
               height: AppSize.s12,
             ),
             CustomVerificationCode(
-              onComplete: (value) {
+              onChanged: (value) {
                 plateNumber = value;
+                setState(() {
+                  if ((!RegExp(r'^([0-9-٠-٩]*[a-zA-Zء-ي]){3}([0-9-٠-٩]{1,3})*$')
+                      .hasMatch(value))) {
+                    plateNumberValidation =
+                        AppStrings.plateNumberValidationMessage.tr();
+                  } else {
+                    plateNumberValidation = "";
+                  }
+                });
               },
+              validator: (value) {},
+              onComplete: (value) {},
             ),
+            Visibility(
+                visible: plateNumberValidation.isNotEmpty,
+                child: Text(
+                  plateNumberValidation,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontSize: FontSize.s12, color: ColorManager.error),
+                )),
             SizedBox(
               height: AppSize.s18,
             ),
@@ -430,6 +449,7 @@ class _ServiceRegistrationSecondStepState
               onPressed: () {
                 if (selectedCarModel != null &&
                     plateNumber != "" &&
+                    plateNumberValidation.isEmpty &&
                     carPhotos.length != 0 &&
                     isCarDocumentValid &&
                     isDriverIdValid &&

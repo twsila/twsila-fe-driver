@@ -7,8 +7,14 @@ import '../../../utils/resources/font_manager.dart';
 
 class CustomVerificationCode extends StatefulWidget {
   Function(String) onComplete;
+  Function(String) onChanged;
+  Function(String)? validator;
 
-  CustomVerificationCode({Key? key, required this.onComplete})
+  CustomVerificationCode(
+      {Key? key,
+      required this.onComplete,
+      required this.onChanged,
+      this.validator})
       : super(key: key);
 
   @override
@@ -49,7 +55,13 @@ class _CustomVerificationCodeState extends State<CustomVerificationCode> {
       focusedPinTheme: focusedPinTheme,
       submittedPinTheme: submittedPinTheme,
       showCursor: true,
-      onCompleted: (value){
+      onChanged: (value) {
+        widget.onChanged(value);
+      },
+      validator: (value) {
+        widget.validator != null ? widget.validator!(value!) : null;
+      },
+      onCompleted: (value) {
         widget.onComplete(value);
       },
     );
