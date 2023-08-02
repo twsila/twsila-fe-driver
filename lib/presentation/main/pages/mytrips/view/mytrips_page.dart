@@ -150,10 +150,10 @@ class _MyTripsPageState extends State<MyTripsPage> {
     }
     return CustomCard(
       onClick: () {
-        // Navigator.pushNamed(context, Routes.tripExecution,
-        //     arguments: TripExecutionArguments(trip));
-        Navigator.pushNamed(context, Routes.tripDetails,
-            arguments: TripDetailsArguments(tripModel: trip));
+        Navigator.pushNamed(context, Routes.tripExecution,
+            arguments: TripExecutionArguments(trip));
+        // Navigator.pushNamed(context, Routes.tripDetails,
+        //     arguments: TripDetailsArguments(tripModel: trip));
 
       },
       bodyWidget: Container(
