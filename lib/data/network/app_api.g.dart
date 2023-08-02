@@ -330,7 +330,7 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<TripModelResponse> getTripsByModuleId(
+  Future<BaseResponse> getTripsByModuleId(
     tripModelType,
     userId,
   ) async {
@@ -342,7 +342,7 @@ class _AppServiceClient implements AppServiceClient {
       'userId': userId,
     };
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<TripModelResponse>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -354,7 +354,7 @@ class _AppServiceClient implements AppServiceClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = TripModelResponse.fromJson(_result.data!);
+    final value = BaseResponse.fromJson(_result.data!);
     return value;
   }
 

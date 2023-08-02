@@ -8,7 +8,7 @@ class MyTripsInitial extends MyTripsState {}
 class MyTripsLoading extends MyTripsState {}
 
 class MyTripsSuccess extends MyTripsState {
-  final List<TripModel> trips;
+  final List<TripDetailsModel> trips;
 
   MyTripsSuccess(this.trips);
 }

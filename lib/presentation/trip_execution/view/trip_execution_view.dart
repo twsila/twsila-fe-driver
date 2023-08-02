@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
+import '../../../domain/model/trip_details_model.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
@@ -25,7 +26,7 @@ import '../bloc/trip_execution_bloc.dart';
 import 'navigation_tracking_view.dart';
 
 class TripExecutionView extends StatefulWidget {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   TripExecutionView({required this.tripModel});
 
@@ -131,12 +132,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             detailsItem(
                 ImageAssets.tripDetailsProfileIc,
                 AppStrings.client.tr(),
-                "${widget.tripModel.passenger!.firstName} ${widget.tripModel.passenger!.lastName}"),
+                "${widget.tripModel.tripDetails.passenger!.firstName} ${widget.tripModel.tripDetails.passenger!.lastName}"),
             GestureDetector(
               onTap: () {
                 launchUrl(Uri(
                     scheme: 'tel',
-                    path: '${widget.tripModel.passenger!.mobile.toString()}'));
+                    path: '${widget.tripModel.tripDetails.passenger!.mobile.toString()}'));
               },
               child: Container(
                 padding: EdgeInsets.all(7),
@@ -161,13 +162,13 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             detailsItem(
                 ImageAssets.tripDetailsVisaIcon,
                 AppStrings.withBudget.tr(),
-                "${widget.tripModel.clientOffer} ${AppStrings.ryalSuadi.tr()}"),
+                "${widget.tripModel.tripDetails.clientOffer} ${AppStrings.ryalSuadi.tr()}"),
             detailsItem(
-                widget.tripModel.date != null
+                widget.tripModel.tripDetails.date != null
                     ? ImageAssets.scheduledTripIc
                     : ImageAssets.tripDetailsAsapIcon,
                 AppStrings.type.tr(),
-                widget.tripModel.date != null
+                widget.tripModel.tripDetails.date != null
                     ? AppStrings.scheduled.tr()
                     : AppStrings.asSoonAsPossible.tr()),
           ],
@@ -184,7 +185,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${AppStrings.request.tr()} ${widget.tripModel.tripType!.getTripTitle()}",
+              "${AppStrings.request.tr()} ${ getTitle(widget.tripModel.tripDetails.tripType!)}",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s24,
@@ -194,7 +195,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
           ],
         ),
         Image.asset(
-          widget.tripModel.tripType!.getIconAsset(),
+          getIconName(widget.tripModel.tripDetails.tripType!),
           width: AppSize.s50,
         ),
       ],
@@ -255,7 +256,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
         ),
         Expanded(
           child: Text(
-            "${AppStrings.from.tr()} ${widget.tripModel.pickupLocation!.locationName} - ${widget.tripModel.destination!.locationName}",
+            "${AppStrings.from.tr()} ${widget.tripModel.tripDetails.pickupLocation.locationName} - ${widget.tripModel.tripDetails.destinationLocation!.locationName}",
             overflow: TextOverflow.clip,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: ColorManager.headersTextColor,
@@ -394,7 +395,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
 }
 
 class TripExecutionArguments {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   TripExecutionArguments(this.tripModel);
 }

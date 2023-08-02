@@ -9,9 +9,10 @@ import 'package:taxi_for_you/presentation/trip_execution/view/widgets/customer_i
 import 'package:taxi_for_you/presentation/trip_execution/view/widgets/map_widget.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
+import '../../../domain/model/trip_details_model.dart';
 
 class TrackingPage extends StatefulWidget {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   TrackingPage({Key? key, required this.tripModel}) : super(key: key);
 
@@ -44,7 +45,7 @@ class TrackingPageState extends State<TrackingPage> {
 }
 
 class NavigationTrackingArguments {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   NavigationTrackingArguments(this.tripModel);
 }

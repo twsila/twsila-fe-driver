@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/di.dart';
+import '../../../../../domain/model/trip_details_model.dart';
 import '../../../../../domain/model/trip_model.dart';
 import '../../../../../domain/usecase/trips_usecase.dart';
 

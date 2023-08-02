@@ -12,6 +12,7 @@ import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
+import '../../../domain/model/trip_details_model.dart';
 import '../../../domain/model/trip_model.dart';
 import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/assets_manager.dart';
@@ -24,9 +25,10 @@ import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_button.dart';
 import '../../common/widgets/page_builder.dart';
 import '../bloc/trip_details_bloc.dart';
+import 'more_details_widget/more_details_widget.dart';
 
 class TripDetailsView extends StatefulWidget {
-  final TripModel tripModel;
+  final TripDetailsModel tripModel;
 
   TripDetailsView({required this.tripModel});
 
@@ -51,6 +53,12 @@ class _TripDetailsViewState extends State<TripDetailsView> {
     setState(() {
       _displayLoadingIndicator = false;
     });
+  }
+
+  @override
+  void initState() {
+    print(widget.tripModel);
+    super.initState();
   }
 
   void _showTripRouteBottomSheet(
@@ -121,7 +129,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                         ColorManager.primary, () {
                       BlocProvider.of<TripDetailsBloc>(context).add(AddOffer(
                           _appPreferences.getCachedDriver()!.id,
-                          widget.tripModel.id!,
+                          widget.tripModel.tripDetails.tripId!,
                           _driverOffer));
                       Navigator.pop(context);
                       Navigator.pop(context);
@@ -212,16 +220,12 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 SizedBox(
                   height: AppSize.s20,
                 ),
-                Divider(
-                  color: ColorManager.lineColor,
-                  thickness: 1.0,
+                MoreDetailsWidget(
+                  transportationBaseModel:
+                  widget.tripModel.tripDetails,
                 ),
-                SizedBox(
-                  height: AppSize.s14,
-                ),
-                _thingsToDeliver(),
                 Container(
-                  height: AppSize.s60,
+                  height: AppSize.s30,
                 ),
                 Center(child: _actionWithTripWidget(widget.tripModel)),
               ],
@@ -232,9 +236,11 @@ class _TripDetailsViewState extends State<TripDetailsView> {
     );
   }
 
-  Widget _actionWithTripWidget(TripModel trip) {
-    if (trip.acceptedOffer == null && trip.offers!.length > 0) {
-      if (trip.offers![0].acceptanceStatus == AcceptanceType.PROPOSED.name) {
+  Widget _actionWithTripWidget(TripDetailsModel trip) {
+    if (trip.tripDetails.acceptedOffer == null &&
+        trip.tripDetails.offers!.length > 0) {
+      if (trip.tripDetails.offers![0].acceptanceStatus ==
+          AcceptanceType.PROPOSED.name) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -249,7 +255,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                   width: 7,
                 ),
                 Text(
-                    "${AppStrings.offerHasBeenSent.tr()} (${trip.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                    "${AppStrings.offerHasBeenSent.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: ColorManager.purpleMainTextColor,
                         fontSize: FontSize.s16,
@@ -263,7 +269,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                     fontWeight: FontWeight.bold))
           ],
         );
-      } else if (trip.offers![0].acceptanceStatus ==
+      } else if (trip.tripDetails.offers![0].acceptanceStatus ==
           AcceptanceType.EXPIRED.name) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -278,7 +284,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                   width: 7,
                 ),
                 Text(
-                    "${AppStrings.clientRejectYourOffer.tr()} (${trip.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                    "${AppStrings.clientRejectYourOffer.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: ColorManager.error,
                         fontSize: FontSize.s16,
@@ -307,11 +313,11 @@ class _TripDetailsViewState extends State<TripDetailsView> {
           children: [
             CustomTextButton(
               text:
-                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.clientOffer} (${AppStrings.rs.tr()})",
+                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
               onPressed: () {
                 BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
                     _appPreferences.getCachedDriver()!.id,
-                    widget.tripModel.id!));
+                    widget.tripModel.tripDetails.tripId!));
               },
             ),
             CustomTextButton(
@@ -353,20 +359,20 @@ class _TripDetailsViewState extends State<TripDetailsView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _IconTextDataWidget(
-            "${AppStrings.from.tr()} ${widget.tripModel.passenger!.firstName} ${widget.tripModel.passenger!.lastName}",
+            "${AppStrings.from.tr()} ${widget.tripModel.tripDetails.passenger!.firstName} ${widget.tripModel.tripDetails.passenger!.lastName}",
             ImageAssets.tripDetailsProfileIc),
         SizedBox(
           height: AppSize.s8,
         ),
         _IconTextDataWidget(
-            "${AppStrings.withBudget.tr()} ${widget.tripModel.clientOffer.toString()}",
+            "${AppStrings.withBudget.tr()} ${widget.tripModel.tripDetails.clientOffer.toString()}",
             ImageAssets.tripDetailsVisaIcon),
         SizedBox(
           height: AppSize.s8,
         ),
         _IconTextDataWidget(
-            widget.tripModel.date != null
-                ? "${AppStrings.scheduled.tr()} ${widget.tripModel.date}"
+            widget.tripModel.tripDetails.date != null
+                ? "${AppStrings.scheduled.tr()} ${widget.tripModel.tripDetails.date}"
                 : "${AppStrings.asSoonAsPossible.tr()}",
             ImageAssets.tripDetailsAsapIcon),
       ],
@@ -404,7 +410,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${AppStrings.request.tr()} ${widget.tripModel.tripType!.getTripTitle()}",
+              "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s24,
@@ -414,7 +420,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
           ],
         ),
         Image.asset(
-          widget.tripModel.tripType!.getIconAsset(),
+          getIconName(widget.tripModel.tripDetails.tripType!),
           width: AppSize.s50,
         ),
       ],
@@ -449,7 +455,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${AppStrings.from.tr()} ${widget.tripModel.pickupLocation!.locationName}",
+                "${AppStrings.from.tr()} ${widget.tripModel.tripDetails.pickupLocation.locationName}",
                 overflow: TextOverflow.clip,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: ColorManager.headersTextColor,
@@ -460,7 +466,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 height: AppSize.s18,
               ),
               Text(
-                "${AppStrings.to.tr()} ${widget.tripModel.destination!.locationName}",
+                "${AppStrings.to.tr()} ${widget.tripModel.tripDetails.destinationLocation.locationName}",
                 overflow: TextOverflow.clip,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: ColorManager.headersTextColor,
@@ -479,13 +485,18 @@ class _TripDetailsViewState extends State<TripDetailsView> {
       onTap: () {
         _showTripRouteBottomSheet(
             LocationModel(
-                locationName: widget.tripModel.pickupLocation!.locationName,
-                latitude: widget.tripModel.pickupLocation!.latitude,
-                longitude: widget.tripModel.pickupLocation!.longitude),
+                locationName:
+                    widget.tripModel.tripDetails.pickupLocation.locationName!,
+                latitude: widget.tripModel.tripDetails.pickupLocation.latitude!,
+                longitude:
+                    widget.tripModel.tripDetails.pickupLocation.longitude!),
             LocationModel(
-                locationName: widget.tripModel.destination!.locationName,
-                latitude: widget.tripModel.destination!.latitude,
-                longitude: widget.tripModel.destination!.longitude));
+                locationName: widget
+                    .tripModel.tripDetails.destinationLocation.locationName!,
+                latitude:
+                    widget.tripModel.tripDetails.destinationLocation.latitude!,
+                longitude: widget
+                    .tripModel.tripDetails.destinationLocation.longitude!));
       },
       child: FittedBox(
         child: Container(
@@ -521,7 +532,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
 }
 
 class TripDetailsArguments {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   TripDetailsArguments({required this.tripModel});
 }

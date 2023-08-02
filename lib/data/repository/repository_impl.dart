@@ -20,6 +20,7 @@ import 'package:taxi_for_you/utils/helpers/cast_helpers.dart';
 
 import '../../domain/model/driver_model.dart';
 import '../../domain/model/models.dart';
+import '../../domain/model/trip_details_model.dart';
 import '../../domain/model/verify_otp_model.dart';
 import '../../domain/repository/repository.dart';
 import '../data_source/local_data_source.dart';
@@ -261,7 +262,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<TripModel>>> getTrips(
+  Future<Either<Failure, List<TripDetailsModel>>> getTrips(
       String tripTypeModuleId, int userId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
@@ -270,7 +271,10 @@ class RepositoryImpl implements Repository {
             await _remoteDataSource.tripsByModuleId(tripTypeModuleId, userId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          return Right(response.result);
+          List<TripDetailsModel> trips = List<TripDetailsModel>.from(
+              response.result!.map((x) => TripDetailsModel.fromJson(x)));
+
+          return Right(trips);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));
@@ -335,14 +339,14 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, TripModel>> tripSummary(int userId, int tripId) async {
+  Future<Either<Failure, TripDetailsModel>> tripSummary(int userId, int tripId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response = await _remoteDataSource.tripSummary(userId, tripId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          return Right(TripModel.fromJson(response.result));
+          return Right(TripDetailsModel.fromJson(response.result));
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));

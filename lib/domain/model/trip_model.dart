@@ -184,59 +184,42 @@ class TripModel {
 }
 
 class AcceptedOffer {
-  int id;
-  Offer offer;
+  final int acceptedOfferId;
+  final Offer offer;
 
-  AcceptedOffer({
-    required this.id,
-    required this.offer,
-  });
+  AcceptedOffer({required this.acceptedOfferId, required this.offer});
 
   factory AcceptedOffer.fromJson(Map<String, dynamic> json) => AcceptedOffer(
-        id: json["id"],
-        offer: Offer.fromJson(json["offer"]),
+        acceptedOfferId: json['id'],
+        offer: Offer.fromJson(json['offer']),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "offer": offer.toJson(),
-      };
 }
 
 class Offer {
-  int id;
-  Driver driver;
-  String driverTripUniqueConstraint;
-  double driverOffer;
-  String acceptanceStatus;
-  DateTime creationDate;
+  final int offerId;
+  final double driverOffer;
+  final String acceptanceStatus;
+  final String creationDate;
+  final Driver driverModel;
+  final bool? woman;
 
   Offer({
-    required this.id,
-    required this.driver,
-    required this.driverTripUniqueConstraint,
-    required this.driverOffer,
+    required this.offerId,
+    required this.driverModel,
     required this.acceptanceStatus,
     required this.creationDate,
+    required this.driverOffer,
+    this.woman,
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-        id: json["id"],
-        driver: Driver.fromJson(json["driver"]),
-        driverTripUniqueConstraint: json["driverTripUniqueConstraint"],
-        driverOffer: json["driverOffer"],
-        acceptanceStatus: json["acceptanceStatus"],
-        creationDate: DateTime.parse(json["creationDate"]),
+        offerId: json['id'],
+        driverModel: Driver.fromJson(json['driver']),
+        acceptanceStatus: json['acceptanceStatus'],
+        creationDate: json['creationDate'],
+        driverOffer: json['driverOffer'],
+        woman: json['woman'],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "driver": driver.toJson(),
-        "driverTripUniqueConstraint": driverTripUniqueConstraint,
-        "driverOffer": driverOffer,
-        "acceptanceStatus": acceptanceStatus,
-        "creationDate": creationDate.toIso8601String(),
-      };
 }
 
 final tripTypesValues = EnumValues({

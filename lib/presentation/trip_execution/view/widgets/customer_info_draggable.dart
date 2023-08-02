@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:taxi_for_you/domain/model/trip_details_model.dart';
 
 import '../../../../domain/model/trip_model.dart';
 import '../../../../utils/resources/color_manager.dart';
@@ -8,7 +9,7 @@ import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 
 class CustomerInfoHeader extends StatefulWidget {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   CustomerInfoHeader({required this.tripModel});
 
@@ -47,14 +48,14 @@ class _CustomerInfoHeaderState extends State<CustomerInfoHeader> {
               Column(
                 children: [
                   Text(
-                    "${widget.tripModel.passenger!.firstName} ${widget.tripModel.passenger!.lastName}",
+                    "${widget.tripModel.tripDetails.passenger!.firstName} ${widget.tripModel.tripDetails.passenger!.lastName}",
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: ColorManager.headersTextColor,
                         fontSize: FontSize.s14,
                         fontWeight: FontWeight.bold),
                   ),
                   RatingBarIndicator(
-                    rating: widget.tripModel.passenger!.rating,
+                    rating: widget.tripModel.tripDetails.passenger!.rating,
                     itemBuilder: (context, index) => Icon(
                       Icons.star,
                       color: Colors.amber,
@@ -77,7 +78,7 @@ class _CustomerInfoHeaderState extends State<CustomerInfoHeader> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "${widget.tripModel.clientOffer} ${AppStrings.ryalSuadi.tr()}",
+                "${widget.tripModel.tripDetails.clientOffer} ${AppStrings.ryalSuadi.tr()}",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: ColorManager.headersTextColor,
                     fontSize: FontSize.s14,

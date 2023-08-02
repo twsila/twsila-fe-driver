@@ -6,12 +6,12 @@ part of 'responses.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BaseResponse _$BaseResponseFromJson(Map<String, dynamic> json) => BaseResponse()
-  ..success = json['success'] as bool?
-  ..message = json['message'] as String?
-  ..dateTime = json['dateTime'] as String?
-  ..result = json['result'] as Map<String, dynamic>?
-  ..errorCode = json['errorCode'] as String?;
+BaseResponse _$BaseResponseFromJson(Map<String, dynamic> json) => BaseResponse(
+      message: json['message'] as String?,
+      success: json['success'] as bool?,
+      errorCode: json['errorCode'] as String?,
+      dateTime: json['dateTime'] as String?,
+    )..result = json['result'];
 
 Map<String, dynamic> _$BaseResponseToJson(BaseResponse instance) =>
     <String, dynamic>{
@@ -36,7 +36,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
       ..success = json['success'] as bool?
       ..message = json['message'] as String?
       ..dateTime = json['dateTime'] as String?
-      ..result = json['result'] as Map<String, dynamic>?
+      ..result = json['result']
       ..errorCode = json['errorCode'] as String?;
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
@@ -111,7 +111,7 @@ AuthenticationResponse _$AuthenticationResponseFromJson(
       ..success = json['success'] as bool?
       ..message = json['message'] as String?
       ..dateTime = json['dateTime'] as String?
-      ..result = json['result'] as Map<String, dynamic>?
+      ..result = json['result']
       ..errorCode = json['errorCode'] as String?;
 
 Map<String, dynamic> _$AuthenticationResponseToJson(
@@ -134,7 +134,7 @@ ForgotPasswordResponse _$ForgotPasswordResponseFromJson(
       ..success = json['success'] as bool?
       ..message = json['message'] as String?
       ..dateTime = json['dateTime'] as String?
-      ..result = json['result'] as Map<String, dynamic>?
+      ..result = json['result']
       ..errorCode = json['errorCode'] as String?;
 
 Map<String, dynamic> _$ForgotPasswordResponseToJson(
@@ -220,7 +220,7 @@ HomeResponse _$HomeResponseFromJson(Map<String, dynamic> json) => HomeResponse(
       ..success = json['success'] as bool?
       ..message = json['message'] as String?
       ..dateTime = json['dateTime'] as String?
-      ..result = json['result'] as Map<String, dynamic>?
+      ..result = json['result']
       ..errorCode = json['errorCode'] as String?;
 
 Map<String, dynamic> _$HomeResponseToJson(HomeResponse instance) =>
@@ -246,7 +246,7 @@ StoreDetailsResponse _$StoreDetailsResponseFromJson(
       ..success = json['success'] as bool?
       ..message = json['message'] as String?
       ..dateTime = json['dateTime'] as String?
-      ..result = json['result'] as Map<String, dynamic>?
+      ..result = json['result']
       ..errorCode = json['errorCode'] as String?;
 
 Map<String, dynamic> _$StoreDetailsResponseToJson(

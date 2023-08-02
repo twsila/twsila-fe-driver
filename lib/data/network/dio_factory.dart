@@ -50,22 +50,22 @@ class DioFactory {
           options.headers[AUTHORIZATION] = token;
           return handler.next(options);
         },
-        onError: (DioError e, handler) async {
-          if (e.response?.statusCode == 401) {
-            // If a 401 response is received, refresh the access token
-            String newAccessToken = await refreshToken();
-            await _appPreferences.setRefreshedToken(newAccessToken);
-
-
-            // Update the request header with the new access token
-            e.requestOptions.headers['Authorization'] =
-                'Bearer $newAccessToken';
-
-            // Repeat the request with the updated header
-            return handler.resolve(await dio.fetch(e.requestOptions));
-          }
-          return handler.next(e);
-        },
+        // onError: (DioError e, handler) async {
+        //   if (e.response?.statusCode == 401) {
+        //     // If a 401 response is received, refresh the access token
+        //     String newAccessToken = await refreshToken();
+        //     await _appPreferences.setRefreshedToken(newAccessToken);
+        //
+        //
+        //     // Update the request header with the new access token
+        //     e.requestOptions.headers['Authorization'] =
+        //         'Bearer $newAccessToken';
+        //
+        //     // Repeat the request with the updated header
+        //     return handler.resolve(await dio.fetch(e.requestOptions));
+        //   }
+        //   return handler.next(e);
+        // },
       ),
     );
 

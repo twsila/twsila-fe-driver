@@ -35,3 +35,14 @@ class Constants {
         AppStrings.egypt)
   ];
 }
+
+
+class TripTypeConstants {
+  static const String carAidType = "CAR_AID";
+  static const String drinkWaterType = "DRINK_WATER_TANK";
+  static const String frozenType = "FROZEN";
+  static const String furnitureType = "FURNITURE";
+  static const String goodsType = "GOODS";
+  static const String otherTankType = "OTHER_TANK";
+  static const String personType = "PERSON";
+}

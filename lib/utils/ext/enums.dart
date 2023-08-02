@@ -2,6 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
+import '../../app/constants.dart';
+import '../../domain/model/trip_model.dart';
+
 enum AcceptanceType { PROPOSED, ACCEPTED, EXPIRED }
 
 enum ShippingType { CHILLER, FROZEN, DRY }
@@ -33,6 +36,58 @@ enum TripType {
   OTHER_TANK
 }
 
+
+String getIconName(String tripType) {
+  switch (tripType) {
+    case TripTypeConstants.furnitureType:
+      return ImageAssets.tripGoodsIc;
+    case TripTypeConstants.frozenType:
+      return ImageAssets.tripFrozenIc;
+    case TripTypeConstants.goodsType:
+      return ImageAssets.tripGoodsIc;
+    case TripTypeConstants.carAidType:
+      return ImageAssets.tripPersonsIc;
+    case TripTypeConstants.otherTankType:
+      return ImageAssets.tripSwarekIc;
+    case TripTypeConstants.drinkWaterType:
+      return ImageAssets.tripWaterTankIc;
+    default:
+      return ImageAssets.tripGoodsIc;
+  }
+}
+
+String getTitle(String tripType) {
+  switch (tripType) {
+    case TripTypeConstants.furnitureType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.furnitureTransportation.tr();
+    case TripTypeConstants.frozenType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.freezers.tr();
+    case TripTypeConstants.goodsType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.goodsDeliver.tr();
+    case TripTypeConstants.carAidType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.personsTransportation.tr();
+    case TripTypeConstants.otherTankType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.cisterns.tr();
+    case TripTypeConstants.drinkWaterType:
+      return AppStrings.wanet.tr() +
+          ' ' +
+          AppStrings.waterCisterns.tr();
+    default:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.furnitureTransportation.tr();
+  }
+}
 extension TripTypeIcon on TripType {
   String getIconAsset() {
     switch (this) {

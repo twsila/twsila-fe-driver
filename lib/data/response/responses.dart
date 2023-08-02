@@ -13,11 +13,25 @@ class BaseResponse {
   @JsonKey(name: "dateTime")
   String? dateTime;
   @JsonKey(name: "result")
-  Map<String, dynamic>? result;
+  dynamic result;
   @JsonKey(name: "errorCode")
   String? errorCode;
 
+  BaseResponse({
+    this.message,
+    this.success,
+    this.errorCode,
+    this.dateTime,
+  });
 
+
+  BaseResponse.fromJson(Map<String, dynamic> json, {int? statusCode}) {
+    message = json['message'];
+    errorCode = json['errorCode'];
+    success = json['success'];
+    dateTime = json['dateTime'];
+    result = json['result'];
+  }
 }
 
 @JsonSerializable()

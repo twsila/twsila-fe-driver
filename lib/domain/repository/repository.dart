@@ -16,6 +16,7 @@ import '../model/generate_otp_model.dart';
 import '../model/logout_model.dart';
 import '../model/models.dart';
 import '../model/service_status_model.dart';
+import '../model/trip_details_model.dart';
 import '../model/verify_otp_model.dart';
 
 abstract class Repository {
@@ -38,7 +39,7 @@ abstract class Repository {
 
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
 
-  Future<Either<Failure, List<TripModel>>> getTrips(
+  Future<Either<Failure, List<TripDetailsModel>>> getTrips(
       String tripTypeModuleId, int userId);
 
   Future<Either<Failure, GeneralResponse>> acceptOffer(int userId, int tripId);
@@ -46,7 +47,7 @@ abstract class Repository {
   Future<Either<Failure, GeneralResponse>> addOffer(
       int userId, int tripId, double driverOffer);
 
-  Future<Either<Failure, TripModel>> tripSummary(int userId, int tripId);
+  Future<Either<Failure, TripDetailsModel>> tripSummary(int userId, int tripId);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 

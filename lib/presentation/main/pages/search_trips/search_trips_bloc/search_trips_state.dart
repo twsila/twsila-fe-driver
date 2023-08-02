@@ -8,7 +8,7 @@ class SearchTripsInitial extends SearchTripsState {}
 class SearchTripsLoading extends SearchTripsState {}
 
 class SearchTripsSuccess extends SearchTripsState {
-  final List<TripModel> trips;
+  final List<TripDetailsModel> trips;
 
   SearchTripsSuccess(this.trips);
 }

@@ -16,6 +16,7 @@ import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/constants.dart';
 import '../../../../../app/di.dart';
+import '../../../../../domain/model/trip_details_model.dart';
 import '../../../../../utils/resources/strings_manager.dart';
 import '../../../../../utils/resources/values_manager.dart';
 import '../../../../common/widgets/custom_scaffold.dart';
@@ -36,7 +37,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   bool _loadingTripsList = false;
-  List<TripModel> trips = [];
+  List<TripDetailsModel> trips = [];
   int currentIndex = 0;
 
   ListView _TripsTitleListView(List<String> tripsTitles) {
@@ -46,7 +47,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
             tripsTitles.length, (index) => tripTitleItemView(index)));
   }
 
-  ListView _TripsListView(List<TripModel> tripsTitles) {
+  ListView _TripsListView(List<TripDetailsModel> tripsTitles) {
     return ListView(
         scrollDirection: Axis.vertical,
         children:
@@ -179,14 +180,14 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     );
   }
 
-  tripItemView(TripModel trip) {
+  tripItemView(TripDetailsModel trip) {
     String? date;
-    if (trip.date != null) {
-      date = handleDateString(trip.date!);
+    if (trip.tripDetails.date != null) {
+      date = handleDateString(trip.tripDetails.date!);
     }
     return CustomCard(
       onClick: () {
-        if (trip.acceptedOffer != null)
+        if (trip.tripDetails.acceptedOffer != null)
           Navigator.pushNamed(context, Routes.tripExecution,
               arguments: TripExecutionArguments(trip));
         else
@@ -216,7 +217,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                     child: Row(
                       children: [
                         Image.asset(
-                          trip.date != null && trip.date != ""
+                          trip.tripDetails.date != null && trip.tripDetails.date != ""
                               ? ImageAssets.scheduledTripIc
                               : ImageAssets.asSoonAsPossibleTripIc,
                           width: AppSize.s14,
@@ -242,7 +243,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                 ),
                 // SvgPicture.asset(ImageAssets.truckIc,),
                 Image.asset(
-                  trip.tripType!.getIconAsset(),
+                    getIconName(trip.tripDetails.tripType!),
                   width: AppSize.s40,
                 ),
               ],
@@ -251,7 +252,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
               height: AppSize.s4,
             ),
             Text(
-              trip.tripType!.getTripTitle(),
+              getTitle(trip.tripDetails.tripType!),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
@@ -261,7 +262,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
               height: AppSize.s4,
             ),
             Text(
-              "${trip.pickupLocation!.locationName} - ${trip.destination!.locationName}",
+              "${trip.tripDetails.pickupLocation.locationName} - ${trip.tripDetails.destinationLocation.locationName}",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
@@ -281,8 +282,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     );
   }
 
-  Widget tripStatusWidget(TripModel trip) {
-    if (trip.offers!.length == 0 && trip.acceptedOffer == null) {
+  Widget tripStatusWidget(TripDetailsModel trip) {
+    if (trip.tripDetails.offers!.length == 0 && trip.tripDetails.acceptedOffer == null) {
       return Text(
         AppStrings.waitingCaptainsOffers.tr(),
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -290,9 +291,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
             fontSize: FontSize.s16,
             fontWeight: FontWeight.bold),
       );
-    } else if (trip.offers!.length > 0 && trip.acceptedOffer == null) {
-      return handleOfferStatus(trip.offers![0]);
-    } else if (trip.acceptedOffer != null) {
+    } else if (trip.tripDetails.offers!.length > 0 && trip.tripDetails.acceptedOffer == null) {
+      return handleOfferStatus(trip.tripDetails.offers![0]);
+    } else if (trip.tripDetails.acceptedOffer != null) {
       return Text(
         AppStrings.offerAccepted.tr(),
         style: Theme.of(context).textTheme.bodySmall?.copyWith(

@@ -19,10 +19,15 @@ class AppStrings {
   static const goodsDeliver = "goods_deliver";
   static const freezers = "freezers";
   static const surfaces = "surfaces";
+  static const other = "other";
+  static const materialTypes = "material_type";
+  static const selectPackagingTypes = "packaging_type";
   static const cisterns = "cisterns";
   static const login = "login_button";
+  static const extraServices = "extra_services";
   static const englishLabel = "english_label";
   static const arabicLabel = "arabic_label";
+  static const transporationItems = "transporation_items";
   static const forgetPassword = "forgot_password_text";
   static const registerText = "register_text";
   static const loading = "loading";
@@ -388,6 +393,35 @@ class AppStrings {
   static const client = 'client';
   static const loadingMaps = 'loading_maps';
   static const callClient = 'call_client';
+
+  //Furniture strings
+  static const assemble = "assemble";
+  static const crane = "crane";
+  static const roomsNumber = "rooms_number";
+  static const fridgeNumber = "fridge_number";
+  static const sofaSetNumber = "sofa_set_number";
+  static const carpetsNumber = "carpets_number";
+  static const windowAirconditionerNumber = "window_airconditioner_number";
+  static const splitAirconditionerNumber = "split_airconditioner_number";
+  static const kitchenNumber = "kitchen_number";
+  static const tablesNumber = "tables_number";
+  static const dinningRoomsNumber = "dinning_rooms_number";
+  static const unloadAndLoad = "unload_and_load";
+  static const sofaSet = "sofa_set";
+  static const goodsWeight = "goods_weight";
+  static const tankWeight = "tank_weight";
+
+  //Freezers strings
+  static const cartons = "cartons";
+  static const shippedTypes = "shipped_types";
+  static const materialsTobeShipped = "materials_tobe_shipped";
+  static const chiller = "chiller";
+  static const frozen = "frozen";
+  static const dry = "dry";
+  static const meat_poultry_fish = "meat_poultry_fish";
+  static const vegetables = "vegetables";
+  static const foodStuffs = "food_stuffs";
+  static const flowers_plants = "flowers_plants";
 
   //logout
   static const areYouSureYouWantToLogout = 'are_you_sure_you_want_to_logout';

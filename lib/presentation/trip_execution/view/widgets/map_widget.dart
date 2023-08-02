@@ -14,6 +14,7 @@ import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'dart:ui' as ui;
 
 import '../../../../app/constants.dart';
+import '../../../../domain/model/trip_details_model.dart';
 import '../../../../domain/model/trip_model.dart';
 import '../../../../utils/resources/color_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
@@ -21,7 +22,7 @@ import '../../../../utils/resources/strings_manager.dart';
 import '../../../google_maps/model/maps_repo.dart';
 
 class MapWidget extends StatefulWidget {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   MapWidget({required this.tripModel});
 
@@ -96,20 +97,20 @@ class _MapWidgetState extends State<MapWidget> {
       Constants.GOOGLE_API_KEY, // Your Google Map Key
       PointLatLng(
           isUserArrivedSource
-              ? widget.tripModel.pickupLocation!.latitude
+              ? widget.tripModel.tripDetails.pickupLocation.latitude!
               : currentLocation?.latitude ??
-                  widget.tripModel.pickupLocation!.latitude,
+                  widget.tripModel.tripDetails.pickupLocation.latitude!,
           isUserArrivedSource
-              ? widget.tripModel.pickupLocation!.longitude
+              ? widget.tripModel.tripDetails.pickupLocation.longitude!
               : currentLocation?.longitude ??
-                  widget.tripModel.pickupLocation!.longitude),
+                  widget.tripModel.tripDetails.pickupLocation.longitude!),
       PointLatLng(
           isUserArrivedSource
-              ? widget.tripModel.destination!.latitude
-              : widget.tripModel.pickupLocation!.latitude,
+              ? widget.tripModel.tripDetails.destinationLocation.latitude!
+              : widget.tripModel.tripDetails.pickupLocation.latitude!,
           isUserArrivedSource
-              ? widget.tripModel.destination!.longitude
-              : widget.tripModel.pickupLocation!.longitude),
+              ? widget.tripModel.tripDetails.destinationLocation.longitude!
+              : widget.tripModel.tripDetails.pickupLocation.longitude!),
     );
     polylineCoordinates.clear();
     if (result.points.isNotEmpty) {
@@ -130,20 +131,20 @@ class _MapWidgetState extends State<MapWidget> {
         .distanceBetweenTwoLocationInMeters(
             lat1: currentLocation!.latitude,
             long1: currentLocation!.longitude,
-            lat2: widget.tripModel.pickupLocation!.latitude,
-            long2: widget.tripModel.pickupLocation!.longitude);
+            lat2: widget.tripModel.tripDetails.pickupLocation.latitude!,
+            long2: widget.tripModel.tripDetails.pickupLocation.longitude!);
     distanceBetweenCurrentAndDestination = LocationHelper()
         .distanceBetweenTwoLocationInMeters(
             lat1: currentLocation!.latitude,
             long1: currentLocation!.longitude,
-            lat2: widget.tripModel.destination!.latitude,
-            long2: widget.tripModel.destination!.longitude);
+            lat2: widget.tripModel.tripDetails.destinationLocation.latitude!,
+            long2: widget.tripModel.tripDetails.destinationLocation.longitude!);
     LocationHelper().getArrivalTimeFromCurrentToLocation(
         currentLocation: currentLocation!,
         destinationLocation: LocationModel(
             locationName: '',
-            latitude: widget.tripModel.pickupLocation!.latitude,
-            longitude: widget.tripModel.pickupLocation!.longitude));
+            latitude: widget.tripModel.tripDetails.pickupLocation.latitude!,
+            longitude: widget.tripModel.tripDetails.pickupLocation.longitude!));
 
     if (distanceBetweenCurrentAndSource <= 100) isUserArrivedSource = true;
     if (distanceBetweenCurrentAndDestination <= 100)
@@ -200,19 +201,19 @@ class _MapWidgetState extends State<MapWidget> {
                   icon: currentLocationIcon,
                   ripple: false,
                   position: LatLng(
-                      currentLocation!.latitude, currentLocation!.longitude!),
+                      currentLocation!.latitude, currentLocation!.longitude),
                 ),
                 Marker(
                   markerId: MarkerId("source"),
                   icon: sourceIcon,
-                  position: LatLng(widget.tripModel.pickupLocation!.latitude,
-                      widget.tripModel.pickupLocation!.longitude),
+                  position: LatLng(widget.tripModel.tripDetails.pickupLocation.latitude!,
+                      widget.tripModel.tripDetails.pickupLocation.longitude!),
                 ),
                 Marker(
                   markerId: MarkerId("destination"),
                   icon: destinationIcon,
-                  position: LatLng(widget.tripModel.destination!.latitude,
-                      widget.tripModel.destination!.longitude),
+                  position: LatLng(widget.tripModel.tripDetails.destinationLocation.latitude!,
+                      widget.tripModel.tripDetails.destinationLocation.longitude!),
                 ),
               },
               child: GoogleMap(

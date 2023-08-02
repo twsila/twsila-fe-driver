@@ -10,6 +10,7 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/di.dart';
+import '../../../../../domain/model/trip_details_model.dart';
 import '../../../../../domain/model/trip_model.dart';
 import '../../../../../utils/ext/enums.dart';
 import '../../../../../utils/resources/assets_manager.dart';
@@ -32,7 +33,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _loadingTripsList = false;
-  List<TripModel> trips = [];
+  List<TripDetailsModel> trips = [];
   bool _displayLoadingIndicator = false;
   List<MyTripsListModel> items = [
     MyTripsListModel("TODAY_TRIPS", AppStrings.onGoing.tr()),
@@ -135,22 +136,25 @@ class _MyTripsPageState extends State<MyTripsPage> {
     );
   }
 
-  ListView _TripsListView(List<TripModel> tripsTitles) {
+  ListView _TripsListView(List<TripDetailsModel> tripsTitles) {
     return ListView(
         scrollDirection: Axis.vertical,
         children:
             List.generate(trips.length, (index) => tripItemView(trips[index])));
   }
 
-  tripItemView(TripModel trip) {
+  tripItemView(TripDetailsModel trip) {
     String? date;
-    if (trip.date != null) {
-      date = handleDateString(trip.date!);
+    if (trip.tripDetails.date != null) {
+      date = handleDateString(trip.tripDetails.date!);
     }
     return CustomCard(
       onClick: () {
-        Navigator.pushNamed(context, Routes.tripExecution,
-            arguments: TripExecutionArguments(trip));
+        // Navigator.pushNamed(context, Routes.tripExecution,
+        //     arguments: TripExecutionArguments(trip));
+        Navigator.pushNamed(context, Routes.tripDetails,
+            arguments: TripDetailsArguments(tripModel: trip));
+
       },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
@@ -173,7 +177,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
                     child: Row(
                       children: [
                         Image.asset(
-                          trip.date != null && trip.date != ""
+                          trip.tripDetails.date != null && trip.tripDetails.date != ""
                               ? ImageAssets.scheduledTripIc
                               : ImageAssets.asSoonAsPossibleTripIc,
                           width: AppSize.s14,
@@ -199,7 +203,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
                 ),
                 // SvgPicture.asset(ImageAssets.truckIc,),
                 Image.asset(
-                  trip.tripType!.getIconAsset(),
+                  getIconName(trip.tripDetails.tripType!),
                   width: AppSize.s40,
                 ),
               ],
@@ -208,7 +212,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
               height: AppSize.s4,
             ),
             Text(
-              trip.tripType!.getTripTitle(),
+              getTitle(trip.tripDetails.tripType!),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
@@ -218,7 +222,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
               height: AppSize.s4,
             ),
             Text(
-              "${trip.pickupLocation!.locationName} - ${trip.destination!.locationName}",
+              "${trip.tripDetails.pickupLocation!.locationName} - ${trip.tripDetails.destinationLocation!.locationName}",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
@@ -232,7 +236,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
               height: AppSize.s4,
             ),
             Text(
-              trip.tripStatus == TripStatus.DRAFT
+              trip.tripDetails.tripStatus == TripStatus.DRAFT
                   ? AppStrings.waitingCaptainsOffers.tr()
                   : "",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

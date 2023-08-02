@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:taxi_for_you/domain/model/trip_details_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,7 +13,7 @@ import '../../../common/widgets/custom_text_button.dart';
 import '../../../trip_details/widgets/dotted_seperator.dart';
 
 class BottomInfoWidget extends StatefulWidget {
-  TripModel tripModel;
+  TripDetailsModel tripModel;
 
   BottomInfoWidget({required this.tripModel});
 
@@ -75,7 +76,7 @@ class _BottomInfoWidgetState extends State<BottomInfoWidget> {
                       children: [
                         Expanded(
                           child: Text(
-                            "${AppStrings.from.tr()} ${widget.tripModel.pickupLocation!.locationName}",
+                            "${AppStrings.from.tr()} ${widget.tripModel.tripDetails.pickupLocation.locationName}",
                             overflow: TextOverflow.clip,
                             style: Theme.of(context)
                                 .textTheme
@@ -108,7 +109,7 @@ class _BottomInfoWidgetState extends State<BottomInfoWidget> {
                       children: [
                         Expanded(
                           child: Text(
-                            "${AppStrings.to.tr()} ${widget.tripModel.destination!.locationName}",
+                            "${AppStrings.to.tr()} ${widget.tripModel.tripDetails.destinationLocation.locationName}",
                             overflow: TextOverflow.clip,
                             style: Theme.of(context)
                                 .textTheme
@@ -144,7 +145,7 @@ class _BottomInfoWidgetState extends State<BottomInfoWidget> {
             onPressed: () {
               launchUrl(Uri(
                   scheme: 'tel',
-                  path: '${widget.tripModel.passenger!.mobile.toString()}'));
+                  path: '${widget.tripModel.tripDetails.passenger!.mobile.toString()}'));
             },
             icon: Icon(
               Icons.call,
