@@ -21,6 +21,7 @@ import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
+import '../../trip_details/view/more_details_widget/more_details_widget.dart';
 import '../../trip_details/widgets/dotted_seperator.dart';
 import '../bloc/trip_execution_bloc.dart';
 import 'navigation_tracking_view.dart';
@@ -102,7 +103,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                   thickness: 1.0,
                 ),
                 TripDetailsWidget(),
-                SizedBox(height: 20,)
+                MoreDetailsWidget(
+                  transportationBaseModel: widget.tripModel.tripDetails,
+                ),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),
@@ -137,7 +143,8 @@ class _TripExecutionViewState extends State<TripExecutionView> {
               onTap: () {
                 launchUrl(Uri(
                     scheme: 'tel',
-                    path: '${widget.tripModel.tripDetails.passenger!.mobile.toString()}'));
+                    path:
+                        '${widget.tripModel.tripDetails.passenger!.mobile.toString()}'));
               },
               child: Container(
                 padding: EdgeInsets.all(7),
@@ -185,7 +192,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${AppStrings.request.tr()} ${ getTitle(widget.tripModel.tripDetails.tripType!)}",
+              "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s24,
