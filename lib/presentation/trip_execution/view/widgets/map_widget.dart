@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animarker/core/ripple_marker.dart';
@@ -94,7 +96,9 @@ class _MapWidgetState extends State<MapWidget> {
     PointLatLng sourceLocation;
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      Constants.GOOGLE_API_KEY, // Your Google Map Key
+      Platform.isIOS
+          ? Constants.GOOGLE_API_KEY_IOS
+          : Constants.GOOGLE_API_KEY_ANDROID, // Your Google Map Key
       PointLatLng(
           isUserArrivedSource
               ? widget.tripModel.tripDetails.pickupLocation.latitude!

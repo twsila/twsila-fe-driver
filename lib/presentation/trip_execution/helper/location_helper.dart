@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
@@ -21,7 +23,7 @@ class LocationHelper {
     Dio dio = new Dio();
     Response response = await dio.get(
         "https://maps.googleapis.com/maps/api/distancematrix/json?units="
-        "imperial&origins=${currentLocation.latitude},${currentLocation.longitude}&destinations=${destinationLocation.latitude}%2C,${currentLocation.longitude}&key=${Constants.GOOGLE_API_KEY}");
+        "imperial&origins=${currentLocation.latitude},${currentLocation.longitude}&destinations=${destinationLocation.latitude}%2C,${currentLocation.longitude}&key=${Platform.isIOS ? Constants.GOOGLE_API_KEY_IOS : Constants.GOOGLE_API_KEY_ANDROID}");
     print(response.data);
   }
 }

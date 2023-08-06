@@ -461,7 +461,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/lookup',
+              '/lookups',
               queryParameters: queryParameters,
               data: _data,
             )

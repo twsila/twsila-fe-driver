@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
@@ -14,6 +16,7 @@ class GoogleMapsPlacesField extends StatefulWidget {
   FocusNode focusNode;
   String? hintText;
   Function(Prediction?) predictionCallback;
+
   GoogleMapsPlacesField({
     Key? key,
     required this.controller,
@@ -62,7 +65,9 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
         child: Consumer<MapProvider>(builder: (context, mapProvider, _) {
           return GooglePlaceAutoCompleteTextField(
             textEditingController: widget.controller,
-            googleAPIKey: Constants.GOOGLE_API_KEY,
+            googleAPIKey: Platform.isIOS
+                ? Constants.GOOGLE_API_KEY_IOS
+                : Constants.GOOGLE_API_KEY_ANDROID,
             debounceTime: 400,
             textStyle: Theme.of(context)
                 .textTheme

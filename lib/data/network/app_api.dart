@@ -100,7 +100,7 @@ abstract class AppServiceClient {
     @Field("tripId") int tripId,
   );
 
-  @GET("/lookup")
+  @GET("/lookups")
   Future<LookupsModel> getLookups();
 
   @POST("/drivers/logout")

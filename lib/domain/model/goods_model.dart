@@ -1,4 +1,3 @@
-
 import 'package:taxi_for_you/domain/model/transportation_base_model.dart';
 
 import '../../utils/helpers/double_prase.dart';
@@ -21,6 +20,11 @@ class GoodsModel extends TransportationBaseModel {
     if (json['packingDetails'] != null &&
         json['packingDetails']['description'] != null) {
       packagingType = json['packingDetails']['description'];
+    }
+
+    if (json['materialDetails'] != null &&
+        json['materialDetails']['description'] != null) {
+      materialType = json['materialDetails']['description'];
     }
     if (json['materialDetails'] != null &&
         json['materialDetails']['description'] != null) {

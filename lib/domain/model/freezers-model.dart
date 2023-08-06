@@ -15,7 +15,11 @@ class FreezersModel extends TransportationBaseModel {
   FreezersModel.fromJson(Map<String, dynamic> json) {
     fromJSON(json);
     shippedType = json['shippingType'];
-    frozenMaterial = json['frozenMaterial'];
+    frozenMaterial = json['frozenMaterial'] is String
+        ? json['frozenMaterial']
+        : json['frozenMaterial'] != null
+            ? json['frozenMaterial']['description']
+            : null;
     goodsWeight = dynamicToDouble(json['goodsWeight']);
     containsLoading = json['containsLoading'] is String
         ? json['containsLoading'] == "true"

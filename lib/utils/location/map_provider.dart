@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -115,7 +116,9 @@ class MapProvider with ChangeNotifier {
         destinationLocation == null) return;
     resetPolyPoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      Constants.GOOGLE_API_KEY,
+      Platform.isIOS
+          ? Constants.GOOGLE_API_KEY_IOS
+          : Constants.GOOGLE_API_KEY_ANDROID,
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
       PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
       travelMode: TravelMode.driving,

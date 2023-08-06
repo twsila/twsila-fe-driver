@@ -14,15 +14,17 @@ class Constants {
   static const String token = "";
   static const int zero = 0;
   static const int apiTimeOut = 60000;
-  static const String GOOGLE_API_KEY =
-      "AIzaSyCuu1VQ3jSSyDLG0m7qBxLGR1xqv6wVm1w";
+  static const String GOOGLE_API_KEY_ANDROID =
+      "AIzaSyAemSFn6fVufROQDewj0BjzuOKVw_Bxi8M";
+  static const String GOOGLE_API_KEY_IOS =
+      "AIzaSyDB2c1bJWwqm-XSTIopQZovNnRPfXnyd8s";
   static const String UPLOAD_DOCUMENTS_TYPE = "upload_documents_type";
 
   static const int IMAGE_QUALITY_COMPRESS = 10;
 
   static const String dateFormatterString = 'dd/MM/yyyy';
 
-  static const int refreshCurrentLocationSeconds= 2;
+  static const int refreshCurrentLocationSeconds = 2;
 
   static const int otpCountTime = 30;
   static const int otpSize = 6;
@@ -35,7 +37,6 @@ class Constants {
         AppStrings.egypt)
   ];
 }
-
 
 class TripTypeConstants {
   static const String carAidType = "CAR_AID";
