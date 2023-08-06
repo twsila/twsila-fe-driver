@@ -188,18 +188,18 @@ class _TripExecutionViewState extends State<TripExecutionView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorManager.headersTextColor,
-                  fontSize: FontSize.s24,
-                  fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-          ],
+        Expanded(
+          child: Text(
+            "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ColorManager.headersTextColor,
+                fontSize: FontSize.s24,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.start,
+          ),
+        ),
+        SizedBox(
+          width: AppSize.s16,
         ),
         Image.asset(
           getIconName(widget.tripModel.tripDetails.tripType!),
@@ -301,8 +301,11 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             }
           },
           onStepContinue: () {
-            Navigator.pushNamed(context, Routes.locationTrackingPage,
-                arguments: NavigationTrackingArguments(widget.tripModel));
+            // Navigator.pushNamed(context, Routes.locationTrackingPage,
+            //     arguments: NavigationTrackingArguments(widget.tripModel));
+            BlocProvider.of<TripExecutionBloc>(context).add(changeTripStatus(
+                TripStatus.COMPLETED,
+                widget.tripModel.tripDetails.tripId ?? -1));
             if (_index >= 0 && _index < 3) {
               setState(() {
                 _index += 1;

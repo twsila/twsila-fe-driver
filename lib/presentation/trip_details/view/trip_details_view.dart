@@ -221,8 +221,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                   height: AppSize.s20,
                 ),
                 MoreDetailsWidget(
-                  transportationBaseModel:
-                  widget.tripModel.tripDetails,
+                  transportationBaseModel: widget.tripModel.tripDetails,
                 ),
                 Container(
                   height: AppSize.s30,
@@ -406,18 +405,15 @@ class _TripDetailsViewState extends State<TripDetailsView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorManager.headersTextColor,
-                  fontSize: FontSize.s24,
-                  fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-          ],
+        Expanded(
+          child: Text(
+            "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: ColorManager.headersTextColor,
+                fontSize: FontSize.s24,
+                fontWeight: FontWeight.bold),
+            textAlign: TextAlign.start,
+          ),
         ),
         Image.asset(
           getIconName(widget.tripModel.tripDetails.tripType!),

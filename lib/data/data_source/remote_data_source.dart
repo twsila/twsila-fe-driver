@@ -9,6 +9,7 @@ import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
+import 'package:taxi_for_you/presentation/trip_execution/bloc/trip_execution_bloc.dart';
 
 import '../../domain/model/general_response.dart';
 import '../../domain/model/lookups_model.dart';
@@ -38,6 +39,9 @@ abstract class RemoteDataSource {
   Future<GeneralResponse> acceptOffer(int userId, int tripId);
 
   Future<GeneralResponse> addOffer(int userId, int tripId, double driverOffer);
+
+  Future<BaseResponse> changeTripStatus(
+      int userId, int tripId, String tripStatus);
 
   Future<GeneralResponse> tripSummary(int userId, int tripId);
 
@@ -150,5 +154,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<LookupsModel> getLookups() async {
     return await _appServiceClient.getLookups();
+  }
+
+  @override
+  Future<BaseResponse> changeTripStatus(
+      int userId, int tripId, String tripStatus) async {
+    return await _appServiceClient.changeTripStatus(userId, tripId, tripStatus);
   }
 }

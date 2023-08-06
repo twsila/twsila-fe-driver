@@ -9,4 +9,8 @@ class TripExecutionLoading extends TripExecutionState {}
 
 class TripExecutionSuccess extends TripExecutionState {}
 
-class TripExecutionFail extends TripExecutionState {}
+class TripExecutionFail extends TripExecutionState {
+  final String message;
+
+  TripExecutionFail(this.message);
+}

@@ -47,6 +47,8 @@ abstract class Repository {
   Future<Either<Failure, GeneralResponse>> addOffer(
       int userId, int tripId, double driverOffer);
 
+  Future<Either<Failure, BaseResponse>> changeTripStatus(int userId, int tripId,String tripStatus);
+
   Future<Either<Failure, TripDetailsModel>> tripSummary(int userId, int tripId);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);

@@ -8,6 +8,7 @@ import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
+import 'package:taxi_for_you/presentation/trip_execution/bloc/trip_execution_bloc.dart';
 
 import '../../app/constants.dart';
 import '../../domain/model/car_brand_models_model.dart';
@@ -108,5 +109,12 @@ abstract class AppServiceClient {
     @Field("userId") int userId,
     @Field("registrationId") String registrationId,
     @Field("language") String language,
+  );
+
+  @POST("/drivers/trips/change-status")
+  Future<BaseResponse> changeTripStatus(
+    @Field("userId") int userId,
+    @Field("tripId") int tripId,
+    @Field("tripStatus") String tripStatus,
   );
 }

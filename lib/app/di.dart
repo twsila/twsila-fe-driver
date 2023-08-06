@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/usecase/accept_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/change_trip_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/lookups_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
@@ -88,6 +89,8 @@ Future<void> initAppModule() async {
   instance.registerFactory<TripSummaryUseCase>(
       () => TripSummaryUseCase(instance()));
   instance.registerFactory<LookupsUseCase>(() => LookupsUseCase(instance()));
+  instance.registerFactory<ChangeTripStatusUseCase>(
+      () => ChangeTripStatusUseCase(instance()));
 }
 
 initLoginModule() {

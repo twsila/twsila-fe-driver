@@ -4,7 +4,8 @@ part of 'trip_execution_bloc.dart';
 abstract class TripExecutionEvent {}
 
 class changeTripStatus extends TripExecutionEvent {
+  final int tripId;
   final TripStatus tripStatus;
 
-  changeTripStatus(this.tripStatus);
+  changeTripStatus(this.tripStatus,this.tripId);
 }
