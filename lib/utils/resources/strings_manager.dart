@@ -74,7 +74,8 @@ class AppStrings {
   static const String errorPleaseEnter = "error_please_enter";
   static const String correct = "correct";
   static const String mustNotBeZero = "must_not_be_zero";
-  static const String plateNumberValidationMessage = "platenumber_validation_message";
+  static const String plateNumberValidationMessage =
+      "platenumber_validation_message";
   static const String searchForTrips = "search_for_trips";
   static const String selectFromHereHint = "select_from_here_hint";
   static const String ongoingTrips = "ongoing_trips";
@@ -332,7 +333,25 @@ class AppStrings {
   static const inviteFriendsAndWin = 'invite_friends_and_win';
   static const getHelp = 'get_help';
 
-  // static const logout = 'search_trips';
+  // DRAFT,
+  // SUBMITTED,
+  // EVALUATION,
+  // PAYMENT,
+  // WAIT_FOR_TAKEOFF,
+  // TAKEOFF,
+  // EXECUTED,
+  // COMPLETED,
+  // CANCELLED
+  //my trips
+  static const draft_disc = 'draft_disc';
+  static const submitted_disc = 'submitted_disc';
+  static const evaluated_disc = 'evaluated_disc';
+  static const payment_disc = 'payment_disc';
+  static const wait_for_take_of_disc = 'wait_for_take_of_disc';
+  static const take_off_disc = 'take_off_disc';
+  static const executed_disc = 'executed_disc';
+  static const completed_disc = 'completed_disc';
+  static const canceled_disc = 'canceled_disc';
 
   //my services
   static const pending = 'pending';
@@ -380,16 +399,22 @@ class AppStrings {
 
   //trip execution
 
-  static const startTripNowAndMoveToPickupLocation = 'start_trip_now_and_move_to_pickup_location';
+  static const startTripNowAndMoveToPickupLocation =
+      'start_trip_now_and_move_to_pickup_location';
   static const moveToClient = 'move_to_client';
+  static const movedToClient = 'moved_to_client';
   static const tripStartedMoveNow = 'trip_started_move_now';
-  static const estimatedTimeToArrivePickupLocationIs = 'estimated_time_to_arrive_pickup_location_is';
+  static const estimatedTimeToArrivePickupLocationIs =
+      'estimated_time_to_arrive_pickup_location_is';
   static const minute = 'minute';
   static const navigationToPickupLocation = 'navigate_to_pickup_location';
   static const youArrivedPickupLocation = 'you_arrived_pickup_location';
-  static const pleaseShipGoodsAndMoveToDestinationLocation = 'please_ship_goods_and_move_to_destination_location';
-  static const youArrivedDestinationLocation = 'you_arrived_destination_location';
-  static const pleaseLeaveGoodsAndCloseTheTrip = 'please_leave_goods_and_close_the_trip';
+  static const pleaseShipGoodsAndMoveToDestinationLocation =
+      'please_ship_goods_and_move_to_destination_location';
+  static const youArrivedDestinationLocation =
+      'you_arrived_destination_location';
+  static const pleaseLeaveGoodsAndCloseTheTrip =
+      'please_leave_goods_and_close_the_trip';
   static const client = 'client';
   static const loadingMaps = 'loading_maps';
   static const callClient = 'call_client';

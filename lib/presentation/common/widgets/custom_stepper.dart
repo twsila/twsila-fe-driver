@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 
+import '../../../utils/resources/font_manager.dart';
+
 // TODO(dragostis): Missing functionality:
 //   * mobile horizontal mode with adding/removing steps
 //   * alternative labeling
@@ -87,6 +89,8 @@ class CustomStep {
     this.state = StepState.indexed,
     this.isActive = false,
     this.continueButtonLabel,
+    this.continueIconWidget,
+    this.continueButtonBGColor,
     this.cancelButtonLabel,
   })  : assert(title != null),
         assert(content != null),
@@ -115,6 +119,9 @@ class CustomStep {
 
   /// Set a different text on Stepper Continue Button
   final String? continueButtonLabel;
+  final Color? continueButtonBGColor;
+
+  final Widget? continueIconWidget;
 
   /// Set a different text on Stepper Cancel Button
   final String? cancelButtonLabel;
@@ -511,38 +518,53 @@ class _CustomStepperState extends State<CustomStepper>
             widget.steps[index].continueButtonLabel != ''
                 ? Expanded(
                     child: TextButton(
-                      onPressed: widget.onStepContinue,
-                      style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                          return states.contains(MaterialState.disabled)
-                              ? null
-                              : (_isDark()
-                                  ? colorScheme.onSurface
-                                  : colorScheme.onPrimary);
-                        }),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                          return _isDark() ||
-                                  states.contains(MaterialState.disabled)
-                              ? null
-                              : colorScheme.primary;
-                        }),
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            buttonPadding),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                            buttonShape),
-                      ),
-                      child: Text(
-                        (widget.steps[index].continueButtonLabel != null)
-                            ? widget.steps[index].continueButtonLabel!
-                            : localizations.continueButtonLabel,
-                        style: TextStyle(fontSize: 12),
-                      ),
+                    onPressed: widget.onStepContinue,
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.resolveWith<Color?>(
+                              (Set<MaterialState> states) {
+                        return states.contains(MaterialState.disabled)
+                            ? null
+                            : (_isDark()
+                                ? colorScheme.onSurface
+                                : colorScheme.onPrimary);
+                      }),
+                      backgroundColor:
+                          MaterialStateProperty.resolveWith<Color?>(
+                              (Set<MaterialState> states) {
+                        return _isDark() ||
+                                states.contains(MaterialState.disabled)
+                            ? null
+                            : widget.steps[index].continueButtonBGColor != null
+                                ? widget.steps[index].continueButtonBGColor
+                                : ColorManager.primary;
+
+                      }),
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          buttonPadding),
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          buttonShape),
                     ),
-                  )
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          (widget.steps[index].continueButtonLabel != null)
+                              ? widget.steps[index].continueButtonLabel!
+                              : localizations.continueButtonLabel,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: ColorManager.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FontSize.s14,
+                                  ),
+                        ),
+                        widget.steps[index].continueIconWidget != null
+                            ? widget.steps[index].continueIconWidget!
+                            : Container(),
+                      ],
+                    ),
+                  ))
                 : Container(),
             Container(
               margin: const EdgeInsetsDirectional.only(start: 8.0),

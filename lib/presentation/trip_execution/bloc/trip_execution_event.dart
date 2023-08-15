@@ -4,8 +4,19 @@ part of 'trip_execution_bloc.dart';
 abstract class TripExecutionEvent {}
 
 class changeTripStatus extends TripExecutionEvent {
-  final int tripId;
-  final TripStatus tripStatus;
+  final TripDetailsModel tripDetailsModel;
 
-  changeTripStatus(this.tripStatus,this.tripId);
+  changeTripStatus(this.tripDetailsModel);
+}
+
+class getTripSummary extends TripExecutionEvent {
+  final int tripId;
+
+  getTripSummary(this.tripId);
+}
+
+class getTripStatusForStepper extends TripExecutionEvent {
+  final TripDetailsModel tripDetailsModel;
+
+  getTripStatusForStepper({required this.tripDetailsModel});
 }

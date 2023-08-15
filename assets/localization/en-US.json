@@ -15,7 +15,7 @@
   "good_morning": "Good Morning!",
   "good_evening": "Good Evening!",
   "extra_services": "Extra services",
-
+  "moved_to_client": "Moved to client",
   "transporation_items": "Transporation items",
   "thinking_of_travel": "Thinking of travel?",
   "which_goods": "Which kind of goods you want to transport?",
@@ -375,5 +375,14 @@
   "client": "client",
   "loading_maps": "Loading Maps...",
   "call_client": "call client",
-  "waiting_client_replay": "Waiting client to replay"
+  "waiting_client_replay": "Waiting client to replay",
+  "draft_disc": "Trip under modifications",
+  "submitted_disc": "Waiting captain offers",
+  "evaluated_disc": "Waiting client acceptance",
+  "payment_disc": "Start trip now and move to client",
+  "wait_for_take_of_disc": "Trip started, move now",
+  "take_off_disc": "You arrived pickup location",
+  "executed_disc": "You arrived destination location",
+  "completed_disc": "Trip has been completed",
+  "canceled_disc": "Trip has been canceled"
 }

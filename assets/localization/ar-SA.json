@@ -80,6 +80,7 @@
   "need_location_permission": "لم نتمكن من بدء إعدادات التطبيق لفتح الأذونات ، يرجى إضافة أذونات الوصول إلى الموقع",
   "getting_current_location": "جارى الحصول على الموقع الحالي ، الرجاء الانتظار ...",
   "search_title": "ابحث",
+  "moved_to_client": "تحركت الى العميل",
   "search_hint": "ابحث هنا عن المكان",
   "search_pick_up_place": "ابحث عن مكان الاتقاط",
   "search_drop_place": "ابحث عن مكان الوصول",
@@ -94,7 +95,8 @@
   "window_air_conditioning": "مكيف شباك",
   "split_air_conditioning": "مكيف سبلت",
   "kitchen": "مطبخ",
-  "tables": "طاولات",  "water_tank_size": "الحجم التانكي",
+  "tables": "طاولات",
+  "water_tank_size": "الحجم التانكي",
   "goods_size": "وزن البضاعة بالطن (تقديري)",
   "cisterns_type": "نوع الصهريج",
   "assemble": "فك و تركيب",
@@ -372,5 +374,13 @@
   "client": "العميل",
   "loading_maps": "جارى تحميل الخرائط...",
   "call_client": "الاتصال بالعميل",
-  "waiting_client_replay": "في انتظار رد العميل ..."
+  "draft_disc": "جارى التحديث على الرحلة",
+  "submitted_disc": "فى انتظار العروض من الكباتن",
+  "evaluated_disc": "فى انتظار موافقة العميل",
+  "payment_disc": "ابدأ الرحلة الآن ثم تحرك الي نقطة الالتقاط",
+  "wait_for_take_of_disc": "بدأت الرحلة, تحرك الآن ",
+  "take_off_disc": "لقد وصلت الي نقطة الالتقاط",
+  "executed_disc": "لقد وصلت الي نقطة التوصيل",
+  "completed_disc": "تم انهاء الرحلةً",
+  "canceled_disc": "تم الغاء الرحلة"
 }

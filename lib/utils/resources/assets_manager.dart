@@ -85,6 +85,10 @@ class ImageAssets {
   static const String locationPinTripDetailsIc = "$imagePath/trip_loc_pin_ic.svg";
   static const String mapButtonIcon = "$imagePath/mapbtnIc.svg";
 
+  static const String driveIc = "$imagePath/drive_wheel.png";
+  static const String navigationIc = "$imagePath/navigation_icon.png";
+  static const String tripFinishIc = "$imagePath/trip_finished_ic.png";
+
   static const String tripDetailsProfileIc = "$imagePath/profile_ic.png";
   static const String tripDetailsVisaIcon = "$imagePath/visa_icon.png";
   static const String tripDetailsAsapIcon = "$imagePath/asap_trip_details_ic.png";

@@ -154,7 +154,6 @@ class _MyTripsPageState extends State<MyTripsPage> {
             arguments: TripExecutionArguments(trip));
         // Navigator.pushNamed(context, Routes.tripDetails,
         //     arguments: TripDetailsArguments(tripModel: trip));
-
       },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
@@ -177,7 +176,8 @@ class _MyTripsPageState extends State<MyTripsPage> {
                     child: Row(
                       children: [
                         Image.asset(
-                          trip.tripDetails.date != null && trip.tripDetails.date != ""
+                          trip.tripDetails.date != null &&
+                                  trip.tripDetails.date != ""
                               ? ImageAssets.scheduledTripIc
                               : ImageAssets.asSoonAsPossibleTripIc,
                           width: AppSize.s14,
@@ -222,7 +222,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
               height: AppSize.s4,
             ),
             Text(
-              "${trip.tripDetails.pickupLocation!.locationName} - ${trip.tripDetails.destinationLocation!.locationName}",
+              "${trip.tripDetails.pickupLocation.locationName} - ${trip.tripDetails.destinationLocation.locationName}",
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
@@ -236,13 +236,27 @@ class _MyTripsPageState extends State<MyTripsPage> {
               height: AppSize.s4,
             ),
             Text(
-              trip.tripDetails.tripStatus == TripStatus.DRAFT
-                  ? AppStrings.waitingCaptainsOffers.tr()
-                  : "",
+              getTripStatusDiscs(trip.tripDetails.tripStatus.toString()),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorManager.supportTextColor,
-                  fontSize: FontSize.s14,
+                  color: getTripStatusDisColor(
+                      trip.tripDetails.tripStatus.toString()),
+                  fontSize: FontSize.s16,
                   fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: AppSize.s4,
+            ),
+            Visibility(
+              visible:
+                  getTripStatusSubDis(trip.tripDetails.tripStatus.toString())
+                      .isNotEmpty,
+              child: Text(
+                getTripStatusSubDis(trip.tripDetails.tripStatus.toString()),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: ColorManager.headersTextColor,
+                    fontSize: FontSize.s14,
+                    fontWeight: FontWeight.w500),
+              ),
             ),
           ],
         ),

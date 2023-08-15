@@ -141,7 +141,7 @@ class Passenger {
   });
 
   factory Passenger.fromJson(Map<String, dynamic> json) => Passenger(
-        id: json["id"],
+        id: json["id"] ?? -1,
         firstName: json["firstName"] ?? "",
         lastName: json["lastName"] ?? " ",
         mobile: json["mobile"],

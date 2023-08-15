@@ -47,3 +47,15 @@ class TripTypeConstants {
   static const String otherTankType = "OTHER_TANK";
   static const String personType = "PERSON";
 }
+
+class TripStatusConstants {
+  static const String DRAFT = "DRAFT";
+  static const String SUBMITTED = "SUBMITTED";
+  static const String EVALUATION = "EVALUATION";
+  static const String PAYMENT = "PAYMENT";
+  static const String WAIT_FOR_TAKEOFF = "WAIT_FOR_TAKEOFF";
+  static const String TAKEOFF = "TAKEOFF";
+  static const String EXECUTED = "EXECUTED";
+  static const String COMPLETED = "COMPLETED";
+  static const String CANCELLED = "CANCELLED";
+}

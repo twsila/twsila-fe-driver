@@ -38,7 +38,7 @@ blocProviders(BuildContext context) {
             tripsUseCase: instance(), lookupsUseCase: instance())),
     BlocProvider.value(value: MyTripsBloc(tripsUseCase: instance())),
     BlocProvider.value(
-        value: TripExecutionBloc(changeTripStatusUseCase: instance())),
+        value: TripExecutionBloc(changeTripStatusUseCase: instance(),tripSummaryUseCase: instance())),
     BlocProvider.value(
         value: TripDetailsBloc(
             acceptOfferUseCase: instance(),

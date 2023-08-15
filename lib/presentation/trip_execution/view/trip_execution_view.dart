@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
+import 'package:taxi_for_you/domain/model/trip_status_step_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_stepper.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
@@ -39,7 +40,8 @@ class _TripExecutionViewState extends State<TripExecutionView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
-  int _index = 0;
+  TripStatusStepModel tripStatusStepModel =
+      TripExecutionBloc.tripStatusSteps.first;
 
   // REQUIRED: USED TO CONTROL THE STEPPER.
   int activeStep = 0; // Initial step set to 0.
@@ -57,6 +59,13 @@ class _TripExecutionViewState extends State<TripExecutionView> {
     setState(() {
       _displayLoadingIndicator = false;
     });
+  }
+
+  @override
+  void initState() {
+    BlocProvider.of<TripExecutionBloc>(context)
+        .add(getTripStatusForStepper(tripDetailsModel: widget.tripModel));
+    super.initState();
   }
 
   @override
@@ -83,6 +92,21 @@ class _TripExecutionViewState extends State<TripExecutionView> {
         } else {
           stopLoading();
         }
+
+        if (state is TripStatusChangedSuccess) {
+          BlocProvider.of<TripExecutionBloc>(context)
+              .add(getTripSummary(widget.tripModel.tripDetails.tripId!));
+        }
+        if (state is TripSummarySuccess) {
+          widget.tripModel = state.tripDetailsModel;
+        }
+        if (state is TripCurrentStepSuccess) {
+          tripStatusStepModel = state.tripStatusStepModel;
+        }
+
+        if (state is TripExecutionFail) {
+          print(state.message);
+        }
       },
       builder: (context, state) {
         return SingleChildScrollView(
@@ -97,7 +121,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                   color: ColorManager.lineColor,
                   thickness: 1.0,
                 ),
-                TripStepperWidget(),
+                TripStepperWidget(tripStatusStepModel),
                 Divider(
                   color: ColorManager.lineColor,
                   thickness: 1.0,
@@ -275,7 +299,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
     );
   }
 
-  Widget TripStepperWidget() {
+  Widget TripStepperWidget(TripStatusStepModel tripStatusStepModel) {
     return Theme(
       data: ThemeData(
         colorScheme: Theme.of(context)
@@ -292,38 +316,27 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                   : StepIndicatorAlignment.left,
           // dottedLine is set to false by default if not configured
           dottedLine: false,
-          currentStep: _index,
-          onStepCancel: () {
-            if (_index > 0) {
-              setState(() {
-                _index -= 1;
-              });
-            }
-          },
+          currentStep: tripStatusStepModel.stepIndex,
           onStepContinue: () {
             // Navigator.pushNamed(context, Routes.locationTrackingPage,
             //     arguments: NavigationTrackingArguments(widget.tripModel));
-            BlocProvider.of<TripExecutionBloc>(context).add(changeTripStatus(
-                TripStatus.COMPLETED,
-                widget.tripModel.tripDetails.tripId ?? -1));
-            if (_index >= 0 && _index < 3) {
-              setState(() {
-                _index += 1;
-              });
-            } else {
-              setState(() {
-                _index = 0;
-              });
-            }
+            BlocProvider.of<TripExecutionBloc>(context)
+                .add(changeTripStatus(widget.tripModel));
+            // if (_index >= 0 && _index < 3) {
+            //   setState(() {
+            //     _index += 1;
+            //   });
+            // } else {
+            //   setState(() {
+            //     _index = 0;
+            //   });
+            // }
           },
-          onStepTapped: (int index) {
-            setState(() {
-              _index = index;
-            });
-          },
+          onStepTapped: (int index) {},
           steps: <CustomStep>[
             CustomStep(
-                isActive: _index == 0,
+                isActive: tripStatusStepModel.stepIndex == 0,
+                continueIconWidget: Image.asset(ImageAssets.driveIc),
                 title: Text(
                   AppStrings.startTripNowAndMoveToPickupLocation.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -331,14 +344,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       fontWeight: FontWeight.bold,
                       fontSize: FontSize.s14),
                 ),
-                content: Container(
-                  child: Text(
-                      '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()}'),
-                ),
-                continueButtonLabel: AppStrings.tripStartedMoveNow.tr(),
+                content: Container(),
+                continueButtonLabel: AppStrings.movedToClient.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
-                isActive: _index == 1,
+                isActive: tripStatusStepModel.stepIndex == 1,
+                continueIconWidget: Image.asset(ImageAssets.navigationIc),
                 title: Text(
                   AppStrings.tripStartedMoveNow.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -358,7 +369,8 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 continueButtonLabel: AppStrings.navigationToPickupLocation.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
-                isActive: _index == 2,
+                isActive: tripStatusStepModel.stepIndex == 2,
+                continueIconWidget: Image.asset(ImageAssets.driveIc),
                 title: Text(
                   AppStrings.youArrivedPickupLocation.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -368,7 +380,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 ),
                 content: Container(
                   child: Text(
-                    '${AppStrings.pleaseShipGoodsAndMoveToDestinationLocation.tr()} 15 ${AppStrings.minute.tr()}',
+                    '${AppStrings.pleaseShipGoodsAndMoveToDestinationLocation.tr()}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: ColorManager.grey1,
                         fontWeight: FontWeight.bold,
@@ -378,7 +390,9 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 continueButtonLabel: AppStrings.tripStartedMoveNow.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
-                isActive: _index == 3,
+                isActive: tripStatusStepModel.stepIndex == 3,
+                continueIconWidget: Image.asset(ImageAssets.tripFinishIc),
+                continueButtonBGColor: ColorManager.secondaryColor,
                 title: Text(
                   AppStrings.youArrivedDestinationLocation.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
