@@ -82,6 +82,11 @@ abstract class AppServiceClient {
   Future<BaseResponse> getTripsByModuleId(
       @Field("tripModelType") String tripModelType, @Field("userId") int userId);
 
+
+  @POST("/drivers/offers/select-my-trip")
+  Future<BaseResponse> getMyTripsByModuleId(
+      @Field("tripModelType") String tripModelType, @Field("userId") int userId);
+
   @POST("/drivers/offers/add")
   Future<GeneralResponse> addOffer(
     @Field("userId") int userId,

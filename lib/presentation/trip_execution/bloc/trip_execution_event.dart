@@ -5,8 +5,12 @@ abstract class TripExecutionEvent {}
 
 class changeTripStatus extends TripExecutionEvent {
   final TripDetailsModel tripDetailsModel;
+  final String tripStatus;
+  final bool sendRequest;
+   bool? isLastStep;
 
-  changeTripStatus(this.tripDetailsModel);
+  changeTripStatus(this.tripDetailsModel,this.tripStatus, this.sendRequest,
+      {this.isLastStep = false});
 }
 
 class getTripSummary extends TripExecutionEvent {

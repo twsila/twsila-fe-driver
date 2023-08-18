@@ -189,11 +189,13 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
       onClick: () {
         if (trip.tripDetails.acceptedOffer != null)
           Navigator.pushNamed(context, Routes.tripExecution,
-              arguments: TripExecutionArguments(trip));
+                  arguments: TripExecutionArguments(trip))
+              .then((value) => BlocProvider.of<SearchTripsBloc>(context)
+                  .add(GetTripsTripModuleId(englishTripTitles[currentIndex])));
         else
           Navigator.pushNamed(context, Routes.tripDetails,
-              arguments: TripDetailsArguments(tripModel: trip)).then((value) =>
-              BlocProvider.of<SearchTripsBloc>(context)
+                  arguments: TripDetailsArguments(tripModel: trip))
+              .then((value) => BlocProvider.of<SearchTripsBloc>(context)
                   .add(GetTripsTripModuleId(englishTripTitles[currentIndex])));
       },
       bodyWidget: Container(
@@ -217,7 +219,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                     child: Row(
                       children: [
                         Image.asset(
-                          trip.tripDetails.date != null && trip.tripDetails.date != ""
+                          trip.tripDetails.date != null &&
+                                  trip.tripDetails.date != ""
                               ? ImageAssets.scheduledTripIc
                               : ImageAssets.asSoonAsPossibleTripIc,
                           width: AppSize.s14,
@@ -243,7 +246,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                 ),
                 // SvgPicture.asset(ImageAssets.truckIc,),
                 Image.asset(
-                    getIconName(trip.tripDetails.tripType!),
+                  getIconName(trip.tripDetails.tripType!),
                   width: AppSize.s40,
                 ),
               ],
@@ -266,7 +269,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.normal),
             ),
             Divider(
               color: ColorManager.dividerColor,
@@ -283,7 +286,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   }
 
   Widget tripStatusWidget(TripDetailsModel trip) {
-    if (trip.tripDetails.offers!.length == 0 && trip.tripDetails.acceptedOffer == null) {
+    if (trip.tripDetails.offers!.length == 0 &&
+        trip.tripDetails.acceptedOffer == null) {
       return Text(
         AppStrings.waitingCaptainsOffers.tr(),
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -291,7 +295,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
             fontSize: FontSize.s16,
             fontWeight: FontWeight.bold),
       );
-    } else if (trip.tripDetails.offers!.length > 0 && trip.tripDetails.acceptedOffer == null) {
+    } else if (trip.tripDetails.offers!.length > 0 &&
+        trip.tripDetails.acceptedOffer == null) {
       return handleOfferStatus(trip.tripDetails.offers![0]);
     } else if (trip.tripDetails.acceptedOffer != null) {
       return Text(

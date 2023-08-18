@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:taxi_for_you/domain/usecase/mytrips_usecase.dart';
 
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/di.dart';
@@ -14,17 +15,17 @@ part 'my_trips_event.dart';
 part 'my_trips_state.dart';
 
 class MyTripsBloc extends Bloc<MyTripsEvent, MyTripsState> {
-  TripsUseCase tripsUseCase;
+  MyTripsUseCase myTripsUseCase;
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
-  MyTripsBloc({required this.tripsUseCase}) : super(MyTripsInitial()) {
+  MyTripsBloc({required this.myTripsUseCase}) : super(MyTripsInitial()) {
     on<GetTripsTripModuleId>(_getTripsByModuleId);
   }
 
   FutureOr<void> _getTripsByModuleId(
       GetTripsTripModuleId event, Emitter<MyTripsState> emit) async {
     emit(MyTripsLoading());
-    (await tripsUseCase.execute(TripsInput(
+    (await myTripsUseCase.execute(MyTripsInput(
             event.tripTypeId, _appPreferences.getCachedDriver()?.id ?? -1)))
         .fold(
             (failure) => {

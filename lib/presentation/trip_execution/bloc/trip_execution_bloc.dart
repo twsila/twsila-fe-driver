@@ -38,24 +38,28 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
   FutureOr<void> _changeTripStatus(
       changeTripStatus event, Emitter<TripExecutionState> emit) async {
     emit(TripExecutionLoading());
-    TripStatusStepModel nextStep = await _getNextStep(event.tripDetailsModel);
-    (await changeTripStatusUseCase.execute(ChangeTripStatusUseCaseInput(
-            _appPreferences.getCachedDriver()?.id ?? 0,
-            event.tripDetailsModel.tripDetails.tripId!,
-            nextStep.tripStatus)))
-        .fold(
-            (failure) => {
-                  // left -> failure
-                  //emit failure state
 
-                  emit(TripExecutionFail(failure.message))
-                }, (tripStatusResponse) async {
-      // right -> data (success)
-      // content
-      // emit success state
-      emit(TripStatusChangedSuccess());
-      // isUserLoggedInSuccessfullyStreamController.add(true);
-    });
+    if (event.sendRequest) {
+      (await changeTripStatusUseCase.execute(ChangeTripStatusUseCaseInput(
+              _appPreferences.getCachedDriver()?.id ?? 0,
+              event.tripDetailsModel.tripDetails.tripId!,
+              event.tripStatus)))
+          .fold(
+              (failure) => {
+                    // left -> failure
+                    //emit failure state
+
+                    emit(TripExecutionFail(failure.message))
+                  }, (tripStatusResponse) async {
+        // right -> data (success)
+        // content
+        // emit success state
+        emit(TripStatusChangedSuccess(event.isLastStep!));
+        // isUserLoggedInSuccessfullyStreamController.add(true);
+      });
+    } else {
+      emit(TripStatusChangedSuccess(event.isLastStep!));
+    }
   }
 
   FutureOr<void> _getTripSummary(
@@ -82,7 +86,7 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
       getTripStatusForStepper event, Emitter<TripExecutionState> emit) async {
     emit(TripExecutionLoading());
     try {
-      TripStatusStepModel tripStatusStepModel = tripStatusSteps.singleWhere(
+      TripStatusStepModel tripStatusStepModel = tripStatusSteps.firstWhere(
           (element) =>
               element.tripStatus ==
               event.tripDetailsModel.tripDetails.tripStatus);
@@ -93,22 +97,4 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
     }
   }
 
-  Future<TripStatusStepModel> _getNextStep(
-      TripDetailsModel tripDetailsModel) async {
-    String tripStatus = tripDetailsModel.tripDetails.tripStatus!;
-    try {
-      TripStatusStepModel currentStep = tripStatusSteps
-          .firstWhere((tripStep) => tripStep.tripStatus == tripStatus);
-
-      if (currentStep.stepIndex == 3) {
-        return currentStep;
-      } else {
-        TripStatusStepModel nextStep = tripStatusSteps.firstWhere(
-            (tripStep) => tripStep.stepIndex == currentStep.stepIndex + 1);
-        return nextStep;
-      }
-    } catch (e) {
-      return tripStatusSteps.first;
-    }
-  }
 }

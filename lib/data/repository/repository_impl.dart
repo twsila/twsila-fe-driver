@@ -270,6 +270,34 @@ class RepositoryImpl implements Repository {
         final response =
             await _remoteDataSource.tripsByModuleId(tripTypeModuleId, userId);
 
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<TripDetailsModel> trips = List<TripDetailsModel>.from(
+              response.result!.map((x) => TripDetailsModel.fromJson(x)));
+
+          return Right(trips);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+  @override
+  Future<Either<Failure, List<TripDetailsModel>>> getMyTrips(
+      String tripTypeModuleId, int userId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.myTripsByModuleId(tripTypeModuleId, userId);
+
         if (response.success == ApiInternalStatus.SUCCESS) {
           List<TripDetailsModel> trips = List<TripDetailsModel>.from(
               response.result!.map((x) => TripDetailsModel.fromJson(x)));

@@ -3,6 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/app/constants.dart';
+import 'package:taxi_for_you/presentation/main/pages/mytrips/view/widgets/ongoing_item.dart';
+import 'package:taxi_for_you/presentation/main/pages/mytrips/view/widgets/precedent_item.dart';
+import 'package:taxi_for_you/presentation/main/pages/mytrips/view/widgets/scheduled_item.dart';
 import 'package:taxi_for_you/presentation/trip_execution/view/trip_execution_view.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
@@ -148,120 +151,20 @@ class _MyTripsPageState extends State<MyTripsPage> {
     if (trip.tripDetails.date != null) {
       date = handleDateString(trip.tripDetails.date!);
     }
-    return CustomCard(
-      onClick: () {
-        Navigator.pushNamed(context, Routes.tripExecution,
-            arguments: TripExecutionArguments(trip));
-        // Navigator.pushNamed(context, Routes.tripDetails,
-        //     arguments: TripDetailsArguments(tripModel: trip));
-      },
-      bodyWidget: Container(
-        margin: EdgeInsets.all(AppMargin.m8),
-        padding: EdgeInsets.only(
-            top: AppPadding.p8,
-            left: AppPadding.p8,
-            right: AppPadding.p8,
-            bottom: AppPadding.p2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  color: ColorManager.primaryBlueBackgroundColor,
-                  padding: EdgeInsets.all(AppPadding.p2),
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppPadding.p4),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          trip.tripDetails.date != null &&
-                                  trip.tripDetails.date != ""
-                              ? ImageAssets.scheduledTripIc
-                              : ImageAssets.asSoonAsPossibleTripIc,
-                          width: AppSize.s14,
-                        ),
-                        SizedBox(
-                          width: AppSize.s4,
-                        ),
-                        Text(
-                          date != null && date != ""
-                              ? AppStrings.scheduled.tr() + " : ${date}"
-                              : AppStrings.asSoonAsPossible.tr(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                  color: ColorManager.headersTextColor,
-                                  fontSize: FontSize.s12,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                // SvgPicture.asset(ImageAssets.truckIc,),
-                Image.asset(
-                  getIconName(trip.tripDetails.tripType!),
-                  width: AppSize.s40,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: AppSize.s4,
-            ),
-            Text(
-              getTitle(trip.tripDetails.tripType!),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorManager.headersTextColor,
-                  fontSize: FontSize.s14,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: AppSize.s4,
-            ),
-            Text(
-              "${trip.tripDetails.pickupLocation.locationName} - ${trip.tripDetails.destinationLocation.locationName}",
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: ColorManager.headersTextColor,
-                  fontSize: FontSize.s14,
-                  fontWeight: FontWeight.bold),
-            ),
-            Divider(
-              color: ColorManager.dividerColor,
-              thickness: 1,
-            ),
-            SizedBox(
-              height: AppSize.s4,
-            ),
-            Text(
-              getTripStatusDiscs(trip.tripDetails.tripStatus.toString()),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: getTripStatusDisColor(
-                      trip.tripDetails.tripStatus.toString()),
-                  fontSize: FontSize.s16,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: AppSize.s4,
-            ),
-            Visibility(
-              visible:
-                  getTripStatusSubDis(trip.tripDetails.tripStatus.toString())
-                      .isNotEmpty,
-              child: Text(
-                getTripStatusSubDis(trip.tripDetails.tripStatus.toString()),
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: ColorManager.headersTextColor,
-                    fontSize: FontSize.s14,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return current == 0
+        ? OngoingItemView(
+            trip: trip,
+            currentTripModelId: items[current].tripModelTypeId,
+            date: date ?? "")
+        : current == 1
+            ? ScheduledItemView(
+                trip: trip,
+                currentTripModelId: items[current].tripModelTypeId,
+                date: date ?? "")
+            : PrecedentItemView(
+                trip: trip,
+                currentTripModelId: items[current].tripModelTypeId,
+                date: date ?? "");
   }
 
   Widget _headerText() {

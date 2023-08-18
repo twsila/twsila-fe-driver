@@ -111,6 +111,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 onChanged: (value) {
                   if (value.isNotEmpty) {
                     _enableSendOffer = true;
+                    _driverOffer = double.parse(value);
                   } else {
                     _enableSendOffer = false;
                   }
@@ -407,7 +408,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
       children: [
         Expanded(
           child: Text(
-            "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
+            "${getTitle(widget.tripModel.tripDetails.tripType!)}",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: ColorManager.headersTextColor,
                 fontSize: FontSize.s24,

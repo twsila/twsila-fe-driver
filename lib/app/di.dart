@@ -28,6 +28,7 @@ import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
 import '../domain/usecase/generate_otp_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
+import '../domain/usecase/mytrips_usecase.dart';
 import '../presentation/login/login_viewmodel.dart';
 import 'app_prefs.dart';
 
@@ -83,6 +84,7 @@ Future<void> initAppModule() async {
   instance.registerFactory<RegistrationUseCase>(
       () => RegistrationUseCase(instance()));
   instance.registerFactory<TripsUseCase>(() => TripsUseCase(instance()));
+  instance.registerFactory<MyTripsUseCase>(() => MyTripsUseCase(instance()));
   instance.registerFactory<AcceptOfferUseCase>(
       () => AcceptOfferUseCase(instance()));
   instance.registerFactory<AddOfferUseCase>(() => AddOfferUseCase(instance()));

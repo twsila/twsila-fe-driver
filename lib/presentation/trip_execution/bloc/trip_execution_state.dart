@@ -9,12 +9,20 @@ class TripExecutionLoading extends TripExecutionState {}
 
 class TripExecutionSuccess extends TripExecutionState {}
 
-class TripStatusChangedSuccess extends TripExecutionState {}
+class TripStatusChangedSuccess extends TripExecutionState {
+  final bool isLastStep;
+
+  TripStatusChangedSuccess(this.isLastStep);
+}
 
 class TripCurrentStepSuccess extends TripExecutionState {
   final TripStatusStepModel tripStatusStepModel;
 
   TripCurrentStepSuccess(this.tripStatusStepModel);
+}
+
+class TripCurrentStepFail extends TripExecutionState {
+  TripCurrentStepFail();
 }
 
 class TripSummarySuccess extends TripExecutionState {

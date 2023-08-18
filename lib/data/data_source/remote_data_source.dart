@@ -36,6 +36,8 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> tripsByModuleId(String tripTypeModuleId, int userId);
 
+  Future<BaseResponse> myTripsByModuleId(String tripTypeModuleId, int userId);
+
   Future<GeneralResponse> acceptOffer(int userId, int tripId);
 
   Future<GeneralResponse> addOffer(int userId, int tripId, double driverOffer);
@@ -133,6 +135,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<BaseResponse> tripsByModuleId(
       String tripTypeModuleId, int userId) async {
     return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId);
+  }
+  @override
+  Future<BaseResponse> myTripsByModuleId(
+      String tripTypeModuleId, int userId) async {
+    return await _appServiceClient.getMyTripsByModuleId(tripTypeModuleId, userId);
   }
 
   @override

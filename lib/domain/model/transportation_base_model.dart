@@ -23,6 +23,9 @@ class TransportationBaseModel {
   List<Offer>? offers;
   Passenger? passenger;
   double? clientOffer;
+  String? completionDate;
+  double? passengerRating;
+  double? driverRating;
 
   TransportationBaseModel();
 
@@ -37,6 +40,9 @@ class TransportationBaseModel {
     stringDate = json['stringDate'];
     date = json['date'];
     notes = json['notes'];
+    completionDate = json['completionDate'];
+    passengerRating = json['passengerRating'];
+    driverRating = json['driverRating'];
     clientOffer =
         json["clientOffer"] != null ? json["clientOffer"]?.toDouble() : null;
     paymentValue = (json['clientOffer'] != null)
@@ -68,6 +74,9 @@ class TransportationBaseModel {
     if (stringDate != null) data['stringDate'] = stringDate;
     if (date != null) data['date'] = date;
     if (notes != null) data['notes'] = notes;
+    if (completionDate != null) data['completionDate'] = notes;
+    if (passengerRating != null) data['passengerRating'] = notes;
+    if (driverRating != null) data['driverRating'] = notes;
     if (passenger != null) data['passenger'] = notes;
     if (clientOffer != null) data['clientOffer'] = clientOffer;
     if (paymentValue != null) data['clientOffer'] = paymentValue.toString();

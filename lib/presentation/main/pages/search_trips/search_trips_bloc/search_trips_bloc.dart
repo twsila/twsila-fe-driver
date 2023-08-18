@@ -39,9 +39,9 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
       // content
       // emit success state
       List<String> englishTitles =
-          lookupsResponse.result["TripModelType"] ?? [];
+          lookupsResponse.result.tripModelType;
       List<String> arabicTitles =
-          lookupsResponse.result["TripModelTypeAR"] ?? [];
+          lookupsResponse.result.tripModelTypeAr ;
 
       emit(GetLookupsSuccessState(
           englishTripTitles: englishTitles, arabicTripTitles: arabicTitles));

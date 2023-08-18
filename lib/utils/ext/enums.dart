@@ -48,7 +48,7 @@ String getIconName(String tripType) {
     case TripTypeConstants.goodsType:
       return ImageAssets.tripGoodsIc;
     case TripTypeConstants.carAidType:
-      return ImageAssets.tripPersonsIc;
+      return ImageAssets.tripSatahatIc;
     case TripTypeConstants.otherTankType:
       return ImageAssets.tripSwarekIc;
     case TripTypeConstants.drinkWaterType:
@@ -71,7 +71,7 @@ String getTitle(String tripType) {
     case TripTypeConstants.carAidType:
       return AppStrings.request.tr() +
           ' ' +
-          AppStrings.personsTransportation.tr();
+          AppStrings.carAid.tr();
     case TripTypeConstants.otherTankType:
       return AppStrings.request.tr() + ' ' + AppStrings.cisterns.tr();
     case TripTypeConstants.drinkWaterType:

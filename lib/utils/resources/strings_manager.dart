@@ -14,12 +14,17 @@ class AppStrings {
   static const goodmorning = "good_morning";
   static const goodevening = "good_evening";
   static const thinkingOfTravel = "thinking_of_travel";
+  static const passengerWasRatedBy = "passenger_was_rated_by";
+  static const ratePassenger = "rate_passenger";
   static const whichGoods = "which_goods";
   static const goods = "goods";
   static const goodsDeliver = "goods_deliver";
   static const freezers = "freezers";
   static const surfaces = "surfaces";
+  static const carAid = "car_aid";
   static const other = "other";
+  static const tripWillStartInDay = "trip_will_start_in_day";
+  static const tripCompletedInDay = "trip_completed_in_day";
   static const materialTypes = "material_type";
   static const selectPackagingTypes = "packaging_type";
   static const cisterns = "cisterns";

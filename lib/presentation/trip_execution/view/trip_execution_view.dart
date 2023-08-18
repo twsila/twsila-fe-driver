@@ -23,7 +23,6 @@ import '../../../utils/resources/values_manager.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
 import '../../trip_details/view/more_details_widget/more_details_widget.dart';
-import '../../trip_details/widgets/dotted_seperator.dart';
 import '../bloc/trip_execution_bloc.dart';
 import 'navigation_tracking_view.dart';
 
@@ -41,7 +40,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   TripStatusStepModel tripStatusStepModel =
-      TripExecutionBloc.tripStatusSteps.first;
+      TripStatusStepModel(0, TripStatus.WAIT_FOR_TAKEOFF.name);
 
   // REQUIRED: USED TO CONTROL THE STEPPER.
   int activeStep = 0; // Initial step set to 0.
@@ -94,18 +93,14 @@ class _TripExecutionViewState extends State<TripExecutionView> {
         }
 
         if (state is TripStatusChangedSuccess) {
-          BlocProvider.of<TripExecutionBloc>(context)
-              .add(getTripSummary(widget.tripModel.tripDetails.tripId!));
-        }
-        if (state is TripSummarySuccess) {
-          widget.tripModel = state.tripDetailsModel;
+          if (state.isLastStep) {
+            Navigator.pop(context);
+          } else {
+            this.tripStatusStepModel.stepIndex++;
+          }
         }
         if (state is TripCurrentStepSuccess) {
-          tripStatusStepModel = state.tripStatusStepModel;
-        }
-
-        if (state is TripExecutionFail) {
-          print(state.message);
+          this.tripStatusStepModel = state.tripStatusStepModel;
         }
       },
       builder: (context, state) {
@@ -214,7 +209,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
       children: [
         Expanded(
           child: Text(
-            "${AppStrings.request.tr()} ${getTitle(widget.tripModel.tripDetails.tripType!)}",
+            "${getTitle(widget.tripModel.tripDetails.tripType!)}",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: ColorManager.headersTextColor,
                 fontSize: FontSize.s24,
@@ -318,98 +313,149 @@ class _TripExecutionViewState extends State<TripExecutionView> {
           dottedLine: false,
           currentStep: tripStatusStepModel.stepIndex,
           onStepContinue: () {
-            // Navigator.pushNamed(context, Routes.locationTrackingPage,
-            //     arguments: NavigationTrackingArguments(widget.tripModel));
-            BlocProvider.of<TripExecutionBloc>(context)
-                .add(changeTripStatus(widget.tripModel));
-            // if (_index >= 0 && _index < 3) {
-            //   setState(() {
-            //     _index += 1;
-            //   });
-            // } else {
-            //   setState(() {
-            //     _index = 0;
-            //   });
-            // }
+            switch (tripStatusStepModel.stepIndex) {
+              case 0:
+                BlocProvider.of<TripExecutionBloc>(context).add(
+                    changeTripStatus(widget.tripModel,
+                        TripStatus.WAIT_FOR_TAKEOFF.name, false));
+                break;
+              case 1:
+                BlocProvider.of<TripExecutionBloc>(context).add(
+                    changeTripStatus(
+                        widget.tripModel, TripStatus.TAKEOFF.name, true));
+                Navigator.pushNamed(context, Routes.locationTrackingPage,
+                    arguments: NavigationTrackingArguments(widget.tripModel));
+                break;
+              case 2:
+                BlocProvider.of<TripExecutionBloc>(context).add(
+                    changeTripStatus(
+                        widget.tripModel, TripStatus.EXECUTED.name, true));
+                break;
+              case 3:
+                BlocProvider.of<TripExecutionBloc>(context).add(
+                    changeTripStatus(
+                        widget.tripModel, TripStatus.COMPLETED.name, true,
+                        isLastStep: true));
+                break;
+            }
           },
           onStepTapped: (int index) {},
           steps: <CustomStep>[
             CustomStep(
-                isActive: tripStatusStepModel.stepIndex == 0,
+                isActive: widget.tripModel.tripDetails.date != null
+                    ? false
+                    : tripStatusStepModel.stepIndex == 0,
                 continueIconWidget: Image.asset(ImageAssets.driveIc),
                 title: Text(
                   AppStrings.startTripNowAndMoveToPickupLocation.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: ColorManager.headersTextColor,
+                      color: widget.tripModel.tripDetails.date != null
+                          ? ColorManager.formHintTextColor
+                          : ColorManager.headersTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: FontSize.s14),
                 ),
                 content: Container(),
-                continueButtonLabel: AppStrings.movedToClient.tr(),
+                continueButtonLabel: widget.tripModel.tripDetails.date != null
+                    ? ''
+                    : AppStrings.movedToClient.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
-                isActive: tripStatusStepModel.stepIndex == 1,
+                isActive: widget.tripModel.tripDetails.date != null
+                    ? false
+                    : tripStatusStepModel.stepIndex == 1,
                 continueIconWidget: Image.asset(ImageAssets.navigationIc),
                 title: Text(
                   AppStrings.tripStartedMoveNow.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: ColorManager.headersTextColor,
+                      color: widget.tripModel.tripDetails.date != null
+                          ? ColorManager.formHintTextColor
+                          : ColorManager.headersTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: FontSize.s14),
                 ),
-                content: Container(
-                  child: Text(
-                    '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColorManager.grey1,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FontSize.s12),
-                  ),
-                ),
-                continueButtonLabel: AppStrings.navigationToPickupLocation.tr(),
+                content: widget.tripModel.tripDetails.date != null
+                    ? Container()
+                    : Container(
+                        child: Text(
+                          '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  color: ColorManager.grey1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: FontSize.s12),
+                        ),
+                      ),
+                continueButtonLabel: widget.tripModel.tripDetails.date != null
+                    ? ''
+                    : AppStrings.navigationToPickupLocation.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
-                isActive: tripStatusStepModel.stepIndex == 2,
+                isActive: widget.tripModel.tripDetails.date != null
+                    ? false
+                    : tripStatusStepModel.stepIndex == 2,
                 continueIconWidget: Image.asset(ImageAssets.driveIc),
                 title: Text(
                   AppStrings.youArrivedPickupLocation.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: ColorManager.headersTextColor,
+                      color: widget.tripModel.tripDetails.date != null
+                          ? ColorManager.formHintTextColor
+                          : ColorManager.headersTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: FontSize.s14),
                 ),
-                content: Container(
-                  child: Text(
-                    '${AppStrings.pleaseShipGoodsAndMoveToDestinationLocation.tr()}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColorManager.grey1,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FontSize.s12),
-                  ),
-                ),
-                continueButtonLabel: AppStrings.tripStartedMoveNow.tr(),
+                content: widget.tripModel.tripDetails.date != null
+                    ? Container()
+                    : Container(
+                        child: Text(
+                          '${AppStrings.pleaseShipGoodsAndMoveToDestinationLocation.tr()}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  color: ColorManager.grey1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: FontSize.s12),
+                        ),
+                      ),
+                continueButtonLabel: widget.tripModel.tripDetails.date != null
+                    ? ''
+                    : AppStrings.tripStartedMoveNow.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
-                isActive: tripStatusStepModel.stepIndex == 3,
+                isActive: widget.tripModel.tripDetails.date != null
+                    ? false
+                    : tripStatusStepModel.stepIndex == 3,
                 continueIconWidget: Image.asset(ImageAssets.tripFinishIc),
                 continueButtonBGColor: ColorManager.secondaryColor,
                 title: Text(
                   AppStrings.youArrivedDestinationLocation.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: ColorManager.headersTextColor,
+                      color: widget.tripModel.tripDetails.date != null
+                          ? ColorManager.formHintTextColor
+                          : ColorManager.headersTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: FontSize.s14),
                 ),
-                content: Container(
-                  child: Text(
-                    '${AppStrings.pleaseLeaveGoodsAndCloseTheTrip.tr()}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColorManager.grey1,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FontSize.s12),
-                  ),
-                ),
-                continueButtonLabel: AppStrings.cancel.tr(),
+                content: widget.tripModel.tripDetails.date != null
+                    ? Container()
+                    : Container(
+                        child: Text(
+                          '${AppStrings.pleaseLeaveGoodsAndCloseTheTrip.tr()}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  color: ColorManager.grey1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: FontSize.s12),
+                        ),
+                      ),
+                continueButtonLabel: widget.tripModel.tripDetails.date != null
+                    ? ''
+                    : AppStrings.cancel.tr(),
                 cancelButtonLabel: ''),
           ],
         ),
