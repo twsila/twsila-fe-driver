@@ -18,7 +18,7 @@ class TransportationBaseModel {
   String? stringDate;
   String? notes;
   double? paymentValue;
-  List<XFile>? images;
+  List<ImageModel>? images;
   AcceptedOffer? acceptedOffer;
   List<Offer>? offers;
   Passenger? passenger;
@@ -43,6 +43,9 @@ class TransportationBaseModel {
     completionDate = json['completionDate'];
     passengerRating = json['passengerRating'];
     driverRating = json['driverRating'];
+    images = json['images'] != null
+        ? List<ImageModel>.from(json['images'].map((x) => ImageModel.fromJson(x)))
+        : null;
     clientOffer =
         json["clientOffer"] != null ? json["clientOffer"]?.toDouble() : null;
     paymentValue = (json['clientOffer'] != null)
@@ -78,6 +81,7 @@ class TransportationBaseModel {
     if (passengerRating != null) data['passengerRating'] = notes;
     if (driverRating != null) data['driverRating'] = notes;
     if (passenger != null) data['passenger'] = notes;
+    if (images != null) data['images'] = images;
     if (clientOffer != null) data['clientOffer'] = clientOffer;
     if (paymentValue != null) data['clientOffer'] = paymentValue.toString();
     if (pickupLocation.latitude != null && pickupLocation.longitude != null) {
@@ -169,5 +173,29 @@ class Passenger {
         "gender": gender,
         "dateOfBirth": dateOfBirth,
         "rating": rating,
+      };
+}
+
+class ImageModel {
+  int id;
+  String imageName;
+  String url;
+
+  ImageModel({
+    required this.id,
+    required this.imageName,
+    required this.url,
+  });
+
+  factory ImageModel.fromJson(Map<String, dynamic> json) => ImageModel(
+        id: json["id"],
+        imageName: json["imageName"],
+        url: json["url"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "imageName": imageName,
+        "url": url,
       };
 }

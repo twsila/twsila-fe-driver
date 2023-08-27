@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
+import 'package:taxi_for_you/presentation/rate_passenger/view/rate_passenger_view.dart';
 import 'package:taxi_for_you/utils/ext/date_ext.dart';
 
 import '../../../../../../domain/model/trip_details_model.dart';
@@ -171,7 +172,7 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
             Text(
               widget.trip.tripDetails.completionDate != null
                   ? "${AppStrings.tripCompletedInDay.tr()}"
-                      " ${context.formatDateTime(dateTime: DateTime.tryParse(widget.trip.tripDetails.completionDate ?? "-"))}"
+                      "${widget.trip.tripDetails.completionDate?.formatStringToDateString() ?? "-"}"
                   : '${AppStrings.tripCompletedInDay.tr()} -',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
@@ -205,7 +206,10 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
                       CustomTextButton(
                         text: AppStrings.ratePassenger.tr(),
                         isWaitToEnable: false,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, Routes.ratePassenger,
+                              arguments: RatePassengerArguments(widget.trip));
+                        },
                         margin: 2,
                         backgroundColor: ColorManager.secondaryColor,
                         textColor: ColorManager.white,

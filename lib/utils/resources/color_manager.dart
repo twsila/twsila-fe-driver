@@ -18,6 +18,7 @@ class ColorManager {
   static const Color borderColor = const Color(0xffD8D8ED);
   static const Color primaryBlueBackgroundColor = const Color(0xffEFEFFE);
   static const Color dividerColor = const Color(0xffC1C1DD);
+  static const Color primaryPurple = const Color(0xff64659A);
 
   //text
 

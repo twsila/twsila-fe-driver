@@ -12,7 +12,17 @@ class AppStrings {
   static const letsGetStarted = "lets_get_started";
   static const goodAfternoon = "good_afternoon";
   static const goodmorning = "good_morning";
+  static const tripDate = "trip_date";
+  static const vehicleType = "vehicle_type";
+  static const numOfPassengers = "number_of_passengers";
+  static const waterTankSize = "water_tank_size";
+  static const cisternsType = "cisterns_type";
   static const goodevening = "good_evening";
+  static const clientNotes = "client_notes";
+  static const photos = "photos";
+  static const pleaseRatePassenger = "please_rate_passenger";
+  static const trip = "trip";
+  static const withK = "with";
   static const thinkingOfTravel = "thinking_of_travel";
   static const passengerWasRatedBy = "passenger_was_rated_by";
   static const ratePassenger = "rate_passenger";
@@ -332,6 +342,7 @@ class AppStrings {
   //myProfile
 
   static const changeMyProfile = 'change_my_profile';
+  static const tripHasBeenCompleted = 'trip_has_been_completed';
 
   // static const myServices = 'my_trips';
   static const WalletAndRevenue = 'wallet_and_revenue';

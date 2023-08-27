@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
+import 'package:taxi_for_you/presentation/rate_passenger/bloc/rate_passenger_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
 import 'package:taxi_for_you/presentation/trip_execution/bloc/trip_execution_bloc.dart';
@@ -33,6 +34,7 @@ blocProviders(BuildContext context) {
             registrationUseCase: instance())),
     BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
     BlocProvider.value(value: MyProfileBloc(logoutUseCase: instance())),
+    BlocProvider.value(value: RatePassengerBloc()),
     BlocProvider.value(
         value: SearchTripsBloc(
             tripsUseCase: instance(), lookupsUseCase: instance())),
@@ -46,6 +48,7 @@ blocProviders(BuildContext context) {
             acceptOfferUseCase: instance(),
             addOfferUseCase: instance(),
             tripSummaryUseCase: instance())),
-    ChangeNotifierProvider(create: (_) => MapProvider())
+    ChangeNotifierProvider(create: (_) => MapProvider()),
+
   ];
 }

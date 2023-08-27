@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxi_for_you/presentation/rate_passenger/view/rate_passenger_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
 import 'package:taxi_for_you/presentation/my_serivces/view/my_services_view.dart';
@@ -56,6 +57,7 @@ class Routes {
   static const String tripDetails = "/tripDetails";
   static const String tripExecution = "/tripExecution";
   static const String locationTrackingPage = "/locationTrackingPage";
+  static const String ratePassenger = "/ratePassenger";
 }
 
 class RouteGenerator {
@@ -113,6 +115,12 @@ class RouteGenerator {
                 ));
       case Routes.noServicesAdded:
         return MaterialPageRoute(builder: (_) => const NoServiceAddedView());
+      case Routes.ratePassenger:
+        final args = settings.arguments as RatePassengerArguments;
+        return MaterialPageRoute(
+            builder: (_) => RatePassengerView(
+                  tripDetailsModel: args.tripDetailsModel,
+                ));
       case Routes.serviceAppliedSuccessfullyView:
         return MaterialPageRoute(
             builder: (_) => const ServiceAppliedSuccessView());

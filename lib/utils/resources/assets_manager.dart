@@ -29,6 +29,8 @@ class ImageAssets {
   static const String splashIcon = "$imagePath/tawsela_splash_icon.png";
   static const String welcomeToTawselaGraphic =
       "$imagePath/welcome_to_tawsela_graphic.png";
+  static const String ratePassengerGraphic =
+      "$imagePath/rate_passenger_gr.png";
 
   //registration
   static const String appBarLogo = "$imagePath/appbar_logo.png";
