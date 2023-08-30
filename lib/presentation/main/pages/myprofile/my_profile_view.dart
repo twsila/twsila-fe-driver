@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/presentation/edit_user_profile/view/edit_profile_view.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/widget/menu_widget.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
@@ -253,18 +254,24 @@ class _MyProfilePageState extends State<MyProfilePage> {
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: ColorManager.headersTextColor, fontSize: FontSize.s14),
             ),
-            Row(
-              children: [
-                Text(
-                  AppStrings.changeMyProfile.tr(),
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: ColorManager.primary, fontSize: FontSize.s14),
-                ),
-                Icon(
-                  Icons.edit_note,
-                  color: ColorManager.primary,
-                )
-              ],
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.editProfile,
+                    arguments: EditProfileArguments(driver!));
+              },
+              child: Row(
+                children: [
+                  Text(
+                    AppStrings.changeMyProfile.tr(),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: ColorManager.primary, fontSize: FontSize.s14),
+                  ),
+                  Icon(
+                    Icons.edit_note,
+                    color: ColorManager.primary,
+                  )
+                ],
+              ),
             ),
           ],
         )

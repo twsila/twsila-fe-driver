@@ -279,8 +279,9 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                   ],
               // Only numbers
               decoration: InputDecoration(
-                fillColor:
-                    widget.enabled ? widget.fillColor : ColorManager.lightGrey,
+                fillColor: widget.enabled
+                    ? widget.fillColor
+                    : ColorManager.primaryBlueBackgroundColor,
                 filled: true,
                 errorMaxLines: 8,
                 helperMaxLines: 8,

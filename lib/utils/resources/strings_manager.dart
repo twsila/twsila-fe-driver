@@ -343,6 +343,8 @@ class AppStrings {
 
   static const changeMyProfile = 'change_my_profile';
   static const tripHasBeenCompleted = 'trip_has_been_completed';
+  static const changeCaptainPhoto = 'change_captain_photo';
+  static const jawalNumber = 'jawal_number';
 
   // static const myServices = 'my_trips';
   static const WalletAndRevenue = 'wallet_and_revenue';
