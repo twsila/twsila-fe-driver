@@ -122,4 +122,10 @@ abstract class AppServiceClient {
     @Field("tripId") int tripId,
     @Field("tripStatus") String tripStatus,
   );
+
+  @POST("/passengers/trips/rate")
+  Future<BaseResponse> ratePassenger(
+    @Field("PassengerId") int passengerId,
+    @Field("rating") double rateNumber,
+  );
 }

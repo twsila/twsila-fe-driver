@@ -434,6 +434,7 @@ class AppStrings {
   static const client = 'client';
   static const loadingMaps = 'loading_maps';
   static const callClient = 'call_client';
+  static const confirmAndFinish = 'confirm_and_finish';
 
   //Furniture strings
   static const assemble = "assemble";

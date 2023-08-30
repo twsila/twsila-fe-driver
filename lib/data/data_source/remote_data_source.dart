@@ -47,6 +47,8 @@ abstract class RemoteDataSource {
 
   Future<GeneralResponse> tripSummary(int userId, int tripId);
 
+  Future<BaseResponse> ratePassenger(int passengerId, double rateNumber);
+
   Future<LookupsModel> getLookups();
 
   Future<LogoutModel> logout(LogoutRequest logoutRequest);
@@ -167,5 +169,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<BaseResponse> changeTripStatus(
       int userId, int tripId, String tripStatus) async {
     return await _appServiceClient.changeTripStatus(userId, tripId, tripStatus);
+  }
+
+  @override
+  Future<BaseResponse> ratePassenger(int passengerId, double rateNumber) async {
+    return await _appServiceClient.ratePassenger(passengerId,rateNumber);
   }
 }

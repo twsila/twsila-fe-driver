@@ -103,49 +103,14 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
   }
 
   Widget tripImages(List<ImageModel> imageUrls) {
-    List<ImageModel> TEST = imageUrls;
-    TEST.add(ImageModel(id: 21, imageName: 'imageName', url: "https://logodownload.org/wp-content/uploads/2017/10/Starbucks-logo.png"));
-    TEST.add(ImageModel(id: 1, imageName: 'imageName', url: "https://logodownload.org/wp-content/uploads/2017/10/Starbucks-logo.png"));
-    TEST.add(ImageModel(id: 12, imageName: 'imageName', url: "https://logodownload.org/wp-content/uploads/2017/10/Starbucks-logo.png"));
     return imageUrls.isNotEmpty
-        ? SizedBox(
-            height: 270,
-            child: Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.photos.tr(),
-                    textAlign: TextAlign.start,
-                    style: getMediumStyle(
-                      color: ColorManager.titlesTextColor,
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Expanded(
-                    child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: imageUrls.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
-                      itemBuilder: (BuildContext context, int i) {
-                        return Container(
-                          padding: const EdgeInsets.all(10),
-                          child: Stack(
-                            children: <Widget>[
-                              imageUrlWithHandle(TEST[i].url)
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+        ? Center(
+            child: Wrap(
+              direction: Axis.horizontal,
+              alignment: WrapAlignment.spaceBetween,
+              runSpacing: 5,
+              children: List.generate(imageUrls.length,
+                  (index) => TripImageItem(imageUrls[index].url)),
             ),
           )
         : Container();
@@ -156,10 +121,30 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
       return SizedBox(
           height: 100,
           width: 100,
-          child:
-              Image.network(url, height: 70.0, width: 70.0, fit: BoxFit.cover));
+          child: Image.network(
+            url,
+            height: 70.0,
+            width: 70.0,
+            fit: BoxFit.cover,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return Image.asset(ImageAssets.appBarLogo);
+            },
+          ));
     } catch (e) {
       return Image.asset(ImageAssets.appBarLogo);
     }
+  }
+
+  Widget TripImageItem(String imageUrl) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          imageUrlWithHandle(imageUrl),
+        ],
+      ),
+    );
   }
 }

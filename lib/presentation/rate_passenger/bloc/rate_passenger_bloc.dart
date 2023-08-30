@@ -3,13 +3,39 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart';
+import '../../../domain/usecase/rate_passenger_usecase.dart';
+
 part 'rate_passenger_event.dart';
+
 part 'rate_passenger_state.dart';
 
 class RatePassengerBloc extends Bloc<RatePassengerEvent, RatePassengerState> {
-  RatePassengerBloc() : super(RatePassengerInitial()) {
-    on<RatePassengerEvent>((event, emit) {
-      // TODO: implement event handler
+  RatePassengerUseCase ratePassengerUseCase;
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+
+  RatePassengerBloc({required this.ratePassengerUseCase})
+      : super(RatePassengerInitial()) {
+    on<RatePassenger>(_ratePassenger);
+  }
+
+  FutureOr<void> _ratePassenger(
+      RatePassenger event, Emitter<RatePassengerState> emit) async {
+    emit(RatePassengerLoading());
+    (await ratePassengerUseCase.execute(
+            RatePassengerUseCaseInput(event.passengerId, event.rateNumber)))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(RatePassengerFail(errorMessage: failure.message))
+                }, (driverModel) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      RatePassengerSuccess();
     });
   }
 }
