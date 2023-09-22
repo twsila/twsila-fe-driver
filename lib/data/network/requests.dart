@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class LoginRequest {
   String mobileNumber;
   String language;
@@ -48,6 +50,17 @@ class LogoutRequest {
   String language;
 
   LogoutRequest(this.userId, this.registrationId, this.language);
+}
+
+class UpdateProfileRequest {
+  int driverId;
+  String firstName;
+  String lastName;
+  String email;
+  File profilePhoto;
+
+  UpdateProfileRequest(this.driverId, this.firstName, this.lastName, this.email,
+      this.profilePhoto);
 }
 
 class AcceptOfferRequest {

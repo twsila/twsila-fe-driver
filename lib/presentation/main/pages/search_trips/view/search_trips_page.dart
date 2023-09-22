@@ -68,7 +68,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
 
   @override
   void initState() {
-    BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
+    // BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
+    BlocProvider.of<SearchTripsBloc>(context)
+        .add(GetTripsTripModuleId('TODAY_TRIPS'));
     super.initState();
   }
 
@@ -76,12 +78,29 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       pageBuilder: PageBuilder(
-          appbar: false,
+          appbar: true,
           context: context,
           body: _getContentWidget(context),
           scaffoldKey: _key,
           displayLoadingIndicator: _displayLoadingIndicator,
           allowBackButtonInAppBar: false,
+          appBarTitle: AppStrings.twsela.tr(),
+          centerTitle: true,
+          appBarActions: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.filterTrips);
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: AppMargin.m8),
+                height: AppSize.s30,
+                width: AppSize.s30,
+                child: Image.asset(
+                  ImageAssets.filterIcon,
+                ),
+              ),
+            ),
+          ],
           extendBodyBehindAppBar: true),
     );
   }
@@ -117,8 +136,15 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                  height: AppSize.s40, child: _TripsTitleListView(tripsTitles)),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Container(
+              //           height: AppSize.s40,
+              //           child: _TripsTitleListView(tripsTitles)),
+              //     ),
+              //   ],
+              // ),
               Expanded(
                 child: _loadingTripsList
                     ? Center(

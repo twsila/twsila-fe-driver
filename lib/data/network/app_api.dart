@@ -80,12 +80,13 @@ abstract class AppServiceClient {
 
   @POST("/drivers/offers/select-trip")
   Future<BaseResponse> getTripsByModuleId(
-      @Field("tripModelType") String tripModelType, @Field("userId") int userId);
-
+      @Field("tripModelType") String tripModelType,
+      @Field("userId") int userId);
 
   @POST("/drivers/offers/select-my-trip")
   Future<BaseResponse> getMyTripsByModuleId(
-      @Field("tripModelType") String tripModelType, @Field("userId") int userId);
+      @Field("tripModelType") String tripModelType,
+      @Field("userId") int userId);
 
   @POST("/drivers/offers/add")
   Future<GeneralResponse> addOffer(
@@ -127,5 +128,15 @@ abstract class AppServiceClient {
   Future<BaseResponse> ratePassenger(
     @Field("PassengerId") int passengerId,
     @Field("rating") double rateNumber,
+  );
+
+  @POST("/drivers/register")
+  @MultiPart()
+  Future<BaseResponse> updateProfile(
+    @Part(name: "driverId") int driverId,
+    @Part(name: "firstName") String firstName,
+    @Part(name: "lastName") String lastName,
+    @Part(name: "email") String email,
+    @Part(name: "profilePhoto") File profilePhoto,
   );
 }

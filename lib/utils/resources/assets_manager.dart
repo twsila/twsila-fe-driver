@@ -27,6 +27,7 @@ class ImageAssets {
   static const String languageIc = "$imagePath/language_ic.png";
   static const String verifyOtpGraphic = "$imagePath/verify_otp_grp.png";
   static const String splashIcon = "$imagePath/tawsela_splash_icon.png";
+  static const String filterIcon = "$imagePath/filter_icon.png";
   static const String welcomeToTawselaGraphic =
       "$imagePath/welcome_to_tawsela_graphic.png";
   static const String ratePassengerGraphic =

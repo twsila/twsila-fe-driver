@@ -91,7 +91,8 @@ class CustomDialog {
                   child: Text(
                     defaultActionButtonText,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: defaultActionTextColor , fontWeight: FontWeight.bold),
+                        color: defaultActionTextColor,
+                        fontWeight: FontWeight.bold),
                   ),
                   onPressed: onDefaultActionButtonPressed,
                 ),
@@ -106,5 +107,36 @@ class CustomDialog {
                 )
               ],
             ));
+  }
+
+  void showCustomDialog(BuildContext context, Widget bodyWidget) {
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Barrier",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionDuration: Duration(milliseconds: 400),
+      pageBuilder: (_, __, ___) {
+        return Center(child: Material(child: Container(
+
+            child: bodyWidget)));
+      },
+      transitionBuilder: (_, anim, __, child) {
+        Tween<Offset> tween;
+        if (anim.status == AnimationStatus.reverse) {
+          tween = Tween(begin: Offset(-1, 0), end: Offset.zero);
+        } else {
+          tween = Tween(begin: Offset(1, 0), end: Offset.zero);
+        }
+
+        return SlideTransition(
+          position: tween.animate(anim),
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
+        );
+      },
+    );
   }
 }

@@ -90,7 +90,7 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
               }
             },
             inputDecoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(left: 8),
+              contentPadding: const EdgeInsets.only(left: 8, right: 8),
               hintText: widget.hintText ?? "Search your location..",
               hintStyle: getRegularStyle(
                   color: ColorManager.grey, fontSize: FontSize.s14),

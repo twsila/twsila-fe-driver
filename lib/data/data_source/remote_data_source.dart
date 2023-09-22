@@ -49,6 +49,8 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> ratePassenger(int passengerId, double rateNumber);
 
+  Future<BaseResponse> updateProfile(UpdateProfileRequest updateProfileRequest);
+
   Future<LookupsModel> getLookups();
 
   Future<LogoutModel> logout(LogoutRequest logoutRequest);
@@ -138,10 +140,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       String tripTypeModuleId, int userId) async {
     return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId);
   }
+
   @override
   Future<BaseResponse> myTripsByModuleId(
       String tripTypeModuleId, int userId) async {
-    return await _appServiceClient.getMyTripsByModuleId(tripTypeModuleId, userId);
+    return await _appServiceClient.getMyTripsByModuleId(
+        tripTypeModuleId, userId);
   }
 
   @override
@@ -173,6 +177,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<BaseResponse> ratePassenger(int passengerId, double rateNumber) async {
-    return await _appServiceClient.ratePassenger(passengerId,rateNumber);
+    return await _appServiceClient.ratePassenger(passengerId, rateNumber);
+  }
+
+  @override
+  Future<BaseResponse> updateProfile(
+      UpdateProfileRequest updateProfileRequest) async {
+    return await _appServiceClient.updateProfile(
+        updateProfileRequest.driverId,
+        updateProfileRequest.firstName,
+        updateProfileRequest.lastName,
+        updateProfileRequest.email,
+        updateProfileRequest.profilePhoto);
   }
 }

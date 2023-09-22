@@ -13,11 +13,13 @@ class CustomDatePickerWidget extends StatefulWidget {
   final Function(String date) onSelectDate;
   final bool pickTime;
   final String? labelText;
+  final bool? isDimmed;
 
   const CustomDatePickerWidget(
       {Key? key,
       required this.onSelectDate,
       required this.pickTime,
+      this.isDimmed = false,
       this.labelText})
       : super(key: key);
 
@@ -38,13 +40,15 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
           flex: 1,
           child: Text(
             widget.labelText ?? AppStrings.scheduleAppoinment.tr(),
-            style: getMediumStyle(color: ColorManager.lightGrey, fontSize: AppSize.s14),
+            style: getMediumStyle(
+                color: ColorManager.titlesTextColor, fontSize: AppSize.s14),
           ),
         ),
         const SizedBox(width: 6),
         Flexible(
           flex: 3,
           child: ListTile(
+            enabled: widget.isDimmed! ? false : true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
               side: BorderSide(color: ColorManager.lightPrimary, width: 1.5),
@@ -55,7 +59,7 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
             ),
             leading: Icon(
               Icons.calendar_today,
-              color: ColorManager.primary,
+              color: ColorManager.titlesTextColor,
             ),
           ),
         ),
@@ -80,67 +84,69 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
             valueListenable: dateSub,
             builder: (context, dateVal, child) {
               return InkWell(
-                  onTap: () async {
-                    FocusScope.of(context).unfocus();
-                    DateTime? date = await showDatePicker(
-                        locale: _appPrefs.getAppLanguage() ==
-                                LanguageType.ENGLISH.getValue()
-                            ? ENGLISH_LOCAL
-                            : ARABIC_LOCAL,
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2050),
-                        currentDate: DateTime.now(),
-                        initialEntryMode: DatePickerEntryMode.calendar,
-                        initialDatePickerMode: DatePickerMode.day,
-                        builder: (context, child) {
-                          return Theme(
-                            data: Theme.of(context).copyWith(
-                                colorScheme: ColorScheme.fromSwatch(
-                              primarySwatch: Colors.green,
-                              accentColor: ColorManager.lightGrey,
-                              backgroundColor: Colors.blue,
-                              cardColor: Colors.white,
-                            )),
-                            child: child!,
-                          );
-                        });
-                    if (widget.pickTime) {
-                      final timeValue = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                          builder: (context, child) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                  colorScheme: ColorScheme.fromSwatch(
-                                primarySwatch: Colors.green,
-                                accentColor: ColorManager.lightGrey,
-                                backgroundColor: Colors.lightBlue,
-                                cardColor: Colors.white,
-                              )),
-                              child: child!,
+                  onTap: widget.isDimmed!
+                      ? null
+                      : () async {
+                          FocusScope.of(context).unfocus();
+                          DateTime? date = await showDatePicker(
+                              locale: _appPrefs.getAppLanguage() ==
+                                      LanguageType.ENGLISH.getValue()
+                                  ? ENGLISH_LOCAL
+                                  : ARABIC_LOCAL,
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(2050),
+                              currentDate: DateTime.now(),
+                              initialEntryMode: DatePickerEntryMode.calendar,
+                              initialDatePickerMode: DatePickerMode.day,
+                              builder: (context, child) {
+                                return Theme(
+                                  data: Theme.of(context).copyWith(
+                                      colorScheme: ColorScheme.fromSwatch(
+                                    primarySwatch: Colors.green,
+                                    accentColor: ColorManager.lightGrey,
+                                    backgroundColor: Colors.blue,
+                                    cardColor: Colors.white,
+                                  )),
+                                  child: child!,
+                                );
+                              });
+                          if (widget.pickTime) {
+                            final timeValue = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.now(),
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: Theme.of(context).copyWith(
+                                        colorScheme: ColorScheme.fromSwatch(
+                                      primarySwatch: Colors.green,
+                                      accentColor: ColorManager.lightGrey,
+                                      backgroundColor: Colors.lightBlue,
+                                      cardColor: Colors.white,
+                                    )),
+                                    child: child!,
+                                  );
+                                });
+                            var dateTime = DateTime(
+                              date!.year,
+                              date.month,
+                              date.day,
+                              timeValue!.hour,
+                              timeValue.minute,
                             );
-                          });
-                      var dateTime = DateTime(
-                        date!.year,
-                        date.month,
-                        date.day,
-                        timeValue!.hour,
-                        timeValue.minute,
-                      );
-                      dateSub.value = dateTime;
-                    } else {
-                      var dateTime = DateTime(
-                        date!.year,
-                        date.month,
-                        date.day,
-                        DateTime.now().hour,
-                        DateTime.now().minute,
-                      );
-                      dateSub.value = dateTime;
-                    }
-                  },
+                            dateSub.value = dateTime;
+                          } else {
+                            var dateTime = DateTime(
+                              date!.year,
+                              date.month,
+                              date.day,
+                              DateTime.now().hour,
+                              DateTime.now().minute,
+                            );
+                            dateSub.value = dateTime;
+                          }
+                        },
                   child: buildDateTimePicker(
                       dateVal != null ? convertDate(dateVal) : ''));
             }));

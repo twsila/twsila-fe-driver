@@ -14,6 +14,7 @@ import '../../app/di.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../presentation/edit_user_profile/view/edit_profile_view.dart';
+import '../../presentation/filter_trips/view/filter_trips_view.dart';
 import '../../presentation/login/view/login_view.dart';
 import '../../presentation/main/main_view.dart';
 import '../../presentation/trip_execution/view/navigation_tracking_view.dart';
@@ -60,6 +61,7 @@ class Routes {
   static const String locationTrackingPage = "/locationTrackingPage";
   static const String ratePassenger = "/ratePassenger";
   static const String editProfile = "/editProfile";
+  static const String filterTrips = "/filterTrips";
 }
 
 class RouteGenerator {
@@ -135,6 +137,12 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => EditProfileView(
                   driver: args.driver,
+                ));
+      case Routes.filterTrips:
+        // final args = settings.arguments as EditProfileArguments;
+        return MaterialPageRoute(
+            builder: (_) => FilterTripsView(
+                // driver: args.driver,
                 ));
       case Routes.locationTrackingPage:
         final args = settings.arguments as NavigationTrackingArguments;
