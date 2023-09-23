@@ -53,6 +53,7 @@ dependencies:
   rxdart: ^0.27.7
   carousel_slider: ^4.2.1
   flutter_image_compress: ^2.0.3
+  location_geocoder: ^1.0.5
   easy_localization: ^3.0.2
   flutter_phoenix: ^1.1.0
   flutter_geocoder: ^0.2.2-nullsafety

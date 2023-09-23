@@ -133,4 +133,14 @@ abstract class AppServiceClient {
     @Field("PassengerId") int passengerId,
     @Field("rating") double rateNumber,
   );
+
+  @POST("/drivers/register")
+  @MultiPart()
+  Future<BaseResponse> updateProfile(
+    @Part(name: "driverId") int driverId,
+    @Part(name: "firstName") String firstName,
+    @Part(name: "lastName") String lastName,
+    @Part(name: "email") String email,
+    @Part(name: "profilePhoto") File profilePhoto,
+  );
 }

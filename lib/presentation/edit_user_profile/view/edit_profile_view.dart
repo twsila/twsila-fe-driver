@@ -68,49 +68,53 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _profilePhotoHeader(),
-        SizedBox(
-          height: 30,
-        ),
-        CustomTextInputField(
-          labelText: AppStrings.firstName.tr(),
-          showLabelText: true,
-          controller: _firstNameController,
-          hintText: AppStrings.enterFirstNameHere.tr(),
-          onChanged: (value) {},
-        ),
-        CustomTextInputField(
-          labelText: AppStrings.lastName.tr(),
-          showLabelText: true,
-          controller: _lastNameController,
-          hintText: AppStrings.enterLastNameHere.tr(),
-          onChanged: (value) {},
-        ),
-        CustomTextInputField(
-          labelText: AppStrings.jawalNumber.tr(),
-          showLabelText: true,
-          enabled: false,
-          controller: _mobileNumberController,
-          hintText: AppStrings.enterFirstNameHere.tr(),
-          onChanged: (value) {},
-        ),
-        CustomTextInputField(
-          labelText: AppStrings.email.tr(),
-          showLabelText: true,
-          controller: _emailController,
-          hintText: '',
-          onChanged: (value) {},
-        ),
-        Spacer(),
-        CustomTextButton(
-          text: AppStrings.save.tr(),
-          isWaitToEnable: false,
-          onPressed: () {},
-        )
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _profilePhotoHeader(),
+          SizedBox(
+            height: 30,
+          ),
+          CustomTextInputField(
+            labelText: AppStrings.firstName.tr(),
+            showLabelText: true,
+            controller: _firstNameController,
+            hintText: AppStrings.enterFirstNameHere.tr(),
+            onChanged: (value) {},
+          ),
+          CustomTextInputField(
+            labelText: AppStrings.lastName.tr(),
+            showLabelText: true,
+            controller: _lastNameController,
+            hintText: AppStrings.enterLastNameHere.tr(),
+            onChanged: (value) {},
+          ),
+          CustomTextInputField(
+            labelText: AppStrings.jawalNumber.tr(),
+            showLabelText: true,
+            enabled: false,
+            controller: _mobileNumberController,
+            hintText: AppStrings.enterFirstNameHere.tr(),
+            onChanged: (value) {},
+          ),
+          CustomTextInputField(
+            labelText: AppStrings.email.tr(),
+            showLabelText: true,
+            controller: _emailController,
+            hintText: '',
+            onChanged: (value) {},
+          ),
+          SizedBox(
+            height: AppSize.s50,
+          ),
+          CustomTextButton(
+            text: AppStrings.save.tr(),
+            isWaitToEnable: false,
+            onPressed: () {},
+          )
+        ],
+      ),
     );
   }
 

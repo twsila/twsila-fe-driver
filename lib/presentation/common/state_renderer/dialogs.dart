@@ -107,9 +107,10 @@ class ShowDialogHelper {
 
   static void showDialogPopupWithCancel(String title, String message,
       BuildContext context, Function cancelFunc, Function okFunc,
-      {String? okText, Widget? messageWidget}) {
+      {String? okText, Widget? messageWidget, bool dismissible = true}) {
     showDialog(
       context: context,
+      barrierDismissible: dismissible,
       builder: (ctx) => BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: AlertDialog(

@@ -57,6 +57,9 @@ abstract class Repository {
   Future<Either<Failure, BaseResponse>> ratePassenger(
       int passengerId, double ratingNumber);
 
+
+  Future<Either<Failure, BaseResponse>> UpdateProfile(UpdateProfileRequest updateProfileRequest);
+
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 
   Future<Either<Failure, LookupsModel>> getLookups();

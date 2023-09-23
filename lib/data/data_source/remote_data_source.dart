@@ -1,15 +1,10 @@
-import 'dart:math';
-
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
-import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
-import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
-import 'package:taxi_for_you/presentation/trip_execution/bloc/trip_execution_bloc.dart';
 
 import '../../domain/model/general_response.dart';
 import '../../domain/model/lookups_model.dart';
@@ -50,6 +45,8 @@ abstract class RemoteDataSource {
   Future<GeneralResponse> tripSummary(int userId, int tripId);
 
   Future<BaseResponse> ratePassenger(int passengerId, double rateNumber);
+
+  Future<BaseResponse> updateProfile(UpdateProfileRequest updateProfileRequest);
 
   Future<LookupsModel> getLookups();
 
@@ -184,5 +181,16 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> ratePassenger(int passengerId, double rateNumber) async {
     return await _appServiceClient.ratePassenger(passengerId, rateNumber);
+  }
+
+  @override
+  Future<BaseResponse> updateProfile(
+      UpdateProfileRequest updateProfileRequest) async {
+    return await _appServiceClient.updateProfile(
+        updateProfileRequest.driverId,
+        updateProfileRequest.firstName,
+        updateProfileRequest.lastName,
+        updateProfileRequest.email,
+        updateProfileRequest.profilePhoto);
   }
 }

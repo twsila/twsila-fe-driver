@@ -20,9 +20,13 @@ class AppStrings {
   static const cisternsType = "cisterns_type";
   static const goodevening = "good_evening";
   static const clientNotes = "client_notes";
+  static const selectLocationOnMap = "select_location_on_map";
   static const photos = "photos";
+  static const currentCity = "current_city";
   static const pleaseRatePassenger = "please_rate_passenger";
   static const trip = "trip";
+  static const city = "city";
+  static const pleaseEnterCity = "please_enter_city";
   static const withK = "with";
   static const thinkingOfTravel = "thinking_of_travel";
   static const passengerWasRatedBy = "passenger_was_rated_by";
@@ -238,6 +242,13 @@ class AppStrings {
   static const String carInfo = "car_info";
   static const String pleaseEnterServiceYouProvide =
       "please_enter_service_you_provide_it";
+
+
+  //Location Errors
+  static const locationDisabled = "location_disabled";
+  static const locationDenied = "location_denied";
+  static const locationDeniedLong = "location_denied_long";
+  static const locationEnable = "enable_location";
 
   // error handler
   static const String badRequestError = "bad_request_error";

@@ -192,42 +192,40 @@ class _MyTripsPageState extends State<MyTripsPage> {
   }
 
   Widget tabsTitleWidget(int index) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              current = index;
-              BlocProvider.of<MyTripsBloc>(context)
-                  .add(GetTripsTripModuleId(items[current].tripModelTypeId));
-            });
-          },
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            margin: const EdgeInsets.all(5),
-            width: AppSize.s100,
-            height: AppSize.s28,
-            decoration: BoxDecoration(
-                color:
-                    current == index ? Colors.white : ColorManager.purpleFade,
-                borderRadius: BorderRadius.circular(2),
-                border: Border.all(
-                    color: current == index ? Colors.white : Colors.transparent,
-                    width: 2)),
-            child: Center(
-              child: Text(
-                items[index].title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: FontSize.s14,
-                    color: current == index
-                        ? ColorManager.headersTextColor
-                        : ColorManager.purpleMainTextColor),
-              ),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          current = index;
+          BlocProvider.of<MyTripsBloc>(context)
+              .add(GetTripsTripModuleId(items[current].tripModelTypeId));
+        });
+      },
+      child: FittedBox(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.all(5),
+          width: AppSize.s100,
+          decoration: BoxDecoration(
+              color:
+                  current == index ? Colors.white : ColorManager.purpleFade,
+              borderRadius: BorderRadius.circular(2),
+              border: Border.all(
+                  color:
+                      current == index ? Colors.white : Colors.transparent,
+                  width: 2)),
+          child: Center(
+            child: Text(
+              items[index].title,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize.s14,
+                  color: current == index
+                      ? ColorManager.headersTextColor
+                      : ColorManager.purpleMainTextColor),
             ),
           ),
         ),
-      ],
+      ),
     );
   }
 
