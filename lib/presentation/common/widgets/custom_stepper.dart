@@ -538,7 +538,6 @@ class _CustomStepperState extends State<CustomStepper>
                             : widget.steps[index].continueButtonBGColor != null
                                 ? widget.steps[index].continueButtonBGColor
                                 : ColorManager.primary;
-
                       }),
                       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           buttonPadding),
@@ -863,7 +862,6 @@ class _CustomStepperState extends State<CustomStepper>
               AnimatedSize(
                 curve: Curves.fastOutSlowIn,
                 duration: kThemeAnimationDuration,
-                vsync: this,
                 child: widget.steps[widget.currentStep].content,
               ),
               _buildVerticalControls(widget.currentStep),

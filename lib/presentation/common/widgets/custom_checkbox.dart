@@ -25,7 +25,6 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Checkbox(
             checkColor: Colors.white,
@@ -39,9 +38,12 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
                 widget._onChange(newValue ?? false);
               });
             }),
-        Text(
-          widget._fieldName,
-          style: getRegularStyle(color: ColorManager.primary,fontSize: FontSize.s14),
+        Expanded(
+          child: Text(
+            widget._fieldName,
+            style: getRegularStyle(
+                color: ColorManager.primary, fontSize: FontSize.s14),
+          ),
         ),
       ],
     );

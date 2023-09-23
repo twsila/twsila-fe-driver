@@ -109,8 +109,10 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
         children: [
           Text(
             widget.titleText,
-            style: getRegularStyle(
-                color: ColorManager.titlesTextColor, fontSize: FontSize.s14),
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(color: ColorManager.titlesTextColor),
           ),
           imagefiles.isNotEmpty
               ? Wrap(
@@ -156,22 +158,16 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
               : Container(),
           widget.addMultiplePhotos == false && imagefiles.length > 0
               ? Container()
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    CustomTextButton(
-                      text: widget.btnText.tr(),
-                      width: AppSize.s140,
-                      height: AppSize.s50,
-                      isWaitToEnable: false,
-                      fontSize: widget.fontSize,
-                      backgroundColor: widget.btnBackgroundColor,
-                      icon: widget.btnIcon,
-                      onPressed: () {
-                        openImages();
-                      },
-                    )
-                  ],
+              : CustomTextButton(
+                  margin: 0,
+                  text: widget.btnText.tr(),
+                  isWaitToEnable: false,
+                  fontSize: widget.fontSize,
+                  backgroundColor: widget.btnBackgroundColor,
+                  icon: widget.btnIcon,
+                  onPressed: () {
+                    openImages();
+                  },
                 ),
         ],
       ),

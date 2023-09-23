@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:taxi_for_you/presentation/login/widgets/phone_view.dart';
+import 'package:taxi_for_you/presentation/login/view/widgets/phone_view.dart';
 
-import '../base/baseviewmodel.dart';
-import '../../domain/usecase/login_usecase.dart';
-import '../common/freezed_data_classes.dart';
-import '../common/state_renderer/state_renderer.dart';
-import '../common/state_renderer/state_renderer_impl.dart';
-import '../otp/view/verify_otp_view.dart';
+import '../../base/baseviewmodel.dart';
+import '../../../domain/usecase/login_usecase.dart';
+import '../../common/freezed_data_classes.dart';
+import '../../common/state_renderer/state_renderer.dart';
+import '../../common/state_renderer/state_renderer_impl.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
@@ -73,7 +72,7 @@ class LoginViewModel extends BaseViewModel
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
     (await _loginUseCase.execute(LoginUseCaseInput(
-            loginObject.countryCode, loginObject.phoneNumber,{})))
+            loginObject.countryCode, loginObject.phoneNumber, {})))
         .fold(
             (failure) => {
                   // left -> failure

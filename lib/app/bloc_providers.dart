@@ -21,7 +21,12 @@ import '../utils/location/map_provider.dart';
 blocProviders(BuildContext context) {
   return [
     BlocProvider.value(value: MapsBloc(MapsRepo())),
-    BlocProvider.value(value: LoginBloc(loginUseCase: instance())),
+    BlocProvider.value(
+        value: LoginBloc(
+      loginUseCase: instance(),
+      loginBOUseCase: instance(),
+      appPreferences: instance(),
+    )),
     BlocProvider.value(
         value: VerifyOtpBloc(
             verifyOtpUseCase: instance(),
@@ -34,7 +39,8 @@ blocProviders(BuildContext context) {
             registrationUseCase: instance())),
     BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
     BlocProvider.value(value: MyProfileBloc(logoutUseCase: instance())),
-    BlocProvider.value(value: RatePassengerBloc(ratePassengerUseCase: instance())),
+    BlocProvider.value(
+        value: RatePassengerBloc(ratePassengerUseCase: instance())),
     BlocProvider.value(
         value: SearchTripsBloc(
             tripsUseCase: instance(), lookupsUseCase: instance())),
@@ -49,6 +55,5 @@ blocProviders(BuildContext context) {
             addOfferUseCase: instance(),
             tripSummaryUseCase: instance())),
     ChangeNotifierProvider(create: (_) => MapProvider()),
-
   ];
 }

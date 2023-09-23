@@ -1,22 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/domain/model/models.dart';
-import 'package:taxi_for_you/presentation/common/widgets/custom_dialog.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/otp/view/verify_otp_view.dart';
-import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
-import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/helpers/language_helper.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 
 import 'dart:math' as math;
-import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
-import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
@@ -26,7 +20,7 @@ import '../../common/widgets/page_builder.dart';
 import '../bloc/login_bloc.dart';
 
 class LoginView extends StatefulWidget {
-  String registerAs;
+  final String registerAs;
 
   LoginView({Key? key, required this.registerAs}) : super(key: key);
 
@@ -36,7 +30,6 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   CountryCodes selectedCountry = Constants.countryList.first;
   Function()? onPressFun;
@@ -48,18 +41,6 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     setCountryCodeValue(selectedCountry);
     super.initState();
-  }
-
-  void startLoading() {
-    setState(() {
-      _displayLoadingIndicator = true;
-    });
-  }
-
-  void stopLoading() {
-    setState(() {
-      _displayLoadingIndicator = false;
-    });
   }
 
   @override
@@ -82,27 +63,7 @@ class _LoginViewState extends State<LoginView> {
   Widget _getContentWidget(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state is LoginLoadingState) {
-          startLoading();
-        } else {
-          stopLoading();
-        }
-
-        if (state is LoginSuccessState) {
-          // _appPreferences.setUserLoggedIn();
-          _appPreferences.setDriver(state.driver);
-          if (_appPreferences.getCachedDriver() != null) {
-            String validMobileNumber =
-                LanguageHelper().replaceEnglishNumber(mobileNumber);
-            Navigator.pushNamed(context, Routes.verifyOtpRoute,
-                arguments: VerifyArguments(validMobileNumber, mobileNumber));
-          }
-        }
-
-        // if (state is LoginFailState) {
-        //   CustomDialog(context).showErrorDialog('title', 'desc', state.message);
-        // }
-        else if (state is LoginIsAllInputNotValid) {
+        if (state is LoginIsAllInputNotValid) {
           onPressFun = null;
         } else if (state is LoginIsAllInputValid) {
           onPressFun = () {
@@ -112,7 +73,11 @@ class _LoginViewState extends State<LoginView> {
             // BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
             //     validMobileNumber, _appPreferences.getAppLanguage()));
             Navigator.pushNamed(context, Routes.verifyOtpRoute,
-                arguments: VerifyArguments(validMobileNumber, mobileNumber));
+                arguments: VerifyArguments(
+                  validMobileNumber,
+                  mobileNumber,
+                  widget.registerAs,
+                ));
           };
         } else if (state is LoginIsAllInputNotValid) {
           onPressFun = null;

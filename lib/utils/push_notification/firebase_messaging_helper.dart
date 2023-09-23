@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/app/di.dart';
 
 class FirebaseMessagingHelper extends ChangeNotifier {
   static final _fbm = FirebaseMessaging.instance;
   static ValueNotifier<int> notificationCounter = ValueNotifier(0);
+  static final AppPreferences appPreferences = instance<AppPreferences>();
 
   Future<void> configure(BuildContext context) async {
     _fbm.requestPermission(
@@ -47,7 +49,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
       await navigateToNotifications(message);
     });
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    setFcmToken();
+    await setFcmToken();
   }
 
   static Future<void> navigateToNotifications(RemoteMessage message) async {
@@ -59,6 +61,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
   static Future<void> setFcmToken() async {
     await _fbm.getToken().then((token) {
       log("FCM token : $token");
+      FirebaseMessagingHelper.appPreferences.setFCMToken(token!);
     }).onError((error, stackTrace) {
       print("FCM token error: $error");
     });

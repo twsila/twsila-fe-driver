@@ -6,9 +6,7 @@ import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
-import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
-import 'package:taxi_for_you/presentation/trip_execution/bloc/trip_execution_bloc.dart';
 
 import '../../app/constants.dart';
 import '../../domain/model/car_brand_models_model.dart';
@@ -25,6 +23,12 @@ abstract class AppServiceClient {
 
   @POST("/drivers/login")
   Future<LoginResponse> login(
+      @Field("mobile") String mobile,
+      @Field("language") String language,
+      @Field("userDeviceDTO") Map<String, dynamic> userDeviceDTO);
+
+  @POST("/bo/login")
+  Future<GeneralResponse> loginBO(
       @Field("mobile") String mobile,
       @Field("language") String language,
       @Field("userDeviceDTO") Map<String, dynamic> userDeviceDTO);
@@ -80,12 +84,13 @@ abstract class AppServiceClient {
 
   @POST("/drivers/offers/select-trip")
   Future<BaseResponse> getTripsByModuleId(
-      @Field("tripModelType") String tripModelType, @Field("userId") int userId);
-
+      @Field("tripModelType") String tripModelType,
+      @Field("userId") int userId);
 
   @POST("/drivers/offers/select-my-trip")
   Future<BaseResponse> getMyTripsByModuleId(
-      @Field("tripModelType") String tripModelType, @Field("userId") int userId);
+      @Field("tripModelType") String tripModelType,
+      @Field("userId") int userId);
 
   @POST("/drivers/offers/add")
   Future<GeneralResponse> addOffer(

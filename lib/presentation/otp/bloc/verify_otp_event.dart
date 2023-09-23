@@ -21,10 +21,3 @@ class VerifyOtpBEEvent extends VerifyOtpEvent {
 
   VerifyOtpBEEvent(this.mobileNumber, this.otpCode);
 }
-
-class MakeLoginEvent extends VerifyOtpEvent {
-  String mobileNumber;
-  String appLanguage;
-
-  MakeLoginEvent(this.mobileNumber, this.appLanguage);
-}

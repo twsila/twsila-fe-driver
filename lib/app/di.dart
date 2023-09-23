@@ -30,7 +30,7 @@ import '../domain/repository/repository.dart';
 import '../domain/usecase/generate_otp_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/mytrips_usecase.dart';
-import '../presentation/login/login_viewmodel.dart';
+import '../presentation/login/view/login_viewmodel.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -71,6 +71,8 @@ Future<void> initAppModule() async {
       () => RepositoryImpl(instance(), instance(), instance()));
 
   instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+
+  instance.registerFactory<LoginBOUseCase>(() => LoginBOUseCase(instance()));
   instance
       .registerFactory<VerifyOtpUseCase>(() => VerifyOtpUseCase(instance()));
   instance.registerFactory<GenerateOtpUseCase>(
@@ -101,10 +103,22 @@ Future<void> initAppModule() async {
 initLoginModule() {
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
     instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<LoginBOUseCase>()) {
+    instance.registerFactory<LoginBOUseCase>(() => LoginBOUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<LoginViewModel>()) {
     instance.registerLazySingleton<LoginViewModel>(
         () => LoginViewModel(instance()));
+  }
+  if (!GetIt.I.isRegistered<LoginBloc>()) {
     instance.registerLazySingleton<LoginBloc>(
-        () => LoginBloc(loginUseCase: instance()));
+      () => LoginBloc(
+        loginUseCase: instance(),
+        loginBOUseCase: instance(),
+        appPreferences: instance(),
+      ),
+    );
   }
 }
 

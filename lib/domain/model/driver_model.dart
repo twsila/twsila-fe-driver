@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import '../../data/response/responses.dart';
-
 Driver driverModelFromJson(String str) => Driver.fromJson(json.decode(str));
 
 String driverModelToJson(Driver data) => json.encode(data.toJson());
@@ -102,11 +100,10 @@ class Driver {
         token: json["token"] ?? "",
         userDevice: json["userDevice"] ??
             UserDevice(
-                id: 0,
-                registrationId: 'registrationId',
-                deviceOs: 'deviceOs',
-                appVersion: 'appVersion',
-                userId: 0),
+              registrationId: 'registrationId',
+              deviceOs: 'deviceOs',
+              appVersion: 'appVersion',
+            ),
         tokenExpirationTime: json["tokenExpirationTime"] ?? "",
       );
 
@@ -239,33 +236,25 @@ UserDevice userDeviceFromJson(String str) =>
 String userDeviceToJson(UserDevice data) => json.encode(data.toJson());
 
 class UserDevice {
-  int id;
-  String registrationId;
-  String deviceOs;
-  String appVersion;
-  int userId;
+  String? registrationId;
+  String? deviceOs;
+  String? appVersion;
 
   UserDevice({
-    required this.id,
-    required this.registrationId,
-    required this.deviceOs,
-    required this.appVersion,
-    required this.userId,
+    this.registrationId,
+    this.appVersion,
+    this.deviceOs,
   });
 
-  factory UserDevice.fromJson(Map<String, dynamic> json) => UserDevice(
-        id: json["id"],
-        registrationId: json["registrationId"],
-        deviceOs: json["deviceOs"],
-        appVersion: json["appVersion"],
-        userId: json["userId"],
-      );
+  UserDevice.fromJson(Map<String, dynamic> json) {
+    registrationId = json['registrationId'];
+    deviceOs = json['deviceOS'];
+    appVersion = json['appVersion'];
+  }
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "registrationId": registrationId,
         "deviceOs": deviceOs,
         "appVersion": appVersion,
-        "userId": userId,
       };
 }

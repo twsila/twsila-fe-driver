@@ -1,9 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:taxi_for_you/app/di.dart';
-import 'package:taxi_for_you/domain/model/driver_model.dart';
-import 'package:taxi_for_you/domain/model/general_response.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/constants.dart';
@@ -41,7 +38,6 @@ class DioFactory {
 
     dio.interceptors.add(
       InterceptorsWrapper(
-
         onRequest: (options, handler) async {
           // Add the access token to the request header
           String token = await _appPreferences.isUserLoggedIn()
@@ -55,7 +51,6 @@ class DioFactory {
             // If a 401 response is received, refresh the access token
             String newAccessToken = await refreshToken();
             await _appPreferences.setRefreshedToken(newAccessToken);
-
 
             // Update the request header with the new access token
             e.requestOptions.headers['Authorization'] =
@@ -84,8 +79,9 @@ class DioFactory {
   Future<String> refreshToken() async {
     Response response =
         await Dio(BaseOptions(headers: {"Content-Type": "application/json"}))
-            .post(Constants.baseUrl + '/refresh-token',
-                data: {"mobileNumber": _appPreferences.getCachedDriver()?.mobile ?? ""});
+            .post(Constants.baseUrl + '/refresh-token', data: {
+      "mobileNumber": _appPreferences.getCachedDriver()?.mobile ?? ""
+    });
     print(response.data["result"]);
 
     return response.data["result"];

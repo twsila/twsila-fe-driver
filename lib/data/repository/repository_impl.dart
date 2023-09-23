@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/data/mapper/driver.dart';
-import 'package:taxi_for_you/data/mapper/mapper.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
@@ -13,13 +10,10 @@ import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
-import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
-import 'package:taxi_for_you/utils/helpers/cast_helpers.dart';
 
 import '../../domain/model/driver_model.dart';
-import '../../domain/model/models.dart';
 import '../../domain/model/trip_details_model.dart';
 import '../../domain/model/verify_otp_model.dart';
 import '../../domain/repository/repository.dart';
@@ -45,6 +39,35 @@ class RepositoryImpl implements Repository {
       // its connected to internet, its safe to call API
       try {
         var response = await _remoteDataSource.login(loginRequest);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          // success
+          // return either right
+          // return data
+          //save driver data
+          return Right(LoginResponse.fromJson(response.result!).toDomain());
+        } else {
+          // failure --return business error
+          // return either left
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Driver>> loginBO(LoginRequest loginRequest) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        var response = await _remoteDataSource.loginBO(loginRequest);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           // success
@@ -270,7 +293,6 @@ class RepositoryImpl implements Repository {
         final response =
             await _remoteDataSource.tripsByModuleId(tripTypeModuleId, userId);
 
-
         if (response.success == ApiInternalStatus.SUCCESS) {
           List<TripDetailsModel> trips = List<TripDetailsModel>.from(
               response.result!.map((x) => TripDetailsModel.fromJson(x)));
@@ -289,6 +311,7 @@ class RepositoryImpl implements Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+
   @override
   Future<Either<Failure, List<TripDetailsModel>>> getMyTrips(
       String tripTypeModuleId, int userId) async {
@@ -439,11 +462,13 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, BaseResponse>> ratePassenger(int passengerId, double ratingNumber) async {
+  Future<Either<Failure, BaseResponse>> ratePassenger(
+      int passengerId, double ratingNumber) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.ratePassenger(passengerId,ratingNumber);
+        final response =
+            await _remoteDataSource.ratePassenger(passengerId, ratingNumber);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

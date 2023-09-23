@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_view.dart';
 import 'package:taxi_for_you/presentation/main/pages/mytrips/view/mytrips_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/view/search_trips_page.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 
 import '../../utils/location/map_provider.dart';
 import '../../utils/resources/assets_manager.dart';
@@ -51,48 +53,68 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: pages[_currentIndex],
-      bottomNavigationBar: BlocConsumer<MapsBloc, MapsState>(
-        listener: (context, state) {
-          if (state is CurrentLocationFailed) {
-            ShowDialogHelper.showErrorMessage(state.errorMessage, context);
-          } else if (state is CurrentLocationLoadedSuccessfully) {
-            Provider.of<MapProvider>(context, listen: false).currentLocation =
-                state.currentLocation;
-          }
-        },
-        builder: (context, state) {
-          return Container(
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(color: ColorManager.lightGrey, spreadRadius: AppSize.s1)
-            ]),
-            child: BottomNavigationBar(
-              selectedItemColor: ColorManager.headersTextColor,
-              unselectedItemColor: ColorManager.hintTextColor,
-              currentIndex: _currentIndex,
-              backgroundColor: ColorManager.thirdAccentColor,
-              onTap: onTap,
-              items: [
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(ImageAssets.searchTripsInactiveIcon),
-                    label: AppStrings.searchTrips.tr(),
-                    activeIcon:
-                        SvgPicture.asset(ImageAssets.searchTripsActiveIcon)),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(ImageAssets.myTripsInactiveIcon),
-                    label: AppStrings.myTrips.tr(),
-                    activeIcon:
-                        SvgPicture.asset(ImageAssets.myTripsActiveIcon)),
-                BottomNavigationBarItem(
-                    icon: SvgPicture.asset(ImageAssets.profileInactiveIcon),
-                    label: AppStrings.myProfile.tr(),
-                    activeIcon:
-                        SvgPicture.asset(ImageAssets.profileActiveIcon)),
-              ],
-            ),
+    return WillPopScope(
+      onWillPop: () async {
+        CustomDialog(context).showCupertinoDialog(
+            AppStrings.logout.tr(),
+            AppStrings.areYouSureYouWantToLogout.tr(),
+            AppStrings.confirmLogout.tr(),
+            AppStrings.cancel.tr(),
+            ColorManager.error, () {
+          BlocProvider.of<MyProfileBloc>(context).add(
+            logoutEvent(context),
           );
-        },
+          Navigator.pop(context);
+        }, () {
+          Navigator.pop(context);
+        });
+        return true;
+      },
+      child: Scaffold(
+        body: pages[_currentIndex],
+        bottomNavigationBar: BlocConsumer<MapsBloc, MapsState>(
+          listener: (context, state) {
+            if (state is CurrentLocationFailed) {
+              ShowDialogHelper.showErrorMessage(state.errorMessage, context);
+            } else if (state is CurrentLocationLoadedSuccessfully) {
+              Provider.of<MapProvider>(context, listen: false).currentLocation =
+                  state.currentLocation;
+            }
+          },
+          builder: (context, state) {
+            return Container(
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                    color: ColorManager.lightGrey, spreadRadius: AppSize.s1)
+              ]),
+              child: BottomNavigationBar(
+                selectedItemColor: ColorManager.headersTextColor,
+                unselectedItemColor: ColorManager.hintTextColor,
+                currentIndex: _currentIndex,
+                backgroundColor: ColorManager.thirdAccentColor,
+                onTap: onTap,
+                items: [
+                  BottomNavigationBarItem(
+                      icon:
+                          SvgPicture.asset(ImageAssets.searchTripsInactiveIcon),
+                      label: AppStrings.searchTrips.tr(),
+                      activeIcon:
+                          SvgPicture.asset(ImageAssets.searchTripsActiveIcon)),
+                  BottomNavigationBarItem(
+                      icon: SvgPicture.asset(ImageAssets.myTripsInactiveIcon),
+                      label: AppStrings.myTrips.tr(),
+                      activeIcon:
+                          SvgPicture.asset(ImageAssets.myTripsActiveIcon)),
+                  BottomNavigationBarItem(
+                      icon: SvgPicture.asset(ImageAssets.profileInactiveIcon),
+                      label: AppStrings.myProfile.tr(),
+                      activeIcon:
+                          SvgPicture.asset(ImageAssets.profileActiveIcon)),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

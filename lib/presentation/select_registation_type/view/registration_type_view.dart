@@ -8,7 +8,6 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
-import '../../common/widgets/custom_language_widget.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
 import '../../login/view/login_view.dart';
@@ -64,8 +63,11 @@ class _RegistrationTypesViewState extends State<RegistrationTypesView> {
               ImageAssets.captainApplyIcon,
               AppStrings.registerAsACaptain.tr(),
               AppStrings.addOneCar.tr(), onTap: () {
-            Navigator.pushNamed(context, Routes.loginRoute,
-                arguments: LoginViewArguments(RegistrationConstants.captain));
+            Navigator.pushNamed(
+              context,
+              Routes.loginRoute,
+              arguments: LoginViewArguments(RegistrationConstants.captain),
+            );
           }),
           const SizedBox(
             height: AppSize.s16,
@@ -73,7 +75,14 @@ class _RegistrationTypesViewState extends State<RegistrationTypesView> {
           registrationTypeCard(
               ImageAssets.boApplyIcon,
               AppStrings.registerAsCompanyOwner.tr(),
-              AppStrings.wantToAddAndManageMultipleCars.tr())
+              AppStrings.wantToAddAndManageMultipleCars.tr(), onTap: () {
+            Navigator.pushNamed(
+              context,
+              Routes.loginRoute,
+              arguments:
+                  LoginViewArguments(RegistrationConstants.businessOwner),
+            );
+          })
         ],
       ),
     );

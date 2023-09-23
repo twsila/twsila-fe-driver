@@ -52,6 +52,37 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
+  Future<GeneralResponse> loginBO(
+    mobile,
+    language,
+    userDeviceDTO,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'mobile': mobile,
+      'language': language,
+      'userDeviceDTO': userDeviceDTO,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<GeneralResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/bo/login',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = GeneralResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<GenerateOtpModel> generateOtp(mobile) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

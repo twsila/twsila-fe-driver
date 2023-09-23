@@ -27,89 +27,97 @@ class _CustomScaffoldState extends State<CustomScaffold> {
         }
         return !widget.pageBuilder.displayLoadingIndicator;
       },
-      child: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              // image: widget.pageBuilder.hasBackgroundImage
-              //     ? DecorationImage(image: AssetImage(Image.sanlam_bg), fit: BoxFit.cover)
-              //     : null,
-            ),
-            child: SafeArea(
-              child: Scaffold(
-                key: widget.pageBuilder.scaffoldKey,
-                extendBodyBehindAppBar:
-                    widget.pageBuilder.extendBodyBehindAppBar,
-                backgroundColor: Colors.transparent,
-                resizeToAvoidBottomInset:
-                    widget.pageBuilder.resizeToAvoidBottomInsets,
-                appBar: !widget.pageBuilder.appbar
-                    ? null
-                    : AppBar(
-                        automaticallyImplyLeading:
-                            widget.pageBuilder.allowBackButtonInAppBar,
-                        primary: true,
-                        systemOverlayStyle: SystemUiOverlayStyle(
-                            statusBarColor: ColorManager.secondaryColor),
-                        actions: widget.pageBuilder.appBarActions,
-                        leading: (widget.pageBuilder.allowBackButtonInAppBar)
-                            ? Semantics(
-                                label: "Sanlam_back_button",
-                                child: CustomBackButton(
-                                  onPressed: () {
-                                    FocusScope.of(widget.pageBuilder.context)
-                                        .unfocus();
-                                    if (widget.pageBuilder.backButtonCallBack !=
-                                        null) {
-                                      widget.pageBuilder.backButtonCallBack!();
-                                    } else {
-                                      Navigator.pop(widget.pageBuilder.context);
-                                    }
-                                  },
-                                ),
-                              )
-                            : null,
-                        title: _buildAppbarTitle(),
-                        backgroundColor:
-                            widget.pageBuilder.appBarBackgroundColor ??
-                                Colors.transparent,
-                        // Material 3, disable scroll elevation
-                        scrolledUnderElevation: 0,
-                        centerTitle: widget.pageBuilder.centerTitle ?? false,
-                        iconTheme: IconThemeData(color: Colors.black),
-                        elevation: widget.pageBuilder.elevation ?? 0,
-                      ),
-                body: widget.pageBuilder.screenTitle != null
-                    ? SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  widget.pageBuilder.screenTitle!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                              ),
-                              _buildBody(widget.pageBuilder)
-                            ],
-                          ),
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                // image: widget.pageBuilder.hasBackgroundImage
+                //     ? DecorationImage(image: AssetImage(Image.sanlam_bg), fit: BoxFit.cover)
+                //     : null,
+              ),
+              child: SafeArea(
+                child: Scaffold(
+                  key: widget.pageBuilder.scaffoldKey,
+                  extendBodyBehindAppBar:
+                      widget.pageBuilder.extendBodyBehindAppBar,
+                  backgroundColor: Colors.transparent,
+                  resizeToAvoidBottomInset:
+                      widget.pageBuilder.resizeToAvoidBottomInsets,
+                  appBar: !widget.pageBuilder.appbar
+                      ? null
+                      : AppBar(
+                          automaticallyImplyLeading:
+                              widget.pageBuilder.allowBackButtonInAppBar,
+                          primary: true,
+                          systemOverlayStyle: SystemUiOverlayStyle(
+                              statusBarColor: ColorManager.secondaryColor),
+                          actions: widget.pageBuilder.appBarActions,
+                          leading: (widget.pageBuilder.allowBackButtonInAppBar)
+                              ? Semantics(
+                                  label: "Sanlam_back_button",
+                                  child: CustomBackButton(
+                                    onPressed: () {
+                                      FocusScope.of(widget.pageBuilder.context)
+                                          .unfocus();
+                                      if (widget
+                                              .pageBuilder.backButtonCallBack !=
+                                          null) {
+                                        widget
+                                            .pageBuilder.backButtonCallBack!();
+                                      } else {
+                                        Navigator.pop(
+                                            widget.pageBuilder.context);
+                                      }
+                                    },
+                                  ),
+                                )
+                              : null,
+                          title: _buildAppbarTitle(),
+                          backgroundColor:
+                              widget.pageBuilder.appBarBackgroundColor ??
+                                  Colors.transparent,
+                          // Material 3, disable scroll elevation
+                          scrolledUnderElevation: 0,
+                          centerTitle: widget.pageBuilder.centerTitle ?? false,
+                          iconTheme: IconThemeData(color: Colors.black),
+                          elevation: widget.pageBuilder.elevation ?? 0,
                         ),
-                      )
-                    : _buildBody(widget.pageBuilder),
-                floatingActionButton: widget.pageBuilder.floatingActionButton,
+                  body: widget.pageBuilder.screenTitle != null
+                      ? SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    widget.pageBuilder.screenTitle!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                                ),
+                                _buildBody(widget.pageBuilder)
+                              ],
+                            ),
+                          ),
+                        )
+                      : _buildBody(widget.pageBuilder),
+                  floatingActionButton: widget.pageBuilder.floatingActionButton,
+                ),
               ),
             ),
-          ),
-          if (widget.pageBuilder.displayLoadingIndicator) EasyLoader(),
-        ],
+            if (widget.pageBuilder.displayLoadingIndicator) EasyLoader(),
+          ],
+        ),
       ),
     );
   }

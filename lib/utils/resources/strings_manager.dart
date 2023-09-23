@@ -3,6 +3,7 @@ class AppStrings {
   static const skip = "skip";
   static const en = 'en';
   static const ar = 'ar';
+  static const gender = "gender";
   static const username = "username_hint";
   static const password = "password_hint";
   static const usernameError = "username_error";
@@ -56,6 +57,7 @@ class AppStrings {
   static const success = "success";
   static const userNameInvalid = "username_hint_message";
   static const mobileNumberInvalid = "mobile_number_hint_message";
+  static const mobileNumber = "mobile_number";
   static const passwordInvalid = "password_hint_message";
   static const alreadyHaveAccount = "already_have_account";
   static const register = "register";
@@ -180,6 +182,23 @@ class AppStrings {
   static const enterFirstNameHere = "first_name_hint";
   static const enterLastNameHere = "last_name_hint";
 
+  //BO Strings
+  static const ownerfirstName = "owner_first_name";
+  static const ownerlastName = "owner_last_name";
+  static const enterFirstNameHint = "enter_first_name_hint";
+  static const enterLastNameHint = "enter_last_name_hint";
+  static const companyName = "company_name";
+  static const companyNameHint = "company_name_hint";
+  static const commercialNumber = "commercial_number";
+  static const commercialNumberHint = "commercial_number_hint";
+  static const taxNumber = "tax_number";
+  static const nationalID = "national_id";
+  static const nationalIDHint = "national_id_hint";
+  static const optionalEmail = "optional_email";
+  static const uploadBOid = "upload_bo_id";
+  static const boImage = "bo_image";
+  static const termsAndCondition = "terms_and_condition";
+
   static const String carDocumentFrontImage = "car_documents_front";
   static const String carDocumentBackImage = "car_documents_back";
   static const String carDocumentExpireDate = "car_documents_expire_date";
@@ -286,6 +305,7 @@ class AppStrings {
   //captain registration
 
   static const pleaseResumePersonalData = 'please_resume_personal_data';
+  static const pleaseResumeCompanyData = 'please_resume_company_data';
   static const uploadCaptainPhoto = 'upload_captain_photo';
   static const userName = 'user_name';
   static const enterUserNameHere = 'user_name_hint';

@@ -5,7 +5,7 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../utils/resources/color_manager.dart';
 import 'common/widgets/CustomAutoFullSms.dart';
-import 'login/widgets/phone_view.dart';
+import 'login/view/widgets/phone_view.dart';
 
 class CustomWidgetsView extends StatefulWidget {
   const CustomWidgetsView({Key? key}) : super(key: key);

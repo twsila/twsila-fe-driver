@@ -8,15 +8,16 @@ class LoginInitial extends LoginState {}
 class LoginLoadingState extends LoginState {}
 
 class LoginSuccessState extends LoginState {
-  Driver driver;
+  final Driver driver;
 
   LoginSuccessState({required this.driver});
 }
 
 class LoginFailState extends LoginState {
-  String message;
+  final String message;
+  final String errorCode;
 
-  LoginFailState(this.message);
+  LoginFailState(this.message, this.errorCode);
 }
 
 class LoginIsAllInputValid extends LoginState {}

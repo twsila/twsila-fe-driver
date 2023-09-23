@@ -77,11 +77,12 @@ dependencies:
   firebase_messaging: ^14.6.1
   firebase_core: ^2.13.0
 
+  package_info_plus: ^4.0.2
+
   flutter_staggered_grid_view: ^0.6.2
   flutter_launcher_icons: ^0.13.1
   image: ^4.0.17
   path: ^1.8.2
-  charts_flutter: ^0.12.0
   im_stepper: ^1.0.1+1
   url_launcher: ^6.1.11
   location: ^4.4.0

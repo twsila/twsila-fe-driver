@@ -331,9 +331,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                             children: [widget.suffixIcon!],
                           )
                         : null,
-                errorStyle: TextStyle(
-                  color: ColorManager.error,
-                ),
+                errorStyle: TextStyle(color: ColorManager.error, fontSize: 12),
                 // helperStyle: Theme.of(context)
                 //     .textTheme
                 //     .headline5!

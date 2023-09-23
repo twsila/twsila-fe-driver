@@ -21,6 +21,8 @@ import '../response/responses.dart';
 abstract class RemoteDataSource {
   Future<LoginResponse> login(LoginRequest loginRequest);
 
+  Future<GeneralResponse> loginBO(LoginRequest loginRequest);
+
   Future<GenerateOtpModel> generateOtp(GenerateOTPRequest generateOTPRequest);
 
   Future<VerifyOtpModel> verifyOtp(VerifyOTPRequest verifyOTPRequest);
@@ -64,6 +66,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<LoginResponse> login(LoginRequest loginRequest) async {
     return await _appServiceClient.login(loginRequest.mobileNumber,
+        loginRequest.language, loginRequest.userDeviceDTO);
+  }
+
+  @override
+  Future<GeneralResponse> loginBO(LoginRequest loginRequest) async {
+    return await _appServiceClient.loginBO(loginRequest.mobileNumber,
         loginRequest.language, loginRequest.userDeviceDTO);
   }
 
@@ -138,10 +146,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       String tripTypeModuleId, int userId) async {
     return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId);
   }
+
   @override
   Future<BaseResponse> myTripsByModuleId(
       String tripTypeModuleId, int userId) async {
-    return await _appServiceClient.getMyTripsByModuleId(tripTypeModuleId, userId);
+    return await _appServiceClient.getMyTripsByModuleId(
+        tripTypeModuleId, userId);
   }
 
   @override
@@ -173,6 +183,6 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<BaseResponse> ratePassenger(int passengerId, double rateNumber) async {
-    return await _appServiceClient.ratePassenger(passengerId,rateNumber);
+    return await _appServiceClient.ratePassenger(passengerId, rateNumber);
   }
 }

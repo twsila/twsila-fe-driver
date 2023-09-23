@@ -4,14 +4,13 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
 import 'package:taxi_for_you/utils/resources/styles_manager.dart';
 
-import '../../../app/di.dart';
-import '../../../utils/resources/assets_manager.dart';
-import '../../../utils/resources/color_manager.dart';
-import '../../../utils/resources/font_manager.dart';
-import '../../../utils/resources/routes_manager.dart';
-import '../../../utils/resources/strings_manager.dart';
-import '../../../utils/resources/values_manager.dart';
-import '../../common/widgets/custom_text_button.dart';
+import '../../../../app/di.dart';
+import '../../../../utils/resources/assets_manager.dart';
+import '../../../../utils/resources/color_manager.dart';
+import '../../../../utils/resources/font_manager.dart';
+import '../../../../utils/resources/strings_manager.dart';
+import '../../../../utils/resources/values_manager.dart';
+import '../../../common/widgets/custom_text_button.dart';
 import '../login_viewmodel.dart';
 
 class PhoneLoginView extends StatefulWidget {
@@ -102,7 +101,6 @@ class _PhoneLoginViewState extends State<PhoneLoginView> {
                           _formKey.currentState!.validate()) {
                         initVerifyOtpModule();
                         _viewModel.goNext();
-
                       }
                     },
                   )

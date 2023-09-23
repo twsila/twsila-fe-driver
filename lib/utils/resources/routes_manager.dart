@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_screen.dart';
 import 'package:taxi_for_you/presentation/rate_passenger/view/rate_passenger_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
@@ -100,8 +101,9 @@ class RouteGenerator {
         initVerifyOtpModule();
         return MaterialPageRoute(
             builder: (_) => VerifyOtpView(
-                  args.mobileNumberForApi,
-                  args.mobileNumberForDisplay,
+                  mobileNumberForApi: args.mobileNumberForApi,
+                  mobileNumberForDisplay: args.mobileNumberForDisplay,
+                  registerAs: args.registerAs,
                 ));
       case Routes.tripDetails:
         final args = settings.arguments as TripDetailsArguments;

@@ -28,16 +28,3 @@ class VerifyOtpFail extends VerifyOtpState {
 
   VerifyOtpFail(this.message, this.code);
 }
-
-class LoginSuccessState extends VerifyOtpState {
-  final Driver driver;
-
-  LoginSuccessState({required this.driver});
-}
-
-class LoginFailState extends VerifyOtpState {
-  final String message;
-  final String errorCode;
-
-  LoginFailState(this.message, this.errorCode);
-}

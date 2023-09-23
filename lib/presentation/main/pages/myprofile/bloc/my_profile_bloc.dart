@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 
 import '../../../../../app/app_prefs.dart';
@@ -24,7 +26,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
       logoutEvent event, Emitter<MyProfileState> emit) async {
     emit(MyProfileLoading());
     (await logoutUseCase.execute(LogoutUseCaseInput(
-            _appPreferences.getCachedDriver()!.userDevice!.id!,
+            _appPreferences.getCachedDriver()!.id,
             _appPreferences.getCachedDriver()!.userDevice!.registrationId!,
             _appPreferences.getAppLanguage())))
         .fold(
@@ -36,7 +38,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
                 }, (logoutModel) async {
       // right -> data (success)
       _appPreferences.removeCachedDriver();
-      _appPreferences.setUserLoggedOut();
+      _appPreferences.setUserLoggedOut(event.context);
       emit(LoggedOutSuccessfully());
     });
   }

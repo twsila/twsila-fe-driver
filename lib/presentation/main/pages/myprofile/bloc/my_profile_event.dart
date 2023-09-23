@@ -4,7 +4,6 @@ part of 'my_profile_bloc.dart';
 abstract class MyProfileEvent {}
 
 class logoutEvent extends MyProfileEvent {
-
-  logoutEvent();
+  final BuildContext context;
+  logoutEvent(this.context);
 }
-

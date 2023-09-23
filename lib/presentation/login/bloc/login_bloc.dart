@@ -1,12 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:taxi_for_you/presentation/common/state_renderer/state_renderer.dart';
-import 'package:taxi_for_you/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
 
-import '../../../app/app_prefs.dart';
-import '../../../app/di.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../domain/usecase/login_usecase.dart';
 
@@ -16,35 +15,71 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginUseCase loginUseCase;
-  final AppPreferences _appPreferences = instance<AppPreferences>();
+  LoginBOUseCase loginBOUseCase;
+  final AppPreferences appPreferences;
 
-  LoginBloc({required this.loginUseCase}) : super(LoginInitial()) {
+  LoginBloc(
+      {required this.loginUseCase,
+      required this.loginBOUseCase,
+      required this.appPreferences})
+      : super(LoginInitial()) {
     on<CheckInputIsValidEvent>(_checkInputStatus);
     on<MakeLoginEvent>(_makeLogin);
+    on<MakeLoginBOEvent>(_makeBOLogin);
   }
 
   FutureOr<void> _makeLogin(
       MakeLoginEvent event, Emitter<LoginState> emit) async {
     emit(LoginLoadingState());
-    (await loginUseCase.execute(LoginUseCaseInput(
-            event.mobileNumber, event.appLanguage, {
-      "registrationId": "asda8sd84asd",
-      "deviceOs": "android",
-      "appVersion": "2.3,23"
-    })))
+    UserDevice userDevice = await setUserDevice();
+    (await loginUseCase.execute(
+      LoginUseCaseInput(
+        event.mobileNumber,
+        event.appLanguage,
+        userDevice.toJson(),
+      ),
+    ))
         .fold(
             (failure) => {
                   // left -> failure
                   //emit failure state
 
-                  emit(LoginFailState(failure.message))
+                  emit(LoginFailState(failure.message, failure.code.toString()))
+                }, (driverModel) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      // navigate to main screen
+      print(driverModel);
+      emit(LoginSuccessState(driver: driverModel));
+      // isUserLoggedInSuccessfullyStreamController.add(true);
+    });
+  }
+
+  FutureOr<void> _makeBOLogin(
+      MakeLoginBOEvent event, Emitter<LoginState> emit) async {
+    emit(LoginLoadingState());
+    UserDevice userDevice = await setUserDevice();
+    (await loginBOUseCase.execute(
+      LoginBOUseCaseInput(
+        event.mobileNumber,
+        event.appLanguage,
+        userDevice.toJson(),
+      ),
+    ))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(LoginFailState(failure.message, failure.code.toString()))
                 }, (driverModel) async {
       // right -> data (success)
       // content
       // emit success state
       // navigate to main screen
 
-      LoginSuccessState(driver: driverModel);
+      emit(LoginSuccessState(driver: driverModel));
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }
@@ -56,5 +91,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } else {
       emit(LoginIsAllInputNotValid());
     }
+  }
+
+  Future<UserDevice> setUserDevice() async {
+    late UserDevice userDevice;
+
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String token = await appPreferences.getFCMToken() ?? '';
+
+    if (Platform.isIOS) {
+      userDevice = UserDevice(
+        deviceOs: 'iPhone',
+        appVersion: packageInfo.version,
+        registrationId: token,
+      );
+    } else {
+      userDevice = UserDevice(
+        deviceOs: 'Android',
+        appVersion: packageInfo.version,
+        registrationId: token,
+      );
+    }
+
+    return userDevice;
   }
 }

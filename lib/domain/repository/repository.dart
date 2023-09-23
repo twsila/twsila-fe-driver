@@ -1,12 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
-import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../data/network/failure.dart';
@@ -14,13 +12,14 @@ import '../../data/network/requests.dart';
 import '../model/general_response.dart';
 import '../model/generate_otp_model.dart';
 import '../model/logout_model.dart';
-import '../model/models.dart';
 import '../model/service_status_model.dart';
 import '../model/trip_details_model.dart';
 import '../model/verify_otp_model.dart';
 
 abstract class Repository {
   Future<Either<Failure, Driver>> login(LoginRequest loginRequest);
+
+  Future<Either<Failure, Driver>> loginBO(LoginRequest loginRequest);
 
   Future<Either<Failure, List<ServiceTypeModel>>> registrationServiceTypes();
 

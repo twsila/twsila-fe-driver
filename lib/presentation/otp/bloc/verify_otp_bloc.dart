@@ -8,7 +8,6 @@ import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
-import '../../../domain/model/driver_model.dart';
 
 part 'verify_otp_event.dart';
 
@@ -19,8 +18,6 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
   GenerateOtpUseCase generateOtpUseCase;
   LoginUseCase loginUseCase;
 
-  final AppPreferences _appPreferences = instance<AppPreferences>();
-
   VerifyOtpBloc(
       {required this.verifyOtpUseCase,
       required this.generateOtpUseCase,
@@ -29,7 +26,6 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     on<SendOtpEvent>(_sendOtp);
     on<ReSendOtpEvent>(_reSendOtp);
     on<VerifyOtpBEEvent>(_verifyOtp);
-    on<MakeLoginEvent>(_makeLogin);
   }
 
   FutureOr<void> _sendOtp(
@@ -70,36 +66,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
             (failure) => {
                   emit(VerifyOtpFail(failure.message, failure.code.toString()))
                 }, (generateOtp) {
-
       emit(VerifyOtpSuccess());
-    });
-  }
-
-  FutureOr<void> _makeLogin(
-      MakeLoginEvent event, Emitter<VerifyOtpState> emit) async {
-    emit(VerifyOtpLoading());
-    (await loginUseCase.execute(LoginUseCaseInput(
-            event.mobileNumber, event.appLanguage, {
-      "registrationId": "asda8sd84asd",
-      "deviceOs": "android",
-      "appVersion": "2.3,23"
-    })))
-        .fold(
-            (failure) => {
-                  // left -> failure
-                  //emit failure state
-
-                  emit(LoginFailState(failure.message, failure.code.toString()))
-                }, (driverModel) {
-      // right -> data (success)
-      // content
-      // emit success state
-      // navigate to main screen
-
-      // _appPreferences.setUserLoggedIn();
-      // _appPreferences.setDriver(driverModel);
-      emit(LoginSuccessState(driver: driverModel));
-      // isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }
 }

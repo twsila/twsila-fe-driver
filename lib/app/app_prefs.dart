@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 
@@ -12,6 +14,7 @@ const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED =
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String USER_SELECTED_COUNTRY = "USER_SELECTED_COUNTRY";
 const String DRIVER_MODEL = "DRIVER_MODEL";
+const String DRIVER_FCM_TOKEN = "DRIVER_FCM_TOKEN";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -69,6 +72,15 @@ class AppPreferences {
     return _sharedPreferences.getString(USER_SELECTED_COUNTRY);
   }
 
+  //USER Firebase Token
+  Future setFCMToken(String token) async {
+    await _sharedPreferences.setString(DRIVER_FCM_TOKEN, token);
+  }
+
+  Future<String?> getFCMToken() async {
+    return _sharedPreferences.getString(DRIVER_FCM_TOKEN);
+  }
+
   Driver? getCachedDriver() {
     Map<String, dynamic> driverMap = {};
     if (_sharedPreferences.getString(DRIVER_MODEL) != null &&
@@ -112,8 +124,10 @@ class AppPreferences {
     _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);
   }
 
-  Future<void> setUserLoggedOut() async {
+  Future<void> setUserLoggedOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
     _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, false);
+    Phoenix.rebirth(context);
   }
 
   Future<bool> isUserLoggedIn() async {
