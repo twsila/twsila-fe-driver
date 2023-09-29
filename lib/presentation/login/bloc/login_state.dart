@@ -8,7 +8,7 @@ class LoginInitial extends LoginState {}
 class LoginLoadingState extends LoginState {}
 
 class LoginSuccessState extends LoginState {
-  final Driver driver;
+  final DriverBaseModel driver;
 
   LoginSuccessState({required this.driver});
 }

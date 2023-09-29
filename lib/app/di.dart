@@ -10,6 +10,7 @@ import 'package:taxi_for_you/domain/usecase/change_trip_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/lookups_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/rate_passenger_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/registration_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
@@ -86,6 +87,8 @@ Future<void> initAppModule() async {
   instance.registerFactory<LogoutUseCase>(() => LogoutUseCase(instance()));
   instance.registerFactory<RegistrationUseCase>(
       () => RegistrationUseCase(instance()));
+  instance.registerFactory<RegistrationBOUseCase>(
+      () => RegistrationBOUseCase(instance()));
   instance.registerFactory<TripsUseCase>(() => TripsUseCase(instance()));
   instance.registerFactory<MyTripsUseCase>(() => MyTripsUseCase(instance()));
   instance.registerFactory<AcceptOfferUseCase>(

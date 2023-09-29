@@ -4,6 +4,7 @@ import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../domain/model/general_response.dart';
@@ -28,6 +29,9 @@ abstract class RemoteDataSource {
 
   Future<RegistrationResponse> registerCaptainWithService(
       RegistrationRequest registrationRequest);
+
+  Future<RegistrationResponse> registerBOWithService(
+      BusinessOwnerModel businessOwnerModel);
 
   Future<ServiceRegisterModel> servicesStatus(String userId);
 
@@ -136,6 +140,22 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.plateNumber!,
         registrationRequest.isAcknowledged!,
         registrationRequest.driverImages!);
+  }
+
+  @override
+  Future<RegistrationResponse> registerBOWithService(
+      BusinessOwnerModel businessOwnerModel) async {
+    return await _appServiceClient.registerBOWithService(
+        businessOwnerModel.firstName,
+        businessOwnerModel.lastName,
+        businessOwnerModel.mobile,
+        businessOwnerModel.email,
+        businessOwnerModel.gender,
+        businessOwnerModel.entityName!,
+        businessOwnerModel.taxNumber!,
+        businessOwnerModel.nationalId!,
+        businessOwnerModel.commercialNumber!,
+        businessOwnerModel.images!);
   }
 
   @override

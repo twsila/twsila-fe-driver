@@ -97,7 +97,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     late UserDevice userDevice;
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    String token = await appPreferences.getFCMToken() ?? '';
+    String token = await appPreferences.getFCMToken() ?? '1';
 
     if (Platform.isIOS) {
       userDevice = UserDevice(

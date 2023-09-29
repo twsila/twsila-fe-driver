@@ -4,17 +4,26 @@
 
 import 'dart:convert';
 
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
+
 Driver driverModelFromJson(String str) => Driver.fromJson(json.decode(str));
 
 String driverModelToJson(Driver data) => json.encode(data.toJson());
 
-class Driver {
-  int id;
-  String firstName;
-  String lastName;
-  String mobile;
-  String email;
-  String gender;
+abstract class DriverBaseModel {
+  int? id;
+  late String firstName;
+  late String lastName;
+  late String mobile;
+  late String email;
+  late String gender;
+  late String captainType;
+  String? token;
+  UserDevice? userDevice;
+  String? tokenExpirationTime;
+}
+
+class Driver extends DriverBaseModel {
   String dateOfBirth;
   String driverServiceType;
   String registrationStatus;
@@ -34,17 +43,14 @@ class Driver {
   List<DriverImage> images;
   double rating;
   bool acknowledged;
-  String token;
-  UserDevice? userDevice;
-  String? tokenExpirationTime;
 
   Driver({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.mobile,
-    required this.email,
-    required this.gender,
+    required id,
+    required firstName,
+    required lastName,
+    required mobile,
+    required email,
+    required gender,
     required this.dateOfBirth,
     required this.driverServiceType,
     required this.registrationStatus,
@@ -64,10 +70,21 @@ class Driver {
     required this.images,
     required this.rating,
     required this.acknowledged,
-    required this.token,
-    required this.userDevice,
-    required this.tokenExpirationTime,
-  });
+    required token,
+    required userDevice,
+    required tokenExpirationTime,
+  }) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.mobile = mobile;
+    this.email = email;
+    this.gender = gender;
+    this.token = token;
+    this.userDevice = userDevice;
+    this.tokenExpirationTime = tokenExpirationTime;
+    this.captainType = RegistrationConstants.captain;
+  }
 
   factory Driver.fromJson(Map<String, dynamic> json) => Driver(
         id: json["id"],
@@ -97,13 +114,8 @@ class Driver {
             json["images"].map((x) => DriverImage.fromJson(x))),
         rating: json["rating"],
         acknowledged: json["acknowledged"],
-        token: json["token"] ?? "",
-        userDevice: json["userDevice"] ??
-            UserDevice(
-              registrationId: 'registrationId',
-              deviceOs: 'deviceOs',
-              appVersion: 'appVersion',
-            ),
+        token: json["token"],
+        userDevice: json["userDevice"],
         tokenExpirationTime: json["tokenExpirationTime"] ?? "",
       );
 

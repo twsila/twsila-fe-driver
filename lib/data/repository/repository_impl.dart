@@ -11,6 +11,7 @@ import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../domain/model/driver_model.dart';
@@ -285,6 +286,31 @@ class RepositoryImpl implements Repository {
   }
 
   @override
+  Future<Either<Failure, RegistrationResponse>> registerBO(
+      BusinessOwnerModel businessOwnerModel) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.registerBOWithService(businessOwnerModel);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, List<TripDetailsModel>>> getTrips(
       String tripTypeModuleId, int userId) async {
     if (await _networkInfo.isConnected) {
@@ -487,11 +513,13 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, BaseResponse>> UpdateProfile(UpdateProfileRequest updateProfileRequest) async {
-    if (await _networkInfo.isConnected)  {
+  Future<Either<Failure, BaseResponse>> UpdateProfile(
+      UpdateProfileRequest updateProfileRequest) async {
+    if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.updateProfile(updateProfileRequest);
+        final response =
+            await _remoteDataSource.updateProfile(updateProfileRequest);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

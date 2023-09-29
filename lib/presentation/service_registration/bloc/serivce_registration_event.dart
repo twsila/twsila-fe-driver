@@ -15,6 +15,12 @@ class RegisterCaptainWithService extends ServiceRegistrationEvent {
   RegisterCaptainWithService();
 }
 
+class RegisterBOWithService extends ServiceRegistrationEvent {
+  final BusinessOwnerModel businessOwnerModel;
+
+  RegisterBOWithService({required this.businessOwnerModel});
+}
+
 class addCaptainData extends ServiceRegistrationEvent {
   XFile? captainPhoto;
   String? firstName;

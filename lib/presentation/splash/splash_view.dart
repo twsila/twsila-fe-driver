@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
+import 'package:taxi_for_you/utils/push_notification/firebase_messaging_helper.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
@@ -48,6 +49,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   _goNext() async {
+    await FirebaseMessagingHelper().configure(context);
     _appPreferences.isUserLoggedIn().then((isUserLoggedIn) => {
           if (isUserLoggedIn)
             {

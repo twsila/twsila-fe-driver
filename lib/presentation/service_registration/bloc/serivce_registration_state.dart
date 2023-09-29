@@ -9,6 +9,8 @@ class ServiceRegistrationLoading extends ServiceRegistrationState {}
 
 class ServiceRegistrationSuccess extends ServiceRegistrationState {}
 
+class ServiceBORegistrationSuccess extends ServiceRegistrationState {}
+
 class CaptainDataIsValid extends ServiceRegistrationState {}
 
 class CaptainDataIsNotValid extends ServiceRegistrationState {}

@@ -338,6 +338,83 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
+  Future<RegistrationResponse> registerBOWithService(
+    firstName,
+    lastName,
+    mobile,
+    email,
+    gender,
+    entityName,
+    taxNumber,
+    nationalId,
+    commercialNumber,
+    images,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'firstName',
+      firstName,
+    ));
+    _data.fields.add(MapEntry(
+      'lastName',
+      lastName,
+    ));
+    _data.fields.add(MapEntry(
+      'mobile',
+      mobile,
+    ));
+    _data.fields.add(MapEntry(
+      'email',
+      email,
+    ));
+    _data.fields.add(MapEntry(
+      'gender',
+      gender,
+    ));
+    _data.fields.add(MapEntry(
+      'entityName',
+      entityName,
+    ));
+    _data.fields.add(MapEntry(
+      'taxNumber',
+      taxNumber,
+    ));
+    _data.fields.add(MapEntry(
+      'nationalId',
+      nationalId,
+    ));
+    _data.fields.add(MapEntry(
+      'commercialNumber',
+      commercialNumber,
+    ));
+    _data.files.addAll(images.map((i) => MapEntry(
+        'businessEntityImages',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<RegistrationResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              'bo/register',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = RegistrationResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ServiceRegisterModel> serviceStatus(userId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

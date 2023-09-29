@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 import '../utils/resources/langauge_manager.dart';
 
@@ -56,7 +58,7 @@ class AppPreferences {
   }
 
   //driver functionalities
-  Future<bool> setDriver(Driver driver) async {
+  Future<bool> setDriver(DriverBaseModel driver) async {
     setUserLoggedIn();
     String driverStr = json.encode(driver);
     await _sharedPreferences.setString(DRIVER_MODEL, driverStr);
@@ -81,18 +83,24 @@ class AppPreferences {
     return _sharedPreferences.getString(DRIVER_FCM_TOKEN);
   }
 
-  Driver? getCachedDriver() {
+  DriverBaseModel? getCachedDriver() {
     Map<String, dynamic> driverMap = {};
     if (_sharedPreferences.getString(DRIVER_MODEL) != null &&
         _sharedPreferences.getString(DRIVER_MODEL) != "") {
       driverMap = jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!);
       driverMap["userDevice"] = UserDevice.fromJson(driverMap["userDevice"]);
     }
-    return driverMap.length != 0 ? Driver.fromJson(driverMap) : null;
+    if (driverMap["captainType"] == RegistrationConstants.businessOwner) {
+      return driverMap.length != 0
+          ? BusinessOwnerModel.fromJson(driverMap)
+          : null;
+    } else {
+      return driverMap.length != 0 ? Driver.fromJson(driverMap) : null;
+    }
   }
 
   Future<bool> setRefreshedToken(String newToken) async {
-    Driver? driver = getCachedDriver();
+    DriverBaseModel? driver = getCachedDriver();
     if (driver != null) {
       driver.token = newToken;
       await setDriver(driver);

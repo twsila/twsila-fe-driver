@@ -79,6 +79,20 @@ abstract class AppServiceClient {
       @Part(name: "isAcknowledged") bool isAcknowledged,
       @Part(name: "driverImages") List<File> driverImages);
 
+  @POST("bo/register")
+  @MultiPart()
+  Future<RegistrationResponse> registerBOWithService(
+      @Part(name: "firstName") String firstName,
+      @Part(name: "lastName") String lastName,
+      @Part(name: "mobile") String mobile,
+      @Part(name: "email") String email,
+      @Part(name: "gender") String gender,
+      @Part(name: "entityName") String entityName,
+      @Part(name: "taxNumber") String taxNumber,
+      @Part(name: "nationalId") String nationalId,
+      @Part(name: "commercialNumber") String commercialNumber,
+      @Part(name: "businessEntityImages") List<File> images);
+
   @POST("/drivers/registration-status")
   Future<ServiceRegisterModel> serviceStatus(@Field("userId") String userId);
 

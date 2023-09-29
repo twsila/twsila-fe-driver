@@ -31,10 +31,9 @@ class MyProfilePage extends StatefulWidget {
 class _MyProfilePageState extends State<MyProfilePage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
-  Driver? driver;
+  DriverBaseModel? driver;
   AppPreferences _appPreferences = instance<AppPreferences>();
   final SharedPreferences _sharedPreferences = instance();
-  final AppPreferences _appPrefs = instance();
 
   @override
   void initState() {

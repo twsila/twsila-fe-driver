@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_viewmodel.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/widgets/gender_widget.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/widgets/terms_conditions.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/common/widgets/multi_pick_image.dart';
+import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
@@ -150,7 +154,9 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
           ),
           MutliPickImageWidget(
             (images) {
-              widget.viewModel.businessOwnerModel.images = images;
+              if (images == null) return;
+              widget.viewModel.businessOwnerModel.images =
+                  images.map<File>((xfile) => File(xfile.path)).toList();
               checkValidations();
             },
             AppStrings.uploadBOid.tr(),
@@ -167,7 +173,16 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             padding: const EdgeInsets.all(AppPadding.p8),
             color: Colors.white,
             child: CustomTextButton(
-              onPressed: widget.viewModel.isValid ? () {} : null,
+              onPressed: widget.viewModel.isValid
+                  ? () {
+                      BlocProvider.of<ServiceRegistrationBloc>(context).add(
+                        RegisterBOWithService(
+                          businessOwnerModel:
+                              widget.viewModel.businessOwnerModel,
+                        ),
+                      );
+                    }
+                  : null,
               text: AppStrings.save.tr(),
             ),
           ),

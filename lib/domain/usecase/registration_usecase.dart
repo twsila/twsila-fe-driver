@@ -1,14 +1,10 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../data/network/failure.dart';
-import '../../data/network/requests.dart';
-import '../model/driver_model.dart';
-import '../model/models.dart';
 import '../repository/repository.dart';
 import 'base_usecase.dart';
 
@@ -79,7 +75,7 @@ class RegistrationUseCaseInput {
       {required this.firstName,
       required this.lastName,
       required this.mobile,
-       this.email,
+      this.email,
       required this.gender,
       required this.dateOfBirth,
       required this.driverServiceType,

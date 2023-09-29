@@ -19,7 +19,7 @@ class RegisterBusinessOwnerViewModel {
 
   bind(String mobile) {
     mobileNumberController.text = mobile;
-    businessOwnerModel.mobileNumber = mobile;
+    businessOwnerModel.mobile = mobile;
   }
 
   dispose() {

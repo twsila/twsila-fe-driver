@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_viewmodel.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/widgets/header_widget.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/widgets/input_fields.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
 import 'package:taxi_for_you/presentation/common/widgets/page_builder.dart';
+import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 class RegisterBusinessOwnerScreen extends StatefulWidget {
@@ -35,26 +37,30 @@ class _RegisterBusinessOwnerScreenState
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      pageBuilder: PageBuilder(
-        scaffoldKey: businessOwnerViewModel.scaffoldKey,
-        context: context,
-        resizeToAvoidBottomInsets: true,
-        displayLoadingIndicator: businessOwnerViewModel.displayLoadingIndicator,
-        body: Container(
-          margin: const EdgeInsets.all(AppMargin.m28),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RegistrationBOHeaderWidget(),
-                const SizedBox(height: AppSize.s20),
-                RegistartionBOInputFields(viewModel: businessOwnerViewModel),
-              ],
+    return BlocListener<ServiceRegistrationBloc, ServiceRegistrationState>(
+        listener: (context, state) {},
+        child: CustomScaffold(
+          pageBuilder: PageBuilder(
+            scaffoldKey: businessOwnerViewModel.scaffoldKey,
+            context: context,
+            resizeToAvoidBottomInsets: true,
+            displayLoadingIndicator:
+                businessOwnerViewModel.displayLoadingIndicator,
+            body: Container(
+              margin: const EdgeInsets.all(AppMargin.m28),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RegistrationBOHeaderWidget(),
+                    const SizedBox(height: AppSize.s20),
+                    RegistartionBOInputFields(
+                        viewModel: businessOwnerViewModel),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

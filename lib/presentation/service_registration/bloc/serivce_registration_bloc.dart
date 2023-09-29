@@ -2,19 +2,17 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/registration_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
-import '../../../app/app_prefs.dart';
-import '../../../app/di.dart';
 import '../../../domain/model/service_type_model.dart';
 import '../../../domain/model/car_brand_models_model.dart';
 import '../../../domain/usecase/registration_services_usecase.dart';
-import '../view/helpers/documents_helper.dart';
 import '../view/helpers/documents_helper.dart';
 import '../view/pages/service_registration_second_step.dart';
 
@@ -27,7 +25,7 @@ class ServiceRegistrationBloc
   RegistrationServiceUseCase registrationServiceUseCase;
   CarBrandsAndModelsUseCase carBrandsAndModelsUseCase;
   RegistrationUseCase registrationUseCase;
-  final AppPreferences _appPreferences = instance<AppPreferences>();
+  RegistrationBOUseCase registrationBOUseCase;
   RegistrationRequest registrationRequest = RegistrationRequest.empty();
   static DocumentData carDocument = DocumentData();
   static DocumentData driverIdDocument = DocumentData();
@@ -38,11 +36,12 @@ class ServiceRegistrationBloc
   String backImageTitle = "";
   String expirationDateTitle = "";
 
-  ServiceRegistrationBloc(
-      {required this.registrationServiceUseCase,
-      required this.carBrandsAndModelsUseCase,
-      required this.registrationUseCase})
-      : super(ServiceRegistrationInitial()) {
+  ServiceRegistrationBloc({
+    required this.registrationServiceUseCase,
+    required this.carBrandsAndModelsUseCase,
+    required this.registrationUseCase,
+    required this.registrationBOUseCase,
+  }) : super(ServiceRegistrationInitial()) {
     on<GetServiceTypes>(_getServicesTypes);
     on<GetCarBrandAndModel>(_getCarBrandsAndModels);
     on<NavigateToUploadDocument>(_setDocumentData);
@@ -54,11 +53,13 @@ class ServiceRegistrationBloc
     on<SetFirstStepData>(_setFirstStepData);
     on<SetSecondStepData>(_setSecondStepData);
     on<RegisterCaptainWithService>(_registerCaptainWithService);
+    on<RegisterBOWithService>(_registerBOWithService);
   }
 
   FutureOr<void> _addCaptainData(
       addCaptainData event, Emitter<ServiceRegistrationState> emit) async {
-    if (event.captainPhoto != null && event.captainPhoto!.path != "" &&
+    if (event.captainPhoto != null &&
+        event.captainPhoto!.path != "" &&
         event.firstName != null &&
         event.firstName!.isNotEmpty &&
         event.lastName != null &&
@@ -68,9 +69,10 @@ class ServiceRegistrationBloc
         event.gender != null &&
         event.gender!.isNotEmpty &&
         event.birthDate != null &&
-        event.agreeWithTerms != null && event.agreeWithTerms != false) {
+        event.agreeWithTerms != null &&
+        event.agreeWithTerms != false) {
       emit(CaptainDataIsValid());
-    }else{
+    } else {
       emit(CaptainDataIsNotValid());
     }
   }
@@ -151,6 +153,20 @@ class ServiceRegistrationBloc
       emit(ServiceRegistrationSuccess());
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
+  }
+
+  FutureOr<void> _registerBOWithService(RegisterBOWithService event,
+      Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    (await registrationBOUseCase.execute(event.businessOwnerModel)).fold(
+      (failure) => {
+        emit(ServiceRegistrationFail(failure.message)),
+      },
+      (carModelsList) async {
+        print(registrationRequest.vehicleTypeId);
+        emit(ServiceBORegistrationSuccess());
+      },
+    );
   }
 
   FutureOr<void> _setDocumentData(NavigateToUploadDocument event,

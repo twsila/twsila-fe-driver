@@ -13,7 +13,6 @@ import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/trip_details_model.dart';
-import '../../../domain/model/trip_model.dart';
 import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
@@ -129,7 +128,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                         AppStrings.cancel.tr(),
                         ColorManager.primary, () {
                       BlocProvider.of<TripDetailsBloc>(context).add(AddOffer(
-                          _appPreferences.getCachedDriver()!.id,
+                          _appPreferences.getCachedDriver()!.id!,
                           widget.tripModel.tripDetails.tripId!,
                           _driverOffer));
                       Navigator.pop(context);
@@ -316,7 +315,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                   "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
               onPressed: () {
                 BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                    _appPreferences.getCachedDriver()!.id,
+                    _appPreferences.getCachedDriver()!.id!,
                     widget.tripModel.tripDetails.tripId!));
               },
             ),

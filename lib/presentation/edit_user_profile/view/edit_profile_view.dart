@@ -14,7 +14,7 @@ import '../../common/widgets/custom_text_input_field.dart';
 import '../../common/widgets/page_builder.dart';
 
 class EditProfileView extends StatefulWidget {
-  Driver driver;
+  final DriverBaseModel driver;
 
   EditProfileView({required this.driver});
 
@@ -163,7 +163,7 @@ class _EditProfileViewState extends State<EditProfileView> {
 }
 
 class EditProfileArguments {
-  Driver driver;
+  DriverBaseModel driver;
 
   EditProfileArguments(this.driver);
 }

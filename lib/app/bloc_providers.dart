@@ -36,6 +36,7 @@ blocProviders(BuildContext context) {
         value: ServiceRegistrationBloc(
             registrationServiceUseCase: instance(),
             carBrandsAndModelsUseCase: instance(),
+            registrationBOUseCase: instance(),
             registrationUseCase: instance())),
     BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
     BlocProvider.value(value: MyProfileBloc(logoutUseCase: instance())),

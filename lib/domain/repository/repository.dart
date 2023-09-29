@@ -5,6 +5,7 @@ import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../data/network/failure.dart';
@@ -17,9 +18,9 @@ import '../model/trip_details_model.dart';
 import '../model/verify_otp_model.dart';
 
 abstract class Repository {
-  Future<Either<Failure, Driver>> login(LoginRequest loginRequest);
+  Future<Either<Failure, DriverBaseModel>> login(LoginRequest loginRequest);
 
-  Future<Either<Failure, Driver>> loginBO(LoginRequest loginRequest);
+  Future<Either<Failure, DriverBaseModel>> loginBO(LoginRequest loginRequest);
 
   Future<Either<Failure, List<ServiceTypeModel>>> registrationServiceTypes();
 
@@ -29,6 +30,9 @@ abstract class Repository {
 
   Future<Either<Failure, RegistrationResponse>> register(
       RegistrationRequest registrationRequest);
+
+  Future<Either<Failure, RegistrationResponse>> registerBO(
+      BusinessOwnerModel businessOwnerModel);
 
   Future<Either<Failure, GenerateOtpModel>> generateOtp(
       GenerateOTPRequest otpRequest);
@@ -57,8 +61,8 @@ abstract class Repository {
   Future<Either<Failure, BaseResponse>> ratePassenger(
       int passengerId, double ratingNumber);
 
-
-  Future<Either<Failure, BaseResponse>> UpdateProfile(UpdateProfileRequest updateProfileRequest);
+  Future<Either<Failure, BaseResponse>> UpdateProfile(
+      UpdateProfileRequest updateProfileRequest);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 

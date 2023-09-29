@@ -114,7 +114,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
             if (state is LoginSuccessState) {
               _appPreferences.setUserLoggedIn();
               await _appPreferences.setDriver(state.driver);
-              Driver? driver = _appPreferences.getCachedDriver();
+              DriverBaseModel? driver = _appPreferences.getCachedDriver();
               if (driver != null) {
                 Navigator.pushReplacementNamed(context, Routes.mainRoute);
               }
