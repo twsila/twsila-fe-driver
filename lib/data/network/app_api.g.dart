@@ -338,7 +338,7 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<RegistrationResponse> registerBOWithService(
+  Future<RegistrationBOResponse> registerBOWithService(
     firstName,
     lastName,
     mobile,
@@ -397,7 +397,7 @@ class _AppServiceClient implements AppServiceClient {
           filename: i.path.split(Platform.pathSeparator).last,
         ))));
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<RegistrationResponse>(Options(
+        _setStreamType<RegistrationBOResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -405,12 +405,12 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              'bo/register',
+              '/bo/register',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = RegistrationResponse.fromJson(_result.data!);
+    final value = RegistrationBOResponse.fromJson(_result.data!);
     return value;
   }
 

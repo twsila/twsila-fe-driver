@@ -92,7 +92,7 @@ class AppPreferences {
     }
     if (driverMap["captainType"] == RegistrationConstants.businessOwner) {
       return driverMap.length != 0
-          ? BusinessOwnerModel.fromJson(driverMap)
+          ? BusinessOwnerModel.fromCachedJson(driverMap)
           : null;
     } else {
       return driverMap.length != 0 ? Driver.fromJson(driverMap) : null;

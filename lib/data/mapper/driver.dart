@@ -1,10 +1,9 @@
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
+
 import '../../app/constants.dart';
 import '../../domain/model/driver_model.dart';
 import '../response/responses.dart';
 
-import '../../app/constants.dart';
-import '../../domain/model/models.dart';
-import '../response/responses.dart';
 import '../../app/extensions.dart';
 
 extension LoginResponseMapper on LoginResponse? {
@@ -18,6 +17,7 @@ extension LoginResponseMapper on LoginResponse? {
       dateOfBirth: this?.driver!.dateOfBirth.orEmpty() ?? Constants.empty,
       token: this?.token.orEmpty() ?? Constants.empty,
       userDevice: this!.userDevice,
+      captainType: RegistrationConstants.captain,
       tokenExpirationTime:
           this?.tokenExpirationTime.orEmpty() ?? Constants.empty,
       id: this?.driver!.id.orZero() ?? Constants.zero,
@@ -39,7 +39,7 @@ extension LoginResponseMapper on LoginResponse? {
       hasLifting: this?.driver!.canTransportFurniture ?? false,
       plateNumber: this?.driver!.plateNumber.orEmpty() ?? Constants.empty,
       images: [],
-      rating: this?.driver!.rating ?? 0.0 ,
+      rating: this?.driver!.rating ?? 0.0,
       acknowledged: this?.driver!.acknowledged ?? false,
     );
   }

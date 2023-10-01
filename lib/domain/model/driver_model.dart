@@ -12,12 +12,12 @@ String driverModelToJson(Driver data) => json.encode(data.toJson());
 
 abstract class DriverBaseModel {
   int? id;
-  late String firstName;
-  late String lastName;
-  late String mobile;
-  late String email;
-  late String gender;
-  late String captainType;
+  String? firstName;
+  String? lastName;
+  String? mobile;
+  String? email;
+  String? gender;
+  String? captainType;
   String? token;
   UserDevice? userDevice;
   String? tokenExpirationTime;
@@ -51,6 +51,7 @@ class Driver extends DriverBaseModel {
     required mobile,
     required email,
     required gender,
+    required captainType,
     required this.dateOfBirth,
     required this.driverServiceType,
     required this.registrationStatus,
@@ -97,6 +98,7 @@ class Driver extends DriverBaseModel {
         driverServiceType: json["driverServiceType"],
         registrationStatus: json["registrationStatus"],
         vehicleType: DriverVehicleType.fromJson(json["vehicleType"]),
+        captainType: RegistrationConstants.captain,
         carManufacturerType:
             DriverCarManufacturer.fromJson(json["carManufacturerType"]),
         carModel: DriverCarModel.fromJson(json["carModel"]),
@@ -139,6 +141,7 @@ class Driver extends DriverBaseModel {
         "hasOtherTanks": hasOtherTanks,
         "hasPacking": hasPacking,
         "hasLoading": hasLoading,
+        "captainType": RegistrationConstants.captain,
         "hasAssembly": hasAssembly,
         "hasLifting": hasLifting,
         "plateNumber": plateNumber,

@@ -33,10 +33,10 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   @override
   void initState() {
-    _firstNameController.text = widget.driver.firstName;
-    _lastNameController.text = widget.driver.lastName;
-    _mobileNumberController.text = widget.driver.mobile;
-    _emailController.text = widget.driver.email;
+    _firstNameController.text = widget.driver.firstName ?? '';
+    _lastNameController.text = widget.driver.lastName ?? '';
+    _mobileNumberController.text = widget.driver.mobile ?? '';
+    _emailController.text = widget.driver.email ?? '';
     super.initState();
   }
 

@@ -30,7 +30,7 @@ abstract class RemoteDataSource {
   Future<RegistrationResponse> registerCaptainWithService(
       RegistrationRequest registrationRequest);
 
-  Future<RegistrationResponse> registerBOWithService(
+  Future<RegistrationBOResponse> registerBOWithService(
       BusinessOwnerModel businessOwnerModel);
 
   Future<ServiceRegisterModel> servicesStatus(String userId);
@@ -143,14 +143,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<RegistrationResponse> registerBOWithService(
+  Future<RegistrationBOResponse> registerBOWithService(
       BusinessOwnerModel businessOwnerModel) async {
     return await _appServiceClient.registerBOWithService(
-        businessOwnerModel.firstName,
-        businessOwnerModel.lastName,
-        businessOwnerModel.mobile,
-        businessOwnerModel.email,
-        businessOwnerModel.gender,
+        businessOwnerModel.firstName!,
+        businessOwnerModel.lastName!,
+        businessOwnerModel.mobile!,
+        businessOwnerModel.email!,
+        businessOwnerModel.gender!,
         businessOwnerModel.entityName!,
         businessOwnerModel.taxNumber!,
         businessOwnerModel.nationalId!,

@@ -113,7 +113,13 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
             }
             if (state is LoginSuccessState) {
               _appPreferences.setUserLoggedIn();
-              await _appPreferences.setDriver(state.driver);
+              DriverBaseModel cachedDriver = state.driver;
+              if (widget.registerAs == RegistrationConstants.captain) {
+                cachedDriver.captainType = RegistrationConstants.captain;
+              } else {
+                cachedDriver.captainType = RegistrationConstants.businessOwner;
+              }
+              await _appPreferences.setDriver(cachedDriver);
               DriverBaseModel? driver = _appPreferences.getCachedDriver();
               if (driver != null) {
                 Navigator.pushReplacementNamed(context, Routes.mainRoute);

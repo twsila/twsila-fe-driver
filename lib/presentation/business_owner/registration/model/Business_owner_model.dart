@@ -36,6 +36,23 @@ class BusinessOwnerModel extends DriverBaseModel {
   }
 
   BusinessOwnerModel.fromJson(Map<String, dynamic> json) {
+    id = json['businessOwner']['id'];
+    firstName = json['businessOwner']['firstName'];
+    lastName = json['businessOwner']['lastName'];
+    mobile = json['businessOwner']['mobile'];
+    email = json['businessOwner']['email'];
+    gender = json['businessOwner']['gender'];
+    taxNumber = json['businessOwner']['taxNumber'];
+    nationalId = json['businessOwner']['nationalId'];
+    entityName = json['businessOwner']['entityName'];
+    commercialNumber = json['businessOwner']['commercialNumber'];
+    token = json["token"];
+    userDevice = UserDevice.fromJson(json["userDevice"]);
+    tokenExpirationTime = json["tokenExpirationTime"];
+    captainType = RegistrationConstants.businessOwner;
+  }
+
+  BusinessOwnerModel.fromCachedJson(Map<String, dynamic> json) {
     id = json['id'];
     firstName = json['firstName'];
     lastName = json['lastName'];
@@ -49,7 +66,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     token = json["token"];
     userDevice = json["userDevice"];
     tokenExpirationTime = json["tokenExpirationTime"];
-    userDevice = json['userDevice'];
+    captainType = RegistrationConstants.businessOwner;
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +81,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     data['nationalId'] = nationalId;
     data['entityName'] = entityName;
     data['commercialNumber'] = commercialNumber;
+    data['captainType'] = RegistrationConstants.businessOwner;
     if (userDevice != null) data['userDevice'] = userDevice!.toJson();
     return data;
   }

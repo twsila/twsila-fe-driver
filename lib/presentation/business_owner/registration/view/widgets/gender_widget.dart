@@ -32,6 +32,7 @@ class _GenderWidgetState extends State<GenderWidget> {
     } else {
       _selectedGender = widget.viewModel.genderTypes[0];
     }
+    widget.onSelectGender(_selectedGender);
     super.initState();
   }
 

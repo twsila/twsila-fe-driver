@@ -7,13 +7,13 @@ import '../repository/repository.dart';
 import 'base_usecase.dart';
 
 class RegistrationBOUseCase
-    implements BaseUseCase<BusinessOwnerModel, RegistrationResponse> {
+    implements BaseUseCase<BusinessOwnerModel, RegistrationBOResponse> {
   final Repository _repository;
 
   RegistrationBOUseCase(this._repository);
 
   @override
-  Future<Either<Failure, RegistrationResponse>> execute(
+  Future<Either<Failure, RegistrationBOResponse>> execute(
       BusinessOwnerModel businessOwnerModel) async {
     return await _repository.registerBO(businessOwnerModel);
   }

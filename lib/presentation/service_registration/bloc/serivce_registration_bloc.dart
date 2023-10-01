@@ -163,7 +163,6 @@ class ServiceRegistrationBloc
         emit(ServiceRegistrationFail(failure.message)),
       },
       (carModelsList) async {
-        print(registrationRequest.vehicleTypeId);
         emit(ServiceBORegistrationSuccess());
       },
     );

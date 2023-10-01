@@ -64,7 +64,8 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, Driver>> loginBO(LoginRequest loginRequest) async {
+  Future<Either<Failure, BusinessOwnerModel>> loginBO(
+      LoginRequest loginRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
@@ -75,7 +76,7 @@ class RepositoryImpl implements Repository {
           // return either right
           // return data
           //save driver data
-          return Right(LoginResponse.fromJson(response.result!).toDomain());
+          return Right(BusinessOwnerModel.fromJson(response.result!));
         } else {
           // failure --return business error
           // return either left
@@ -286,7 +287,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, RegistrationResponse>> registerBO(
+  Future<Either<Failure, RegistrationBOResponse>> registerBO(
       BusinessOwnerModel businessOwnerModel) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API

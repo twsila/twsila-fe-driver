@@ -18,9 +18,10 @@ import '../model/trip_details_model.dart';
 import '../model/verify_otp_model.dart';
 
 abstract class Repository {
-  Future<Either<Failure, DriverBaseModel>> login(LoginRequest loginRequest);
+  Future<Either<Failure, Driver>> login(LoginRequest loginRequest);
 
-  Future<Either<Failure, DriverBaseModel>> loginBO(LoginRequest loginRequest);
+  Future<Either<Failure, BusinessOwnerModel>> loginBO(
+      LoginRequest loginRequest);
 
   Future<Either<Failure, List<ServiceTypeModel>>> registrationServiceTypes();
 
@@ -31,7 +32,7 @@ abstract class Repository {
   Future<Either<Failure, RegistrationResponse>> register(
       RegistrationRequest registrationRequest);
 
-  Future<Either<Failure, RegistrationResponse>> registerBO(
+  Future<Either<Failure, RegistrationBOResponse>> registerBO(
       BusinessOwnerModel businessOwnerModel);
 
   Future<Either<Failure, GenerateOtpModel>> generateOtp(
