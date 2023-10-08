@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_for_you/domain/model/sorting_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_execution/view/trip_execution_view.dart';
@@ -38,7 +40,62 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   bool _displayLoadingIndicator = false;
   bool _loadingTripsList = false;
   List<TripDetailsModel> trips = [];
+  List<SortingModel> sortingModelList = [
+    SortingModel(SortCriterion.REQUEST_DATE, AppStrings.requestedDate.tr()),
+    SortingModel(SortCriterion.NEAREST_TO_ME, AppStrings.nearestToMe.tr()),
+    SortingModel(SortCriterion.LIGHT_WEIGHT, AppStrings.lightWeight.tr()),
+    SortingModel(SortCriterion.SHORT_DISTANCE, AppStrings.shortestWay.tr()),
+    SortingModel(SortCriterion.HIGH_PRICE, AppStrings.highestPrice.tr()),
+    SortingModel(SortCriterion.TOP_RATED_CLIENT, AppStrings.highestRateClient.tr()),
+  ];
   int currentIndex = 0;
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        elevation: 10,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => Container(
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16))),
+            alignment: Alignment.center,
+            child: ListView.builder(
+              itemCount: sortingModelList.length,
+              itemBuilder: (context, index) {
+                final selectedSortModel = sortingModelList[index];
+                return InkWell(
+                  onTap: () {
+                    setState(() {});
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppPadding.p12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          selectedSortModel.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: ColorManager.headersTextColor),
+                        ),
+                        const SizedBox(
+                          width: AppSize.s8,
+                        ),
+                        Icon(
+                          Icons.check,
+                          color: ColorManager.purpleMainTextColor,
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )));
+  }
 
   ListView _TripsTitleListView(List<String> tripsTitles) {
     return ListView(
@@ -85,6 +142,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           displayLoadingIndicator: _displayLoadingIndicator,
           allowBackButtonInAppBar: false,
           appBarTitle: AppStrings.twsela.tr(),
+          showLanguageChange: true,
           centerTitle: true,
           appBarActions: [
             GestureDetector(
@@ -131,42 +189,64 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         }
       },
       builder: (context, state) {
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: AppSize.s8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Container(
-              //           height: AppSize.s40,
-              //           child: _TripsTitleListView(tripsTitles)),
-              //     ),
-              //   ],
-              // ),
-              Expanded(
-                child: _loadingTripsList
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: ColorManager.purpleMainTextColor,
-                        ),
-                      )
-                    : trips.length == 0
-                        ? Center(
-                            child: Text(
-                              AppStrings.noTripsAvailable.tr(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(color: ColorManager.error),
-                            ),
-                          )
-                        : Container(child: _TripsListView(trips)),
-              )
-            ],
+        return Stack(alignment: Alignment.center, children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: AppSize.s8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Container(
+                //           height: AppSize.s40,
+                //           child: _TripsTitleListView(tripsTitles)),
+                //     ),
+                //   ],
+                // ),
+                Expanded(
+                  child: _loadingTripsList
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: ColorManager.purpleMainTextColor,
+                          ),
+                        )
+                      : trips.length == 0
+                          ? Center(
+                              child: Text(
+                                AppStrings.noTripsAvailable.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(color: ColorManager.error),
+                              ),
+                            )
+                          : Container(child: _TripsListView(trips)),
+                )
+              ],
+            ),
           ),
-        );
+          Positioned(
+              bottom: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomTextButton(
+                  onPressed: () {
+                    _showBottomSheet();
+                  },
+                  width: AppSize.s130,
+                  height: AppSize.s40,
+                  fontSize: FontSize.s12,
+                  backgroundColor: ColorManager.secondaryColor,
+                  isWaitToEnable: false,
+                  icon: Image.asset(
+                    ImageAssets.sortingIcon,
+                    width: 20,
+                  ),
+                  text: AppStrings.sortBy.tr(),
+                ),
+              ))
+        ]);
       },
     );
   }

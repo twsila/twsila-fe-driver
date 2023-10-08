@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -11,6 +12,7 @@ const String ACCEPT = "accept";
 const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "language";
 const String ACCEPT_LANGUAGE = "Accept-Language";
+const String RETRY_COUNTER = "Retry-Count";
 
 class DioFactory {
   final AppPreferences _appPreferences;
@@ -36,6 +38,18 @@ class DioFactory {
         receiveTimeout: Constants.apiTimeOut,
         sendTimeout: Constants.apiTimeOut);
 
+    // dio.interceptors.add(RetryInterceptor(
+    //   dio: dio,
+    //   logPrint: print, // specify log function (optional)
+    //   retries: 3, // retry count (optional)
+    //   retryableExtraStatuses: { 401 },
+    //   retryDelays: const [
+    //     // set delays between retries (optional)
+    //     Duration(seconds: 1), // wait 1 sec before first retry
+    //     Duration(seconds: 2), // wait 2 sec before second retry
+    //     Duration(seconds: 3), // wait 3 sec before third retry
+    //   ],
+    // ));
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
@@ -46,20 +60,25 @@ class DioFactory {
           options.headers[AUTHORIZATION] = token;
           return handler.next(options);
         },
-        onError: (DioError e, handler) async {
-          if (e.response?.statusCode == 401) {
+        onError: (DioError error, handler) async {
+          if (error.response?.statusCode == 401) {
             // If a 401 response is received, refresh the access token
+            if (error.requestOptions.headers[RETRY_COUNTER] == 1) {
+              return handler.next(error);
+            }
             String newAccessToken = await refreshToken();
             await _appPreferences.setRefreshedToken(newAccessToken);
 
             // Update the request header with the new access token
-            e.requestOptions.headers['Authorization'] =
+            error.requestOptions.headers[AUTHORIZATION] =
                 'Bearer $newAccessToken';
 
+            error.requestOptions.headers[RETRY_COUNTER] = 1;
+
             // Repeat the request with the updated header
-            return handler.resolve(await dio.fetch(e.requestOptions));
+            return handler.resolve(await dio.fetch(error.requestOptions));
           }
-          return handler.next(e);
+          return handler.next(error);
         },
       ),
     );

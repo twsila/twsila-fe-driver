@@ -52,11 +52,17 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> updateProfile(UpdateProfileRequest updateProfileRequest);
 
+  Future<BaseResponse> getBODrivers(int businessOwnerId);
+
+  Future<BaseResponse> searchDriversByMobile(int mobileNumber);
+
   Future<LookupsModel> getLookups();
 
   Future<LogoutModel> logout(LogoutRequest logoutRequest);
 
   Future<ForgotPasswordResponse> forgotPassword(String email);
+
+  Future<BaseResponse> addDriverForBO(int businessOwnerId, int driverId);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -212,5 +218,20 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         updateProfileRequest.lastName,
         updateProfileRequest.email,
         updateProfileRequest.profilePhoto);
+  }
+
+  @override
+  Future<BaseResponse> getBODrivers(int businessOwnerId) async {
+    return await _appServiceClient.getBODrivers(businessOwnerId);
+  }
+
+  @override
+  Future<BaseResponse> searchDriversByMobile(int mobileNumber) async {
+    return await _appServiceClient.searchDriversByMobile(mobileNumber);
+  }
+
+  @override
+  Future<BaseResponse> addDriverForBO(int businessOwnerId, int driverId) async {
+    return await _appServiceClient.addDriverForBO(businessOwnerId, driverId);
   }
 }

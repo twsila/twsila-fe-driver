@@ -13,6 +13,7 @@ class ImageAssets {
   static const String leftArrowIc = "$imagePath/left_arrow_ic.svg";
   static const String rightArrowIc = "$imagePath/right_arrow_ic.svg";
   static const String photoCameraIc = "$imagePath/photo-camera.svg";
+  static const String sortingIcon = "$imagePath/sorting_icon.png";
   static const String changeLangIc = "$imagePath/change_lang_ic.svg";
   static const String contactUsIc = "$imagePath/contact_us_ic.svg";
   static const String car = "$imagePath/car.png";
@@ -104,6 +105,14 @@ class ImageAssets {
   static const String tripSwarekIc = "$imagePath/trip_swarek_ic.png";
   static const String driverCar = "$imagePath/driver_car.png";
   static const String locationPin = "$imagePath/location_pin.png";
+
+
+
+  //BO
+
+  static const String BODriversAndCars = "$imagePath/driversandcars.png";
+  static const String BONoDriversAdded = "$imagePath/no_drivers_added.png";
+
 
 
 

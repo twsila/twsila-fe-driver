@@ -157,4 +157,20 @@ abstract class AppServiceClient {
     @Part(name: "email") String email,
     @Part(name: "profilePhoto") File profilePhoto,
   );
+
+  @POST("/driver-acquisition/get-requested-drivers")
+  Future<BaseResponse> getBODrivers(
+    @Field("businessOwnerId") int businessOwnerId,
+  );
+
+  @POST("/drivers/get-drivers")
+  Future<BaseResponse> searchDriversByMobile(
+    @Field("mobileNumber") int mobileNumber,
+  );
+
+  @POST("/driver-acquisition/add-driver")
+  Future<BaseResponse> addDriverForBO(
+    @Field("businessOwnerId") int businessOwnerId,
+    @Field("driverId") int driverId,
+  );
 }

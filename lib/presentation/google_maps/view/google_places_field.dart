@@ -133,7 +133,7 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(
-        color: ColorManager.lightPrimary,
+        color: Colors.transparent,
       ),
     );
   }

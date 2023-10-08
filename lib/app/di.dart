@@ -4,15 +4,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/usecase/accept_offer_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/add_driver_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/change_trip_status_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/get_business_owner_drivers_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/lookups_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/rate_passenger_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/search_driver_mobile_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/trip_summary_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/trips_usecase.dart';
@@ -101,6 +104,12 @@ Future<void> initAppModule() async {
       () => ChangeTripStatusUseCase(instance()));
   instance.registerFactory<RatePassengerUseCase>(
       () => RatePassengerUseCase(instance()));
+  instance.registerFactory<BusinessOwnerDriversUseCase>(
+      () => BusinessOwnerDriversUseCase(instance()));
+  instance.registerFactory<SearchDriversByMobileUseCase>(
+      () => SearchDriversByMobileUseCase(instance()));
+  instance.registerFactory<AddDriverForBOUseCase>(
+      () => AddDriverForBOUseCase(instance()));
 }
 
 initLoginModule() {

@@ -28,6 +28,7 @@ class PageBuilder {
   double? elevation;
   String? screenTitle;
   bool? showAppLogoAtTheEnd;
+  bool? showLanguageChange;
 
   PageBuilder({
     this.appBarActions,
@@ -48,6 +49,7 @@ class PageBuilder {
     this.onSearchClosed,
     this.searchController,
     this.resizeToAvoidBottomInsets = true,
+    this.showLanguageChange = false,
     this.searchHint,
     this.onClearSearchQuery,
     this.floatingActionButton,

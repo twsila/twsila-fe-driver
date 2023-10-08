@@ -1,0 +1,19 @@
+part of 'bo_drivers_cars_bloc.dart';
+
+@immutable
+abstract class BoDriversCarsEvent {}
+
+class GetDriversAndCars extends BoDriversCarsEvent {}
+
+class SearchDriversByMobile extends BoDriversCarsEvent {
+  int mobileNumber;
+
+  SearchDriversByMobile(this.mobileNumber);
+}
+
+class addDriverForBusinessOwner extends BoDriversCarsEvent {
+  final int businessOwnerId;
+  final int driverId;
+
+  addDriverForBusinessOwner(this.businessOwnerId, this.driverId);
+}

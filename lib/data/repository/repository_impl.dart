@@ -59,6 +59,7 @@ class RepositoryImpl implements Repository {
     } else {
       // return internet connection error
       // return either left
+
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
@@ -521,6 +522,83 @@ class RepositoryImpl implements Repository {
       try {
         final response =
             await _remoteDataSource.updateProfile(updateProfileRequest);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> getBODrivers(
+      int businessOwnerId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.getBODrivers(businessOwnerId);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Driver>>> searchDriversByMobile(
+      int mobileNumber) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.searchDriversByMobile(mobileNumber);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<Driver> drivers = List<Driver>.from(
+              response.result!.map((x) => Driver.fromJson(x)));
+
+          return Right(drivers);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> addDriverForBO(
+      int businessOwnerId, int driverId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.addDriverForBO(businessOwnerId, driverId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

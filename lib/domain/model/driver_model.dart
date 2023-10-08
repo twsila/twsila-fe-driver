@@ -43,38 +43,39 @@ class Driver extends DriverBaseModel {
   List<DriverImage> images;
   double rating;
   bool acknowledged;
+  bool isChecked;
 
-  Driver({
-    required id,
-    required firstName,
-    required lastName,
-    required mobile,
-    required email,
-    required gender,
-    required captainType,
-    required this.dateOfBirth,
-    required this.driverServiceType,
-    required this.registrationStatus,
-    required this.vehicleType,
-    required this.carManufacturerType,
-    required this.carModel,
-    required this.canTransportFurniture,
-    required this.canTransportGoods,
-    required this.canTransportFrozen,
-    required this.hasWaterTank,
-    required this.hasOtherTanks,
-    required this.hasPacking,
-    required this.hasLoading,
-    required this.hasAssembly,
-    required this.hasLifting,
-    required this.plateNumber,
-    required this.images,
-    required this.rating,
-    required this.acknowledged,
-    required token,
-    required userDevice,
-    required tokenExpirationTime,
-  }) {
+  Driver(
+      {required id,
+      required firstName,
+      required lastName,
+      required mobile,
+      required email,
+      required gender,
+      required captainType,
+      required this.dateOfBirth,
+      required this.driverServiceType,
+      required this.registrationStatus,
+      required this.vehicleType,
+      required this.carManufacturerType,
+      required this.carModel,
+      required this.canTransportFurniture,
+      required this.canTransportGoods,
+      required this.canTransportFrozen,
+      required this.hasWaterTank,
+      required this.hasOtherTanks,
+      required this.hasPacking,
+      required this.hasLoading,
+      required this.hasAssembly,
+      required this.hasLifting,
+      required this.plateNumber,
+      required this.images,
+      required this.rating,
+      required this.acknowledged,
+      required token,
+      required userDevice,
+      required tokenExpirationTime,
+      this.isChecked = false}) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -203,20 +204,24 @@ class DriverCarModel {
 class DriverImage {
   int id;
   String imageName;
+  String? imageUrl;
 
   DriverImage({
     required this.id,
     required this.imageName,
+    this.imageUrl,
   });
 
   factory DriverImage.fromJson(Map<String, dynamic> json) => DriverImage(
         id: json["id"],
         imageName: json["imageName"],
+        imageUrl: json["url"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "imageName": imageName,
+        "url": imageUrl,
       };
 }
 

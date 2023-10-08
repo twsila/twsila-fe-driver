@@ -7,7 +7,9 @@ class BusinessOwnerModel extends DriverBaseModel {
   String? taxNumber;
   String? nationalId;
   String? commercialNumber;
+  String? token;
   List<File>? images;
+  List<DriverImage>? imagesFromApi;
   UserDevice? userDevice;
 
   BusinessOwnerModel({
@@ -17,9 +19,11 @@ class BusinessOwnerModel extends DriverBaseModel {
     mobile,
     email,
     gender,
+    token,
     this.taxNumber,
     this.entityName,
     this.nationalId,
+    this.imagesFromApi,
     this.commercialNumber,
     this.userDevice,
   }) {
@@ -29,6 +33,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.mobile = mobile;
     this.email = email;
     this.gender = gender;
+    this.imagesFromApi = imagesFromApi;
     this.token = token;
     this.userDevice = userDevice;
     this.tokenExpirationTime = tokenExpirationTime;
@@ -45,8 +50,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     taxNumber = json['businessOwner']['taxNumber'];
     nationalId = json['businessOwner']['nationalId'];
     entityName = json['businessOwner']['entityName'];
+    imagesFromApi = json['businessOwner']['images'];
     commercialNumber = json['businessOwner']['commercialNumber'];
-    token = json["token"];
+    token = json['businessOwner']["token"];
     userDevice = UserDevice.fromJson(json["userDevice"]);
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
@@ -63,6 +69,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     nationalId = json['nationalId'];
     entityName = json['entityName'];
     commercialNumber = json['commercialNumber'];
+    imagesFromApi = json['images'];
     token = json["token"];
     userDevice = json["userDevice"];
     tokenExpirationTime = json["tokenExpirationTime"];
@@ -78,7 +85,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     data['mobile'] = mobile;
     data['gender'] = gender;
     data['taxNumber'] = taxNumber;
+    data['token'] = token;
     data['nationalId'] = nationalId;
+    data['images'] = imagesFromApi;
     data['entityName'] = entityName;
     data['commercialNumber'] = commercialNumber;
     data['captainType'] = RegistrationConstants.businessOwner;

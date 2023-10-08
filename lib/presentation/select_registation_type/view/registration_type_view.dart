@@ -31,6 +31,7 @@ class _RegistrationTypesViewState extends State<RegistrationTypesView> {
           body: _build(context),
           scaffoldKey: _key,
           allowBackButtonInAppBar: false,
+          showLanguageChange: true,
           appBarActions: [
             SizedBox(
                 width: AppSize.s120,

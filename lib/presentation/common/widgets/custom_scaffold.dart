@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_language_widget.dart';
 import 'package:taxi_for_you/presentation/common/widgets/page_builder.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 
+import '../../../utils/resources/values_manager.dart';
 import 'custom_back_button.dart';
 import 'loading_indicator.dart';
 
@@ -76,7 +78,10 @@ class _CustomScaffoldState extends State<CustomScaffold> {
                                     },
                                   ),
                                 )
-                              : null,
+                              : widget.pageBuilder.showLanguageChange!
+                                  ? Semantics(child: LanguageWidget())
+                                  : null,
+
                           title: _buildAppbarTitle(),
                           backgroundColor:
                               widget.pageBuilder.appBarBackgroundColor ??

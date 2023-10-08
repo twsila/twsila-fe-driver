@@ -103,7 +103,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
               },
               isDimmed: todayDate,
               pickTime: false,
-              labelText: 'من',
+              labelText: AppStrings.from.tr(),
             ),
             CustomDatePickerWidget(
               onSelectDate: (date) {
@@ -111,7 +111,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
               },
               isDimmed: todayDate,
               pickTime: false,
-              labelText: 'الى',
+              labelText: AppStrings.to.tr(),
             ),
             Row(
               children: [
@@ -127,7 +127,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                   },
                 ),
                 Text(
-                  'تاريخ اليوم',
+                  AppStrings.todayDate.tr(),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: ColorManager.titlesTextColor,
                       fontWeight: FontWeight.bold,

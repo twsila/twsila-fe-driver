@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 import '../../../app/di.dart';
@@ -20,6 +21,7 @@ class LanguageWidget extends StatefulWidget {
 class _LanguageWidgetState extends State<LanguageWidget> {
   final SharedPreferences _sharedPreferences = instance();
   final AppPreferences _appPrefs = instance();
+
   void _showBottomSheet() {
     showModalBottomSheet(
         elevation: 10,
@@ -72,16 +74,27 @@ class _LanguageWidgetState extends State<LanguageWidget> {
     return GestureDetector(
       onTap: () => _showBottomSheet(),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.language,
-            color: ColorManager.grey,
+          Expanded(
+            child: FittedBox(
+              child: Icon(
+                Icons.language,
+                color: ColorManager.grey,
+              ),
+            ),
           ),
           const SizedBox(width: AppSize.s4),
-          Text(
-            _appPrefs.getAppLanguage().tr(),
-            style: Theme.of(context).textTheme.displaySmall,
+          Expanded(
+            child: FittedBox(
+              child: Text(
+                _appPrefs.getAppLanguage().tr(),
+                style: Theme.of(context)
+                    .textTheme
+                    .displaySmall
+                    ?.copyWith(fontSize: FontSize.s12),
+              ),
+            ),
           )
         ],
       ),

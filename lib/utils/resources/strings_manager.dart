@@ -17,6 +17,7 @@ class AppStrings {
   static const vehicleType = "vehicle_type";
   static const numOfPassengers = "number_of_passengers";
   static const waterTankSize = "water_tank_size";
+  static const sortBy = "sort_by";
   static const cisternsType = "cisterns_type";
   static const goodevening = "good_evening";
   static const clientNotes = "client_notes";
@@ -72,6 +73,7 @@ class AppStrings {
   static const home = "home";
   static const notifications = "notification";
   static const search = "search";
+  static const todayDate = "today_date";
   static const settings = "settings";
   static const services = "services";
   static const stores = "stores";
@@ -290,6 +292,7 @@ class AppStrings {
 
   static const welcomeInto = "welcome_into";
   static const twsela = "tawsela";
+  static const twselaCaptian = "tawsela_captian";
   static const enterPhoneNumberToContinue = "enter_phone_to_continue";
   static const continueStr = "continue";
   static const saudiCountryCode = "saudi_country_code";
@@ -364,6 +367,7 @@ class AppStrings {
   static const thankYouForRegisterWithTwsilaMessage =
       'thank_your_reg_with_twsila_message';
   static const backToMainScreen = 'back_to_main_screen';
+  static const mainScreen = 'main_screen';
 
   //main
   static const myProfile = 'my_profile';
@@ -498,8 +502,35 @@ class AppStrings {
   static const foodStuffs = "food_stuffs";
   static const flowers_plants = "flowers_plants";
 
+
+
+  //Sorting
+
+  static const requestedDate = "requested_date";
+  static const nearestToMe = "nearest_to_me";
+  static const lightWeight = "light_weight";
+  static const shortestWay = "shortest_way";
+  static const highestPrice = "highest_price";
+  static const highestRateClient = "highest_rated_client";
+
   //logout
   static const areYouSureYouWantToLogout = 'are_you_sure_you_want_to_logout';
   static const confirmLogout = 'confirm_logout';
   static const cancel = 'cancel';
+
+  //BO
+  static const DriversAndCars = 'drivers_and_cars';
+  static const noAddedDrivers = 'no_added_drivers';
+  static const noAddedDriversMessage = 'no_added_drivcers_message';
+  static const importantNote = 'important_note';
+  static const noAddedDriversimportantNote = 'no_added_driver_important_note';
+  static const addDriver = 'add_driver';
+  static const driverMobileNumber = 'driver_mobile_number';
+  static const addDriverMobileNumber = 'add_driver_mobile_number';
+  static const sendingRequestDone = 'sending_request_done';
+
+
+
+
+
 }

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/countries.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
 import 'package:taxi_for_you/utils/resources/styles_manager.dart';
@@ -80,7 +81,24 @@ class _PhoneLoginViewState extends State<PhoneLoginView> {
                       ),
                     ),
                     initialCountryCode: _viewModel.initialCountry,
-                    countries: const ['SA', 'EG'],
+                    countries: const [
+                      Country(
+                          name: 'EG',
+                          flag: 'EG',
+                          code: '+20',
+                          dialCode: '+20',
+                          nameTranslations: {},
+                          minLength: 4,
+                          maxLength: 14),
+                      Country(
+                          name: 'SA',
+                          flag: 'SA',
+                          code: '+966',
+                          dialCode: '+966',
+                          nameTranslations: {},
+                          minLength: 4,
+                          maxLength: 14)
+                    ],
                     initialValue: _viewModel.loginObject.phoneNumber,
                     onCountryChanged: (country) {
                       _viewModel.initialCountry = country.flag;

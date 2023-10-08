@@ -15,6 +15,7 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 class RegisterBusinessOwnerScreen extends StatefulWidget {
   final String mobileNumber;
+
   RegisterBusinessOwnerScreen({Key? key, required this.mobileNumber})
       : super(key: key);
 
@@ -64,7 +65,8 @@ class _RegisterBusinessOwnerScreenState
               DriverBaseModel? driver =
                   businessOwnerViewModel.appPreferences.getCachedDriver();
               if (driver != null) {
-                Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                Navigator.pushReplacementNamed(
+                    context, Routes.welcomeToTwsilaBO);
               }
             }
             if (state is LoginFailState) {
@@ -93,6 +95,8 @@ class _RegisterBusinessOwnerScreenState
                 }
                 if (state is ServiceRegistrationFail) {
                   CustomDialog(context).showErrorDialog('', '', state.message);
+
+                  // Navigator.pushReplacementNamed(context, Routes.welcomeToTwsilaBO);
                 }
               }
             },

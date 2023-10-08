@@ -68,4 +68,11 @@ abstract class Repository {
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 
   Future<Either<Failure, LookupsModel>> getLookups();
+
+  Future<Either<Failure, BaseResponse>> getBODrivers(int businessOwnerId);
+
+
+  Future<Either<Failure, List<Driver>>> searchDriversByMobile(int mobileNumber);
+
+  Future<Either<Failure, BaseResponse>> addDriverForBO(int businessOwnerId,int driverId);
 }

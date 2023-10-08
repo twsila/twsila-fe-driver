@@ -17,7 +17,7 @@ class MapProvider with ChangeNotifier {
 
   //Locations
   LocationModel? currentLocation;
-  List<String> countries = ['SA'];
+  List<String> countries = ['eg'];
   String? distance;
 
   //Marker

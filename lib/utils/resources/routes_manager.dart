@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_screen.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/view/welcome_to_twsila_view.dart';
+import 'package:taxi_for_you/presentation/business_owner_add_driver/view/bo_add_driver_view.dart';
 import 'package:taxi_for_you/presentation/rate_passenger/view/rate_passenger_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
@@ -14,6 +16,7 @@ import '../../app/constants.dart';
 import '../../app/di.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import '../../presentation/business_owner_cars_and_drivers/view/bo_cars_and_drivers_view.dart';
 import '../../presentation/edit_user_profile/view/edit_profile_view.dart';
 import '../../presentation/filter_trips/view/filter_trips_view.dart';
 import '../../presentation/login/view/login_view.dart';
@@ -63,6 +66,9 @@ class Routes {
   static const String ratePassenger = "/ratePassenger";
   static const String editProfile = "/editProfile";
   static const String filterTrips = "/filterTrips";
+  static const String welcomeToTwsilaBO = "/welcomeToTwsilaBO";
+  static const String boDriversAndCars = "/boDriversAndCars";
+  static const String BOaddDriver = "/BOaddDriver";
 }
 
 class RouteGenerator {
@@ -146,6 +152,12 @@ class RouteGenerator {
             builder: (_) => FilterTripsView(
                 // driver: args.driver,
                 ));
+      case Routes.welcomeToTwsilaBO:
+        return MaterialPageRoute(builder: (_) => WelcomeToTwsilaView());
+      case Routes.boDriversAndCars:
+        return MaterialPageRoute(builder: (_) => BOCarsAndDriversView());
+      case Routes.BOaddDriver:
+        return MaterialPageRoute(builder: (_) => BOAddDriverView());
       case Routes.locationTrackingPage:
         final args = settings.arguments as NavigationTrackingArguments;
 
