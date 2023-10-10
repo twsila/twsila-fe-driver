@@ -50,7 +50,8 @@ class BusinessOwnerModel extends DriverBaseModel {
     taxNumber = json['businessOwner']['taxNumber'];
     nationalId = json['businessOwner']['nationalId'];
     entityName = json['businessOwner']['entityName'];
-    imagesFromApi = json['businessOwner']['images'];
+    imagesFromApi = List<DriverImage>.from(
+        json['businessOwner']["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['businessOwner']['commercialNumber'];
     token = json['businessOwner']["token"];
     userDevice = UserDevice.fromJson(json["userDevice"]);
@@ -69,7 +70,8 @@ class BusinessOwnerModel extends DriverBaseModel {
     nationalId = json['nationalId'];
     entityName = json['entityName'];
     commercialNumber = json['commercialNumber'];
-    imagesFromApi = json['images'];
+    imagesFromApi = List<DriverImage>.from(
+        json["images"].map((x) => DriverImage.fromJson(x)));
     token = json["token"];
     userDevice = json["userDevice"];
     tokenExpirationTime = json["tokenExpirationTime"];

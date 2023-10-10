@@ -26,4 +26,22 @@ class LogoutUseCaseInput {
   String language;
 
   LogoutUseCaseInput(this.userId, this.registrationId, this.language);
+}class BoLogoutUseCase implements BaseUseCase<BoLogoutUseCaseInput, LogoutModel> {
+  final Repository _repository;
+
+  BoLogoutUseCase(this._repository);
+
+  @override
+  Future<Either<Failure, LogoutModel>> execute(BoLogoutUseCaseInput input) async {
+    return await _repository.boLogout(
+        LogoutRequest(input.userId, input.registrationId, input.language));
+  }
+}
+
+class BoLogoutUseCaseInput {
+  int userId;
+  String registrationId;
+  String language;
+
+  BoLogoutUseCaseInput(this.userId, this.registrationId, this.language);
 }

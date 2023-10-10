@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/presentation/business_owner_cars_and_drivers/bloc/bo_drivers_cars_bloc.dart';
-import 'package:taxi_for_you/presentation/business_owner_cars_and_drivers/bloc/bo_drivers_cars_bloc.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
-import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../app/di.dart';
@@ -14,9 +12,7 @@ import '../../../utils/dialogs/custom_dialog.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
-import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_button.dart';
-import '../../common/widgets/page_builder.dart';
 
 class AddDriverBottomSheetView extends StatefulWidget {
   const AddDriverBottomSheetView();

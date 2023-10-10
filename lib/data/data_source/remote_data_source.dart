@@ -60,6 +60,8 @@ abstract class RemoteDataSource {
 
   Future<LogoutModel> logout(LogoutRequest logoutRequest);
 
+  Future<LogoutModel> boLogout(LogoutRequest logoutRequest);
+
   Future<ForgotPasswordResponse> forgotPassword(String email);
 
   Future<BaseResponse> addDriverForBO(int businessOwnerId, int driverId);
@@ -233,5 +235,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> addDriverForBO(int businessOwnerId, int driverId) async {
     return await _appServiceClient.addDriverForBO(businessOwnerId, driverId);
+  }
+
+  @override
+  Future<LogoutModel> boLogout(LogoutRequest logoutRequest)async {
+    return await _appServiceClient.boLogout(logoutRequest.userId,
+        logoutRequest.registrationId, logoutRequest.language);
   }
 }

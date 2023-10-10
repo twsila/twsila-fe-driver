@@ -8,6 +8,7 @@ import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_execution/view/trip_execution_view.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
@@ -46,7 +47,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     SortingModel(SortCriterion.LIGHT_WEIGHT, AppStrings.lightWeight.tr()),
     SortingModel(SortCriterion.SHORT_DISTANCE, AppStrings.shortestWay.tr()),
     SortingModel(SortCriterion.HIGH_PRICE, AppStrings.highestPrice.tr()),
-    SortingModel(SortCriterion.TOP_RATED_CLIENT, AppStrings.highestRateClient.tr()),
+    SortingModel(
+        SortCriterion.TOP_RATED_CLIENT, AppStrings.highestRateClient.tr()),
   ];
   int currentIndex = 0;
 
@@ -186,6 +188,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
 
         if (state is SearchTripsSuccess) {
           trips = state.trips;
+        }
+        if (state is SearchTripsFailure) {
+          CustomDialog(context).showErrorDialog('', '', "${state.code} ${state.message}");
         }
       },
       builder: (context, state) {

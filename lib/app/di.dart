@@ -110,6 +110,7 @@ Future<void> initAppModule() async {
       () => SearchDriversByMobileUseCase(instance()));
   instance.registerFactory<AddDriverForBOUseCase>(
       () => AddDriverForBOUseCase(instance()));
+  instance.registerFactory<BoLogoutUseCase>(() => BoLogoutUseCase(instance()));
 }
 
 initLoginModule() {

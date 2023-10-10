@@ -135,6 +135,13 @@ abstract class AppServiceClient {
     @Field("language") String language,
   );
 
+  @POST("/bo/logout")
+  Future<LogoutModel> boLogout(
+    @Field("userId") int userId,
+    @Field("registrationId") String registrationId,
+    @Field("language") String language,
+  );
+
   @POST("/drivers/trips/change-status")
   Future<BaseResponse> changeTripStatus(
     @Field("userId") int userId,

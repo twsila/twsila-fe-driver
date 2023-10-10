@@ -67,6 +67,8 @@ abstract class Repository {
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 
+  Future<Either<Failure, LogoutModel>> boLogout(LogoutRequest logoutRequest);
+
   Future<Either<Failure, LookupsModel>> getLookups();
 
   Future<Either<Failure, BaseResponse>> getBODrivers(int businessOwnerId);
