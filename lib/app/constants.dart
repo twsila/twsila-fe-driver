@@ -22,7 +22,7 @@ class Constants {
 
   static const int IMAGE_QUALITY_COMPRESS = 10;
 
-  static const String dateFormatterString = 'dd/MM/yyyy';
+  static const String dateFormatterString = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
   static const int refreshCurrentLocationSeconds = 2;
 

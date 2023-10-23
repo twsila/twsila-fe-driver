@@ -441,14 +441,24 @@ class _AppServiceClient implements AppServiceClient {
   Future<BaseResponse> getTripsByModuleId(
     tripModelType,
     userId,
+    dateFilter,
+    locationFilter,
+    currentLocation,
+    sortCriterion,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = {
       'tripModelType': tripModelType,
       'userId': userId,
+      'dateFilter': dateFilter,
+      'locationFilter': locationFilter,
+      'currentLocation': currentLocation,
+      'sortCriterion': sortCriterion,
     };
+    _data.removeWhere((k, v) => v == null);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
@@ -849,6 +859,97 @@ class _AppServiceClient implements AppServiceClient {
             .compose(
               _dio.options,
               '/driver-acquisition/add-driver',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> boAssignDriverToTrip(
+    businessOwnerId,
+    driverId,
+    tripId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'businessOwnerId': businessOwnerId,
+      'driverId': driverId,
+      'tripId': tripId,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/driver-acquisition/assign-driver',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> boSuggestNewOffer(
+    businessOwnerId,
+    tripId,
+    newSuggestedOffer,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'businessOwnerId': businessOwnerId,
+      'tripId': tripId,
+      'newSuggestedOffer': newSuggestedOffer,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/driver-acquisition/propose-offer',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> boAcceptNewOffer(
+    businessOwnerId,
+    tripId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'businessOwnerId': businessOwnerId,
+      'tripId': tripId,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/driver-acquisition/accept-offer',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -17,3 +17,10 @@ class addDriverForBusinessOwner extends BoDriversCarsEvent {
 
   addDriverForBusinessOwner(this.businessOwnerId, this.driverId);
 }
+class assignDriverForTrip extends BoDriversCarsEvent {
+  final int businessOwnerId;
+  final int driverId;
+  final int tripId;
+
+  assignDriverForTrip(this.businessOwnerId, this.driverId,this.tripId);
+}

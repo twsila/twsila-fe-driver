@@ -14,14 +14,26 @@ class TripsUseCase implements BaseUseCase<TripsInput, List<TripDetailsModel>> {
   TripsUseCase(this._repository);
 
   @override
-  Future<Either<Failure, List<TripDetailsModel>>> execute(TripsInput input) async {
-    return await _repository.getTrips(input.tripModuleId, input.userId);
+  Future<Either<Failure, List<TripDetailsModel>>> execute(
+      TripsInput input) async {
+    return await _repository.getTrips(
+        input.tripModuleId,
+        input.userId,
+        input.dateFilter,
+        input.locationFilter,
+        input.currentLocation,
+        input.sortCriterion);
   }
 }
 
 class TripsInput {
   String tripModuleId;
   int userId;
+  Map<String, dynamic>? dateFilter;
+  Map<String, dynamic>? locationFilter;
+  Map<String, dynamic>? currentLocation;
+  String? sortCriterion;
 
-  TripsInput(this.tripModuleId, this.userId);
+  TripsInput(this.tripModuleId, this.userId, this.dateFilter,
+      this.locationFilter, this.currentLocation, this.sortCriterion);
 }

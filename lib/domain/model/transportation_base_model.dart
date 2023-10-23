@@ -32,7 +32,7 @@ class TransportationBaseModel {
   fromJSON(Map<String, dynamic> json) {
     tripId = json['id'] is String ? int.parse(json['id']) : json['id'];
     tripEndPoint = json['tripEndPoint'];
-    tripType = json['tripType'];
+    tripType = json['serviceType'];
     tripNumber = json['tripNumber'];
     passenger = Passenger.fromJson(json['passenger']);
     tripStatus = json['tripStatus'];

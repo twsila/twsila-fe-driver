@@ -8,6 +8,7 @@ import 'package:taxi_for_you/domain/usecase/add_driver_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/get_business_owner_drivers_usecase.dart';
 
 import '../../../app/app_prefs.dart';
+import '../../../domain/usecase/bo_assign_driver_to_trip_usecase.dart';
 import '../../../domain/usecase/search_driver_mobile_usecase.dart';
 
 part 'bo_drivers_cars_event.dart';
@@ -18,17 +19,20 @@ class BoDriversCarsBloc extends Bloc<BoDriversCarsEvent, BoDriversCarsState> {
   BusinessOwnerDriversUseCase businessOwnerDriversUseCase;
   SearchDriversByMobileUseCase searchDriversByMobileUseCase;
   AddDriverForBOUseCase addDriverForBOUseCase;
+  BoAssignDriverToTripUseCase assignDriverToTripUseCase;
   final AppPreferences appPreferences;
 
   BoDriversCarsBloc(
       {required this.businessOwnerDriversUseCase,
       required this.appPreferences,
       required this.searchDriversByMobileUseCase,
+      required this.assignDriverToTripUseCase,
       required this.addDriverForBOUseCase})
       : super(BoDriversCarsInitial()) {
     on<GetDriversAndCars>(_getDriversAndCars);
     on<SearchDriversByMobile>(_searchDriversByMobile);
     on<addDriverForBusinessOwner>(_addDriverForBusinessOwner);
+    on<assignDriverForTrip>(_assignDriverForTrip);
   }
 
   FutureOr<void> _getDriversAndCars(
@@ -92,6 +96,28 @@ class BoDriversCarsBloc extends Bloc<BoDriversCarsEvent, BoDriversCarsState> {
       // content
       // emit success state
       emit(AddDriversSuccess());
+    });
+  }
+
+  FutureOr<void> _assignDriverForTrip(
+      assignDriverForTrip event, Emitter<BoDriversCarsState> emit) async {
+    emit(BoDriversCarsLoading());
+    (await assignDriverToTripUseCase.execute(
+      BoAssignDriverToTripUseCaseInput(
+          event.businessOwnerId, event.driverId, event.tripId),
+    ))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(AssignDriverFail(
+                      failure.message, failure.code.toString()))
+                }, (driversList) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      emit(AssignDriversSuccess());
     });
   }
 }

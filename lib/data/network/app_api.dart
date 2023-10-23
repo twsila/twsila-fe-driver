@@ -98,8 +98,13 @@ abstract class AppServiceClient {
 
   @POST("/drivers/offers/select-trip")
   Future<BaseResponse> getTripsByModuleId(
-      @Field("tripModelType") String tripModelType,
-      @Field("userId") int userId);
+    @Field("tripModelType") String tripModelType,
+    @Field("userId") int userId,
+    @Field("dateFilter") Map<String, dynamic>? dateFilter,
+    @Field("locationFilter") Map<String, dynamic>? locationFilter,
+    @Field("currentLocation") Map<String, dynamic>? currentLocation,
+    @Field("sortCriterion") String? sortCriterion,
+  );
 
   @POST("/drivers/offers/select-my-trip")
   Future<BaseResponse> getMyTripsByModuleId(
@@ -179,5 +184,25 @@ abstract class AppServiceClient {
   Future<BaseResponse> addDriverForBO(
     @Field("businessOwnerId") int businessOwnerId,
     @Field("driverId") int driverId,
+  );
+
+  @POST("/driver-acquisition/assign-driver")
+  Future<BaseResponse> boAssignDriverToTrip(
+    @Field("businessOwnerId") int businessOwnerId,
+    @Field("driverId") int driverId,
+    @Field("tripId") int tripId,
+  );
+
+  @POST("/driver-acquisition/propose-offer")
+  Future<BaseResponse> boSuggestNewOffer(
+    @Field("businessOwnerId") int businessOwnerId,
+    @Field("tripId") int tripId,
+    @Field("newSuggestedOffer") double newSuggestedOffer,
+  );
+
+  @POST("/driver-acquisition/accept-offer")
+  Future<BaseResponse> boAcceptNewOffer(
+    @Field("businessOwnerId") int businessOwnerId,
+    @Field("tripId") int tripId,
   );
 }

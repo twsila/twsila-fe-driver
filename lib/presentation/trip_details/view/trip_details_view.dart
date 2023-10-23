@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:taxi_for_you/presentation/business_owner_add_driver/view/assign_driver_sheet.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 import 'package:taxi_for_you/presentation/google_maps/view/google_maps_widget.dart';
 import 'package:taxi_for_you/presentation/trip_details/widgets/dotted_seperator.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
@@ -19,6 +21,7 @@ import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
+import '../../business_owner_add_driver/view/add_driver_sheet.dart';
 import '../../common/widgets/custom_bottom_sheet.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_button.dart';
@@ -58,6 +61,20 @@ class _TripDetailsViewState extends State<TripDetailsView> {
   void initState() {
     print(widget.tripModel);
     super.initState();
+  }
+
+  bottomSheetForAssignDriver(BuildContext context) {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        ),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return AssignDriverBottomSheetView(
+              tripId: widget.tripModel.tripDetails.tripId!);
+        });
   }
 
   void _showTripRouteBottomSheet(
@@ -130,7 +147,11 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                       BlocProvider.of<TripDetailsBloc>(context).add(AddOffer(
                           _appPreferences.getCachedDriver()!.id!,
                           widget.tripModel.tripDetails.tripId!,
-                          _driverOffer));
+                          _driverOffer,
+                          _appPreferences
+                              .getCachedDriver()!
+                              .captainType
+                              .toString()));
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }, () {
@@ -173,7 +194,6 @@ class _TripDetailsViewState extends State<TripDetailsView> {
         } else {
           stopLoading();
         }
-
         if (state is TripDetailsSuccess) {}
 
         if (state is NewOfferSentSuccess) {
@@ -226,7 +246,8 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 Container(
                   height: AppSize.s30,
                 ),
-                Center(child: _actionWithTripWidget(widget.tripModel)),
+                Center(
+                    child:_actionWithTripWidget(widget.tripModel)) ,
               ],
             ),
           ),
@@ -235,122 +256,131 @@ class _TripDetailsViewState extends State<TripDetailsView> {
     );
   }
 
-  Widget _actionWithTripWidget(TripDetailsModel trip) {
-    if (trip.tripDetails.acceptedOffer == null &&
-        trip.tripDetails.offers!.length > 0) {
-      if (trip.tripDetails.offers![0].acceptanceStatus ==
-          AcceptanceType.PROPOSED.name) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.check_circle_rounded,
-                  color: ColorManager.purpleMainTextColor,
-                ),
-                SizedBox(
-                  width: 7,
-                ),
-                Text(
-                    "${AppStrings.offerHasBeenSent.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ColorManager.purpleMainTextColor,
-                        fontSize: FontSize.s16,
-                        fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Text("${AppStrings.waitingClientReplay.tr()}",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: ColorManager.accentTextColor,
-                    fontSize: FontSize.s14,
-                    fontWeight: FontWeight.bold))
-          ],
-        );
-      } else if (trip.tripDetails.offers![0].acceptanceStatus ==
-          AcceptanceType.EXPIRED.name) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.error_outlined,
-                  color: ColorManager.error,
-                ),
-                SizedBox(
-                  width: 7,
-                ),
-                Text(
-                    "${AppStrings.clientRejectYourOffer.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ColorManager.error,
-                        fontSize: FontSize.s16,
-                        fontWeight: FontWeight.bold)),
-              ],
-            ),
-            CustomTextButton(
-              isWaitToEnable: false,
-              backgroundColor: ColorManager.white,
-              textColor: ColorManager.headersTextColor,
-              borderColor: ColorManager.purpleMainTextColor,
-              text: AppStrings.sendAnotherPrice.tr(),
-              onPressed: () {
-                _showAnotherOfferBottomSheet();
-              },
-            ),
-          ],
-        );
-      } else {
-        return Container();
-      }
-    } else {
-      return Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CustomTextButton(
-              text:
-                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
-              onPressed: () {
-                BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                    _appPreferences.getCachedDriver()!.id!,
-                    widget.tripModel.tripDetails.tripId!));
-              },
-            ),
-            CustomTextButton(
-              isWaitToEnable: false,
-              backgroundColor: ColorManager.white,
-              textColor: ColorManager.headersTextColor,
-              borderColor: ColorManager.purpleMainTextColor,
-              text: AppStrings.sendAnotherPrice.tr(),
-              onPressed: () {
-                _showAnotherOfferBottomSheet();
-              },
-            ),
-          ],
-        ),
-      );
-    }
+  Widget _BoActionWithTripWidget(TripDetailsModel trip) {
+    return (trip.tripDetails.acceptedOffer == null &&
+            (trip.tripDetails.offers == null ||
+                (trip.tripDetails.offers != null &&
+                    trip.tripDetails.offers!.length >= 0)))
+        ? CustomTextButton(
+            text: AppStrings.assignDriver.tr(),
+            isWaitToEnable: false,
+            onPressed: () {
+              bottomSheetForAssignDriver(context);
+            },
+          )
+        : _AcceptanceStatusWidget(trip);
   }
 
-  Widget _thingsToDeliver() {
+  Widget _AcceptanceStatusWidget(TripDetailsModel trip) {
+    return ((trip.tripDetails.offers!.isNotEmpty) &&
+            trip.tripDetails.offers![0].acceptanceStatus ==
+                AcceptanceType.PROPOSED.name)
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_rounded,
+                    color: ColorManager.purpleMainTextColor,
+                  ),
+                  SizedBox(
+                    width: 7,
+                  ),
+                  Text(
+                      "${AppStrings.offerHasBeenSent.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: ColorManager.purpleMainTextColor,
+                          fontSize: FontSize.s16,
+                          fontWeight: FontWeight.bold)),
+                ],
+              ),
+              Text("${AppStrings.waitingClientReplay.tr()}",
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: ColorManager.accentTextColor,
+                      fontSize: FontSize.s14,
+                      fontWeight: FontWeight.bold))
+            ],
+          )
+        : ((trip.tripDetails.offers!.isNotEmpty) &&
+                trip.tripDetails.offers![0].acceptanceStatus ==
+                    AcceptanceType.EXPIRED.name)
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.error_outlined,
+                        color: ColorManager.error,
+                      ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      Text(
+                          "${AppStrings.clientRejectYourOffer.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                  color: ColorManager.error,
+                                  fontSize: FontSize.s16,
+                                  fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  CustomTextButton(
+                    isWaitToEnable: false,
+                    backgroundColor: ColorManager.white,
+                    textColor: ColorManager.headersTextColor,
+                    borderColor: ColorManager.purpleMainTextColor,
+                    text: AppStrings.sendAnotherPrice.tr(),
+                    onPressed: () {
+                      _showAnotherOfferBottomSheet();
+                    },
+                  ),
+                ],
+              )
+            : _acceptOrSuggestNewOfferTrip(trip);
+  }
+
+  Widget _acceptOrSuggestNewOfferTrip(TripDetailsModel trip) {
     return Container(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            AppStrings.goodsToDeliver.tr(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: ColorManager.purpleMainTextColor,
-                fontSize: FontSize.s14,
-                fontWeight: FontWeight.normal),
-            textAlign: TextAlign.center,
+          CustomTextButton(
+            text:
+                "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
+            onPressed: () {
+              BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                  _appPreferences.getCachedDriver()!.id!,
+                  widget.tripModel.tripDetails.tripId!,
+                  _appPreferences.getCachedDriver()!.captainType.toString()));
+            },
+          ),
+          CustomTextButton(
+            isWaitToEnable: false,
+            backgroundColor: ColorManager.white,
+            textColor: ColorManager.headersTextColor,
+            borderColor: ColorManager.purpleMainTextColor,
+            text: AppStrings.sendAnotherPrice.tr(),
+            onPressed: () {
+              _showAnotherOfferBottomSheet();
+            },
           ),
         ],
       ),
     );
+  }
+
+  Widget _actionWithTripWidget(TripDetailsModel trip) {
+    return (trip.tripDetails.acceptedOffer == null &&
+                trip.tripDetails.offers == null ||
+            (trip.tripDetails.offers != null &&
+                trip.tripDetails.offers!.length >= 0))
+        ? _AcceptanceStatusWidget(trip)
+        : Container();
   }
 
   Widget _customerInfoWidget() {

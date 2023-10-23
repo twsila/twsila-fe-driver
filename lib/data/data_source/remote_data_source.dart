@@ -35,7 +35,13 @@ abstract class RemoteDataSource {
 
   Future<ServiceRegisterModel> servicesStatus(String userId);
 
-  Future<BaseResponse> tripsByModuleId(String tripTypeModuleId, int userId);
+  Future<BaseResponse> tripsByModuleId(
+      String tripTypeModuleId,
+      int userId,
+      Map<String, dynamic>? dateFilter,
+      Map<String, dynamic>? locationFilter,
+      Map<String, dynamic>? currentLocation,
+      String? sortCriterion);
 
   Future<BaseResponse> myTripsByModuleId(String tripTypeModuleId, int userId);
 
@@ -65,6 +71,14 @@ abstract class RemoteDataSource {
   Future<ForgotPasswordResponse> forgotPassword(String email);
 
   Future<BaseResponse> addDriverForBO(int businessOwnerId, int driverId);
+
+  Future<BaseResponse> boAssignDriverForTrip(
+      int businessOwnerId, int driverId, int tripId);
+
+  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId);
+
+  Future<BaseResponse> boSuggestNewOffer(
+      int businessOwnerId, int tripId, double newSuggestedOffer);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -168,8 +182,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<BaseResponse> tripsByModuleId(
-      String tripTypeModuleId, int userId) async {
-    return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId);
+      String tripTypeModuleId,
+      int userId,
+      Map<String, dynamic>? dateFilter,
+      Map<String, dynamic>? locationFilter,
+      Map<String, dynamic>? currentLocation,
+      String? sortCriterion) async {
+    return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId,
+        dateFilter, locationFilter, currentLocation, sortCriterion);
   }
 
   @override
@@ -238,8 +258,27 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<LogoutModel> boLogout(LogoutRequest logoutRequest)async {
+  Future<LogoutModel> boLogout(LogoutRequest logoutRequest) async {
     return await _appServiceClient.boLogout(logoutRequest.userId,
         logoutRequest.registrationId, logoutRequest.language);
+  }
+
+  @override
+  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId) async {
+    return await _appServiceClient.boAcceptNewOffer(businessOwnerId, tripId);
+  }
+
+  @override
+  Future<BaseResponse> boAssignDriverForTrip(
+      int businessOwnerId, int driverId, int tripId) async {
+    return await _appServiceClient.boAssignDriverToTrip(
+        businessOwnerId, driverId, tripId);
+  }
+
+  @override
+  Future<BaseResponse> boSuggestNewOffer(
+      int businessOwnerId, int tripId, double newSuggestedOffer) async {
+    return await _appServiceClient.boSuggestNewOffer(
+        businessOwnerId, tripId, newSuggestedOffer);
   }
 }

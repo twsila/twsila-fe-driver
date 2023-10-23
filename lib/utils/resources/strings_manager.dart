@@ -530,6 +530,13 @@ class AppStrings {
   static const sendingRequestDone = 'sending_request_done';
 
 
+  static const assignDriver = 'assign_driver';
+
+
+
+
+
+
 
 
 

@@ -49,7 +49,7 @@ class GoodsDetailsWidget extends StatelessWidget {
             Expanded(
               child: itemWidget(
                 AppStrings.goodsWeight.tr(),
-                goodsModel.payloadWeight!.toInt().toString(),
+                goodsModel.payloadWeight?.toInt().toString() ?? "-",
               ),
             )
           ],

@@ -18,9 +18,18 @@ class SearchDriversSuccess extends BoDriversCarsState {
 
   SearchDriversSuccess(this.drivers);
 }
+class getAllDriversSuccess extends BoDriversCarsState {
+  final List<Driver> drivers;
+
+  getAllDriversSuccess(this.drivers);
+}
 
 class AddDriversSuccess extends BoDriversCarsState {
   AddDriversSuccess();
+}
+
+class AssignDriversSuccess extends BoDriversCarsState {
+  AssignDriversSuccess();
 }
 
 class BoDriversCarsFail extends BoDriversCarsState {
@@ -30,12 +39,20 @@ class BoDriversCarsFail extends BoDriversCarsState {
   BoDriversCarsFail(this.message, this.code);
 }
 
+class AssignDriverFail extends BoDriversCarsState {
+  final String message;
+  final String code;
+
+  AssignDriverFail(this.message, this.code);
+}
+
 class SearchDriversFail extends BoDriversCarsState {
   final String message;
   final String code;
 
   SearchDriversFail(this.message, this.code);
 }
+
 class AddDriverFail extends BoDriversCarsState {
   final String message;
   final String code;

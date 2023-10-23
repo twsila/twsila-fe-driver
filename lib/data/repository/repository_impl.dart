@@ -314,12 +314,22 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, List<TripDetailsModel>>> getTrips(
-      String tripTypeModuleId, int userId) async {
+      String tripTypeModuleId,
+      int userId,
+      Map<String, dynamic>? dateFilter,
+      Map<String, dynamic>? locationFilter,
+      Map<String, dynamic>? currentLocation,
+      String? sortCriterion) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response =
-            await _remoteDataSource.tripsByModuleId(tripTypeModuleId, userId);
+        final response = await _remoteDataSource.tripsByModuleId(
+            tripTypeModuleId,
+            userId,
+            dateFilter,
+            locationFilter,
+            currentLocation,
+            sortCriterion);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           List<TripDetailsModel> trips = List<TripDetailsModel>.from(
@@ -617,11 +627,87 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, LogoutModel>> boLogout(LogoutRequest logoutRequest) async{
+  Future<Either<Failure, LogoutModel>> boLogout(
+      LogoutRequest logoutRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response = await _remoteDataSource.boLogout(logoutRequest);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> boAcceptOffer(
+      int businessOwnerId, int tripId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.boAcceptOffer(businessOwnerId, tripId);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> boAssignDriverToTrip(
+      int businessOwnerId, int driverId, int tripId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.boAssignDriverForTrip(
+            businessOwnerId, driverId, tripId);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> boSuggestNewOffer(
+      int businessOwnerId, int tripId, double newSuggestedOffer) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.boSuggestNewOffer(
+            businessOwnerId, tripId, newSuggestedOffer);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

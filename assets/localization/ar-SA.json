@@ -446,5 +446,6 @@
   "add_driver": "إضافة سائق",
   "driver_mobile_number": "رقم موبايل السائق",
   "add_driver_mobile_number": "ادخل رقم موبايل السائق",
-  "sending_request_done": "تم ارسال الطلب"
+  "sending_request_done": "تم ارسال الطلب",
+  "assign_driver": "قم بتعيين سائق"
 }

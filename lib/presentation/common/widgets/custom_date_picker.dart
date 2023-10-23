@@ -14,12 +14,16 @@ class CustomDatePickerWidget extends StatefulWidget {
   final bool pickTime;
   final String? labelText;
   final bool? isDimmed;
+  final String dateFormatterString;
+  final Locale? locale;
 
   const CustomDatePickerWidget(
       {Key? key,
       required this.onSelectDate,
       required this.pickTime,
       this.isDimmed = false,
+      this.dateFormatterString = 'dd MMM, yyyy',
+      this.locale,
       this.labelText})
       : super(key: key);
 
@@ -30,8 +34,6 @@ class CustomDatePickerWidget extends StatefulWidget {
 class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
   final _appPrefs = instance<AppPreferences>();
   final ValueNotifier<DateTime?> dateSub = ValueNotifier(null);
-
-  String dateFormatterString = 'dd MMM, yyyy';
 
   Widget buildDateTimePicker(String data) {
     return Row(
@@ -69,10 +71,10 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
 
   String convertDate(DateTime dateTime) {
     String dateFormatted =
-        DateFormat(dateFormatterString, _appPrefs.getAppLanguage())
+        DateFormat(widget.dateFormatterString, widget.locale != null ? widget.locale!.languageCode : _appPrefs.getAppLanguage())
             .format(dateTime);
     widget.onSelectDate(dateFormatted);
-    return DateFormat(dateFormatterString, _appPrefs.getAppLanguage())
+    return DateFormat(widget.dateFormatterString, _appPrefs.getAppLanguage())
         .format(dateTime);
   }
 
@@ -89,10 +91,12 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                       : () async {
                           FocusScope.of(context).unfocus();
                           DateTime? date = await showDatePicker(
-                              locale: _appPrefs.getAppLanguage() ==
-                                      LanguageType.ENGLISH.getValue()
-                                  ? ENGLISH_LOCAL
-                                  : ARABIC_LOCAL,
+                              locale: widget.locale != null
+                                  ? widget.locale
+                                  : _appPrefs.getAppLanguage() ==
+                                          LanguageType.ENGLISH.getValue()
+                                      ? ENGLISH_LOCAL
+                                      : ARABIC_LOCAL,
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime.now(),

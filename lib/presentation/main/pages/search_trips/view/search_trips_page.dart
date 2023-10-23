@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_for_you/domain/model/current_location_model.dart';
+import 'package:taxi_for_you/domain/model/location_filter_model.dart';
 import 'package:taxi_for_you/domain/model/sorting_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
@@ -19,6 +21,7 @@ import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/constants.dart';
 import '../../../../../app/di.dart';
+import '../../../../../domain/model/date_filter_model.dart';
 import '../../../../../domain/model/trip_details_model.dart';
 import '../../../../../utils/resources/strings_manager.dart';
 import '../../../../../utils/resources/values_manager.dart';
@@ -40,7 +43,10 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   bool _loadingTripsList = false;
+
+  int currentSortingIndex = 0;
   List<TripDetailsModel> trips = [];
+  DateFilter? dateFilter = null;
   List<SortingModel> sortingModelList = [
     SortingModel(SortCriterion.REQUEST_DATE, AppStrings.requestedDate.tr()),
     SortingModel(SortCriterion.NEAREST_TO_ME, AppStrings.nearestToMe.tr()),
@@ -58,6 +64,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         context: context,
         backgroundColor: Colors.transparent,
         builder: (ctx) => Container(
+            padding: EdgeInsets.all(AppSize.s14),
             decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -70,7 +77,15 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                 final selectedSortModel = sortingModelList[index];
                 return InkWell(
                   onTap: () {
-                    setState(() {});
+                    setState(() {
+                      currentSortingIndex = index;
+                      BlocProvider.of<SearchTripsBloc>(context).add(
+                          GetTripsTripModuleId(
+                              tripTypeId: 'ALL_TRIPS',
+                              sortCriterion:
+                                  selectedSortModel.id.name.toString()));
+                      Navigator.pop(context);
+                    });
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(AppPadding.p12),
@@ -87,9 +102,12 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                         const SizedBox(
                           width: AppSize.s8,
                         ),
-                        Icon(
-                          Icons.check,
-                          color: ColorManager.purpleMainTextColor,
+                        Visibility(
+                          visible: currentSortingIndex == index,
+                          child: Icon(
+                            Icons.check,
+                            color: ColorManager.purpleMainTextColor,
+                          ),
                         )
                       ],
                     ),
@@ -128,8 +146,10 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   @override
   void initState() {
     // BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
-    BlocProvider.of<SearchTripsBloc>(context)
-        .add(GetTripsTripModuleId('TODAY_TRIPS'));
+    BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
+        tripTypeId: 'ALL_TRIPS',
+        sortCriterion:
+            sortingModelList[currentSortingIndex].id.name.toString()));
     super.initState();
   }
 
@@ -144,12 +164,21 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           displayLoadingIndicator: _displayLoadingIndicator,
           allowBackButtonInAppBar: false,
           appBarTitle: AppStrings.twsela.tr(),
+          appBarBackgroundColor: ColorManager.white,
           showLanguageChange: true,
           centerTitle: true,
           appBarActions: [
             GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.filterTrips);
+              onTap: () async {
+                FilterTripsModel filterData =
+                    await Navigator.pushNamed(context, Routes.filterTrips)
+                        as FilterTripsModel;
+                BlocProvider.of<SearchTripsBloc>(context).add(
+                    GetTripsTripModuleId(
+                        tripTypeId: 'ALL_TRIPS',
+                        dateFilter: filterData.dateFilter,
+                        locationFilter: filterData.locationFilter,
+                        currentLocation: filterData.currentLocation));
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: AppMargin.m8),
@@ -182,15 +211,16 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           } else {
             tripsTitles.addAll(state.englishTripTitles);
           }
-          BlocProvider.of<SearchTripsBloc>(context)
-              .add(GetTripsTripModuleId(englishTripTitles[0]));
+          BlocProvider.of<SearchTripsBloc>(context).add(
+              GetTripsTripModuleId(tripTypeId: 'ALL_TRIPS', dateFilter: null));
         }
 
         if (state is SearchTripsSuccess) {
           trips = state.trips;
         }
         if (state is SearchTripsFailure) {
-          CustomDialog(context).showErrorDialog('', '', "${state.code} ${state.message}");
+          CustomDialog(context)
+              .showErrorDialog('', '', "${state.code} ${state.message}");
         }
       },
       builder: (context, state) {
@@ -262,8 +292,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         onTap: () {
           setState(() {
             currentIndex = index;
-            BlocProvider.of<SearchTripsBloc>(context)
-                .add(GetTripsTripModuleId(englishTripTitles[index]));
+            BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
+                tripTypeId: 'ALL_TRIPS', dateFilter: null));
           });
         },
         child: Container(
@@ -301,13 +331,15 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         if (trip.tripDetails.acceptedOffer != null)
           Navigator.pushNamed(context, Routes.tripExecution,
                   arguments: TripExecutionArguments(trip))
-              .then((value) => BlocProvider.of<SearchTripsBloc>(context)
-                  .add(GetTripsTripModuleId(englishTripTitles[currentIndex])));
+              .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
+                  GetTripsTripModuleId(
+                      tripTypeId: 'ALL_TRIPS', dateFilter: null)));
         else
           Navigator.pushNamed(context, Routes.tripDetails,
                   arguments: TripDetailsArguments(tripModel: trip))
-              .then((value) => BlocProvider.of<SearchTripsBloc>(context)
-                  .add(GetTripsTripModuleId(englishTripTitles[currentIndex])));
+              .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
+                  GetTripsTripModuleId(
+                      tripTypeId: 'ALL_TRIPS', dateFilter: null)));
       },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
@@ -463,4 +495,12 @@ class TripTitleModel {
   bool? isSelected;
 
   TripTitleModel(this.id, this.title, {this.isSelected = false});
+}
+
+class FilterTripsModel {
+  DateFilter? dateFilter;
+  LocationFilter? locationFilter;
+  CurrentLocationFilter? currentLocation;
+
+  FilterTripsModel(this.dateFilter, this.locationFilter, this.currentLocation);
 }

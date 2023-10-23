@@ -25,7 +25,7 @@ abstract class DriverBaseModel {
 
 class Driver extends DriverBaseModel {
   String dateOfBirth;
-  String driverServiceType;
+  String? driverServiceType;
   String registrationStatus;
   DriverVehicleType vehicleType;
   DriverCarManufacturer carManufacturerType;
@@ -54,7 +54,7 @@ class Driver extends DriverBaseModel {
       required gender,
       required captainType,
       required this.dateOfBirth,
-      required this.driverServiceType,
+      this.driverServiceType,
       required this.registrationStatus,
       required this.vehicleType,
       required this.carManufacturerType,
@@ -228,12 +228,12 @@ class DriverImage {
 class DriverVehicleType {
   int id;
   String vehicleType;
-  String driverServiceType;
+  String? driverServiceType;
 
   DriverVehicleType({
     required this.id,
     required this.vehicleType,
-    required this.driverServiceType,
+    this.driverServiceType,
   });
 
   factory DriverVehicleType.fromJson(Map<String, dynamic> json) =>

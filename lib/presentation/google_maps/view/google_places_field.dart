@@ -15,6 +15,7 @@ class GoogleMapsPlacesField extends StatefulWidget {
   TextEditingController controller;
   FocusNode focusNode;
   String? hintText;
+  bool? enabled;
   Function(Prediction?) predictionCallback;
 
   GoogleMapsPlacesField({
@@ -22,6 +23,7 @@ class GoogleMapsPlacesField extends StatefulWidget {
     required this.controller,
     required this.focusNode,
     required this.predictionCallback,
+    this.enabled = true,
     this.hintText,
   }) : super(key: key);
 
@@ -90,6 +92,7 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
               }
             },
             inputDecoration: InputDecoration(
+              enabled: widget.enabled!,
               contentPadding: const EdgeInsets.only(left: 8, right: 8),
               hintText: widget.hintText ?? "Search your location..",
               hintStyle: getRegularStyle(

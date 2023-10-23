@@ -40,7 +40,9 @@ blocProviders(BuildContext context) {
             registrationBOUseCase: instance(),
             registrationUseCase: instance())),
     BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
-    BlocProvider.value(value: MyProfileBloc(logoutUseCase: instance(),boLogoutUseCase: instance())),
+    BlocProvider.value(
+        value: MyProfileBloc(
+            logoutUseCase: instance(), boLogoutUseCase: instance())),
     BlocProvider.value(
         value: RatePassengerBloc(ratePassengerUseCase: instance())),
     BlocProvider.value(
@@ -55,12 +57,15 @@ blocProviders(BuildContext context) {
         value: TripDetailsBloc(
             acceptOfferUseCase: instance(),
             addOfferUseCase: instance(),
-            tripSummaryUseCase: instance())),
+            tripSummaryUseCase: instance(),
+            boAcceptOfferUseCase: instance(),
+            boSuggestNewOfferUseCase: instance())),
     BlocProvider.value(
         value: BoDriversCarsBloc(
       businessOwnerDriversUseCase: instance(),
       searchDriversByMobileUseCase: instance(),
       addDriverForBOUseCase: instance(),
+      assignDriverToTripUseCase: instance(),
       appPreferences: instance(),
     )),
     ChangeNotifierProvider(create: (_) => MapProvider()),

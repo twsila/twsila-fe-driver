@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 
 import '../../../app/constants.dart';
@@ -25,5 +27,18 @@ class LocationHelper {
         "https://maps.googleapis.com/maps/api/distancematrix/json?units="
         "imperial&origins=${currentLocation.latitude},${currentLocation.longitude}&destinations=${destinationLocation.latitude}%2C,${currentLocation.longitude}&key=${Platform.isIOS ? Constants.GOOGLE_API_KEY_IOS : Constants.GOOGLE_API_KEY_ANDROID}");
     print(response.data);
+  }
+
+  String getCityName(Prediction prediction) {
+    List<Terms> newTerms = prediction.terms!;
+    newTerms.removeLast();
+    return newTerms.last.value.toString();
+  }
+
+  Future<String> getCityNameByCoordinates(double lat, double long) async {
+    var address = await Geocoder.local
+        .findAddressesFromCoordinates(Coordinates(lat, long));
+    String? cityName = address.first.locality;
+    return cityName ?? "defaultCity";
   }
 }
