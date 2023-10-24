@@ -9,33 +9,17 @@ CurrentLocationFilter currentLocationFilterFromJson(String str) => CurrentLocati
 String currentLocationFilterToJson(CurrentLocationFilter data) => json.encode(data.toJson());
 
 class CurrentLocationFilter {
-  CurrentLocation currentLocation;
-
-  CurrentLocationFilter({
-    required this.currentLocation,
-  });
-
-  factory CurrentLocationFilter.fromJson(Map<String, dynamic> json) => CurrentLocationFilter(
-    currentLocation: CurrentLocation.fromJson(json["currentLocation"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "currentLocation": currentLocation.toJson(),
-  };
-}
-
-class CurrentLocation {
   double latitude;
   double longitude;
   String cityName;
 
-  CurrentLocation({
+  CurrentLocationFilter({
     required this.latitude,
     required this.longitude,
     required this.cityName,
   });
 
-  factory CurrentLocation.fromJson(Map<String, dynamic> json) => CurrentLocation(
+  factory CurrentLocationFilter.fromJson(Map<String, dynamic> json) => CurrentLocationFilter(
     latitude: json["latitude"]?.toDouble(),
     longitude: json["longitude"]?.toDouble(),
     cityName: json["cityName"],

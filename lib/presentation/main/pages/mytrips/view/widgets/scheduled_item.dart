@@ -133,7 +133,7 @@ class _ScheduledItemViewState extends State<ScheduledItemView> {
           ),
           Text(
               '${AppStrings.tripWillStartInDay.tr()} ${widget.trip.tripDetails
-                  .date?.formatStringToDateString() ?? "-"}',
+                  .date ?? "-"}',
       style: Theme
           .of(context)
           .textTheme

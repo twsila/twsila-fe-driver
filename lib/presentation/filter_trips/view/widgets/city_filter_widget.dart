@@ -59,13 +59,12 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
     try {
       currentLocation = await mapsRepo.getUserCurrentLocation();
       currentLocationFilter = CurrentLocationFilter(
-          currentLocation: CurrentLocation(
               latitude: currentLocation!.latitude,
               longitude: currentLocation!.longitude,
-              cityName: ''));
+              cityName: '');
       currentCityName = await LocationHelper().getCityNameByCoordinates(
           currentLocation!.latitude, currentLocation!.longitude);
-      currentLocationFilter!.currentLocation.cityName = currentCityName;
+      currentLocationFilter!.cityName = currentCityName;
     } catch (e) {
       CustomDialog(context).showWaringDialog(
           '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {

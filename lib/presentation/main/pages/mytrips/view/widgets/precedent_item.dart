@@ -172,7 +172,7 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
             Text(
               widget.trip.tripDetails.completionDate != null
                   ? "${AppStrings.tripCompletedInDay.tr()}"
-                      "${widget.trip.tripDetails.completionDate?.formatStringToDateString() ?? "-"}"
+                      "${widget.trip.tripDetails.completionDate ?? "-"}"
                   : '${AppStrings.tripCompletedInDay.tr()} -',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
