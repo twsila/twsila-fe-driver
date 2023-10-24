@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:taxi_for_you/domain/model/current_location_model.dart';
 import 'package:taxi_for_you/domain/model/location_filter_model.dart';
 import 'package:taxi_for_you/domain/model/sorting_model.dart';
@@ -27,6 +28,9 @@ import '../../../../../utils/resources/strings_manager.dart';
 import '../../../../../utils/resources/values_manager.dart';
 import '../../../../common/widgets/custom_scaffold.dart';
 import '../../../../common/widgets/page_builder.dart';
+import '../../../../google_maps/model/location_model.dart';
+import '../../../../google_maps/model/maps_repo.dart';
+import '../../../../trip_execution/helper/location_helper.dart';
 
 List<String> tripsTitles = [];
 List<String> englishTripTitles = [];
@@ -44,6 +48,11 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   bool _displayLoadingIndicator = false;
   bool _loadingTripsList = false;
 
+  MapsRepo mapsRepo = MapsRepo();
+  LocationModel? currentLocation;
+  String currentCityName = '';
+  CurrentLocationFilter? currentLocationFilter;
+
   int currentSortingIndex = 0;
   List<TripDetailsModel> trips = [];
   DateFilter? dateFilter = null;
@@ -57,6 +66,27 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         SortCriterion.TOP_RATED_CLIENT, AppStrings.highestRateClient.tr()),
   ];
   int currentIndex = 0;
+
+  getCurrentLocation() async {
+    try {
+      if (currentLocation == null) {
+        currentLocation = await mapsRepo.getUserCurrentLocation();
+        currentLocationFilter = CurrentLocationFilter(
+            currentLocation: CurrentLocation(
+                latitude: currentLocation!.latitude,
+                longitude: currentLocation!.longitude,
+                cityName: ''));
+        currentCityName = await LocationHelper().getCityNameByCoordinates(
+            currentLocation!.latitude, currentLocation!.longitude);
+        currentLocationFilter!.currentLocation.cityName = currentCityName;
+      }
+    } catch (e) {
+      CustomDialog(context).showWaringDialog(
+          '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
+        Geolocator.openLocationSettings();
+      });
+    }
+  }
 
   void _showBottomSheet() {
     showModalBottomSheet(
@@ -83,7 +113,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                           GetTripsTripModuleId(
                               tripTypeId: 'ALL_TRIPS',
                               sortCriterion:
-                                  selectedSortModel.id.name.toString()));
+                                  selectedSortModel.id.name.toString(),
+                              currentLocation: currentLocationFilter));
                       Navigator.pop(context);
                     });
                   },
@@ -150,6 +181,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         tripTypeId: 'ALL_TRIPS',
         sortCriterion:
             sortingModelList[currentSortingIndex].id.name.toString()));
+
+    getCurrentLocation();
     super.initState();
   }
 
@@ -211,8 +244,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           } else {
             tripsTitles.addAll(state.englishTripTitles);
           }
-          BlocProvider.of<SearchTripsBloc>(context).add(
-              GetTripsTripModuleId(tripTypeId: 'ALL_TRIPS', dateFilter: null));
+          BlocProvider.of<SearchTripsBloc>(context)
+              .add(GetTripsTripModuleId(tripTypeId: 'ALL_TRIPS'));
         }
 
         if (state is SearchTripsSuccess) {
@@ -224,64 +257,70 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         }
       },
       builder: (context, state) {
-        return Stack(alignment: Alignment.center, children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: AppSize.s8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: Container(
-                //           height: AppSize.s40,
-                //           child: _TripsTitleListView(tripsTitles)),
-                //     ),
-                //   ],
-                // ),
-                Expanded(
-                  child: _loadingTripsList
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: ColorManager.purpleMainTextColor,
-                          ),
-                        )
-                      : trips.length == 0
-                          ? Center(
-                              child: Text(
-                                AppStrings.noTripsAvailable.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(color: ColorManager.error),
-                              ),
-                            )
-                          : Container(child: _TripsListView(trips)),
-                )
-              ],
+        return WillPopScope(
+          onWillPop: () async {
+            getCurrentLocation();
+            return false;
+          },
+          child: Stack(alignment: Alignment.center, children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: AppSize.s8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Row(
+                  //   children: [
+                  //     Expanded(
+                  //       child: Container(
+                  //           height: AppSize.s40,
+                  //           child: _TripsTitleListView(tripsTitles)),
+                  //     ),
+                  //   ],
+                  // ),
+                  Expanded(
+                    child: _loadingTripsList
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: ColorManager.purpleMainTextColor,
+                            ),
+                          )
+                        : trips.length == 0
+                            ? Center(
+                                child: Text(
+                                  AppStrings.noTripsAvailable.tr(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(color: ColorManager.error),
+                                ),
+                              )
+                            : Container(child: _TripsListView(trips)),
+                  )
+                ],
+              ),
             ),
-          ),
-          Positioned(
-              bottom: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CustomTextButton(
-                  onPressed: () {
-                    _showBottomSheet();
-                  },
-                  width: AppSize.s130,
-                  height: AppSize.s40,
-                  fontSize: FontSize.s12,
-                  backgroundColor: ColorManager.secondaryColor,
-                  isWaitToEnable: false,
-                  icon: Image.asset(
-                    ImageAssets.sortingIcon,
-                    width: 20,
+            Positioned(
+                bottom: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomTextButton(
+                    onPressed: () {
+                      _showBottomSheet();
+                    },
+                    width: AppSize.s130,
+                    height: AppSize.s40,
+                    fontSize: FontSize.s12,
+                    backgroundColor: ColorManager.secondaryColor,
+                    isWaitToEnable: false,
+                    icon: Image.asset(
+                      ImageAssets.sortingIcon,
+                      width: 20,
+                    ),
+                    text: AppStrings.sortBy.tr(),
                   ),
-                  text: AppStrings.sortBy.tr(),
-                ),
-              ))
-        ]);
+                ))
+          ]),
+        );
       },
     );
   }

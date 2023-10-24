@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_view.dart';
@@ -15,6 +16,7 @@ import '../../utils/resources/color_manager.dart';
 import '../../utils/resources/strings_manager.dart';
 import '../../utils/resources/values_manager.dart';
 import '../common/state_renderer/dialogs.dart';
+import '../common/widgets/custom_text_button.dart';
 import '../google_maps/bloc/maps_bloc.dart';
 import '../google_maps/bloc/maps_events.dart';
 import '../google_maps/bloc/maps_state.dart';
@@ -75,7 +77,11 @@ class _MainViewState extends State<MainView> {
         bottomNavigationBar: BlocConsumer<MapsBloc, MapsState>(
           listener: (context, state) {
             if (state is CurrentLocationFailed) {
-              ShowDialogHelper.showErrorMessage(state.errorMessage, context);
+              CustomDialog(context).showWaringDialog(
+                  '', '', AppStrings.needLocationPermission.tr(),
+                  onBtnPressed: () {
+                Geolocator.openLocationSettings();
+              });
             } else if (state is CurrentLocationLoadedSuccessfully) {
               Provider.of<MapProvider>(context, listen: false).currentLocation =
                   state.currentLocation;

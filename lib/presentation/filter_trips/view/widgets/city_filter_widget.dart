@@ -3,15 +3,18 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:taxi_for_you/domain/model/current_location_model.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/maps_repo.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 
 import '../../../../app/constants.dart';
 import '../../../../domain/model/location_filter_model.dart';
 import '../../../../utils/dialogs/toast_handler.dart';
 import '../../../../utils/resources/color_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
+import '../../../../utils/resources/routes_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 import '../../../../utils/resources/values_manager.dart';
 import '../../../common/widgets/custom_text_button.dart';
@@ -53,15 +56,22 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
   }
 
   getCurrentLocation() async {
-    currentLocation = await mapsRepo.getUserCurrentLocation();
-    currentLocationFilter = CurrentLocationFilter(
-        currentLocation: CurrentLocation(
-            latitude: currentLocation!.latitude,
-            longitude: currentLocation!.longitude,
-            cityName: ''));
-    currentCityName = await LocationHelper().getCityNameByCoordinates(
-        currentLocation!.latitude, currentLocation!.longitude);
-    currentLocationFilter!.currentLocation.cityName = currentCityName;
+    try {
+      currentLocation = await mapsRepo.getUserCurrentLocation();
+      currentLocationFilter = CurrentLocationFilter(
+          currentLocation: CurrentLocation(
+              latitude: currentLocation!.latitude,
+              longitude: currentLocation!.longitude,
+              cityName: ''));
+      currentCityName = await LocationHelper().getCityNameByCoordinates(
+          currentLocation!.latitude, currentLocation!.longitude);
+      currentLocationFilter!.currentLocation.cityName = currentCityName;
+    } catch (e) {
+      CustomDialog(context).showWaringDialog(
+          '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
+        Geolocator.openLocationSettings();
+      });
+    }
   }
 
   @override
@@ -151,6 +161,7 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
           content: StatefulBuilder(
             // You need this, notice the parameters below:
             builder: (BuildContext context, StateSetter setState) {
+              getCurrentLocation();
               return _dialogContentWidget(setState);
             },
           ),
@@ -240,14 +251,18 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                       setState(() {
                         isCurrentCitySelected = value!;
                         if (isCurrentCitySelected) {
-                          pickup = Destination(
-                              latitude: currentLocation!.latitude,
-                              longitude: currentLocation!.longitude,
-                              cityName: currentCityName);
-                          destination = Destination(
-                              latitude: currentLocation!.latitude,
-                              longitude: currentLocation!.longitude,
-                              cityName: currentCityName);
+                          if (currentLocation != null) {
+                            pickup = Destination(
+                                latitude: currentLocation!.latitude,
+                                longitude: currentLocation!.longitude,
+                                cityName: currentCityName);
+                            destination = Destination(
+                                latitude: currentLocation!.latitude,
+                                longitude: currentLocation!.longitude,
+                                cityName: currentCityName);
+                          } else {
+                            getCurrentLocation();
+                          }
                         } else if (_searchFromController.text.isNotEmpty &&
                             _searchToController.text.isNotEmpty &&
                             pPickup != null &&

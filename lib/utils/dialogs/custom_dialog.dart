@@ -38,6 +38,31 @@ class CustomDialog {
     ).show();
   }
 
+  showWaringDialog(String? title, String? desc, String body,
+      {Function()? onBtnPressed}) {
+    AwesomeDialog(
+      context: context,
+      animType: AnimType.scale,
+      dialogType: DialogType.warning,
+      body: Center(
+        child: Text(
+          body,
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(fontSize: AppSize.s16),
+        ),
+      ),
+      title: title ?? "",
+      titleTextStyle: Theme.of(context).textTheme.displayMedium,
+      desc: desc ?? "",
+      buttonsBorderRadius: BorderRadius.circular(2),
+      btnOkColor: ColorManager.secondaryColor,
+      descTextStyle: Theme.of(context).textTheme.displayMedium,
+      btnOkOnPress: onBtnPressed ?? () {},
+    ).show();
+  }
+
   showSuccessDialog(String? title, String? desc, String body,
       {Function()? onBtnPressed}) {
     AwesomeDialog(
