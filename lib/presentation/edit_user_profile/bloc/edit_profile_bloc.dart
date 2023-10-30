@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:meta/meta.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/data/network/requests.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/domain/usecase/update_profile_usecase.dart';
@@ -34,11 +36,17 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       EditProfileDataEvent event, Emitter<EditProfileState> emit) async {
     emit(EditProfileLoading());
     DriverBaseModel? user = appPreferences.getCachedDriver();
+    File? profilePhoto;
+    if (event.profilePhoto != null) {
+      profilePhoto =
+          await changeFileNameOnly(event.profilePhoto!,Constants.DRIVER_PHOTO_IMAGE_STRING);
+    }
+    print(profilePhoto!.path);
     if (user != null) {
       if (user.captainType == RegistrationConstants.captain) {
         (await updateProfileUseCase.execute(
           UpdateProfileUseCaseInput(user.id != null ? user.id! : 0,
-              event.firstName, event.lastName, event.email, event.profilePhoto),
+              event.firstName, event.lastName, event.email, profilePhoto),
         ))
             .fold(
                 (failure) => {
@@ -58,12 +66,11 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           Driver driver = Driver.fromJson(driverModelResponse.result);
           driver.userDevice = userDevice;
           await appPreferences.setDriver(driver);
-
         });
       } else {
         (await updateBoProfileUseCase.execute(
           UpdateProfileUseCaseInput(user.id != null ? user.id! : 0,
-              event.firstName, event.lastName, event.email, event.profilePhoto),
+              event.firstName, event.lastName, event.email, profilePhoto),
         ))
             .fold(
                 (failure) => {
@@ -109,5 +116,12 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
     }
 
     return userDevice;
+  }
+
+  Future<File> changeFileNameOnly(File image, String newFileName) {
+    var path = image.path;
+    var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
+    var newPath = path.substring(0, lastSeparator + 1) + newFileName;
+    return image.copy(newPath);
   }
 }

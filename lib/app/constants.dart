@@ -20,7 +20,8 @@ class Constants {
       "AIzaSyDB2c1bJWwqm-XSTIopQZovNnRPfXnyd8s";
   static const String UPLOAD_DOCUMENTS_TYPE = "upload_documents_type";
 
-  static const int IMAGE_QUALITY_COMPRESS = 10;
+  static const int IMAGE_QUALITY_COMPRESS = 25;
+  static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
 
   static const String dateFormatterString = "dd/MM/yyyy hh:mm:ss";
 

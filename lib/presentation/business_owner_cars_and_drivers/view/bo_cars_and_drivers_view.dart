@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
@@ -163,11 +164,12 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                   Border.all(color: ColorManager.lightGrey)),
                           height: AppSize.s120,
                           width: AppSize.s90,
-                          child: driversList[i].images[0].imageUrl == null
-                              ? Image.asset(ImageAssets.appBarLogo)
-                              : FadeInImage.assetNetwork(
-                                  placeholder: ImageAssets.appBarLogo,
-                                  image: driversList[i].images[0].imageUrl!),
+                          child: driversList[i].images != null &&
+                                  driversList[i].images.length > 1 &&
+                                  driversList[i].images[1].imageUrl != null
+                              ? CustomNetworkImageWidget(
+                                  imageUrl: driversList[i].images[1].imageUrl!)
+                              : Image.asset(ImageAssets.appBarLogo),
                         )
                       ],
                     ),

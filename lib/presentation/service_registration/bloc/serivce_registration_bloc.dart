@@ -10,6 +10,7 @@ import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
+import '../../../app/constants.dart';
 import '../../../domain/model/service_type_model.dart';
 import '../../../domain/model/car_brand_models_model.dart';
 import '../../../domain/usecase/registration_services_usecase.dart';
@@ -158,6 +159,7 @@ class ServiceRegistrationBloc
   FutureOr<void> _registerBOWithService(RegisterBOWithService event,
       Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
+
     (await registrationBOUseCase.execute(event.businessOwnerModel)).fold(
       (failure) => {
         emit(ServiceRegistrationFail(failure.message)),
@@ -284,8 +286,8 @@ class ServiceRegistrationBloc
     File captainPhoto;
 
     if (renameFile)
-      captainPhoto =
-          await changeFileNameOnly(event.captainPhoto, 'driver_photo.jpg');
+      captainPhoto = await changeFileNameOnly(
+          event.captainPhoto, Constants.DRIVER_PHOTO_IMAGE_STRING);
     else
       captainPhoto = File(event.captainPhoto.path);
 
