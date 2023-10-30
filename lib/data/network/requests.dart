@@ -57,7 +57,7 @@ class UpdateProfileRequest {
   String firstName;
   String lastName;
   String email;
-  File profilePhoto;
+  File? profilePhoto;
 
   UpdateProfileRequest(this.driverId, this.firstName, this.lastName, this.email,
       this.profilePhoto);

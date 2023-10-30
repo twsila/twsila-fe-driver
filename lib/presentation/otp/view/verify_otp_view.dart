@@ -1,13 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 import 'package:taxi_for_you/data/network/error_handler.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_screen.dart';
 import 'package:taxi_for_you/presentation/login/bloc/login_bloc.dart';
-import 'package:taxi_for_you/presentation/login/view/login_viewmodel.dart';
 import 'package:taxi_for_you/presentation/otp/bloc/verify_otp_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';

@@ -107,29 +107,4 @@ class DioFactory {
   }
 }
 
-// class TokenInterceptor extends Interceptor {
-//   final AppPreferences _appPreferences = instance<AppPreferences>();
-//
-//   @override
-//   void onRequest(
-//       RequestOptions options, RequestInterceptorHandler handler) async {
-//
-//     super.onRequest(options, handler);
-//   }
-//
-//   @override
-//   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
-//     if (err.response?.statusCode == 401) {
-//       // If a 401 response is received, refresh the access token
-//       String newAccessToken = await refreshToken();
-//
-//       // Update the request header with the new access token
-//       err.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-//
-//       // Repeat the request with the updated header
-//       return handler.resolve(await dio.fetch(e.requestOptions));
-//     }
-//     return handler.next(e);
-//     super.onError(err, handler);
-//   }
-// }
+

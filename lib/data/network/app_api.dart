@@ -160,14 +160,42 @@ abstract class AppServiceClient {
     @Field("rating") double rateNumber,
   );
 
-  @POST("/drivers/register")
+  @POST("/drivers/update-profile")
   @MultiPart()
   Future<BaseResponse> updateProfile(
-    @Part(name: "driverId") int driverId,
+    @Part(name: "userId") int driverId,
     @Part(name: "firstName") String firstName,
     @Part(name: "lastName") String lastName,
     @Part(name: "email") String email,
     @Part(name: "profilePhoto") File profilePhoto,
+  );
+
+  @POST("/drivers/update-profile")
+  @MultiPart()
+  Future<BaseResponse> updateProfileWithoutPhoto(
+      @Part(name: "userId") int driverId,
+      @Part(name: "firstName") String firstName,
+      @Part(name: "lastName") String lastName,
+      @Part(name: "email") String email,
+      );
+
+  @POST("/bo/update-profile")
+  @MultiPart()
+  Future<BaseResponse> updateBOProfile(
+    @Part(name: "userId") int driverId,
+    @Part(name: "firstName") String firstName,
+    @Part(name: "lastName") String lastName,
+    @Part(name: "email") String email,
+    @Part(name: "profilePhoto") File profilePhoto,
+  );
+
+  @POST("/bo/update-profile")
+  @MultiPart()
+  Future<BaseResponse> updateBOProfileWithoutPhoto(
+    @Part(name: "userId") int driverId,
+    @Part(name: "firstName") String firstName,
+    @Part(name: "lastName") String lastName,
+    @Part(name: "email") String email,
   );
 
   @POST("/driver-acquisition/get-requested-drivers")

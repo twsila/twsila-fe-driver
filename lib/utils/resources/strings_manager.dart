@@ -13,6 +13,7 @@ class AppStrings {
   static const letsGetStarted = "lets_get_started";
   static const goodAfternoon = "good_afternoon";
   static const needLocationPermission = "need_location_permission";
+  static const updateProfileDoneSuccessfully = "update_profile_done_successfully";
   static const goodmorning = "good_morning";
   static const tripDate = "trip_date";
   static const vehicleType = "vehicle_type";

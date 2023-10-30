@@ -59,10 +59,22 @@ class AppPreferences {
 
   //driver functionalities
   Future<bool> setDriver(DriverBaseModel driver) async {
-    setUserLoggedIn();
+    await setUserLoggedIn();
     String driverStr = json.encode(driver);
     await _sharedPreferences.setString(DRIVER_MODEL, driverStr);
     return true;
+  }
+
+  String userProfilePicture(DriverBaseModel driverBaseModel) {
+    String imageUrl;
+    if (driverBaseModel.captainType == RegistrationConstants.captain) {
+      imageUrl = (driverBaseModel as Driver).images[0].imageUrl ?? '';
+    } else {
+      imageUrl =
+          (driverBaseModel as BusinessOwnerModel).imagesFromApi![0].imageUrl ??
+              '';
+    }
+    return imageUrl;
   }
 
   //Selected country
@@ -88,7 +100,9 @@ class AppPreferences {
     if (_sharedPreferences.getString(DRIVER_MODEL) != null &&
         _sharedPreferences.getString(DRIVER_MODEL) != "") {
       driverMap = jsonDecode(_sharedPreferences.getString(DRIVER_MODEL)!);
-      driverMap["userDevice"] = UserDevice.fromJson(driverMap["userDevice"]);
+      if (driverMap["userDevice"] != null) {
+        driverMap["userDevice"] = UserDevice.fromJson(driverMap["userDevice"]);
+      }
     }
     if (driverMap["captainType"] == RegistrationConstants.businessOwner) {
       return driverMap.length != 0

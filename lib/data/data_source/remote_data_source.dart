@@ -58,6 +58,15 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> updateProfile(UpdateProfileRequest updateProfileRequest);
 
+  Future<BaseResponse> updateProfileWithoutPhoto(
+      UpdateProfileRequest updateProfileRequest);
+
+  Future<BaseResponse> updateBOProfile(
+      UpdateProfileRequest updateProfileRequest);
+
+  Future<BaseResponse> updateBOProfileWithoutPhoto(
+      UpdateProfileRequest updateProfileRequest);
+
   Future<BaseResponse> getBODrivers(int businessOwnerId);
 
   Future<BaseResponse> searchDriversByMobile(int mobileNumber);
@@ -239,7 +248,38 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         updateProfileRequest.firstName,
         updateProfileRequest.lastName,
         updateProfileRequest.email,
-        updateProfileRequest.profilePhoto);
+        updateProfileRequest.profilePhoto!);
+  }
+
+  @override
+  Future<BaseResponse> updateProfileWithoutPhoto(
+      UpdateProfileRequest updateProfileRequest) async {
+    return await _appServiceClient.updateProfileWithoutPhoto(
+        updateProfileRequest.driverId,
+        updateProfileRequest.firstName,
+        updateProfileRequest.lastName,
+        updateProfileRequest.email,);
+  }
+
+  @override
+  Future<BaseResponse> updateBOProfile(
+      UpdateProfileRequest updateProfileRequest) async {
+    return await _appServiceClient.updateBOProfile(
+        updateProfileRequest.driverId,
+        updateProfileRequest.firstName,
+        updateProfileRequest.lastName,
+        updateProfileRequest.email,
+        updateProfileRequest.profilePhoto!);
+  }
+
+  @override
+  Future<BaseResponse> updateBOProfileWithoutPhoto(
+      UpdateProfileRequest updateProfileRequest) async {
+    return await _appServiceClient.updateBOProfileWithoutPhoto(
+        updateProfileRequest.driverId,
+        updateProfileRequest.firstName,
+        updateProfileRequest.lastName,
+        updateProfileRequest.email);
   }
 
   @override

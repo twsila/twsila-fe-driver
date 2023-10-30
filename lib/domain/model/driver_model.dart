@@ -114,7 +114,7 @@ class Driver extends DriverBaseModel {
         hasLifting: json["hasLifting"],
         plateNumber: json["plateNumber"],
         images: List<DriverImage>.from(
-            json["images"].map((x) => DriverImage.fromJson(x))),
+            json["images"].map((x) => DriverImage.fromJson(x))).toList(),
         rating: json["rating"],
         acknowledged: json["acknowledged"],
         token: json["token"],

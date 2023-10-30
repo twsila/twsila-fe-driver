@@ -1,14 +1,28 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/data/network/requests.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
+import 'package:taxi_for_you/presentation/edit_user_profile/bloc/edit_profile_bloc.dart';
+import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
+import '../../../app/di.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/values_manager.dart';
+import '../../business_owner/registration/model/Business_owner_model.dart';
+import '../../common/state_renderer/dialogs.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_input_field.dart';
 import '../../common/widgets/page_builder.dart';
@@ -25,7 +39,11 @@ class EditProfileView extends StatefulWidget {
 class _EditProfileViewState extends State<EditProfileView> {
   bool _displayLoadingIndicator = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  AppPreferences _appPreferences = instance<AppPreferences>();
+  String currentProfilePhoto = '';
 
+  String? captainImagePath;
+  ImagePicker imgpicker = ImagePicker();
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _mobileNumberController = TextEditingController();
@@ -37,6 +55,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     _lastNameController.text = widget.driver.lastName ?? '';
     _mobileNumberController.text = widget.driver.mobile ?? '';
     _emailController.text = widget.driver.email ?? '';
+    currentProfilePhoto = _appPreferences.userProfilePicture(widget.driver);
     super.initState();
   }
 
@@ -68,53 +87,84 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _profilePhotoHeader(),
-          SizedBox(
-            height: 30,
+    return BlocConsumer<EditProfileBloc, EditProfileState>(
+      listener: (context, state) {
+        if (state is EditProfileLoading) {
+          startLoading();
+        } else {
+          stopLoading();
+        }
+        if (state is EditProfileSuccess) {
+          CustomDialog(context).showSuccessDialog(
+              '', '', AppStrings.updateProfileDoneSuccessfully.tr(),
+              onBtnPressed: () {
+                Navigator.pushReplacementNamed(context, Routes.mainRoute);
+          });
+        }
+        if (state is EditProfileError) {
+          CustomDialog(context).showErrorDialog('', '', state.message);
+        }
+      },
+      builder: (context, state) {
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _profilePhotoHeader(),
+              SizedBox(
+                height: 30,
+              ),
+              CustomTextInputField(
+                labelText: AppStrings.firstName.tr(),
+                showLabelText: true,
+                controller: _firstNameController,
+                hintText: AppStrings.enterFirstNameHere.tr(),
+                onChanged: (value) {},
+              ),
+              CustomTextInputField(
+                labelText: AppStrings.lastName.tr(),
+                showLabelText: true,
+                controller: _lastNameController,
+                hintText: AppStrings.enterLastNameHere.tr(),
+                onChanged: (value) {},
+              ),
+              CustomTextInputField(
+                labelText: AppStrings.jawalNumber.tr(),
+                showLabelText: true,
+                enabled: false,
+                controller: _mobileNumberController,
+                hintText: AppStrings.enterFirstNameHere.tr(),
+                onChanged: (value) {},
+              ),
+              CustomTextInputField(
+                labelText: AppStrings.email.tr(),
+                showLabelText: true,
+                controller: _emailController,
+                hintText: '',
+                onChanged: (value) {},
+              ),
+              SizedBox(
+                height: AppSize.s50,
+              ),
+              CustomTextButton(
+                text: AppStrings.save.tr(),
+                isWaitToEnable: false,
+                onPressed: () {
+                  BlocProvider.of<EditProfileBloc>(context).add(
+                      EditProfileDataEvent(
+                          _firstNameController.text,
+                          _lastNameController.text,
+                          _emailController.text,
+                          captainImagePath != null &&
+                                  captainImagePath!.isNotEmpty
+                              ? File(captainImagePath!)
+                              : null));
+                },
+              )
+            ],
           ),
-          CustomTextInputField(
-            labelText: AppStrings.firstName.tr(),
-            showLabelText: true,
-            controller: _firstNameController,
-            hintText: AppStrings.enterFirstNameHere.tr(),
-            onChanged: (value) {},
-          ),
-          CustomTextInputField(
-            labelText: AppStrings.lastName.tr(),
-            showLabelText: true,
-            controller: _lastNameController,
-            hintText: AppStrings.enterLastNameHere.tr(),
-            onChanged: (value) {},
-          ),
-          CustomTextInputField(
-            labelText: AppStrings.jawalNumber.tr(),
-            showLabelText: true,
-            enabled: false,
-            controller: _mobileNumberController,
-            hintText: AppStrings.enterFirstNameHere.tr(),
-            onChanged: (value) {},
-          ),
-          CustomTextInputField(
-            labelText: AppStrings.email.tr(),
-            showLabelText: true,
-            controller: _emailController,
-            hintText: '',
-            onChanged: (value) {},
-          ),
-          SizedBox(
-            height: AppSize.s50,
-          ),
-          CustomTextButton(
-            text: AppStrings.save.tr(),
-            isWaitToEnable: false,
-            onPressed: () {},
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -125,15 +175,15 @@ class _EditProfileViewState extends State<EditProfileView> {
         children: [
           Container(
               width: AppSize.s60,
+              height: AppSize.s60,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(50.0),
-                child: FadeInImage(
-                  width: AppSize.s50,
-                  image: NetworkImage(
-                      'https://st2.depositphotos.com/1011434/7519/i/950/depositphotos_75196567-stock-photo-handsome-man-smiling.jpg'),
-                  placeholder: AssetImage(ImageAssets.appBarLogo),
-                ),
-              )),
+                  borderRadius: BorderRadius.circular(50.0),
+                  child:
+                      captainImagePath != null && captainImagePath!.isNotEmpty
+                          ? Image.file(File(captainImagePath!))
+                          : CustomNetworkImageWidget(
+                              imageUrl: currentProfilePhoto,
+                            ))),
           SizedBox(
             width: AppSize.s16,
           ),
@@ -141,7 +191,9 @@ class _EditProfileViewState extends State<EditProfileView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  openImages();
+                },
                 child: Row(
                   children: [
                     Text(
@@ -160,6 +212,72 @@ class _EditProfileViewState extends State<EditProfileView> {
       ),
     );
   }
+
+  openImages() async {
+    showModalBottomSheet(
+        elevation: 10,
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => Container(
+              height: 150,
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16))),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      try {
+                        var pickedfile = await imgpicker.pickImage(
+                            source: ImageSource.gallery);
+                        captainImagePath = pickedfile?.path ?? "";
+                        setState(() {});
+                      } catch (e) {
+                        ShowDialogHelper.showErrorMessage(
+                            e.toString(), context);
+                      }
+
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      AppStrings.gallery.tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  InkWell(
+                    onTap: () async {
+                      try {
+                        var pickedfile = await imgpicker.pickImage(
+                          source: ImageSource.camera,
+                        );
+                        captainImagePath = pickedfile?.path ?? "";
+                        setState(() {});
+                      } catch (e) {
+                        ShowDialogHelper.showErrorMessage(
+                            e.toString(), context);
+                      }
+
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      AppStrings.camera.tr(),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+
 }
 
 class EditProfileArguments {

@@ -22,6 +22,7 @@ import 'package:taxi_for_you/domain/usecase/search_driver_mobile_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/trip_summary_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/trips_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/update_profile_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/login/bloc/login_bloc.dart';
@@ -120,6 +121,10 @@ Future<void> initAppModule() async {
       () => BOAcceptOfferUseCase(instance()));
   instance.registerFactory<BoSuggestNewOfferUseCase>(
       () => BoSuggestNewOfferUseCase(instance()));
+  instance.registerFactory<UpdateProfileUseCase>(
+      () => UpdateProfileUseCase(instance()));
+  instance.registerFactory<UpdateBOProfileUseCase>(
+      () => UpdateBOProfileUseCase(instance()));
 }
 
 initLoginModule() {

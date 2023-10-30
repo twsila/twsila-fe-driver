@@ -38,7 +38,7 @@ extension LoginResponseMapper on LoginResponse? {
       hasAssembly: this?.driver!.canTransportFurniture ?? false,
       hasLifting: this?.driver!.canTransportFurniture ?? false,
       plateNumber: this?.driver!.plateNumber.orEmpty() ?? Constants.empty,
-      images: [],
+      images: this?.driver!.images ?? [],
       rating: this?.driver!.rating ?? 0.0,
       acknowledged: this?.driver!.acknowledged ?? false,
     );

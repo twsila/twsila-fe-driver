@@ -24,6 +24,8 @@
   "company_name_hint": "ادخل اسم الشركة هنا",
   "commercial_number": "رقم السجل التجاري",
   "commercial_number_hint": "ادخل رقم السجل هنا",
+  "update_profile_done_successfully": "تم تحديث بياناتك بنجاح",
+  "ok": "موافق",
   "tax_number": "رقم السجل الضريبي",
   "national_id": "رقم الهوية الوطنية لمالك الشركة",
   "national_id_hint": "ادخل رقم الهوية هنا",

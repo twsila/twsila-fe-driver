@@ -105,7 +105,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
   Widget _dialogContentWidget(StateSetter setState) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 1.7,
+      height: MediaQuery.of(context).size.height / 1.5,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

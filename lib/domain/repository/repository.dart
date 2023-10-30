@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
@@ -68,6 +70,9 @@ abstract class Repository {
       int passengerId, double ratingNumber);
 
   Future<Either<Failure, BaseResponse>> UpdateProfile(
+      UpdateProfileRequest updateProfileRequest);
+
+  Future<Either<Failure, BaseResponse>> UpdateBOProfile(
       UpdateProfileRequest updateProfileRequest);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
