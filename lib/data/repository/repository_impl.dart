@@ -566,7 +566,7 @@ class RepositoryImpl implements Repository {
           await _remoteDataSource.updateBOProfile(updateProfileRequest);
         } else {
           response = await _remoteDataSource
-              .updateProfileWithoutPhoto(updateProfileRequest);
+              .updateBOProfileWithoutPhoto(updateProfileRequest);
         }
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

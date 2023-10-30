@@ -17,11 +17,9 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 import '../../../app/di.dart';
 import '../../../domain/model/driver_model.dart';
-import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/values_manager.dart';
-import '../../business_owner/registration/model/Business_owner_model.dart';
 import '../../common/state_renderer/dialogs.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_input_field.dart';
@@ -39,6 +37,7 @@ class EditProfileView extends StatefulWidget {
 class _EditProfileViewState extends State<EditProfileView> {
   bool _displayLoadingIndicator = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
   AppPreferences _appPreferences = instance<AppPreferences>();
   String currentProfilePhoto = '';
 
@@ -98,7 +97,7 @@ class _EditProfileViewState extends State<EditProfileView> {
           CustomDialog(context).showSuccessDialog(
               '', '', AppStrings.updateProfileDoneSuccessfully.tr(),
               onBtnPressed: () {
-                Navigator.pushReplacementNamed(context, Routes.mainRoute);
+            Navigator.pushReplacementNamed(context, Routes.mainRoute);
           });
         }
         if (state is EditProfileError) {
@@ -107,61 +106,72 @@ class _EditProfileViewState extends State<EditProfileView> {
       },
       builder: (context, state) {
         return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _profilePhotoHeader(),
-              SizedBox(
-                height: 30,
-              ),
-              CustomTextInputField(
-                labelText: AppStrings.firstName.tr(),
-                showLabelText: true,
-                controller: _firstNameController,
-                hintText: AppStrings.enterFirstNameHere.tr(),
-                onChanged: (value) {},
-              ),
-              CustomTextInputField(
-                labelText: AppStrings.lastName.tr(),
-                showLabelText: true,
-                controller: _lastNameController,
-                hintText: AppStrings.enterLastNameHere.tr(),
-                onChanged: (value) {},
-              ),
-              CustomTextInputField(
-                labelText: AppStrings.jawalNumber.tr(),
-                showLabelText: true,
-                enabled: false,
-                controller: _mobileNumberController,
-                hintText: AppStrings.enterFirstNameHere.tr(),
-                onChanged: (value) {},
-              ),
-              CustomTextInputField(
-                labelText: AppStrings.email.tr(),
-                showLabelText: true,
-                controller: _emailController,
-                hintText: '',
-                onChanged: (value) {},
-              ),
-              SizedBox(
-                height: AppSize.s50,
-              ),
-              CustomTextButton(
-                text: AppStrings.save.tr(),
-                isWaitToEnable: false,
-                onPressed: () {
-                  BlocProvider.of<EditProfileBloc>(context).add(
-                      EditProfileDataEvent(
-                          _firstNameController.text,
-                          _lastNameController.text,
-                          _emailController.text,
-                          captainImagePath != null &&
-                                  captainImagePath!.isNotEmpty
-                              ? File(captainImagePath!)
-                              : null));
-                },
-              )
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _profilePhotoHeader(),
+                SizedBox(
+                  height: 30,
+                ),
+                CustomTextInputField(
+                  labelText: AppStrings.firstName.tr(),
+                  showLabelText: true,
+                  controller: _firstNameController,
+                  hintText: AppStrings.enterFirstNameHere.tr(),
+                  validateEmptyString: true,
+                  onChanged: (value) {},
+                ),
+                CustomTextInputField(
+                  labelText: AppStrings.lastName.tr(),
+                  showLabelText: true,
+                  controller: _lastNameController,
+                  hintText: AppStrings.enterLastNameHere.tr(),
+                  validateEmptyString: true,
+                  onChanged: (value) {},
+                ),
+                CustomTextInputField(
+                  labelText: AppStrings.jawalNumber.tr(),
+                  showLabelText: true,
+                  enabled: false,
+                  controller: _mobileNumberController,
+                  hintText: '',
+                  onChanged: (value) {},
+                ),
+                CustomTextInputField(
+                  labelText: AppStrings.email.tr(),
+                  showLabelText: true,
+                  controller: _emailController,
+                  validateEmail: true,
+                  validateEmptyString: true,
+                  hintText: AppStrings.enterEmailHere.tr(),
+                  onChanged: (value) {},
+                ),
+                SizedBox(
+                  height: AppSize.s50,
+                ),
+                CustomTextButton(
+                  text: AppStrings.save.tr(),
+                  isWaitToEnable: false,
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    if (_formKey.currentState != null &&
+                        _formKey.currentState!.validate()) {
+                      BlocProvider.of<EditProfileBloc>(context).add(
+                          EditProfileDataEvent(
+                              _firstNameController.text,
+                              _lastNameController.text,
+                              _emailController.text,
+                              captainImagePath != null &&
+                                      captainImagePath!.isNotEmpty
+                                  ? File(captainImagePath!)
+                                  : null));
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         );
       },
@@ -276,8 +286,6 @@ class _EditProfileViewState extends State<EditProfileView> {
               ),
             ));
   }
-
-
 }
 
 class EditProfileArguments {

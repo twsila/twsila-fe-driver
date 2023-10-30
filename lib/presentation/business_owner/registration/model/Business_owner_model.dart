@@ -54,7 +54,26 @@ class BusinessOwnerModel extends DriverBaseModel {
         json['businessOwner']["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['businessOwner']['commercialNumber'];
     token = json['businessOwner']["token"];
-    userDevice = UserDevice.fromJson(json["userDevice"]);
+    userDevice = json["userDevice"] != null ? UserDevice.fromJson(json["userDevice"]) : null;
+    tokenExpirationTime = json["tokenExpirationTime"];
+    captainType = RegistrationConstants.businessOwner;
+  }
+
+  BusinessOwnerModel.fromJsonDirect(Map<String, dynamic> json) {
+    id = json['id'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    mobile = json['mobile'];
+    email = json['email'];
+    gender = json['gender'];
+    taxNumber = json['taxNumber'];
+    nationalId = json['nationalId'];
+    entityName = json['entityName'];
+    imagesFromApi = List<DriverImage>.from(
+        json["images"].map((x) => DriverImage.fromJson(x)));
+    commercialNumber = json['commercialNumber'];
+    token = json["token"];
+    userDevice = json["userDevice"] != null ? UserDevice.fromJson(json["userDevice"]) : null;
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
   }

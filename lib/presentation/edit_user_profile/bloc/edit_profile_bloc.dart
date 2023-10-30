@@ -80,7 +80,7 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           emit(EditProfileSuccess());
           UserDevice userDevice = await setUserDevice();
           BusinessOwnerModel driver =
-              BusinessOwnerModel.fromJson(driverModelResponse.result);
+              BusinessOwnerModel.fromJsonDirect(driverModelResponse.result);
           driver.userDevice = userDevice;
           await appPreferences.setDriver(driver);
         });

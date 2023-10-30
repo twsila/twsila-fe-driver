@@ -19,6 +19,7 @@ import '../../../../utils/resources/assets_manager.dart';
 import '../../../../utils/resources/constants_manager.dart';
 import '../../../../utils/resources/langauge_manager.dart';
 import '../../../../utils/resources/routes_manager.dart';
+import '../../../common/widgets/custom_network_image_widget.dart';
 import '../../../common/widgets/custom_scaffold.dart';
 import '../../../common/widgets/page_builder.dart';
 
@@ -35,10 +36,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
   DriverBaseModel? driver;
   AppPreferences _appPreferences = instance<AppPreferences>();
   final SharedPreferences _sharedPreferences = instance();
+  String currentProfilePic = '';
 
   @override
   void initState() {
     driver = _appPreferences.getCachedDriver() ?? null;
+    currentProfilePic = _appPreferences.userProfilePicture(driver!);
+
     super.initState();
   }
 
@@ -123,7 +127,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
         } else {
           stopLoading();
         }
-
         if (state is LoggedOutSuccessfully) {
           Navigator.pushNamed(context, Routes.loginRoute);
         }
@@ -145,6 +148,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       fontSize: FontSize.s28),
                 ),
                 _profileDataHeader(),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  child: const Divider(),
+                ),
                 MenuWidget(
                   menuImage: ImageAssets.MyServicesIc,
                   menuLabel:
@@ -237,12 +244,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
       children: [
         Container(
           width: AppSize.s90,
+          height: AppSize.s90,
+          margin: EdgeInsets.all(1.5),
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-          child: FadeInImage(
-            width: AppSize.s50,
-            image: NetworkImage(
-                'https://st2.depositphotos.com/1011434/7519/i/950/depositphotos_75196567-stock-photo-handsome-man-smiling.jpg'),
-            placeholder: AssetImage(ImageAssets.appBarLogo),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(50.0),
+            child: CustomNetworkImageWidget(
+              imageUrl: currentProfilePic,
+            ),
           ),
         ),
         SizedBox(
