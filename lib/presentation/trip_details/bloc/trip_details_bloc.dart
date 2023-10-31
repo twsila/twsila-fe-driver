@@ -20,21 +20,8 @@ part 'trip_details_event.dart';
 part 'trip_details_state.dart';
 
 class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
-  AcceptOfferUseCase acceptOfferUseCase;
-  AddOfferUseCase addOfferUseCase;
-  BOAcceptOfferUseCase boAcceptOfferUseCase;
-  BoSuggestNewOfferUseCase boSuggestNewOfferUseCase;
-  TripSummaryUseCase tripSummaryUseCase;
 
-  final AppPreferences _appPreferences = instance<AppPreferences>();
-
-  TripDetailsBloc({
-    required this.acceptOfferUseCase,
-    required this.addOfferUseCase,
-    required this.tripSummaryUseCase,
-    required this.boAcceptOfferUseCase,
-    required this.boSuggestNewOfferUseCase,
-  }) : super(TripDetailsInitial()) {
+  TripDetailsBloc() : super(TripDetailsInitial()) {
     on<AcceptOffer>(_acceptOffer);
     on<AddOffer>(_addOffer);
   }
@@ -42,7 +29,7 @@ class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
   FutureOr<void> _acceptOffer(
       AcceptOffer event, Emitter<TripDetailsState> emit) async {
     emit(TripDetailsLoading());
-
+    AcceptOfferUseCase acceptOfferUseCase = instance<AcceptOfferUseCase>();
     if (event.captainType == RegistrationConstants.captain) {
       (await acceptOfferUseCase
               .execute(AcceptOfferInput(event.userId, event.tripId)))
@@ -51,6 +38,8 @@ class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
         emit(OfferAcceptedSuccess(AppStrings.offerAccepted.tr()));
       });
     } else {
+      BOAcceptOfferUseCase boAcceptOfferUseCase =
+          instance<BOAcceptOfferUseCase>();
       (await boAcceptOfferUseCase
               .execute(BOAcceptOfferUseCaseInput(event.userId, event.tripId)))
           .fold((failure) => {emit(TripDetailsFail(failure.message))},
@@ -63,7 +52,7 @@ class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
   FutureOr<void> _addOffer(
       AddOffer event, Emitter<TripDetailsState> emit) async {
     emit(TripDetailsLoading());
-
+    AddOfferUseCase addOfferUseCase = instance<AddOfferUseCase>();
     if (event.captainType == RegistrationConstants.captain) {
       (await addOfferUseCase.execute(
               AddOfferInput(event.userId, event.tripId, event.driverOffer)))
@@ -72,6 +61,8 @@ class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
         emit(NewOfferSentSuccess());
       });
     } else {
+      BoSuggestNewOfferUseCase boSuggestNewOfferUseCase =
+          instance<BoSuggestNewOfferUseCase>();
       (await boSuggestNewOfferUseCase.execute(BoSuggestNewOfferUseCaseInput(
               event.userId, event.tripId, event.driverOffer)))
           .fold((failure) => {emit(TripDetailsFail(failure.message))},

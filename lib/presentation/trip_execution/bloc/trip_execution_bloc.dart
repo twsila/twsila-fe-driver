@@ -16,9 +16,7 @@ part 'trip_execution_event.dart';
 part 'trip_execution_state.dart';
 
 class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
-  ChangeTripStatusUseCase changeTripStatusUseCase;
-  TripSummaryUseCase tripSummaryUseCase;
-  final AppPreferences _appPreferences = instance<AppPreferences>();
+  AppPreferences _appPreferences = instance<AppPreferences>();
 
   static List<TripStatusStepModel> tripStatusSteps = [
     TripStatusStepModel(0, TripStatus.WAIT_FOR_TAKEOFF.name),
@@ -27,9 +25,7 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
     TripStatusStepModel(3, TripStatus.COMPLETED.name),
   ];
 
-  TripExecutionBloc(
-      {required this.changeTripStatusUseCase, required this.tripSummaryUseCase})
-      : super(TripExecutionInitial()) {
+  TripExecutionBloc() : super(TripExecutionInitial()) {
     on<getTripStatusForStepper>(_getTripStatusForStepper);
     on<changeTripStatus>(_changeTripStatus);
     on<getTripSummary>(_getTripSummary);
@@ -38,6 +34,8 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
   FutureOr<void> _changeTripStatus(
       changeTripStatus event, Emitter<TripExecutionState> emit) async {
     emit(TripExecutionLoading());
+    ChangeTripStatusUseCase changeTripStatusUseCase =
+        instance<ChangeTripStatusUseCase>();
 
     if (event.sendRequest) {
       (await changeTripStatusUseCase.execute(ChangeTripStatusUseCaseInput(
@@ -65,6 +63,7 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
   FutureOr<void> _getTripSummary(
       getTripSummary event, Emitter<TripExecutionState> emit) async {
     emit(TripExecutionLoading());
+    TripSummaryUseCase tripSummaryUseCase = instance<TripSummaryUseCase>();
     (await tripSummaryUseCase.execute(TripSummaryInput(
             _appPreferences.getCachedDriver()?.id ?? -1, event.tripId)))
         .fold(
@@ -96,5 +95,4 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
       emit(TripCurrentStepSuccess(tripStatusSteps.first));
     }
   }
-
 }

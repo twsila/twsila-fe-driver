@@ -12,17 +12,15 @@ part 'rate_passenger_event.dart';
 part 'rate_passenger_state.dart';
 
 class RatePassengerBloc extends Bloc<RatePassengerEvent, RatePassengerState> {
-  RatePassengerUseCase ratePassengerUseCase;
-  final AppPreferences _appPreferences = instance<AppPreferences>();
-
-  RatePassengerBloc({required this.ratePassengerUseCase})
-      : super(RatePassengerInitial()) {
+  RatePassengerBloc() : super(RatePassengerInitial()) {
     on<RatePassenger>(_ratePassenger);
   }
 
   FutureOr<void> _ratePassenger(
       RatePassenger event, Emitter<RatePassengerState> emit) async {
     emit(RatePassengerLoading());
+    RatePassengerUseCase ratePassengerUseCase =
+        instance<RatePassengerUseCase>();
     (await ratePassengerUseCase.execute(
             RatePassengerUseCaseInput(event.passengerId, event.rateNumber)))
         .fold(

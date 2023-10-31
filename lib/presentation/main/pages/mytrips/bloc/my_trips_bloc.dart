@@ -15,16 +15,16 @@ part 'my_trips_event.dart';
 part 'my_trips_state.dart';
 
 class MyTripsBloc extends Bloc<MyTripsEvent, MyTripsState> {
-  MyTripsUseCase myTripsUseCase;
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
-  MyTripsBloc({required this.myTripsUseCase}) : super(MyTripsInitial()) {
+  MyTripsBloc() : super(MyTripsInitial()) {
     on<GetTripsTripModuleId>(_getTripsByModuleId);
   }
 
   FutureOr<void> _getTripsByModuleId(
       GetTripsTripModuleId event, Emitter<MyTripsState> emit) async {
     emit(MyTripsLoading());
+    MyTripsUseCase myTripsUseCase = instance<MyTripsUseCase>();
     (await myTripsUseCase.execute(MyTripsInput(
             event.tripTypeId, _appPreferences.getCachedDriver()?.id ?? -1)))
         .fold(

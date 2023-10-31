@@ -16,20 +16,18 @@ part 'my_profile_event.dart';
 part 'my_profile_state.dart';
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
-  LogoutUseCase logoutUseCase;
-  BoLogoutUseCase boLogoutUseCase;
 
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
-  MyProfileBloc({required this.logoutUseCase, required this.boLogoutUseCase})
-      : super(MyProfileInitial()) {
+  MyProfileBloc() : super(MyProfileInitial()) {
     on<logoutEvent>(_makeLogout);
   }
 
   FutureOr<void> _makeLogout(
       logoutEvent event, Emitter<MyProfileState> emit) async {
     emit(MyProfileLoading());
-
+    LogoutUseCase logoutUseCase = instance<LogoutUseCase>();
+    BoLogoutUseCase boLogoutUseCase = instance<BoLogoutUseCase>();
     if (_appPreferences.getCachedDriver()!.captainType ==
         RegistrationConstants.captain) {
       (await logoutUseCase.execute(LogoutUseCaseInput(

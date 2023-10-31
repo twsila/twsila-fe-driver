@@ -14,15 +14,8 @@ part 'verify_otp_event.dart';
 part 'verify_otp_state.dart';
 
 class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
-  VerifyOtpUseCase verifyOtpUseCase;
-  GenerateOtpUseCase generateOtpUseCase;
-  LoginUseCase loginUseCase;
 
-  VerifyOtpBloc(
-      {required this.verifyOtpUseCase,
-      required this.generateOtpUseCase,
-      required this.loginUseCase})
-      : super(VerifyOtpInitial()) {
+  VerifyOtpBloc() : super(VerifyOtpInitial()) {
     on<SendOtpEvent>(_sendOtp);
     on<ReSendOtpEvent>(_reSendOtp);
     on<VerifyOtpBEEvent>(_verifyOtp);
@@ -31,7 +24,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
   FutureOr<void> _sendOtp(
       SendOtpEvent event, Emitter<VerifyOtpState> emit) async {
     emit(VerifyOtpLoading());
-
+    GenerateOtpUseCase generateOtpUseCase = instance<GenerateOtpUseCase>();
     (await generateOtpUseCase
             .execute(GenerateOtpUseCaseInput(event.mobileNumber)))
         .fold(
@@ -45,6 +38,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
 
   FutureOr<void> _reSendOtp(
       ReSendOtpEvent event, Emitter<VerifyOtpState> emit) async {
+    GenerateOtpUseCase generateOtpUseCase = instance<GenerateOtpUseCase>();
     emit(VerifyOtpLoading());
     (await generateOtpUseCase
             .execute(GenerateOtpUseCaseInput(event.mobileNumber)))
@@ -59,6 +53,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
 
   FutureOr<void> _verifyOtp(
       VerifyOtpBEEvent event, Emitter<VerifyOtpState> emit) async {
+    VerifyOtpUseCase verifyOtpUseCase = instance<VerifyOtpUseCase>();
     emit(VerifyOtpLoading());
     (await verifyOtpUseCase
             .execute(VerifyOtpUseCaseInput(event.mobileNumber, event.otpCode)))

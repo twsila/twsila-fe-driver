@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 
 import 'package:package_info_plus/package_info_plus.dart';
+import '../../../app/di.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../domain/usecase/login_usecase.dart';
 
@@ -14,15 +15,9 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginUseCase loginUseCase;
-  LoginBOUseCase loginBOUseCase;
-  final AppPreferences appPreferences;
+  AppPreferences appPreferences = instance<AppPreferences>();
 
-  LoginBloc(
-      {required this.loginUseCase,
-      required this.loginBOUseCase,
-      required this.appPreferences})
-      : super(LoginInitial()) {
+  LoginBloc() : super(LoginInitial()) {
     on<CheckInputIsValidEvent>(_checkInputStatus);
     on<MakeLoginEvent>(_makeLogin);
     on<MakeLoginBOEvent>(_makeBOLogin);
@@ -31,6 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   FutureOr<void> _makeLogin(
       MakeLoginEvent event, Emitter<LoginState> emit) async {
     emit(LoginLoadingState());
+    LoginUseCase loginUseCase = instance<LoginUseCase>();
     UserDevice userDevice = await setUserDevice();
     (await loginUseCase.execute(
       LoginUseCaseInput(
@@ -58,6 +54,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   FutureOr<void> _makeBOLogin(
       MakeLoginBOEvent event, Emitter<LoginState> emit) async {
+    LoginBOUseCase loginBOUseCase = instance<LoginBOUseCase>();
     emit(LoginLoadingState());
     UserDevice userDevice = await setUserDevice();
     (await loginBOUseCase.execute(

@@ -246,8 +246,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 Container(
                   height: AppSize.s30,
                 ),
-                Center(
-                    child:_actionWithTripWidget(widget.tripModel)) ,
+                Center(child: _actionWithTripWidget(widget.tripModel)),
               ],
             ),
           ),

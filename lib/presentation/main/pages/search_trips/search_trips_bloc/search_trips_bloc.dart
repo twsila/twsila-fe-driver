@@ -18,12 +18,9 @@ part 'search_trips_event.dart';
 part 'search_trips_state.dart';
 
 class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
-  TripsUseCase tripsUseCase;
-  LookupsUseCase lookupsUseCase;
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
-  SearchTripsBloc({required this.tripsUseCase, required this.lookupsUseCase})
-      : super(SearchTripsInitial()) {
+  SearchTripsBloc() : super(SearchTripsInitial()) {
     on<GetTripsTripModuleId>(_getTripsByModuleId);
     on<getLookups>(_getLookups);
   }
@@ -31,6 +28,8 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
   FutureOr<void> _getLookups(
       getLookups event, Emitter<SearchTripsState> emit) async {
     emit(SearchTripsLoading());
+
+    LookupsUseCase lookupsUseCase = instance<LookupsUseCase>();
     (await lookupsUseCase.execute(LookupsUseCaseInput())).fold(
         (failure) => {
               // left -> failure
@@ -52,6 +51,7 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
   FutureOr<void> _getTripsByModuleId(
       GetTripsTripModuleId event, Emitter<SearchTripsState> emit) async {
     emit(SearchTripsLoading());
+    TripsUseCase tripsUseCase = instance<TripsUseCase>();
     (await tripsUseCase.execute(TripsInput(
             event.tripTypeId,
             _appPreferences.getCachedDriver()?.id ?? -1,

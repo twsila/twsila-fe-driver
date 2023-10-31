@@ -12,18 +12,17 @@ part 'my_services_event.dart';
 part 'my_services_state.dart';
 
 class MyServicesBloc extends Bloc<MyServicesEvent, MyServicesState> {
-  ServiceStatusUseCase serviceStatusUseCase;
   AppPreferences _appPreferences = instance<AppPreferences>();
 
-  MyServicesBloc({required this.serviceStatusUseCase})
-      : super(MyServicesInitial()) {
+  MyServicesBloc() : super(MyServicesInitial()) {
     on<GetServiceStatus>(_getServiceStatus);
   }
 
   FutureOr<void> _getServiceStatus(
       GetServiceStatus event, Emitter<MyServicesState> emit) async {
     String userId = _appPreferences.getCachedDriver()?.id.toString() ?? "";
-
+    ServiceStatusUseCase serviceStatusUseCase =
+        instance<ServiceStatusUseCase>();
     emit(ServiceStatusLoading());
     (await serviceStatusUseCase.execute(ServiceStatusInput(userId))).fold(
         (failure) => {

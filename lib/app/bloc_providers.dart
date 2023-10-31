@@ -23,56 +23,18 @@ import '../utils/location/map_provider.dart';
 blocProviders(BuildContext context) {
   return [
     BlocProvider.value(value: MapsBloc(MapsRepo())),
-    BlocProvider.value(
-        value: LoginBloc(
-      loginUseCase: instance(),
-      loginBOUseCase: instance(),
-      appPreferences: instance(),
-    )),
-    BlocProvider.value(
-        value: VerifyOtpBloc(
-            verifyOtpUseCase: instance(),
-            generateOtpUseCase: instance(),
-            loginUseCase: instance())),
-    BlocProvider.value(
-        value: ServiceRegistrationBloc(
-            registrationServiceUseCase: instance(),
-            carBrandsAndModelsUseCase: instance(),
-            registrationBOUseCase: instance(),
-            registrationUseCase: instance())),
-    BlocProvider.value(value: MyServicesBloc(serviceStatusUseCase: instance())),
-    BlocProvider.value(
-        value: MyProfileBloc(
-            logoutUseCase: instance(), boLogoutUseCase: instance())),
-    BlocProvider.value(
-        value: RatePassengerBloc(ratePassengerUseCase: instance())),
-    BlocProvider.value(
-        value: SearchTripsBloc(
-            tripsUseCase: instance(), lookupsUseCase: instance())),
-    BlocProvider.value(value: MyTripsBloc(myTripsUseCase: instance())),
-    BlocProvider.value(
-        value: TripExecutionBloc(
-            changeTripStatusUseCase: instance(),
-            tripSummaryUseCase: instance())),
-    BlocProvider.value(
-        value: TripDetailsBloc(
-            acceptOfferUseCase: instance(),
-            addOfferUseCase: instance(),
-            tripSummaryUseCase: instance(),
-            boAcceptOfferUseCase: instance(),
-            boSuggestNewOfferUseCase: instance())),
-    BlocProvider.value(
-        value: BoDriversCarsBloc(
-      businessOwnerDriversUseCase: instance(),
-      searchDriversByMobileUseCase: instance(),
-      addDriverForBOUseCase: instance(),
-      assignDriverToTripUseCase: instance(),
-      appPreferences: instance(),
-    )),
-    BlocProvider.value(
-        value: EditProfileBloc(
-            updateProfileUseCase: instance(),
-            updateBoProfileUseCase: instance())),
+    BlocProvider.value(value: LoginBloc()),
+    BlocProvider.value(value: VerifyOtpBloc()),
+    BlocProvider.value(value: ServiceRegistrationBloc()),
+    BlocProvider.value(value: MyServicesBloc()),
+    BlocProvider.value(value: MyProfileBloc()),
+    BlocProvider.value(value: SearchTripsBloc()),
+    BlocProvider.value(value: MyTripsBloc()),
+    BlocProvider.value(value: RatePassengerBloc()),
+    BlocProvider.value(value: TripExecutionBloc()),
+    BlocProvider.value(value: TripDetailsBloc()),
+    BlocProvider.value(value: BoDriversCarsBloc()),
+    BlocProvider.value(value: EditProfileBloc()),
     ChangeNotifierProvider(create: (_) => MapProvider()),
   ];
 }

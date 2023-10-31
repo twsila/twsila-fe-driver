@@ -85,14 +85,15 @@ class RouteGenerator {
           ),
         );
       case Routes.serviceRegistrationFirstStep:
-        initServiceRegistrationModule();
+        initRegistrationServiceModule();
         return MaterialPageRoute(
             builder: (_) => const ServiceRegistrationFirstStepView());
       case Routes.serviceRegistrationSecondStep:
-        initServiceRegistrationModule();
+        initRegistrationServiceModule();
         return MaterialPageRoute(
             builder: (_) => const ServiceRegistrationSecondStep());
       case Routes.myServices:
+        initServiceStatusModule();
         return MaterialPageRoute(builder: (_) => const MyServicesView());
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => const OnBoardingView());
@@ -103,6 +104,10 @@ class RouteGenerator {
                   mobileNumber: args.mobileNumber,
                 ));
       case Routes.mainRoute:
+        initLogoutModule();
+        initMyTripsModule();
+        initLoopkupsModule();
+        initTripsModule();
         return MaterialPageRoute(builder: (_) => const MainView());
       case Routes.verifyOtpRoute:
         final args = settings.arguments as VerifyArguments;
@@ -114,12 +119,14 @@ class RouteGenerator {
                   registerAs: args.registerAs,
                 ));
       case Routes.tripDetails:
+        initTripDetailsModule();
         final args = settings.arguments as TripDetailsArguments;
         return MaterialPageRoute(
             builder: (_) => TripDetailsView(
                   tripModel: args.tripModel,
                 ));
       case Routes.tripExecution:
+        initTripExecutionModule();
         final args = settings.arguments as TripExecutionArguments;
         return MaterialPageRoute(
             builder: (_) => TripExecutionView(
@@ -128,6 +135,7 @@ class RouteGenerator {
       case Routes.noServicesAdded:
         return MaterialPageRoute(builder: (_) => const NoServiceAddedView());
       case Routes.ratePassenger:
+        initRatePassengerModule();
         final args = settings.arguments as RatePassengerArguments;
         return MaterialPageRoute(
             builder: (_) => RatePassengerView(
@@ -141,6 +149,7 @@ class RouteGenerator {
       case Routes.selectRegistrationType:
         return MaterialPageRoute(builder: (_) => const RegistrationTypesView());
       case Routes.editProfile:
+        initUpdateProfileModule();
         final args = settings.arguments as EditProfileArguments;
         return MaterialPageRoute(
             builder: (_) => EditProfileView(
@@ -155,12 +164,12 @@ class RouteGenerator {
       case Routes.welcomeToTwsilaBO:
         return MaterialPageRoute(builder: (_) => WelcomeToTwsilaView());
       case Routes.boDriversAndCars:
+        initBODriversCarsModule();
         return MaterialPageRoute(builder: (_) => BOCarsAndDriversView());
       case Routes.BOaddDriver:
         return MaterialPageRoute(builder: (_) => BOAddDriverView());
       case Routes.locationTrackingPage:
         final args = settings.arguments as NavigationTrackingArguments;
-
         return MaterialPageRoute(
             builder: (_) => TrackingPage(
                   tripModel: args.tripModel,

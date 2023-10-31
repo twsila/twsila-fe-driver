@@ -11,6 +11,7 @@ import 'package:taxi_for_you/presentation/business_owner/registration/model/Busi
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../../app/constants.dart';
+import '../../../app/di.dart';
 import '../../../domain/model/service_type_model.dart';
 import '../../../domain/model/car_brand_models_model.dart';
 import '../../../domain/usecase/registration_services_usecase.dart';
@@ -23,10 +24,6 @@ part 'serivce_registration_state.dart';
 
 class ServiceRegistrationBloc
     extends Bloc<ServiceRegistrationEvent, ServiceRegistrationState> {
-  RegistrationServiceUseCase registrationServiceUseCase;
-  CarBrandsAndModelsUseCase carBrandsAndModelsUseCase;
-  RegistrationUseCase registrationUseCase;
-  RegistrationBOUseCase registrationBOUseCase;
   RegistrationRequest registrationRequest = RegistrationRequest.empty();
   static DocumentData carDocument = DocumentData();
   static DocumentData driverIdDocument = DocumentData();
@@ -37,12 +34,7 @@ class ServiceRegistrationBloc
   String backImageTitle = "";
   String expirationDateTitle = "";
 
-  ServiceRegistrationBloc({
-    required this.registrationServiceUseCase,
-    required this.carBrandsAndModelsUseCase,
-    required this.registrationUseCase,
-    required this.registrationBOUseCase,
-  }) : super(ServiceRegistrationInitial()) {
+  ServiceRegistrationBloc() : super(ServiceRegistrationInitial()) {
     on<GetServiceTypes>(_getServicesTypes);
     on<GetCarBrandAndModel>(_getCarBrandsAndModels);
     on<NavigateToUploadDocument>(_setDocumentData);
@@ -81,6 +73,9 @@ class ServiceRegistrationBloc
   FutureOr<void> _getServicesTypes(
       GetServiceTypes event, Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
+
+    RegistrationServiceUseCase registrationServiceUseCase =
+        instance<RegistrationServiceUseCase>();
     (await registrationServiceUseCase
             .execute(RegistrationServiceUseCaseInput()))
         .fold(
@@ -103,6 +98,8 @@ class ServiceRegistrationBloc
   FutureOr<void> _getCarBrandsAndModels(
       GetCarBrandAndModel event, Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
+    CarBrandsAndModelsUseCase carBrandsAndModelsUseCase =
+        instance<CarBrandsAndModelsUseCase>();
     (await carBrandsAndModelsUseCase.execute(CarBrandsAndModelsUseCaseInput()))
         .fold(
             (failure) => {
@@ -124,6 +121,7 @@ class ServiceRegistrationBloc
   FutureOr<void> _registerCaptainWithService(RegisterCaptainWithService event,
       Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
+    RegistrationUseCase registrationUseCase = instance<RegistrationUseCase>();
     (await registrationUseCase.execute(RegistrationUseCaseInput(
             firstName: registrationRequest.firstName!,
             lastName: registrationRequest.lastName!,
@@ -159,7 +157,8 @@ class ServiceRegistrationBloc
   FutureOr<void> _registerBOWithService(RegisterBOWithService event,
       Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
-
+    RegistrationBOUseCase registrationBOUseCase =
+        instance<RegistrationBOUseCase>();
     (await registrationBOUseCase.execute(event.businessOwnerModel)).fold(
       (failure) => {
         emit(ServiceRegistrationFail(failure.message)),
