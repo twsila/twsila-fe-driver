@@ -304,10 +304,3 @@ initUpdateProfileModule() {
         () => UpdateBOProfileUseCase(instance()));
   }
 }
-
-initUpdateBOProfileModule() {
-  if (!GetIt.I.isRegistered<UpdateBOProfileUseCase>()) {
-    instance.registerFactory<UpdateBOProfileUseCase>(
-        () => UpdateBOProfileUseCase(instance()));
-  }
-}

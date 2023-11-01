@@ -242,3 +242,9 @@ class _RegisterBusinessOwnerScreenState
             ));
   }
 }
+
+class BoRegistrationArguments {
+  String mobileNumber;
+
+  BoRegistrationArguments(this.mobileNumber);
+}

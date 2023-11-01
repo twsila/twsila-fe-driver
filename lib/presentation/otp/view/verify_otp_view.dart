@@ -131,14 +131,9 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                         captainRegistrationArgs(widget.mobileNumberForApi));
               } else if (widget.registerAs ==
                   RegistrationConstants.businessOwner) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (builder) => RegisterBusinessOwnerScreen(
-                      mobileNumber: widget.mobileNumberForApi,
-                    ),
-                  ),
-                );
+                Navigator.pushNamed(context, Routes.boRegistration,
+                    arguments:
+                        BoRegistrationArguments(widget.mobileNumberForApi));
               } else {
                 CustomDialog(context).showErrorDialog('', '', state.message);
               }

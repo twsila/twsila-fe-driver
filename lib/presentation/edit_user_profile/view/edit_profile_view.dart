@@ -54,11 +54,6 @@ class _EditProfileViewState extends State<EditProfileView> {
     _lastNameController.text = widget.driver.lastName ?? '';
     _mobileNumberController.text = widget.driver.mobile ?? '';
     _emailController.text = widget.driver.email ?? '';
-    getProfilePicPath().then((value) {
-      setState(() {
-        currentProfilePhoto = value;
-      });
-    });
     super.initState();
   }
 
@@ -187,48 +182,60 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Widget _profilePhotoHeader() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSize.s16),
-      child: Row(
-        children: [
-          Container(
-              width: AppSize.s60,
-              height: AppSize.s60,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50.0),
-                  child:
-                      captainImagePath != null && captainImagePath!.isNotEmpty
-                          ? Image.file(File(captainImagePath!))
-                          : CustomNetworkImageWidget(
-                              imageUrl: currentProfilePhoto,
-                            ))),
-          SizedBox(
-            width: AppSize.s16,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  openImages();
-                },
-                child: Row(
-                  children: [
-                    Text(
-                      AppStrings.changeCaptainPhoto.tr(),
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: ColorManager.primary,
-                          fontSize: FontSize.s14),
-                    ),
-                  ],
-                ),
+
+    return FutureBuilder<String>(
+        future: getProfilePicPath(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasData) {
+            return Container(
+              margin: EdgeInsets.symmetric(horizontal: AppSize.s16),
+              child: Row(
+                children: [
+                  Container(
+                      width: AppSize.s60,
+                      height: AppSize.s60,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50.0),
+                          child:
+                          captainImagePath != null && captainImagePath!.isNotEmpty
+                              ? Image.file(File(captainImagePath!))
+                              : CustomNetworkImageWidget(
+                            imageUrl: snapshot.data.toString(),
+                          ))),
+                  SizedBox(
+                    width: AppSize.s16,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          openImages();
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              AppStrings.changeCaptainPhoto.tr(),
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorManager.primary,
+                                  fontSize: FontSize.s14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ],
-          )
-        ],
-      ),
-    );
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        });
+
   }
 
   openImages() async {

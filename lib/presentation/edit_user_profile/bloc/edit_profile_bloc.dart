@@ -21,7 +21,6 @@ part 'edit_profile_event.dart';
 part 'edit_profile_state.dart';
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
-
   AppPreferences appPreferences = instance<AppPreferences>();
 
   EditProfileBloc() : super(EditProfileInitial()) {
@@ -31,14 +30,18 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
   FutureOr<void> _editProfileDataEvent(
       EditProfileDataEvent event, Emitter<EditProfileState> emit) async {
     emit(EditProfileLoading());
-    UpdateProfileUseCase updateProfileUseCase = instance<UpdateProfileUseCase>();
+    UpdateProfileUseCase updateProfileUseCase =
+        instance<UpdateProfileUseCase>();
     UpdateBOProfileUseCase updateBoProfileUseCase =
-    instance<UpdateBOProfileUseCase>();
+        instance<UpdateBOProfileUseCase>();
     DriverBaseModel? user = appPreferences.getCachedDriver();
     File? profilePhoto;
     if (event.profilePhoto != null) {
       profilePhoto = await changeFileNameOnly(
-          event.profilePhoto!, Constants.DRIVER_PHOTO_IMAGE_STRING);
+          event.profilePhoto!,
+          user!.captainType == RegistrationConstants.captain
+              ? Constants.DRIVER_PHOTO_IMAGE_STRING
+              : Constants.BUSINESS_OWNER_PHOTO_IMAGE_STRING);
     }
     print(profilePhoto!.path);
     if (user != null) {

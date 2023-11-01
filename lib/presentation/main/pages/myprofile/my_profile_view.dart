@@ -36,17 +36,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
   DriverBaseModel? driver;
   AppPreferences _appPreferences = instance<AppPreferences>();
   final SharedPreferences _sharedPreferences = instance();
-  String currentProfilePic = '';
 
   @override
   void initState() {
     driver = _appPreferences.getCachedDriver() ?? null;
-    getProfilePicPath().then((value) {
-      setState(() {
-        currentProfilePic = value;
-      });
-    });
-
     super.initState();
   }
 
@@ -136,7 +129,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           stopLoading();
         }
         if (state is LoggedOutSuccessfully) {
-          Navigator.pushNamed(context, Routes.loginRoute);
+          Navigator.pushNamed(context, Routes.selectRegistrationType);
         }
         if (state is MyProfileFail) {
           CustomDialog(context).showErrorDialog('', '', state.errorMessage);
@@ -248,62 +241,80 @@ class _MyProfilePageState extends State<MyProfilePage> {
   }
 
   Widget _profileDataHeader() {
-    return Row(
-      children: [
-        Container(
-          width: AppSize.s90,
-          height: AppSize.s90,
-          margin: EdgeInsets.all(1.5),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(50.0),
-            child: CustomNetworkImageWidget(
-              imageUrl: currentProfilePic,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: AppSize.s16,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              driver != null
-                  ? (driver?.firstName ?? "") + ' ' + (driver?.lastName ?? "")
-                  : "",
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: ColorManager.headersTextColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: FontSize.s18),
-            ),
-            Text(
-              driver != null ? (driver?.mobile ?? "") : "",
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: ColorManager.headersTextColor, fontSize: FontSize.s14),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.editProfile,
-                    arguments: EditProfileArguments(driver!));
-              },
-              child: Row(
-                children: [
-                  Text(
-                    AppStrings.changeMyProfile.tr(),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: ColorManager.primary, fontSize: FontSize.s14),
+    return FutureBuilder<String>(
+        future: getProfilePicPath(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasData) {
+            return Row(
+              children: [
+                Container(
+                  width: AppSize.s90,
+                  height: AppSize.s90,
+                  margin: EdgeInsets.all(1.5),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(8)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50.0),
+                    child: CustomNetworkImageWidget(
+                      imageUrl: snapshot.data.toString(),
+                    ),
                   ),
-                  Icon(
-                    Icons.edit_note,
-                    color: ColorManager.primary,
-                  )
-                ],
-              ),
-            ),
-          ],
-        )
-      ],
-    );
+                ),
+                SizedBox(
+                  width: AppSize.s16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      driver != null
+                          ? (driver?.firstName ?? "") +
+                              ' ' +
+                              (driver?.lastName ?? "")
+                          : "",
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: ColorManager.headersTextColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: FontSize.s18),
+                    ),
+                    Text(
+                      driver != null ? (driver?.mobile ?? "") : "",
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: ColorManager.headersTextColor,
+                          fontSize: FontSize.s14),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.editProfile,
+                            arguments: EditProfileArguments(driver!));
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            AppStrings.changeMyProfile.tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                    color: ColorManager.primary,
+                                    fontSize: FontSize.s14),
+                          ),
+                          Icon(
+                            Icons.edit_note,
+                            color: ColorManager.primary,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        }); // snapshot.data  :- get your object which is pass from your downloadData() function
   }
 }

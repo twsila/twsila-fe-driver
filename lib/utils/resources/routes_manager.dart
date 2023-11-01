@@ -65,6 +65,7 @@ class Routes {
   static const String locationTrackingPage = "/locationTrackingPage";
   static const String ratePassenger = "/ratePassenger";
   static const String editProfile = "/editProfile";
+  static const String boRegistration = "/boRegistration";
   static const String filterTrips = "/filterTrips";
   static const String welcomeToTwsilaBO = "/welcomeToTwsilaBO";
   static const String boDriversAndCars = "/boDriversAndCars";
@@ -160,6 +161,14 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => FilterTripsView(
                 // driver: args.driver,
+                ));
+      case Routes.boRegistration:
+        initLoginModule();
+        initRegistrationServiceModule();
+        final args = settings.arguments as BoRegistrationArguments;
+        return MaterialPageRoute(
+            builder: (_) => RegisterBusinessOwnerScreen(
+                  mobileNumber: args.mobileNumber,
                 ));
       case Routes.welcomeToTwsilaBO:
         return MaterialPageRoute(builder: (_) => WelcomeToTwsilaView());
