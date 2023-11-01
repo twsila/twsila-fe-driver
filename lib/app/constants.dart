@@ -22,6 +22,7 @@ class Constants {
 
   static const int IMAGE_QUALITY_COMPRESS = 25;
   static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
+  static const String BUSINESS_OWNER_PHOTO_IMAGE_STRING = 'business_owner_photo.jpg';
 
   static const String dateFormatterString = "dd/MM/yyyy hh:mm:ss";
 

@@ -49,13 +49,21 @@ class _EditProfileViewState extends State<EditProfileView> {
   TextEditingController _emailController = TextEditingController();
 
   @override
-  void initState() {
+  initState() {
     _firstNameController.text = widget.driver.firstName ?? '';
     _lastNameController.text = widget.driver.lastName ?? '';
     _mobileNumberController.text = widget.driver.mobile ?? '';
     _emailController.text = widget.driver.email ?? '';
-    currentProfilePhoto = _appPreferences.userProfilePicture(widget.driver);
+    getProfilePicPath().then((value) {
+      setState(() {
+        currentProfilePhoto = value;
+      });
+    });
     super.initState();
+  }
+
+  Future<String> getProfilePicPath() async {
+    return _appPreferences.userProfilePicture(widget.driver);
   }
 
   void startLoading() {

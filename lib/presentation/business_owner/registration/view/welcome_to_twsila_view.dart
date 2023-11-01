@@ -50,6 +50,7 @@ class WelcomeToTwsilaView extends StatelessWidget {
               SizedBox(
                 height: AppSize.s210,
               ),
+              Spacer(),
               CustomTextButton(
                 text: AppStrings.mainScreen.tr(),
                 isWaitToEnable: false,

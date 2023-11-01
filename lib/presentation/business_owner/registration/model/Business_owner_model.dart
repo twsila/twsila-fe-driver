@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
@@ -11,6 +12,7 @@ class BusinessOwnerModel extends DriverBaseModel {
   List<File>? images;
   List<DriverImage>? imagesFromApi;
   UserDevice? userDevice;
+  XFile? profileImage;
 
   BusinessOwnerModel({
     id,
@@ -20,6 +22,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     email,
     gender,
     token,
+    this.profileImage,
     this.taxNumber,
     this.entityName,
     this.nationalId,
@@ -37,6 +40,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.token = token;
     this.userDevice = userDevice;
     this.tokenExpirationTime = tokenExpirationTime;
+    this.profileImage = profileImage;
     this.captainType = RegistrationConstants.businessOwner;
   }
 

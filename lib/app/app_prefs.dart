@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
@@ -65,16 +66,40 @@ class AppPreferences {
     return true;
   }
 
-  String userProfilePicture(DriverBaseModel driverBaseModel) {
-    String imageUrl;
+  Future<String> userProfilePicture(DriverBaseModel driverBaseModel) async {
+    String? imageUrl;
     if (driverBaseModel.captainType == RegistrationConstants.captain) {
-      imageUrl = (driverBaseModel as Driver).images[0].imageUrl ?? '';
+      if ((driverBaseModel as Driver).images.isNotEmpty) {
+        driverBaseModel.images.forEach((element) {
+          if (element.imageName == Constants.DRIVER_PHOTO_IMAGE_STRING) {
+            imageUrl = element.imageUrl.toString();
+          }
+        });
+      }
+      if (imageUrl == null) {
+        imageUrl = driverBaseModel.images[0].imageUrl ?? '';
+      }
     } else {
-      imageUrl =
-          (driverBaseModel as BusinessOwnerModel).imagesFromApi![0].imageUrl ??
-              '';
+      if (driverBaseModel.captainType == RegistrationConstants.businessOwner) {
+        if ((driverBaseModel as BusinessOwnerModel).imagesFromApi != null &&
+            driverBaseModel.imagesFromApi!.isNotEmpty) {
+          driverBaseModel.imagesFromApi!.forEach((element) {
+            if (element.imageName ==
+                Constants.BUSINESS_OWNER_PHOTO_IMAGE_STRING) {
+              imageUrl = element.imageUrl.toString();
+            }
+          });
+        }
+        if (driverBaseModel.imagesFromApi != null &&
+            driverBaseModel.imagesFromApi!.isNotEmpty &&
+            imageUrl == null) {
+          imageUrl = driverBaseModel.imagesFromApi![0].imageUrl ?? '';
+        } else if (driverBaseModel.imagesFromApi == null) {
+          imageUrl = '';
+        }
+      }
     }
-    return imageUrl;
+    return imageUrl!;
   }
 
   //Selected country

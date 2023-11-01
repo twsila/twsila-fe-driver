@@ -323,6 +323,7 @@ class AppStrings {
   static const pleaseResumePersonalData = 'please_resume_personal_data';
   static const pleaseResumeCompanyData = 'please_resume_company_data';
   static const uploadCaptainPhoto = 'upload_captain_photo';
+  static const uploadBusinessOwnerPhoto = 'upload_business_owner_photo';
   static const userName = 'user_name';
   static const enterUserNameHere = 'user_name_hint';
   static const email = 'email';

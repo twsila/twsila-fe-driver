@@ -73,7 +73,6 @@ class ServiceRegistrationBloc
   FutureOr<void> _getServicesTypes(
       GetServiceTypes event, Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
-
     RegistrationServiceUseCase registrationServiceUseCase =
         instance<RegistrationServiceUseCase>();
     (await registrationServiceUseCase
@@ -157,6 +156,12 @@ class ServiceRegistrationBloc
   FutureOr<void> _registerBOWithService(RegisterBOWithService event,
       Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
+
+    File captainPhoto = await changeFileNameOnly(
+        event.businessOwnerModel.profileImage!,
+        Constants.BUSINESS_OWNER_PHOTO_IMAGE_STRING);
+    event.businessOwnerModel.images!.add(captainPhoto);
+
     RegistrationBOUseCase registrationBOUseCase =
         instance<RegistrationBOUseCase>();
     (await registrationBOUseCase.execute(event.businessOwnerModel)).fold(

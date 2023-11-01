@@ -33,7 +33,8 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
               widget.viewModel.formKey.currentState!.validate() &&
               widget.viewModel.termsAndCondition != false &&
               widget.viewModel.businessOwnerModel.images != null &&
-              widget.viewModel.businessOwnerModel.images!.isNotEmpty;
+              widget.viewModel.businessOwnerModel.images!.isNotEmpty &&
+              widget.viewModel.businessOwnerModel.profileImage != null;
     });
   }
 

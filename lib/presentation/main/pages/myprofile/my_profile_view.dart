@@ -41,9 +41,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
   @override
   void initState() {
     driver = _appPreferences.getCachedDriver() ?? null;
-    currentProfilePic = _appPreferences.userProfilePicture(driver!);
+    getProfilePicPath().then((value) {
+      setState(() {
+        currentProfilePic = value;
+      });
+    });
 
     super.initState();
+  }
+
+  Future<String> getProfilePicPath() async {
+    return _appPreferences.userProfilePicture(driver!);
   }
 
   void _showBottomSheet() {
