@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner_add_driver/view/assign_driver_sheet.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
@@ -44,6 +45,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
   bool _displayLoadingIndicator = false;
   bool _enableSendOffer = false;
   double _driverOffer = 0.0;
+  late DriverBaseModel driverBaseModel;
 
   void startLoading() {
     setState(() {
@@ -60,6 +62,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
   @override
   void initState() {
     print(widget.tripModel);
+    driverBaseModel = _appPreferences.getCachedDriver()!;
     super.initState();
   }
 
@@ -344,33 +347,41 @@ class _TripDetailsViewState extends State<TripDetailsView> {
   }
 
   Widget _acceptOrSuggestNewOfferTrip(TripDetailsModel trip) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CustomTextButton(
-            text:
-                "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
-            onPressed: () {
-              BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                  _appPreferences.getCachedDriver()!.id!,
-                  widget.tripModel.tripDetails.tripId!,
-                  _appPreferences.getCachedDriver()!.captainType.toString()));
-            },
-          ),
-          CustomTextButton(
-            isWaitToEnable: false,
-            backgroundColor: ColorManager.white,
-            textColor: ColorManager.headersTextColor,
-            borderColor: ColorManager.purpleMainTextColor,
-            text: AppStrings.sendAnotherPrice.tr(),
-            onPressed: () {
-              _showAnotherOfferBottomSheet();
-            },
-          ),
-        ],
-      ),
-    );
+    return ((driverBaseModel.captainType ==
+                RegistrationConstants.businessOwner) &&
+            (trip.tripDetails.offers != null &&
+                trip.tripDetails.offers!.isEmpty))
+        ? _BoActionWithTripWidget(trip)
+        : Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomTextButton(
+                  text:
+                      "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
+                  onPressed: () {
+                    BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                        _appPreferences.getCachedDriver()!.id!,
+                        widget.tripModel.tripDetails.tripId!,
+                        _appPreferences
+                            .getCachedDriver()!
+                            .captainType
+                            .toString()));
+                  },
+                ),
+                CustomTextButton(
+                  isWaitToEnable: false,
+                  backgroundColor: ColorManager.white,
+                  textColor: ColorManager.headersTextColor,
+                  borderColor: ColorManager.purpleMainTextColor,
+                  text: AppStrings.sendAnotherPrice.tr(),
+                  onPressed: () {
+                    _showAnotherOfferBottomSheet();
+                  },
+                ),
+              ],
+            ),
+          );
   }
 
   Widget _actionWithTripWidget(TripDetailsModel trip) {

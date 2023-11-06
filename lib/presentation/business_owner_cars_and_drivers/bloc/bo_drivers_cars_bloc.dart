@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/domain/model/requested_drivers_response.dart';
 import 'package:taxi_for_you/domain/usecase/add_driver_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/get_business_owner_drivers_usecase.dart';
 
@@ -42,12 +43,12 @@ class BoDriversCarsBloc extends Bloc<BoDriversCarsEvent, BoDriversCarsState> {
 
                   emit(BoDriversCarsFail(
                       failure.message, failure.code.toString()))
-                }, (baseResponse) async {
+                }, (driversList) async {
       // right -> data (success)
       // content
       // emit success state
 
-      emit(BoDriversCarsSuccess(baseResponse));
+      emit(BoDriversCarsSuccess(driversList));
     });
   }
 

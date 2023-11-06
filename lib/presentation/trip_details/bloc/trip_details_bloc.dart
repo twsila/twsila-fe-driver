@@ -20,7 +20,6 @@ part 'trip_details_event.dart';
 part 'trip_details_state.dart';
 
 class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
-
   TripDetailsBloc() : super(TripDetailsInitial()) {
     on<AcceptOffer>(_acceptOffer);
     on<AddOffer>(_addOffer);
@@ -40,8 +39,8 @@ class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
     } else {
       BOAcceptOfferUseCase boAcceptOfferUseCase =
           instance<BOAcceptOfferUseCase>();
-      (await boAcceptOfferUseCase
-              .execute(BOAcceptOfferUseCaseInput(event.userId, event.tripId)))
+      (await boAcceptOfferUseCase.execute(BOAcceptOfferUseCaseInput(
+              event.userId, event.tripId, event.driverId!)))
           .fold((failure) => {emit(TripDetailsFail(failure.message))},
               (generateOtp) {
         emit(OfferAcceptedSuccess(AppStrings.offerAccepted.tr()));
@@ -64,7 +63,7 @@ class TripDetailsBloc extends Bloc<TripDetailsEvent, TripDetailsState> {
       BoSuggestNewOfferUseCase boSuggestNewOfferUseCase =
           instance<BoSuggestNewOfferUseCase>();
       (await boSuggestNewOfferUseCase.execute(BoSuggestNewOfferUseCaseInput(
-              event.userId, event.tripId, event.driverOffer)))
+              event.userId, event.tripId, event.driverOffer, event.driverId!)))
           .fold((failure) => {emit(TripDetailsFail(failure.message))},
               (generateOtp) {
         emit(NewOfferSentSuccess());

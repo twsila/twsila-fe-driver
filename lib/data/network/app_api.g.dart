@@ -1046,6 +1046,7 @@ class _AppServiceClient implements AppServiceClient {
     businessOwnerId,
     tripId,
     newSuggestedOffer,
+    driverId,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1054,6 +1055,7 @@ class _AppServiceClient implements AppServiceClient {
       'businessOwnerId': businessOwnerId,
       'tripId': tripId,
       'newSuggestedOffer': newSuggestedOffer,
+      'driverId': driverId,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
@@ -1076,6 +1078,7 @@ class _AppServiceClient implements AppServiceClient {
   Future<BaseResponse> boAcceptNewOffer(
     businessOwnerId,
     tripId,
+    driverId,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -1083,6 +1086,7 @@ class _AppServiceClient implements AppServiceClient {
     final _data = {
       'businessOwnerId': businessOwnerId,
       'tripId': tripId,
+      'driverId': driverId,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(

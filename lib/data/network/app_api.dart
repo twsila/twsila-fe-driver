@@ -173,11 +173,11 @@ abstract class AppServiceClient {
   @POST("/drivers/update-profile")
   @MultiPart()
   Future<BaseResponse> updateProfileWithoutPhoto(
-      @Part(name: "userId") int driverId,
-      @Part(name: "firstName") String firstName,
-      @Part(name: "lastName") String lastName,
-      @Part(name: "email") String email,
-      );
+    @Part(name: "userId") int driverId,
+    @Part(name: "firstName") String firstName,
+    @Part(name: "lastName") String lastName,
+    @Part(name: "email") String email,
+  );
 
   @POST("/bo/update-profile")
   @MultiPart()
@@ -226,11 +226,13 @@ abstract class AppServiceClient {
     @Field("businessOwnerId") int businessOwnerId,
     @Field("tripId") int tripId,
     @Field("newSuggestedOffer") double newSuggestedOffer,
+    @Field("driverId") int driverId,
   );
 
   @POST("/driver-acquisition/accept-offer")
   Future<BaseResponse> boAcceptNewOffer(
     @Field("businessOwnerId") int businessOwnerId,
     @Field("tripId") int tripId,
+    @Field("driverId") int driverId,
   );
 }

@@ -14,13 +14,14 @@ class BOAcceptOfferUseCase
   @override
   Future<Either<Failure, BaseResponse>> execute(
       BOAcceptOfferUseCaseInput input) async {
-    return await _repository.boAcceptOffer(input.businessOwnerId, input.tripId);
+    return await _repository.boAcceptOffer(input.businessOwnerId, input.tripId,input.driverId);
   }
 }
 
 class BOAcceptOfferUseCaseInput {
   int businessOwnerId;
   int tripId;
+  int driverId;
 
-  BOAcceptOfferUseCaseInput(this.businessOwnerId, this.tripId);
+  BOAcceptOfferUseCaseInput(this.businessOwnerId, this.tripId,this.driverId);
 }

@@ -15,7 +15,7 @@ class BoSuggestNewOfferUseCase
   Future<Either<Failure, BaseResponse>> execute(
       BoSuggestNewOfferUseCaseInput input) async {
     return await _repository.boSuggestNewOffer(
-        input.businessOwnerId, input.tripId, input.newSuggestedOffer);
+        input.businessOwnerId, input.tripId, input.newSuggestedOffer,input.driverId);
   }
 }
 
@@ -23,7 +23,8 @@ class BoSuggestNewOfferUseCaseInput {
   int businessOwnerId;
   int tripId;
   double newSuggestedOffer;
+  int driverId;
 
   BoSuggestNewOfferUseCaseInput(
-      this.businessOwnerId, this.tripId, this.newSuggestedOffer);
+      this.businessOwnerId, this.tripId, this.newSuggestedOffer,this.driverId);
 }

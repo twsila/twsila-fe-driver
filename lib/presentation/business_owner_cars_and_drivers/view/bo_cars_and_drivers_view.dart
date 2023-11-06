@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_for_you/domain/model/requested_drivers_response.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
@@ -27,7 +28,7 @@ class BOCarsAndDriversView extends StatefulWidget {
 class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
-  List<Driver> driversList = [];
+  List<RequestedDriversResponse> driversList = [];
 
   @override
   void initState() {
@@ -98,8 +99,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
           stopLoading();
         }
         if (state is BoDriversCarsSuccess) {
-          driversList = List<Driver>.from(
-              state.baseResponse.result!.map((x) => Driver.fromJson(x)));
+          driversList = state.driversList;
           if (driversList.isEmpty) {
             Navigator.pushNamed(context, Routes.BOaddDriver);
           }
@@ -125,7 +125,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${driversList[i].carModel.carManufacturerId.carManufacturer} / ${driversList[i].carModel.modelName}",
+                              "${driversList[i].driver.carModel.carManufacturerId.carManufacturer} / ${driversList[i].driver.carModel.modelName}",
                               style: Theme.of(context)
                                   .textTheme
                                   .displayLarge
@@ -135,7 +135,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                       color: ColorManager.secondaryColor),
                             ),
                             Text(
-                              "${driversList[i].firstName} ${driversList[i].lastName}",
+                              "${driversList[i].driver.firstName} ${driversList[i].driver.lastName}",
                               style: Theme.of(context)
                                   .textTheme
                                   .displayLarge
@@ -145,7 +145,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                       color: ColorManager.secondaryColor),
                             ),
                             Text(
-                              "${driversList[i].mobile}",
+                              "${driversList[i].driver.mobile}",
                               style: Theme.of(context)
                                   .textTheme
                                   .displayLarge
@@ -164,11 +164,11 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                   Border.all(color: ColorManager.lightGrey)),
                           height: AppSize.s120,
                           width: AppSize.s90,
-                          child: driversList[i].images != null &&
-                                  driversList[i].images.length > 1 &&
-                                  driversList[i].images[1].imageUrl != null
+                          child: driversList[i].driver.images != null &&
+                                  driversList[i].driver.images.length > 1 &&
+                                  driversList[i].driver.images[1].imageUrl != null
                               ? CustomNetworkImageWidget(
-                                  imageUrl: driversList[i].images[1].imageUrl!)
+                                  imageUrl: driversList[i].driver.images[1].imageUrl!)
                               : Image.asset(ImageAssets.appBarLogo),
                         )
                       ],

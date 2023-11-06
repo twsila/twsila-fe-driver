@@ -15,6 +15,7 @@ import 'package:taxi_for_you/presentation/business_owner/registration/model/Busi
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
 import '../../domain/model/driver_model.dart';
+import '../../domain/model/requested_drivers_response.dart';
 import '../../domain/model/trip_details_model.dart';
 import '../../domain/model/verify_otp_model.dart';
 import '../../domain/repository/repository.dart';
@@ -563,7 +564,7 @@ class RepositoryImpl implements Repository {
         final response;
         if (updateProfileRequest.profilePhoto != null) {
           response =
-          await _remoteDataSource.updateBOProfile(updateProfileRequest);
+              await _remoteDataSource.updateBOProfile(updateProfileRequest);
         } else {
           response = await _remoteDataSource
               .updateBOProfileWithoutPhoto(updateProfileRequest);
@@ -584,9 +585,8 @@ class RepositoryImpl implements Repository {
     }
   }
 
-
   @override
-  Future<Either<Failure, BaseResponse>> getBODrivers(
+  Future<Either<Failure, List<RequestedDriversResponse>>> getBODrivers(
       int businessOwnerId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
@@ -594,7 +594,10 @@ class RepositoryImpl implements Repository {
         final response = await _remoteDataSource.getBODrivers(businessOwnerId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          return Right(response);
+          List<RequestedDriversResponse> driversList =
+              List<RequestedDriversResponse>.from(response.result!
+                  .map((x) => RequestedDriversResponse.fromJson(x)));
+          return Right(driversList);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));
@@ -688,12 +691,12 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, BaseResponse>> boAcceptOffer(
-      int businessOwnerId, int tripId) async {
+      int businessOwnerId, int tripId, int driverId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response =
-            await _remoteDataSource.boAcceptOffer(businessOwnerId, tripId);
+        final response = await _remoteDataSource.boAcceptOffer(
+            businessOwnerId, tripId, driverId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
@@ -737,13 +740,13 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, BaseResponse>> boSuggestNewOffer(
-      int businessOwnerId, int tripId, double newSuggestedOffer) async {
+  Future<Either<Failure, BaseResponse>> boSuggestNewOffer(int businessOwnerId,
+      int tripId, double newSuggestedOffer, int driverId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response = await _remoteDataSource.boSuggestNewOffer(
-            businessOwnerId, tripId, newSuggestedOffer);
+            businessOwnerId, tripId, newSuggestedOffer, driverId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

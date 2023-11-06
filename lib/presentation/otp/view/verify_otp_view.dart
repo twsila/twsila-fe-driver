@@ -123,7 +123,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
               }
             }
             if (state is LoginFailState) {
-              if (state.errorCode == ResponseCode.NOT_FOUND.toString() &&
+              if ((state.errorCode == ResponseCode.NOT_FOUND.toString() ||
+                      state.errorCode == ResponseCode.BAD_REQUEST.toString()) &&
                   widget.registerAs == RegistrationConstants.captain) {
                 Navigator.pushReplacementNamed(
                     context, Routes.captainRegisterRoute,

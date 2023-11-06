@@ -95,9 +95,9 @@ class Driver extends DriverBaseModel {
         mobile: json["mobile"],
         email: json["email"],
         gender: json["gender"],
-        dateOfBirth: json["dateOfBirth"],
+        dateOfBirth: json["dateOfBirth"] ?? "",
         driverServiceType: json["driverServiceType"],
-        registrationStatus: json["registrationStatus"],
+        registrationStatus: json["registrationStatus"] ?? "",
         vehicleType: DriverVehicleType.fromJson(json["vehicleType"]),
         captainType: RegistrationConstants.captain,
         carManufacturerType:
@@ -228,11 +228,13 @@ class DriverImage {
 class DriverVehicleType {
   int id;
   String vehicleType;
+  String serviceType;
   String? driverServiceType;
 
   DriverVehicleType({
     required this.id,
     required this.vehicleType,
+    required this.serviceType,
     this.driverServiceType,
   });
 
@@ -240,12 +242,14 @@ class DriverVehicleType {
       DriverVehicleType(
         id: json["id"],
         vehicleType: json["vehicleType"],
+        serviceType: json["serviceType"],
         driverServiceType: json["driverServiceType"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "vehicleType": vehicleType,
+        "serviceType": serviceType,
         "driverServiceType": driverServiceType,
       };
 }

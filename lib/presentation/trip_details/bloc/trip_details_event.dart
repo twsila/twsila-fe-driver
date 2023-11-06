@@ -7,8 +7,9 @@ class AcceptOffer extends TripDetailsEvent {
   final int userId;
   final int tripId;
   final String captainType;
+  int? driverId;
 
-  AcceptOffer(this.userId, this.tripId, this.captainType);
+  AcceptOffer(this.userId, this.tripId, this.captainType, {this.driverId});
 }
 
 class AddOffer extends TripDetailsEvent {
@@ -16,8 +17,10 @@ class AddOffer extends TripDetailsEvent {
   final int tripId;
   final double driverOffer;
   final String captainType;
+  int? driverId;
 
-  AddOffer(this.userId, this.tripId, this.driverOffer, this.captainType);
+  AddOffer(this.userId, this.tripId, this.driverOffer, this.captainType,
+      {this.driverId});
 }
 
 class GetTripSummary extends TripDetailsEvent {

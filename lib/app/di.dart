@@ -73,7 +73,6 @@ Future<void> initAppModule() async {
   // repository
   instance.registerLazySingleton<Repository>(
       () => RepositoryImpl(instance(), instance(), instance()));
-
 }
 
 initLoginModule() {
@@ -179,6 +178,14 @@ initTripDetailsModule() {
   if (!GetIt.I.isRegistered<TripSummaryUseCase>()) {
     instance.registerFactory<TripSummaryUseCase>(
         () => TripSummaryUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<BusinessOwnerDriversUseCase>()) {
+    instance.registerFactory<BusinessOwnerDriversUseCase>(
+        () => BusinessOwnerDriversUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<BoAssignDriverToTripUseCase>()) {
+    instance.registerFactory<BoAssignDriverToTripUseCase>(
+        () => BoAssignDriverToTripUseCase(instance()));
   }
 }
 

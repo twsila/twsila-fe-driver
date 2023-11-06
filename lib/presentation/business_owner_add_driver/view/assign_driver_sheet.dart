@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/domain/model/requested_drivers_response.dart';
 import 'package:taxi_for_you/presentation/business_owner_cars_and_drivers/bloc/bo_drivers_cars_bloc.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
@@ -30,7 +31,7 @@ class _AssignDriverBottomSheetViewState
     extends State<AssignDriverBottomSheetView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
-  List<Driver> driversList = [];
+  List<RequestedDriversResponse> driversList = [];
   Driver? selectedDriver;
   AppPreferences appPreferences = instance();
 
@@ -62,8 +63,7 @@ class _AssignDriverBottomSheetViewState
           stopLoading();
         }
         if (state is BoDriversCarsSuccess) {
-          driversList = List<Driver>.from(
-              state.baseResponse.result!.map((x) => Driver.fromJson(x)));
+          driversList = state.driversList;
         }
 
         if (state is AssignDriversSuccess) {
@@ -130,7 +130,7 @@ class _AssignDriverBottomSheetViewState
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "${driversList[i].carModel.carManufacturerId.carManufacturer} / ${driversList[i].carModel.modelName}",
+                                              "${driversList[i].driver.carModel.carManufacturerId.carManufacturer} / ${driversList[i].driver.carModel.modelName}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displayLarge
@@ -142,7 +142,7 @@ class _AssignDriverBottomSheetViewState
                                                           .secondaryColor),
                                             ),
                                             Text(
-                                              "${driversList[i].firstName} ${driversList[i].lastName}",
+                                              "${driversList[i].driver.firstName} ${driversList[i].driver.lastName}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displayLarge
@@ -154,7 +154,7 @@ class _AssignDriverBottomSheetViewState
                                                           .secondaryColor),
                                             ),
                                             Text(
-                                              "${driversList[i].mobile}",
+                                              "${driversList[i].driver.mobile}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .displayLarge
@@ -179,6 +179,7 @@ class _AssignDriverBottomSheetViewState
                                           height: AppSize.s120,
                                           width: AppSize.s90,
                                           child: driversList[i]
+                                                      .driver
                                                       .images[0]
                                                       .imageUrl ==
                                                   null
@@ -188,6 +189,7 @@ class _AssignDriverBottomSheetViewState
                                                   placeholder:
                                                       ImageAssets.appBarLogo,
                                                   image: driversList[i]
+                                                      .driver
                                                       .images[0]
                                                       .imageUrl!),
                                         )

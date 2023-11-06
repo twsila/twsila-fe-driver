@@ -2,6 +2,7 @@ import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
+import 'package:taxi_for_you/domain/model/requested_drivers_response.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
@@ -84,10 +85,10 @@ abstract class RemoteDataSource {
   Future<BaseResponse> boAssignDriverForTrip(
       int businessOwnerId, int driverId, int tripId);
 
-  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId);
+  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId,int driverId);
 
   Future<BaseResponse> boSuggestNewOffer(
-      int businessOwnerId, int tripId, double newSuggestedOffer);
+      int businessOwnerId, int tripId, double newSuggestedOffer,int driverId);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -304,8 +305,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId) async {
-    return await _appServiceClient.boAcceptNewOffer(businessOwnerId, tripId);
+  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId,int driverId) async {
+    return await _appServiceClient.boAcceptNewOffer(businessOwnerId, tripId,driverId);
   }
 
   @override
@@ -317,8 +318,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<BaseResponse> boSuggestNewOffer(
-      int businessOwnerId, int tripId, double newSuggestedOffer) async {
+      int businessOwnerId, int tripId, double newSuggestedOffer,int driverId) async {
     return await _appServiceClient.boSuggestNewOffer(
-        businessOwnerId, tripId, newSuggestedOffer);
+        businessOwnerId, tripId, newSuggestedOffer,driverId);
   }
 }

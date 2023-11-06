@@ -15,6 +15,7 @@ import '../../data/network/requests.dart';
 import '../model/general_response.dart';
 import '../model/generate_otp_model.dart';
 import '../model/logout_model.dart';
+import '../model/requested_drivers_response.dart';
 import '../model/service_status_model.dart';
 import '../model/trip_details_model.dart';
 import '../model/verify_otp_model.dart';
@@ -81,7 +82,7 @@ abstract class Repository {
 
   Future<Either<Failure, LookupsModel>> getLookups();
 
-  Future<Either<Failure, BaseResponse>> getBODrivers(int businessOwnerId);
+  Future<Either<Failure, List<RequestedDriversResponse>>> getBODrivers(int businessOwnerId);
 
   Future<Either<Failure, List<Driver>>> searchDriversByMobile(int mobileNumber);
 
@@ -92,8 +93,8 @@ abstract class Repository {
       int businessOwnerId, int driverId, int tripId);
 
   Future<Either<Failure, BaseResponse>> boAcceptOffer(
-      int businessOwnerId, int tripId);
+      int businessOwnerId, int tripId,int driverId);
 
   Future<Either<Failure, BaseResponse>> boSuggestNewOffer(
-      int businessOwnerId, int tripId, double newSuggestedOffer);
+      int businessOwnerId, int tripId, double newSuggestedOffer,int driverId);
 }
