@@ -11,8 +11,9 @@ class TripExecutionSuccess extends TripExecutionState {}
 
 class TripStatusChangedSuccess extends TripExecutionState {
   final bool isLastStep;
+  final bool openMapWidget;
 
-  TripStatusChangedSuccess(this.isLastStep);
+  TripStatusChangedSuccess(this.isLastStep,this.openMapWidget);
 }
 
 class TripCurrentStepSuccess extends TripExecutionState {

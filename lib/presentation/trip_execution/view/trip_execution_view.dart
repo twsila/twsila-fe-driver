@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,12 +9,15 @@ import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/trip_status_step_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_stepper.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
+import 'package:taxi_for_you/presentation/trip_execution/helper/location_helper.dart';
+import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/app_prefs.dart';
+import '../../../app/constants.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/trip_details_model.dart';
 import '../../../utils/resources/assets_manager.dart';
@@ -22,6 +27,8 @@ import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
+import '../../google_maps/model/location_model.dart';
+import '../../google_maps/model/maps_repo.dart';
 import '../../trip_details/view/more_details_widget/more_details_widget.dart';
 import '../bloc/trip_execution_bloc.dart';
 import 'navigation_tracking_view.dart';
@@ -39,6 +46,11 @@ class _TripExecutionViewState extends State<TripExecutionView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
+  MapsRepo mapsRepo = MapsRepo();
+  late Timer _timer;
+  late double distanceBetweenCurrentAndSource;
+  LocationModel? currentLocation;
+  bool isUserArrivedSource = false;
   TripStatusStepModel tripStatusStepModel =
       TripStatusStepModel(0, TripStatus.WAIT_FOR_TAKEOFF.name);
 
@@ -47,6 +59,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
 
   // OPTIONAL: can be set directly.
   int dotCount = 5;
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   void startLoading() {
     setState(() {
@@ -60,10 +78,30 @@ class _TripExecutionViewState extends State<TripExecutionView> {
     });
   }
 
+  void getCurrentLocation() async {
+    currentLocation = await mapsRepo.getUserCurrentLocation();
+    distanceBetweenCurrentAndSource = LocationHelper()
+        .distanceBetweenTwoLocationInMeters(
+            lat1: currentLocation!.latitude,
+            long1: currentLocation!.longitude,
+            lat2: widget.tripModel.tripDetails.pickupLocation.latitude!,
+            long2: widget.tripModel.tripDetails.pickupLocation.longitude!);
+
+    if (distanceBetweenCurrentAndSource <= 100) {
+      ToastHandler(context).showToast("arrived pickup location", null);
+      isUserArrivedSource = true;
+      BlocProvider.of<TripExecutionBloc>(context).add(
+          changeTripStatus(widget.tripModel, TripStatus.TAKEOFF.name, true));
+    }
+  }
+
   @override
   void initState() {
     BlocProvider.of<TripExecutionBloc>(context)
         .add(getTripStatusForStepper(tripDetailsModel: widget.tripModel));
+    _timer = Timer.periodic(
+        Duration(seconds: Constants.refreshCurrentLocationSeconds),
+        (Timer t) async {});
     super.initState();
   }
 
@@ -95,6 +133,9 @@ class _TripExecutionViewState extends State<TripExecutionView> {
         if (state is TripStatusChangedSuccess) {
           if (state.isLastStep) {
             Navigator.pop(context);
+          } else if (state.openMapWidget) {
+            Navigator.pushNamed(context, Routes.locationTrackingPage,
+                arguments: NavigationTrackingArguments(widget.tripModel));
           } else {
             this.tripStatusStepModel.stepIndex++;
           }
@@ -322,9 +363,9 @@ class _TripExecutionViewState extends State<TripExecutionView> {
               case 1:
                 BlocProvider.of<TripExecutionBloc>(context).add(
                     changeTripStatus(
-                        widget.tripModel, TripStatus.TAKEOFF.name, true));
-                Navigator.pushNamed(context, Routes.locationTrackingPage,
-                    arguments: NavigationTrackingArguments(widget.tripModel));
+                        widget.tripModel, TripStatus.TAKEOFF.name, true,
+                        openMapWidget: true));
+
                 break;
               case 2:
                 BlocProvider.of<TripExecutionBloc>(context).add(

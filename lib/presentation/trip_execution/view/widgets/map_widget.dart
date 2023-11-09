@@ -41,9 +41,10 @@ class _MapWidgetState extends State<MapWidget> {
   late Timer _timer;
   late double distanceBetweenCurrentAndSource;
   late double distanceBetweenCurrentAndDestination;
-  late CompassEvent _driverDirection;
   bool isUserArrivedSource = false;
   bool isUserArrivedDestination = false;
+
+  LocationModel? currentLocation;
 
   List<LatLng> polylineCoordinates = [];
 
@@ -131,7 +132,6 @@ class _MapWidgetState extends State<MapWidget> {
     print(widget.tripModel);
   }
 
-  LocationModel? currentLocation;
 
   void getCurrentLocation() async {
     currentLocation = await mapsRepo.getUserCurrentLocation();

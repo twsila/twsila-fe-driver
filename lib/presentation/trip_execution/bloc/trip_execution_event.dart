@@ -7,10 +7,11 @@ class changeTripStatus extends TripExecutionEvent {
   final TripDetailsModel tripDetailsModel;
   final String tripStatus;
   final bool sendRequest;
-   bool? isLastStep;
+  bool? isLastStep;
+  bool? openMapWidget;
 
-  changeTripStatus(this.tripDetailsModel,this.tripStatus, this.sendRequest,
-      {this.isLastStep = false});
+  changeTripStatus(this.tripDetailsModel, this.tripStatus, this.sendRequest,
+      {this.isLastStep = false, this.openMapWidget = false});
 }
 
 class getTripSummary extends TripExecutionEvent {

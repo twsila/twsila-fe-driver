@@ -52,11 +52,11 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
         // right -> data (success)
         // content
         // emit success state
-        emit(TripStatusChangedSuccess(event.isLastStep!));
+        emit(TripStatusChangedSuccess(event.isLastStep!,event.openMapWidget!));
         // isUserLoggedInSuccessfullyStreamController.add(true);
       });
     } else {
-      emit(TripStatusChangedSuccess(event.isLastStep!));
+      emit(TripStatusChangedSuccess(event.isLastStep!,event.openMapWidget!));
     }
   }
 
