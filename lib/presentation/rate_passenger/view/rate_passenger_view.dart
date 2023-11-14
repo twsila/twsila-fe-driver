@@ -38,7 +38,6 @@ class _RatePassengerViewState extends State<RatePassengerView> {
 
   @override
   void initState() {
-    print(widget.tripDetailsModel);
     super.initState();
   }
 

@@ -12,24 +12,24 @@ String vehicleModelToJson(VehicleModel data) => json.encode(data.toJson());
 class VehicleModel {
   int id;
   String vehicleType;
-  String driverServiceType;
+  String serviceType;
   bool isSelected;
 
   VehicleModel(
       {required this.id,
       required this.vehicleType,
-      required this.driverServiceType,
+      required this.serviceType,
       this.isSelected = false});
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(
         id: json["id"],
         vehicleType: json["vehicleType"],
-        driverServiceType: json["driverServiceType"],
+    serviceType: json["serviceType"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "vehicleType": vehicleType,
-        "driverServiceType": driverServiceType,
+        "serviceType": serviceType,
       };
 }
