@@ -22,7 +22,8 @@ class Constants {
 
   static const int IMAGE_QUALITY_COMPRESS = 25;
   static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
-  static const String BUSINESS_OWNER_PHOTO_IMAGE_STRING = 'business_owner_photo.jpg';
+  static const String BUSINESS_OWNER_PHOTO_IMAGE_STRING =
+      'business_owner_photo.jpg';
 
   static const String dateFormatterString = "dd/MM/yyyy hh:mm:ss";
 
@@ -60,4 +61,12 @@ class TripStatusConstants {
   static const String EXECUTED = "EXECUTED";
   static const String COMPLETED = "COMPLETED";
   static const String CANCELLED = "CANCELLED";
+}
+
+class EndPoints {
+  static const String DriversTrips = "/drivers/offers/select-trip";
+  static const String DriverMyTrips = "/drivers/offers/select-my-trip";
+  static const String BusinessOwnerTrips = "/driver-acquisition/select-trip";
+  static const String BusinessOwnerMyTrips =
+      "/driver-acquisition/select-my-trip";
 }

@@ -47,6 +47,7 @@ abstract class Repository {
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
 
   Future<Either<Failure, List<TripDetailsModel>>> getTrips(
+      String endPoint,
       String tripTypeModuleId,
       int userId,
       Map<String, dynamic>? dateFilter,
@@ -55,7 +56,7 @@ abstract class Repository {
       String? sortCriterion);
 
   Future<Either<Failure, List<TripDetailsModel>>> getMyTrips(
-      String tripTypeModuleId, int userId);
+      String endPoint, String tripTypeModuleId, int userId);
 
   Future<Either<Failure, GeneralResponse>> acceptOffer(int userId, int tripId);
 
@@ -82,7 +83,8 @@ abstract class Repository {
 
   Future<Either<Failure, LookupsModel>> getLookups();
 
-  Future<Either<Failure, List<RequestedDriversResponse>>> getBODrivers(int businessOwnerId);
+  Future<Either<Failure, List<RequestedDriversResponse>>> getBODrivers(
+      int businessOwnerId);
 
   Future<Either<Failure, List<Driver>>> searchDriversByMobile(int mobileNumber);
 
@@ -93,8 +95,8 @@ abstract class Repository {
       int businessOwnerId, int driverId, int tripId);
 
   Future<Either<Failure, BaseResponse>> boAcceptOffer(
-      int businessOwnerId, int tripId,int driverId);
+      int businessOwnerId, int tripId, int driverId);
 
   Future<Either<Failure, BaseResponse>> boSuggestNewOffer(
-      int businessOwnerId, int tripId, double newSuggestedOffer,int driverId);
+      int businessOwnerId, int tripId, double newSuggestedOffer, int driverId);
 }

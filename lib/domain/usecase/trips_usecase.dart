@@ -17,6 +17,7 @@ class TripsUseCase implements BaseUseCase<TripsInput, List<TripDetailsModel>> {
   Future<Either<Failure, List<TripDetailsModel>>> execute(
       TripsInput input) async {
     return await _repository.getTrips(
+        input.endPoint,
         input.tripModuleId,
         input.userId,
         input.dateFilter,
@@ -27,6 +28,7 @@ class TripsUseCase implements BaseUseCase<TripsInput, List<TripDetailsModel>> {
 }
 
 class TripsInput {
+  String endPoint;
   String tripModuleId;
   int userId;
   Map<String, dynamic>? dateFilter;
@@ -34,6 +36,6 @@ class TripsInput {
   Map<String, dynamic>? currentLocation;
   String? sortCriterion;
 
-  TripsInput(this.tripModuleId, this.userId, this.dateFilter,
+  TripsInput(this.endPoint, this.tripModuleId, this.userId, this.dateFilter,
       this.locationFilter, this.currentLocation, this.sortCriterion);
 }

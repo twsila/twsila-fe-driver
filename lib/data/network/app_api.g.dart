@@ -439,6 +439,7 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<BaseResponse> getTripsByModuleId(
+    endpoint,
     tripModelType,
     userId,
     dateFilter,
@@ -467,7 +468,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/drivers/offers/select-trip',
+              '${endpoint}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -478,6 +479,7 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<BaseResponse> getMyTripsByModuleId(
+    endpoint,
     tripModelType,
     userId,
   ) async {
@@ -496,7 +498,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/drivers/offers/select-my-trip',
+              '${endpoint}',
               queryParameters: queryParameters,
               data: _data,
             )

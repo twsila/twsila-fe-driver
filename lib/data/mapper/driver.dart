@@ -21,11 +21,10 @@ extension LoginResponseMapper on LoginResponse? {
       tokenExpirationTime:
           this?.tokenExpirationTime.orEmpty() ?? Constants.empty,
       id: this?.driver!.id.orZero() ?? Constants.zero,
-      driverServiceType:
-          this?.driver!.driverServiceType.orEmpty() ?? Constants.empty,
+      serviceType: this?.driver!.serviceType.orEmpty() ?? Constants.empty,
       registrationStatus:
           this?.driver!.registrationStatus.orEmpty() ?? Constants.empty,
-      vehicleType: this!.driver!.vehicleType,
+      vehicleType: this!.driver!.vehicleType ?? null,
       carManufacturerType: this!.driver!.carManufacturerType,
       carModel: this!.driver!.carModel,
       canTransportFurniture: this?.driver!.canTransportFurniture ?? false,
@@ -41,6 +40,7 @@ extension LoginResponseMapper on LoginResponse? {
       images: this?.driver!.images ?? [],
       rating: this?.driver!.rating ?? 0.0,
       acknowledged: this?.driver!.acknowledged ?? false,
+      driverStatus: this?.driver!.driverStatus.orEmpty() ?? Constants.empty,
     );
   }
 }

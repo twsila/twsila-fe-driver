@@ -8,10 +8,12 @@ import 'package:taxi_for_you/domain/model/location_filter_model.dart';
 import 'package:taxi_for_you/domain/usecase/trips_usecase.dart';
 
 import '../../../../../app/app_prefs.dart';
+import '../../../../../app/constants.dart';
 import '../../../../../app/di.dart';
 import '../../../../../domain/model/trip_details_model.dart';
 import '../../../../../domain/model/trip_model.dart';
 import '../../../../../domain/usecase/lookups_usecase.dart';
+import '../../../../../utils/resources/constants_manager.dart';
 
 part 'search_trips_event.dart';
 
@@ -52,7 +54,12 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
       GetTripsTripModuleId event, Emitter<SearchTripsState> emit) async {
     emit(SearchTripsLoading());
     TripsUseCase tripsUseCase = instance<TripsUseCase>();
+    String endPoint = _appPreferences.getCachedDriver()?.captainType ==
+            RegistrationConstants.captain
+        ? EndPoints.DriversTrips
+        : EndPoints.BusinessOwnerTrips;
     (await tripsUseCase.execute(TripsInput(
+            endPoint,
             event.tripTypeId,
             _appPreferences.getCachedDriver()?.id ?? -1,
             event.dateFilter?.toJson() ?? null,

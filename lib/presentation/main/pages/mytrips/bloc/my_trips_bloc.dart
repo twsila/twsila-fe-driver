@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/domain/usecase/mytrips_usecase.dart';
+import 'package:taxi_for_you/utils/ext/enums.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 import '../../../../../app/app_prefs.dart';
 import '../../../../../app/di.dart';
@@ -25,8 +28,12 @@ class MyTripsBloc extends Bloc<MyTripsEvent, MyTripsState> {
       GetTripsTripModuleId event, Emitter<MyTripsState> emit) async {
     emit(MyTripsLoading());
     MyTripsUseCase myTripsUseCase = instance<MyTripsUseCase>();
-    (await myTripsUseCase.execute(MyTripsInput(
-            event.tripTypeId, _appPreferences.getCachedDriver()?.id ?? -1)))
+    String endPoint = _appPreferences.getCachedDriver()?.captainType ==
+            RegistrationConstants.captain
+        ? EndPoints.DriverMyTrips
+        : EndPoints.BusinessOwnerMyTrips;
+    (await myTripsUseCase.execute(MyTripsInput(endPoint, event.tripTypeId,
+            _appPreferences.getCachedDriver()?.id ?? -1)))
         .fold(
             (failure) => {
                   // left -> failure

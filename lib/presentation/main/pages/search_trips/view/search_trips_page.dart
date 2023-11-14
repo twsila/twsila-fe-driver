@@ -72,9 +72,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
       if (currentLocation == null) {
         currentLocation = await mapsRepo.getUserCurrentLocation();
         currentLocationFilter = CurrentLocationFilter(
-                latitude: currentLocation!.latitude,
-                longitude: currentLocation!.longitude,
-                cityName: '');
+            latitude: currentLocation!.latitude,
+            longitude: currentLocation!.longitude,
+            cityName: '');
         currentCityName = await LocationHelper().getCityNameByCoordinates(
             currentLocation!.latitude, currentLocation!.longitude);
         currentLocationFilter!.cityName = currentCityName;
@@ -371,13 +371,23 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                   arguments: TripExecutionArguments(trip))
               .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
                   GetTripsTripModuleId(
-                      tripTypeId: 'ALL_TRIPS', dateFilter: null)));
+                      tripTypeId: 'ALL_TRIPS',
+                      dateFilter: null,
+                      sortCriterion: sortingModelList[currentSortingIndex]
+                          .id
+                          .name
+                          .toString())));
         else
           Navigator.pushNamed(context, Routes.tripDetails,
                   arguments: TripDetailsArguments(tripModel: trip))
               .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
                   GetTripsTripModuleId(
-                      tripTypeId: 'ALL_TRIPS', dateFilter: null)));
+                      tripTypeId: 'ALL_TRIPS',
+                      dateFilter: null,
+                      sortCriterion: sortingModelList[currentSortingIndex]
+                          .id
+                          .name
+                          .toString())));
       },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),

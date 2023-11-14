@@ -96,8 +96,9 @@ abstract class AppServiceClient {
   @POST("/drivers/registration-status")
   Future<ServiceRegisterModel> serviceStatus(@Field("userId") String userId);
 
-  @POST("/drivers/offers/select-trip")
+  @POST("{endpoint}")
   Future<BaseResponse> getTripsByModuleId(
+    @Path() String endpoint,
     @Field("tripModelType") String tripModelType,
     @Field("userId") int userId,
     @Field("dateFilter") Map<String, dynamic>? dateFilter,
@@ -106,8 +107,9 @@ abstract class AppServiceClient {
     @Field("sortCriterion") String? sortCriterion,
   );
 
-  @POST("/drivers/offers/select-my-trip")
+  @POST("{endpoint}")
   Future<BaseResponse> getMyTripsByModuleId(
+      @Path() String endpoint,
       @Field("tripModelType") String tripModelType,
       @Field("userId") int userId);
 

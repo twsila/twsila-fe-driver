@@ -15,13 +15,14 @@ class MyTripsUseCase implements BaseUseCase<MyTripsInput, List<TripDetailsModel>
 
   @override
   Future<Either<Failure, List<TripDetailsModel>>> execute(MyTripsInput input) async {
-    return await _repository.getMyTrips(input.tripModuleId, input.userId);
+    return await _repository.getMyTrips(input.endPoint,input.tripModuleId, input.userId);
   }
 }
 
 class MyTripsInput {
+  String endPoint;
   String tripModuleId;
   int userId;
 
-  MyTripsInput(this.tripModuleId, this.userId);
+  MyTripsInput(this.endPoint,this.tripModuleId, this.userId);
 }

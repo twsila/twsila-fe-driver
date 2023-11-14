@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 Driver driverModelFromJson(String str) => Driver.fromJson(json.decode(str));
@@ -25,9 +26,9 @@ abstract class DriverBaseModel {
 
 class Driver extends DriverBaseModel {
   String dateOfBirth;
-  String? driverServiceType;
+  String? serviceType;
   String registrationStatus;
-  DriverVehicleType vehicleType;
+  DriverVehicleType? vehicleType;
   DriverCarManufacturer carManufacturerType;
   DriverCarModel carModel;
   bool canTransportFurniture;
@@ -40,6 +41,8 @@ class Driver extends DriverBaseModel {
   bool hasAssembly;
   bool hasLifting;
   String plateNumber;
+  String? driverStatus;
+  BusinessOwnerModel? businessOwnerModel;
   List<DriverImage> images;
   double rating;
   bool acknowledged;
@@ -54,9 +57,10 @@ class Driver extends DriverBaseModel {
       required gender,
       required captainType,
       required this.dateOfBirth,
-      this.driverServiceType,
+      this.serviceType,
       required this.registrationStatus,
-      required this.vehicleType,
+      this.vehicleType,
+      this.driverStatus,
       required this.carManufacturerType,
       required this.carModel,
       required this.canTransportFurniture,
@@ -74,6 +78,7 @@ class Driver extends DriverBaseModel {
       required this.acknowledged,
       required token,
       required userDevice,
+      this.businessOwnerModel,
       required tokenExpirationTime,
       this.isChecked = false}) {
     this.id = id;
@@ -92,17 +97,24 @@ class Driver extends DriverBaseModel {
         id: json["id"],
         firstName: json["firstName"],
         lastName: json["lastName"],
+        driverStatus:
+            json["driverStatus"] != null ? json["driverStatus"] : null,
         mobile: json["mobile"],
         email: json["email"],
         gender: json["gender"],
         dateOfBirth: json["dateOfBirth"] ?? "",
-        driverServiceType: json["driverServiceType"],
+        serviceType: json["serviceType"],
         registrationStatus: json["registrationStatus"] ?? "",
-        vehicleType: DriverVehicleType.fromJson(json["vehicleType"]),
+        vehicleType: json["vehicleType"] != null
+            ? DriverVehicleType.fromJson(json["vehicleType"])
+            : null,
         captainType: RegistrationConstants.captain,
         carManufacturerType:
             DriverCarManufacturer.fromJson(json["carManufacturerType"]),
         carModel: DriverCarModel.fromJson(json["carModel"]),
+        businessOwnerModel: json["businessOwner"] != null
+            ? BusinessOwnerModel.fromJsonDirect(json["businessOwner"])
+            : null,
         canTransportFurniture: json["canTransportFurniture"],
         canTransportGoods: json["canTransportGoods"],
         canTransportFrozen: json["canTransportFrozen"],
@@ -128,11 +140,12 @@ class Driver extends DriverBaseModel {
         "lastName": lastName,
         "mobile": mobile,
         "email": email,
+        "driverStatus": driverStatus,
         "gender": gender,
         "dateOfBirth": dateOfBirth,
-        "driverServiceType": driverServiceType,
+        "serviceType": serviceType,
         "registrationStatus": registrationStatus,
-        "vehicleType": vehicleType.toJson(),
+        "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,
         "carManufacturerType": carManufacturerType.toJson(),
         "carModel": carModel.toJson(),
         "canTransportFurniture": canTransportFurniture,
@@ -145,6 +158,7 @@ class Driver extends DriverBaseModel {
         "captainType": RegistrationConstants.captain,
         "hasAssembly": hasAssembly,
         "hasLifting": hasLifting,
+        "businessOwner": businessOwnerModel,
         "plateNumber": plateNumber,
         "images": List<dynamic>.from(images.map((x) => x.toJson())),
         "rating": rating,

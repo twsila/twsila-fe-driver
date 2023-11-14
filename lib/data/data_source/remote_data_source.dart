@@ -37,6 +37,7 @@ abstract class RemoteDataSource {
   Future<ServiceRegisterModel> servicesStatus(String userId);
 
   Future<BaseResponse> tripsByModuleId(
+      String endPoint,
       String tripTypeModuleId,
       int userId,
       Map<String, dynamic>? dateFilter,
@@ -44,7 +45,7 @@ abstract class RemoteDataSource {
       Map<String, dynamic>? currentLocation,
       String? sortCriterion);
 
-  Future<BaseResponse> myTripsByModuleId(String tripTypeModuleId, int userId);
+  Future<BaseResponse> myTripsByModuleId( String endPoint,String tripTypeModuleId, int userId);
 
   Future<GeneralResponse> acceptOffer(int userId, int tripId);
 
@@ -191,21 +192,21 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> tripsByModuleId(
+  Future<BaseResponse> tripsByModuleId( String endPoint,
       String tripTypeModuleId,
       int userId,
       Map<String, dynamic>? dateFilter,
       Map<String, dynamic>? locationFilter,
       Map<String, dynamic>? currentLocation,
       String? sortCriterion) async {
-    return await _appServiceClient.getTripsByModuleId(tripTypeModuleId, userId,
+    return await _appServiceClient.getTripsByModuleId(endPoint,tripTypeModuleId, userId,
         dateFilter, locationFilter, currentLocation, sortCriterion);
   }
 
   @override
-  Future<BaseResponse> myTripsByModuleId(
+  Future<BaseResponse> myTripsByModuleId( String endPoint,
       String tripTypeModuleId, int userId) async {
-    return await _appServiceClient.getMyTripsByModuleId(
+    return await _appServiceClient.getMyTripsByModuleId(endPoint,
         tripTypeModuleId, userId);
   }
 
