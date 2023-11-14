@@ -36,6 +36,12 @@ class _RatePassengerViewState extends State<RatePassengerView> {
   bool _displayLoadingIndicator = false;
   double rating = 3;
 
+  @override
+  void initState() {
+    print(widget.tripDetailsModel);
+    super.initState();
+  }
+
   void startLoading() {
     setState(() {
       _displayLoadingIndicator = true;

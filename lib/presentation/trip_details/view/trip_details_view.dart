@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner_add_driver/view/assign_driver_sheet.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 import 'package:taxi_for_you/presentation/google_maps/view/google_maps_widget.dart';
@@ -46,6 +47,8 @@ class _TripDetailsViewState extends State<TripDetailsView> {
   bool _enableSendOffer = false;
   double _driverOffer = 0.0;
   late DriverBaseModel driverBaseModel;
+  bool showBusinessOwnerOfferActionsView = false;
+  Driver? assignedDriverToTrip;
 
   void startLoading() {
     setState(() {
@@ -76,7 +79,16 @@ class _TripDetailsViewState extends State<TripDetailsView> {
         context: context,
         builder: (context) {
           return AssignDriverBottomSheetView(
-              tripId: widget.tripModel.tripDetails.tripId!);
+            tripId: widget.tripModel.tripDetails.tripId!,
+            onAssignDriver: (assignedDriver) {
+              setState(() {
+                if (assignedDriver != null) {
+                  assignedDriverToTrip = assignedDriver;
+                  this.showBusinessOwnerOfferActionsView = true;
+                }
+              });
+            },
+          );
         });
   }
 
@@ -154,7 +166,10 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                           _appPreferences
                               .getCachedDriver()!
                               .captainType
-                              .toString()));
+                              .toString(),
+                          driverId: assignedDriverToTrip != null
+                              ? assignedDriverToTrip!.id
+                              : null));
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }, () {
@@ -263,14 +278,79 @@ class _TripDetailsViewState extends State<TripDetailsView> {
             (trip.tripDetails.offers == null ||
                 (trip.tripDetails.offers != null &&
                     trip.tripDetails.offers!.length >= 0)))
-        ? CustomTextButton(
-            text: AppStrings.assignDriver.tr(),
-            isWaitToEnable: false,
-            onPressed: () {
-              bottomSheetForAssignDriver(context);
-            },
-          )
+        ? this.showBusinessOwnerOfferActionsView
+            ? _showBoTripActions()
+            : CustomTextButton(
+                text: AppStrings.assignDriver.tr(),
+                isWaitToEnable: false,
+                onPressed: () {
+                  bottomSheetForAssignDriver(context);
+                },
+              )
         : _AcceptanceStatusWidget(trip);
+  }
+
+  Widget _showBoTripActions() {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _handleAssignedDriverDetails(assignedDriverToTrip!),
+          CustomTextButton(
+            text:
+                "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
+            onPressed: () {
+              BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                  _appPreferences.getCachedDriver()!.id!,
+                  widget.tripModel.tripDetails.tripId!,
+                  _appPreferences.getCachedDriver()!.captainType.toString(),
+                  driverId: assignedDriverToTrip!.id));
+            },
+          ),
+          CustomTextButton(
+            isWaitToEnable: false,
+            backgroundColor: ColorManager.white,
+            textColor: ColorManager.headersTextColor,
+            borderColor: ColorManager.purpleMainTextColor,
+            text: AppStrings.sendAnotherPrice.tr(),
+            onPressed: () {
+              _showAnotherOfferBottomSheet();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _handleAssignedDriverDetails(Driver driver) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            Text(
+              "${driver.carManufacturerType.carManufacturer} / ${driver.carModel.modelName}",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: ColorManager.headersTextColor,
+                  fontSize: FontSize.s16,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "${driver.firstName} ${driver.lastName} ",
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: ColorManager.headersTextColor,
+                  fontSize: FontSize.s16,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Container(
+            width: 70,
+            height: 50,
+            child: CustomNetworkImageWidget(
+                imageUrl: driver.images[0].imageUrl ?? ""))
+      ],
+    );
   }
 
   Widget _AcceptanceStatusWidget(TripDetailsModel trip) {

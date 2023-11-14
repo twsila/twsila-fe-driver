@@ -19,8 +19,10 @@ import '../../common/widgets/custom_text_button.dart';
 
 class AssignDriverBottomSheetView extends StatefulWidget {
   int tripId;
+  final Function(Driver? driver) onAssignDriver;
 
-  AssignDriverBottomSheetView({required this.tripId});
+  AssignDriverBottomSheetView(
+      {required this.tripId, required this.onAssignDriver});
 
   @override
   State<AssignDriverBottomSheetView> createState() =>
@@ -112,14 +114,16 @@ class _AssignDriverBottomSheetViewState
                                 itemBuilder: (context, i) {
                                   return CustomCard(
                                     onClick: () {
-                                      BlocProvider.of<BoDriversCarsBloc>(
-                                              context)
-                                          .add(assignDriverForTrip(
-                                              appPreferences
-                                                  .getCachedDriver()!
-                                                  .id!,
-                                              driversList[i].id!,
-                                              widget.tripId));
+                                      // BlocProvider.of<BoDriversCarsBloc>(
+                                      //         context)
+                                      //     .add(assignDriverForTrip(
+                                      //         appPreferences
+                                      //             .getCachedDriver()!
+                                      //             .id!,
+                                      //         driversList[i].id!,
+                                      //         widget.tripId));
+                                      widget.onAssignDriver(driversList[i].driver);
+                                      Navigator.pop(context);
                                     },
                                     bodyWidget: Row(
                                       mainAxisAlignment:
