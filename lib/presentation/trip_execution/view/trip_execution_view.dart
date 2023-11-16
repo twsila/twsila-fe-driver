@@ -136,6 +136,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
           } else if (state.openMapWidget) {
             Navigator.pushNamed(context, Routes.locationTrackingPage,
                 arguments: NavigationTrackingArguments(widget.tripModel));
+            this.tripStatusStepModel.stepIndex++;
           } else {
             this.tripStatusStepModel.stepIndex++;
           }
@@ -358,7 +359,8 @@ class _TripExecutionViewState extends State<TripExecutionView> {
               case 0:
                 BlocProvider.of<TripExecutionBloc>(context).add(
                     changeTripStatus(widget.tripModel,
-                        TripStatus.WAIT_FOR_TAKEOFF.name, false));
+                        TripStatus.WAIT_FOR_TAKEOFF.name, false,
+                        openMapWidget: false));
                 break;
               case 1:
                 BlocProvider.of<TripExecutionBloc>(context).add(
@@ -370,13 +372,14 @@ class _TripExecutionViewState extends State<TripExecutionView> {
               case 2:
                 BlocProvider.of<TripExecutionBloc>(context).add(
                     changeTripStatus(
-                        widget.tripModel, TripStatus.EXECUTED.name, true));
+                        widget.tripModel, TripStatus.EXECUTED.name, true,
+                        openMapWidget: false));
                 break;
               case 3:
                 BlocProvider.of<TripExecutionBloc>(context).add(
                     changeTripStatus(
                         widget.tripModel, TripStatus.COMPLETED.name, true,
-                        isLastStep: true));
+                        isLastStep: true, openMapWidget: false));
                 break;
             }
           },
