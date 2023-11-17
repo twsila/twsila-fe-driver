@@ -22,6 +22,7 @@ import '../../../../domain/model/car_brand_models_model.dart';
 import '../../../../domain/model/vehicle_model.dart';
 import '../../../../utils/helpers/keep_alive_widget.dart';
 import '../../../../utils/resources/color_manager.dart';
+import '../../../../utils/resources/constants_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 import '../../../../utils/resources/styles_manager.dart';
@@ -32,6 +33,7 @@ import '../../../common/widgets/custom_date_picker.dart';
 import '../../../common/widgets/custom_scaffold.dart';
 import '../../../common/widgets/multi_pick_image.dart';
 import '../../../common/widgets/page_builder.dart';
+import '../../../login/view/login_view.dart';
 import '../../bloc/serivce_registration_bloc.dart';
 import '../widgets/services_card_widget.dart';
 import '../widgets/uploadDocumentWidget.dart';
@@ -143,7 +145,10 @@ class _ServiceRegistrationSecondStepState
         }
 
         if (state is ServiceRegistrationSuccess) {
-          Navigator.pushNamed(context, Routes.loginRoute);
+          // Navigator.pushNamed(context, Routes.loginRoute, arguments:
+          // LoginViewArguments(RegistrationConstants.captain),);
+          Navigator.pushReplacementNamed(
+              context, Routes.serviceAppliedSuccessfullyView);
         }
         if (state is ServiceRegistrationFail) {
           CustomDialog(context).showErrorDialog('', '', state.message);

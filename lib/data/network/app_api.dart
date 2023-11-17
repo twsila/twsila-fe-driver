@@ -63,7 +63,7 @@ abstract class AppServiceClient {
       @Part(name: "email") String email,
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
-      @Part(name: "driverServiceType") String driverServiceType,
+      @Part(name: "serviceType") String driverServiceType,
       @Part(name: "vehicleType.id") String vehicleTypeId,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,

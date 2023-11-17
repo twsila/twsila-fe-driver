@@ -14,7 +14,7 @@ class RegistrationResponse {
   bool success;
   dynamic message;
   String dateTime;
-  int result;
+  Map<String,dynamic> result;
 
   RegistrationResponse({
     required this.success,

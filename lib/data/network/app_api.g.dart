@@ -258,7 +258,7 @@ class _AppServiceClient implements AppServiceClient {
       dateOfBirth,
     ));
     _data.fields.add(MapEntry(
-      'driverServiceType',
+      'serviceType',
       driverServiceType,
     ));
     _data.fields.add(MapEntry(

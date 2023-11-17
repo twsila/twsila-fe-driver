@@ -6,11 +6,13 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../../utils/resources/assets_manager.dart';
 import '../../../../utils/resources/color_manager.dart';
+import '../../../../utils/resources/constants_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/routes_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 import '../../../common/widgets/custom_scaffold.dart';
 import '../../../common/widgets/page_builder.dart';
+import '../../../login/view/login_view.dart';
 
 class ServiceAppliedSuccessView extends StatefulWidget {
   const ServiceAppliedSuccessView({Key? key}) : super(key: key);
@@ -89,10 +91,15 @@ class _ServiceAppliedSuccessViewState extends State<ServiceAppliedSuccessView> {
             ),
           ),
           CustomTextButton(
-            text: AppStrings.backToMainScreen.tr(),
+            text: AppStrings.login.tr(),
             isWaitToEnable: false,
             onPressed: () {
-              Navigator.pushNamed(context, Routes.mainRoute);
+              Navigator.pushNamed(
+                context,
+                Routes.loginRoute,
+                arguments:
+                    LoginViewArguments(RegistrationConstants.captain),
+              );
             },
           )
         ],

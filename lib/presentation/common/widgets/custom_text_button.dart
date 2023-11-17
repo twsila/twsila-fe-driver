@@ -64,28 +64,30 @@ class _CustomTextButtonState extends State<CustomTextButton> {
           child: widget.icon != null
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.text,
-                        style: getBoldStyle(
-                            color: widget.isWaitToEnable
-                                ? widget.onPressed != null
-                                    ? widget.textColor != null
-                                        ? widget.textColor!
-                                        : ColorManager.buttonTextColor
-                                    : ColorManager.disableTextColor
-                                : widget.textColor != null
-                                    ? widget.textColor!
-                                    : ColorManager.buttonTextColor,
-                            fontSize: widget.fontSize ?? FontSize.s16),
-                      ),
-                      const SizedBox(
-                        width: AppSize.s12,
-                      ),
-                      widget.icon!,
-                    ],
+                  child: FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.text,
+                          style: getBoldStyle(
+                              color: widget.isWaitToEnable
+                                  ? widget.onPressed != null
+                                      ? widget.textColor != null
+                                          ? widget.textColor!
+                                          : ColorManager.buttonTextColor
+                                      : ColorManager.disableTextColor
+                                  : widget.textColor != null
+                                      ? widget.textColor!
+                                      : ColorManager.buttonTextColor,
+                              fontSize: widget.fontSize ?? FontSize.s16),
+                        ),
+                        const SizedBox(
+                          width: AppSize.s12,
+                        ),
+                        widget.icon!,
+                      ],
+                    ),
                   ),
                 )
               : Text(
