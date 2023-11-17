@@ -52,21 +52,19 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 
   @override
   void initState() {
-    // BlocProvider.of<VerifyOtpBloc>(context)
-    //     .add(SendOtpEvent(widget.mobileNumberForApi));
-
-    if (widget.registerAs == RegistrationConstants.captain) {
-      BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-          /*'1234567890'*/
-          widget.mobileNumberForApi,
-          _appPreferences.getAppLanguage()));
-    } else {
-      BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-          /*'1234567890'*/
-          widget.mobileNumberForApi,
-          _appPreferences.getAppLanguage()));
-    }
-
+    BlocProvider.of<VerifyOtpBloc>(context)
+        .add(SendOtpEvent(widget.mobileNumberForApi));
+    // if (widget.registerAs == RegistrationConstants.captain) {
+    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+    //       /*'1234567890'*/
+    //       widget.mobileNumberForApi,
+    //       _appPreferences.getAppLanguage()));
+    // } else {
+    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
+    //       /*'1234567890'*/
+    //       widget.mobileNumberForApi,
+    //       _appPreferences.getAppLanguage()));
+    // }
     super.initState();
   }
 
@@ -150,9 +148,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
             if (state is GenerateOtpSuccess) {
               // ToastHandler(context).showToast(
               //     "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
-
               ToastHandler(context)
-                  .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
+                  .showToast(AppStrings.otpSent.tr(), Toast.LENGTH_LONG);
             }
             if (state is GenerateOtpFail) {
               CustomDialog(context).showErrorDialog(
@@ -177,6 +174,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
               if (state.code == ResponseMessage.NOT_FOUND) {
                 CustomDialog(context)
                     .showErrorDialog("", "", AppStrings.wrongOtp.tr());
+              } else {
+                CustomDialog(context).showErrorDialog("", "", state.message);
               }
             }
           },

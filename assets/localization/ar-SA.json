@@ -17,6 +17,7 @@
   "good_morning": "صباح الخير!",
   "good_evening": "مساء الخير!",
   "login_button": "تسجيل الدخول",
+  "otp_sent": "تم ارسال كود التحقق",
   "owner_first_name": "الاسم الاول لمالك الشركة",
   "owner_last_name": "الاسم الاخير لمالك الشركة",
   "enter_fisrt_name_hint": "ادخل الاسم الاول هنا",

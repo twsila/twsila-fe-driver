@@ -91,6 +91,7 @@ class AppStrings {
   static const String enterOtpHint = "enter_otp_hint";
   static const String otpValidated = "otp_validated";
   static const String otpIs = "otp_is";
+  static const String otpSent = "otp_sent";
   static const String sendOtpAgainHint = "send_otp_again_hint";
   static const String driverLabel = "driver_label";
   static const String trips = "trips";
