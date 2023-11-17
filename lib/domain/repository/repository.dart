@@ -41,7 +41,7 @@ abstract class Repository {
   Future<Either<Failure, GenerateOtpModel>> generateOtp(
       GenerateOTPRequest otpRequest);
 
-  Future<Either<Failure, VerifyOtpModel>> verifyOtp(
+  Future<Either<Failure, BaseResponse>> verifyOtp(
       VerifyOTPRequest verifyOTPRequest);
 
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);

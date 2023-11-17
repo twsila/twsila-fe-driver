@@ -106,7 +106,7 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<VerifyOtpModel> verifyOtp(
+  Future<BaseResponse> verifyOtp(
     mobile,
     userOtp,
     generatedOtp,
@@ -120,7 +120,7 @@ class _AppServiceClient implements AppServiceClient {
       'generatedOtp': generatedOtp,
     };
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<VerifyOtpModel>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -132,7 +132,7 @@ class _AppServiceClient implements AppServiceClient {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = VerifyOtpModel.fromJson(_result.data!);
+    final value = BaseResponse.fromJson(_result.data!);
     return value;
   }
 

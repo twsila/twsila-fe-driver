@@ -131,7 +131,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, VerifyOtpModel>> verifyOtp(
+  Future<Either<Failure, BaseResponse>> verifyOtp(
       VerifyOTPRequest verifyOTPRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API

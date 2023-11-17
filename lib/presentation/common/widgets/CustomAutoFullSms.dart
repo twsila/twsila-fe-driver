@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_verification_code/flutter_verification_code.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
+import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import 'CustomShowPIN.dart';
 
@@ -8,6 +12,7 @@ class CustomVerificationCodeWidget extends StatefulWidget {
   final TextEditingController controller;
   final int otpLength;
   final bool autoFocus;
+  final bool _onEditing = true;
   final Function(String) onCodeChanged;
   final Function(String) onCodeSubmitted;
 
@@ -28,6 +33,7 @@ class CustomVerificationCodeWidget extends StatefulWidget {
 class _CustomVerificationCodeWidgetState
     extends State<CustomVerificationCodeWidget> with CodeAutoFill {
   String codeValue = '';
+  bool _onEditing = true;
   bool _isHidden = true;
   String? appSignature;
 
@@ -40,20 +46,20 @@ class _CustomVerificationCodeWidgetState
 
   @override
   void initState() {
-    listenOtp();
+    // listenOtp();
     super.initState();
-    SmsAutoFill().getAppSignature.then((signature) {
-      setState(() {
-        appSignature = signature;
-      });
-    });
+    // SmsAutoFill().getAppSignature.then((signature) {
+    //   setState(() {
+    //     appSignature = signature;
+    //   });
+    // });
   }
 
   @override
   void dispose() {
-    SmsAutoFill().unregisterListener();
+    // SmsAutoFill().unregisterListener();
     super.dispose();
-    cancel();
+    // cancel();
   }
 
   void listenOtp() async {
@@ -64,46 +70,79 @@ class _CustomVerificationCodeWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: Column(
-        children: [
-          PinFieldAutoFill(
-            decoration: BoxLooseDecoration(
-              bgColorBuilder: FixedColorBuilder(ColorManager.white),
-              obscureStyle: ObscureStyle(
-                isTextObscure: false,
-                obscureText: '⬤',
-              ),
-              textStyle: Theme.of(context).textTheme.labelLarge,
-              strokeColorBuilder: FixedColorBuilder(ColorManager.borderColor),
-              radius: const Radius.circular(5),
-              strokeWidth: 2,
-              gapSpace: 5,
-            ),
-            autoFocus: widget.autoFocus,
-            currentCode: codeValue,
-            enableInteractiveSelection: false,
-            controller: widget.controller,
-            codeLength: widget.otpLength,
-            onCodeSubmitted: (code) {
-              widget.onCodeSubmitted(code);
-            },
-            onCodeChanged: (code) {
-              setState(() {
-                codeValue = code.toString();
-                widget.onCodeChanged(codeValue);
-              });
-            },
-          ),
-          const SizedBox(height: 24),
-          // CustomShowPinButton(onChanged: (isHidden) {
-          //   setState(() {
-          //     _isHidden = isHidden;
-          //   });
-          // })
-        ],
+    // return
+    // Column(
+    // children: [
+    return Container(
+      width: double.infinity,
+      height: 100,
+      child: PinCodeTextField(
+        appContext: context,
+        length: 6,
+        obscureText: false,
+        animationType: AnimationType.fade,
+        keyboardType: TextInputType.number,
+        textStyle: Theme.of(context).textTheme.displayLarge,
+        pinTheme: PinTheme(
+          shape: PinCodeFieldShape.box,
+          activeColor: ColorManager.primary,
+          inactiveFillColor: ColorManager.white,
+          inactiveColor: ColorManager.primary,
+          selectedFillColor: ColorManager.primaryBlueBackgroundColor,
+          borderRadius: BorderRadius.circular(5),
+          fieldHeight: 50,
+          fieldWidth: 50,
+          activeFillColor: Colors.white,
+        ),
+        animationDuration: Duration(milliseconds: 300),
+        enableActiveFill: true,
+        controller: widget.controller,
+        onCompleted: (code) {
+          widget.onCodeSubmitted(code);
+        },
+        onChanged: (value) {},
+        beforeTextPaste: (text) {
+          return true;
+        },
       ),
     );
+    // PinFieldAutoFill(
+    //   decoration: BoxLooseDecoration(
+    //     bgColorBuilder: FixedColorBuilder(ColorManager.white),
+    //     obscureStyle: ObscureStyle(
+    //       isTextObscure: false,
+    //       obscureText: '⬤',
+    //     ),
+    //     textStyle: Theme.of(context).textTheme.labelLarge,
+    //     strokeColorBuilder: FixedColorBuilder(ColorManager.borderColor),
+    //     radius: const Radius.circular(5),
+    //     strokeWidth: 2,
+    //     gapSpace: 5,
+    //   ),
+    //   autoFocus: widget.autoFocus,
+    //   currentCode: codeValue,
+    //   enableInteractiveSelection: false,
+    //   controller: widget.controller,
+    //   codeLength: widget.otpLength,
+    //   onCodeSubmitted: (code) {
+    //     widget.onCodeSubmitted(code);
+    //   },
+    //   onCodeChanged: (code) {
+    //     setState(() {
+    //       codeValue = code.toString();
+    //       widget.onCodeChanged(codeValue);
+    //     });
+    //   },
+    // ),
+    // ,
+    // const SizedBox(height: 24)
+    // ,
+    // CustomShowPinButton(onChanged: (isHidden) {
+    //   setState(() {
+    //     _isHidden = isHidden;
+    //   });
+    // })
+    //   ],
+    // );
   }
 }

@@ -55,8 +55,6 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     // BlocProvider.of<VerifyOtpBloc>(context)
     //     .add(SendOtpEvent(widget.mobileNumberForApi));
 
-    // ToastHandler(context)
-    //     .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
     if (widget.registerAs == RegistrationConstants.captain) {
       BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
           /*'1234567890'*/
@@ -150,8 +148,11 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
               stopLoading();
             }
             if (state is GenerateOtpSuccess) {
-              ToastHandler(context).showToast(
-                  "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
+              // ToastHandler(context).showToast(
+              //     "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
+
+              ToastHandler(context)
+                  .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
             }
             if (state is GenerateOtpFail) {
               CustomDialog(context).showErrorDialog(
@@ -162,8 +163,15 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
             if (state is VerifyOtpSuccess) {
               ToastHandler(context)
                   .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
-              BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-                  widget.mobileNumberForApi, _appPreferences.getAppLanguage()));
+              if (widget.registerAs == RegistrationConstants.captain) {
+                BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+                    widget.mobileNumberForApi,
+                    _appPreferences.getAppLanguage()));
+              } else {
+                BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
+                    widget.mobileNumberForApi,
+                    _appPreferences.getAppLanguage()));
+              }
             }
             if (state is VerifyOtpFail) {
               if (state.code == ResponseMessage.NOT_FOUND) {

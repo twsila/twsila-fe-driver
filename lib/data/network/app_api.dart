@@ -39,7 +39,7 @@ abstract class AppServiceClient {
   );
 
   @POST("/otp/validate")
-  Future<VerifyOtpModel> verifyOtp(
+  Future<BaseResponse> verifyOtp(
     @Field("mobile") String mobile,
     @Field("userOtp") String userOtp,
     @Field("generatedOtp") String generatedOtp,

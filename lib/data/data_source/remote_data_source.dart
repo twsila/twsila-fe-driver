@@ -22,7 +22,7 @@ abstract class RemoteDataSource {
 
   Future<GenerateOtpModel> generateOtp(GenerateOTPRequest generateOTPRequest);
 
-  Future<VerifyOtpModel> verifyOtp(VerifyOTPRequest verifyOTPRequest);
+  Future<BaseResponse> verifyOtp(VerifyOTPRequest verifyOTPRequest);
 
   Future<RegistrationServicesTypesResponse> registrationServicesType();
 
@@ -122,7 +122,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<VerifyOtpModel> verifyOtp(VerifyOTPRequest verifyOTPRequest) async {
+  Future<BaseResponse> verifyOtp(VerifyOTPRequest verifyOTPRequest) async {
     return await _appServiceClient.verifyOtp(verifyOTPRequest.mobileNumber,
         verifyOTPRequest.otp, verifyOTPRequest.otp);
   }
