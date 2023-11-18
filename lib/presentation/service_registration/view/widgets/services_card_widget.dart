@@ -13,19 +13,22 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../../utils/helpers/cast_helpers.dart';
+import 'addiontal_serivces_booleans.dart';
 
 class ServiceCard extends StatefulWidget {
   final List<ServiceTypeModel> serviceTypeModelList;
   final bool showServiceCarTypes;
   Function(ServiceTypeModel service) selectedService;
   Function(VehicleModel? vehcileType) selectedVehicleType;
+  AdditionalServicesModel additionalServicesModel;
 
   ServiceCard(
       {Key? key,
       required this.serviceTypeModelList,
       required this.showServiceCarTypes,
       required this.selectedService,
-      required this.selectedVehicleType})
+      required this.selectedVehicleType,
+      required this.additionalServicesModel})
       : super(key: key);
 
   @override
@@ -141,72 +144,92 @@ class _ServiceCardState extends State<ServiceCard> {
           height: AppSize.s12,
         ),
         selectedService != null
-            ? Wrap(
-                direction: Axis.horizontal,
-                spacing: context.getWidth() / AppSize.s32,
-                runSpacing: 15,
-                children: List.generate(
-                    selectedService?.VehicleModels.length ?? 0,
-                    (index) => GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (selectedVehicleModel != null &&
-                                  selectedVehicleModel !=
-                                      selectedService!.VehicleModels[index]) {
-                                selectedVehicleModel!.isSelected = false;
-                                selectedVehicleModel =
-                                    selectedService!.VehicleModels[index];
-                                selectedVehicleModel!.isSelected = true;
-                              } else {
-                                selectedVehicleModel =
-                                    selectedService!.VehicleModels[index];
-                                selectedVehicleModel!.isSelected = true;
-                              }
-                              widget.selectedVehicleType(selectedVehicleModel!);
-                            });
-                          },
-                          child: FittedBox(
-                            child: Container(
-                              padding: EdgeInsets.all(AppPadding.p8),
-                              decoration: BoxDecoration(
-                                color: selectedService
-                                            ?.VehicleModels[index].isSelected ??
-                                        false
-                                    ? ColorManager.primaryBlueBackgroundColor
-                                    : ColorManager.white,
-                                borderRadius: BorderRadius.circular(2),
-                                border:
-                                    Border.all(color: ColorManager.borderColor),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    ImageAssets.appBarLogo,
-                                    height: AppSize.s33,
-                                    width: AppSize.s33,
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Wrap(
+                    direction: Axis.horizontal,
+                    spacing: context.getWidth() / AppSize.s32,
+                    runSpacing: 15,
+                    children: List.generate(
+                        selectedService?.VehicleModels.length ?? 0,
+                        (index) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedVehicleModel != null &&
+                                      selectedVehicleModel !=
+                                          selectedService!
+                                              .VehicleModels[index]) {
+                                    selectedVehicleModel!.isSelected = false;
+                                    selectedVehicleModel =
+                                        selectedService!.VehicleModels[index];
+                                    selectedVehicleModel!.isSelected = true;
+                                  } else {
+                                    selectedVehicleModel =
+                                        selectedService!.VehicleModels[index];
+                                    selectedVehicleModel!.isSelected = true;
+                                  }
+                                  widget.selectedVehicleType(
+                                      selectedVehicleModel!);
+                                });
+                              },
+                              child: FittedBox(
+                                child: Container(
+                                  padding: EdgeInsets.all(AppPadding.p8),
+                                  decoration: BoxDecoration(
+                                    color: selectedService?.VehicleModels[index]
+                                                .isSelected ??
+                                            false
+                                        ? ColorManager
+                                            .primaryBlueBackgroundColor
+                                        : ColorManager.white,
+                                    borderRadius: BorderRadius.circular(2),
+                                    border: Border.all(
+                                        color: ColorManager.borderColor),
                                   ),
-                                  SizedBox(
-                                    width: AppSize.s8,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        ImageAssets.appBarLogo,
+                                        height: AppSize.s33,
+                                        width: AppSize.s33,
+                                      ),
+                                      SizedBox(
+                                        width: AppSize.s8,
+                                      ),
+                                      Text(
+                                        selectedService?.VehicleModels[index]
+                                                .vehicleType ??
+                                            "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: FontSize.s12,
+                                                color: ColorManager
+                                                    .headersTextColor),
+                                      )
+                                    ],
                                   ),
-                                  Text(
-                                    selectedService?.VehicleModels[index]
-                                            .vehicleType ??
-                                        "",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: FontSize.s12,
-                                            color:
-                                                ColorManager.headersTextColor),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
-                        )),
+                            )),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // selectedService!.serviceName == "GOODS"
+                  //     ? Wrap(children: [
+                  //         AdditionalServices(
+                  //           additionalServicesModel:
+                  //               widget.additionalServicesModel,
+                  //         ),
+                  //       ])
+                  //     : Container()
+                ],
               )
             : Container(),
       ],

@@ -17,6 +17,7 @@ import '../../../domain/model/car_brand_models_model.dart';
 import '../../../domain/usecase/registration_services_usecase.dart';
 import '../view/helpers/documents_helper.dart';
 import '../view/pages/service_registration_second_step.dart';
+import '../view/widgets/addiontal_serivces_booleans.dart';
 
 part 'serivce_registration_event.dart';
 
@@ -133,6 +134,15 @@ class ServiceRegistrationBloc
             carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
             carModelId: registrationRequest.carModelId!,
             carNotes: registrationRequest.carNotes!,
+            canTransportFurniture: registrationRequest.canTransportFurniture,
+            canTransportGoods: registrationRequest.canTransportGoods,
+            canTransportFrozen: registrationRequest.canTransportFrozen,
+            hasWaterTank: registrationRequest.hasWaterTank,
+            hasOtherTanks: registrationRequest.hasOtherTanks,
+            hasPacking: registrationRequest.hasPacking,
+            hasLoading: registrationRequest.hasLoading,
+            hasLifting: registrationRequest.hasLifting,
+            hasAssembly: registrationRequest.hasAssembly,
             plateNumber: registrationRequest.plateNumber!,
             driverImages: registrationRequest.driverImages!,
             isAcknowledged: registrationRequest.isAcknowledged ?? true)))
@@ -309,6 +319,15 @@ class ServiceRegistrationBloc
       SetFirstStepData event, Emitter<ServiceRegistrationState> emit) async {
     registrationRequest.driverServiceType = event.driverServiceType;
     registrationRequest.vehicleTypeId = event.vehicleTypeId;
+    registrationRequest.canTransportFurniture = event.additionalServicesModel.canTransportFurniture;
+    registrationRequest.canTransportGoods = event.additionalServicesModel.canTransportGoods;
+    registrationRequest.canTransportFrozen = event.additionalServicesModel.canTransportFrozen;
+    registrationRequest.hasWaterTank = event.additionalServicesModel.hasWaterTank;
+    registrationRequest.hasOtherTanks = event.additionalServicesModel.hasOtherTanks;
+    registrationRequest.hasLifting = event.additionalServicesModel.hasLifting;
+    registrationRequest.hasLoading = event.additionalServicesModel.hasLoading;
+    registrationRequest.hasPacking = event.additionalServicesModel.hasPacking;
+    registrationRequest.hasAssembly = event.additionalServicesModel.hasAssembly;
     emit(FirstStepDataAddedState());
   }
 

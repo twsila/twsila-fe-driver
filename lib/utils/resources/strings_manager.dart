@@ -13,7 +13,8 @@ class AppStrings {
   static const letsGetStarted = "lets_get_started";
   static const goodAfternoon = "good_afternoon";
   static const needLocationPermission = "need_location_permission";
-  static const updateProfileDoneSuccessfully = "update_profile_done_successfully";
+  static const updateProfileDoneSuccessfully =
+      "update_profile_done_successfully";
   static const goodmorning = "good_morning";
   static const tripDate = "trip_date";
   static const vehicleType = "vehicle_type";
@@ -247,7 +248,6 @@ class AppStrings {
   static const String carInfo = "car_info";
   static const String pleaseEnterServiceYouProvide =
       "please_enter_service_you_provide_it";
-
 
   //Location Errors
   static const locationDisabled = "location_disabled";
@@ -506,7 +506,17 @@ class AppStrings {
   static const foodStuffs = "food_stuffs";
   static const flowers_plants = "flowers_plants";
 
+  //additional services
 
+  static const canTransportFurniture = "can_transport_furniture";
+  static const canTransportGoods = "can_transport_goods";
+  static const canTransportFrozen = "can_transport_frozen";
+  static const hasWaterTank = "has_water_tank";
+  static const hasOtherTanks = "has_other_tanks";
+  static const hasPacking = "has_packing";
+  static const hasLoading = "has_loading";
+  static const hasAssembly = "has_assembly";
+  static const hasLifting = "has_lifting";
 
   //Sorting
 
@@ -533,15 +543,5 @@ class AppStrings {
   static const addDriverMobileNumber = 'add_driver_mobile_number';
   static const sendingRequestDone = 'sending_request_done';
 
-
   static const assignDriver = 'assign_driver';
-
-
-
-
-
-
-
-
-
 }

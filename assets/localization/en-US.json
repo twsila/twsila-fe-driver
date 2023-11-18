@@ -59,6 +59,17 @@
   "surfaces": "Surfaces",
   "cisterns": "Cisterns",
   "goods": "Goods",
+
+  "can_transport_furniture": "Transport furniture",
+  "can_transport_goods": "Transport goods",
+  "can_transport_frozen": "Transport frozen",
+  "has_water_tank": "has water tank",
+  "has_other_tanks": "has other tank",
+  "has_packing": "Packing",
+  "has_loading": "Loading",
+  "has_assembly": "Assembly",
+  "has_lifting": "Lifting",
+
   "goods_deliver": "Deliver Goods",
   "furniture": "Furniture",
   "people": "People",

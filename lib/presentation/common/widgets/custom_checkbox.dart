@@ -28,8 +28,8 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
       children: [
         Checkbox(
             checkColor: Colors.white,
-            focusColor: Colors.blue,
-            activeColor: ColorManager.primary,
+            focusColor: ColorManager.secondaryColor,
+            activeColor: ColorManager.secondaryColor,
             hoverColor: ColorManager.primary,
             value: widget._checked,
             onChanged: (newValue) {

@@ -314,7 +314,8 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<TripDetailsModel>>> getTrips( String endPoint,
+  Future<Either<Failure, List<TripDetailsModel>>> getTrips(
+      String endPoint,
       String tripTypeModuleId,
       int userId,
       Map<String, dynamic>? dateFilter,
@@ -324,7 +325,8 @@ class RepositoryImpl implements Repository {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.tripsByModuleId(endPoint,
+        final response = await _remoteDataSource.tripsByModuleId(
+            endPoint,
             tripTypeModuleId,
             userId,
             dateFilter,
@@ -352,13 +354,13 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<TripDetailsModel>>> getMyTrips( String endPoint,
-      String tripTypeModuleId, int userId) async {
+  Future<Either<Failure, List<TripDetailsModel>>> getMyTrips(
+      String endPoint, String tripTypeModuleId, int userId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response =
-            await _remoteDataSource.myTripsByModuleId(endPoint,tripTypeModuleId, userId);
+        final response = await _remoteDataSource.myTripsByModuleId(
+            endPoint, tripTypeModuleId, userId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           List<TripDetailsModel> trips = List<TripDetailsModel>.from(
