@@ -221,6 +221,7 @@ class _AppServiceClient implements AppServiceClient {
     canTransportGoods,
     canTransportFrozen,
     hasWaterTank,
+    hasOtherTanks,
     hasPacking,
     hasLoading,
     hasAssembly,
@@ -288,6 +289,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'hasWaterTank',
       hasWaterTank.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'hasOtherTanks',
+      hasOtherTanks.toString(),
     ));
     _data.fields.add(MapEntry(
       'hasPacking',

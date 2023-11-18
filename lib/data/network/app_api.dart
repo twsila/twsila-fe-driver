@@ -71,6 +71,7 @@ abstract class AppServiceClient {
       @Part(name: "canTransportGoods") bool canTransportGoods,
       @Part(name: "canTransportFrozen") bool canTransportFrozen,
       @Part(name: "hasWaterTank") bool hasWaterTank,
+      @Part(name: "hasOtherTanks") bool hasOtherTanks,
       @Part(name: "hasPacking") bool hasPacking,
       @Part(name: "hasLoading") bool hasLoading,
       @Part(name: "hasAssembly") bool hasAssembly,

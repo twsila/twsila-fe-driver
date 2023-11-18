@@ -166,6 +166,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.canTransportGoods!,
         registrationRequest.canTransportFrozen!,
         registrationRequest.hasWaterTank!,
+        registrationRequest.hasOtherTanks!,
         registrationRequest.hasPacking!,
         registrationRequest.hasLoading!,
         registrationRequest.hasAssembly!,
