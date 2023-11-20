@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
-import 'package:taxi_for_you/presentation/service_registration/view/widgets/addiontal_serivces_booleans.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/widgets/addiontal_serivces_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/services_card_widget.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
@@ -32,7 +32,7 @@ class _ServiceRegistrationFirstStepViewState
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   List<ServiceTypeModel>? serviceModelList;
-   AdditionalServicesModel additionalServicesModel = AdditionalServicesModel();
+  AdditionalServicesModel additionalServicesModel = AdditionalServicesModel();
 
   ServiceTypeModel? selectedService;
   VehicleModel? selectedVehicleType;
@@ -134,7 +134,8 @@ class _ServiceRegistrationFirstStepViewState
                           setState(() {
                             selectedVehicleType = vehicleType;
                           });
-                        },additionalServicesModel: additionalServicesModel,
+                        },
+                        additionalServicesModel: additionalServicesModel,
                       ),
                     )
                   : Center(
@@ -155,7 +156,8 @@ class _ServiceRegistrationFirstStepViewState
                             BlocProvider.of<ServiceRegistrationBloc>(context)
                                 .add(SetFirstStepData(
                                     selectedService!.serviceName.toString(),
-                                    selectedVehicleType!.id.toString(),additionalServicesModel));
+                                    selectedVehicleType!.id.toString(),
+                                    additionalServicesModel));
                           }
                         : null,
               )

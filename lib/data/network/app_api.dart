@@ -159,7 +159,7 @@ abstract class AppServiceClient {
 
   @POST("/passengers/trips/rate")
   Future<BaseResponse> ratePassenger(
-    @Field("PassengerId") int passengerId,
+    @Field("passengerId") int passengerId,
     @Field("rating") double rateNumber,
   );
 

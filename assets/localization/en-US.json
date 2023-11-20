@@ -59,7 +59,7 @@
   "surfaces": "Surfaces",
   "cisterns": "Cisterns",
   "goods": "Goods",
-
+  "add_photos": "Add photo",
   "can_transport_furniture": "Transport furniture",
   "can_transport_goods": "Transport goods",
   "can_transport_frozen": "Transport frozen",
@@ -333,7 +333,6 @@
   "upload_car_owner_id_photo": "upload car owner id photo",
   "upload_car_driver_id_photo": "upload car driver id photo",
   "service_registration_agreement": "I declare that all data is correct and that I have read and agree to the company's policy",
-  "add_photos": "add photos",
   "document_photo": "document photo",
   "car_owner_id_photo": "car owner id photo",
   "car_driver_id_photo": "car driver id photo",

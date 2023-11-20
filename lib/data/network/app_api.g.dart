@@ -726,7 +726,7 @@ class _AppServiceClient implements AppServiceClient {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'PassengerId': passengerId,
+      'passengerId': passengerId,
       'rating': rateNumber,
     };
     final _result = await _dio

@@ -29,7 +29,7 @@ class RatePassengerBloc extends Bloc<RatePassengerEvent, RatePassengerState> {
                   //emit failure state
 
                   emit(RatePassengerFail(errorMessage: failure.message))
-                }, (driverModel) async {
+                }, (response) async {
       // right -> data (success)
       // content
       // emit success state

@@ -17,7 +17,7 @@ import '../../../domain/model/car_brand_models_model.dart';
 import '../../../domain/usecase/registration_services_usecase.dart';
 import '../view/helpers/documents_helper.dart';
 import '../view/pages/service_registration_second_step.dart';
-import '../view/widgets/addiontal_serivces_booleans.dart';
+import '../view/widgets/addiontal_serivces_widget.dart';
 
 part 'serivce_registration_event.dart';
 

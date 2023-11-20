@@ -9,6 +9,7 @@ import '../../../../../../utils/resources/styles_manager.dart';
 
 class GoodsDetailsWidget extends StatelessWidget {
   final GoodsModel goodsModel;
+
   const GoodsDetailsWidget({
     Key? key,
     required this.goodsModel,

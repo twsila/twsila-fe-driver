@@ -13,7 +13,7 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../../utils/helpers/cast_helpers.dart';
-import 'addiontal_serivces_booleans.dart';
+import 'addiontal_serivces_widget.dart';
 
 class ServiceCard extends StatefulWidget {
   final List<ServiceTypeModel> serviceTypeModelList;
@@ -93,10 +93,10 @@ class _ServiceCardState extends State<ServiceCard> {
                           child: Container(
                             padding: EdgeInsets.all(AppPadding.p8),
                             decoration: BoxDecoration(
-                              color:
-                                  widget.serviceTypeModelList[index].isSelected
-                                      ? ColorManager.primaryBlueBackgroundColor
-                                      : ColorManager.white,
+                              color: widget
+                                      .serviceTypeModelList[index].isSelected
+                                  ? ColorManager.primaryBlueBackgroundColor
+                                  : ColorManager.white,
                               borderRadius: BorderRadius.circular(2),
                               border:
                                   Border.all(color: ColorManager.borderColor),
@@ -113,15 +113,16 @@ class _ServiceCardState extends State<ServiceCard> {
                                   width: AppSize.s8,
                                 ),
                                 Text(
-                                  widget
-                                      .serviceTypeModelList[index].serviceName,
+                                  widget.serviceTypeModelList[index]
+                                      .serviceName,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleMedium
                                       ?.copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: FontSize.s12,
-                                          color: ColorManager.headersTextColor),
+                                          color:
+                                              ColorManager.headersTextColor),
                                 )
                               ],
                             ),
@@ -145,7 +146,6 @@ class _ServiceCardState extends State<ServiceCard> {
         ),
         selectedService != null
             ? Column(
-                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Wrap(
@@ -178,7 +178,8 @@ class _ServiceCardState extends State<ServiceCard> {
                                 child: Container(
                                   padding: EdgeInsets.all(AppPadding.p8),
                                   decoration: BoxDecoration(
-                                    color: selectedService?.VehicleModels[index]
+                                    color: selectedService
+                                                ?.VehicleModels[index]
                                                 .isSelected ??
                                             false
                                         ? ColorManager
@@ -189,7 +190,8 @@ class _ServiceCardState extends State<ServiceCard> {
                                         color: ColorManager.borderColor),
                                   ),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
                                     children: [
                                       Image.asset(
                                         ImageAssets.appBarLogo,
@@ -221,17 +223,16 @@ class _ServiceCardState extends State<ServiceCard> {
                   SizedBox(
                     height: 15,
                   ),
-                  // selectedService!.serviceName == "GOODS"
-                  //     ? Wrap(children: [
-                  //         AdditionalServices(
-                  //           additionalServicesModel:
-                  //               widget.additionalServicesModel,
-                  //         ),
-                  //       ])
-                  //     : Container()
                 ],
               )
             : Container(),
+        selectedService != null && selectedService!.serviceName == "GOODS"
+            ? selectedService!.serviceName == "GOODS"
+                ? AdditionalServicesWidget(
+                  additionalServicesModel: widget.additionalServicesModel,
+                )
+                : Container()
+            : Container()
       ],
     );
   }

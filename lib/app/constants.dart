@@ -1,6 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:taxi_for_you/app/app_prefs.dart';
-import 'package:taxi_for_you/app/di.dart';
+
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 

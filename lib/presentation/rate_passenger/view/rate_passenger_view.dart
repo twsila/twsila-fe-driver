@@ -32,12 +32,12 @@ class RatePassengerView extends StatefulWidget {
 
 class _RatePassengerViewState extends State<RatePassengerView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   double rating = 3;
 
   @override
   void initState() {
+    print(widget.tripDetailsModel);
     super.initState();
   }
 
@@ -97,6 +97,7 @@ class _RatePassengerViewState extends State<RatePassengerView> {
     );
   }
 
+
   Widget _getContentWidget(BuildContext context) {
     return BlocConsumer<RatePassengerBloc, RatePassengerState>(
       listener: (context, state) {
@@ -107,7 +108,7 @@ class _RatePassengerViewState extends State<RatePassengerView> {
         }
 
         if (state is RatePassengerSuccess) {
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, Routes.mainRoute);
         }
         if (state is RatePassengerFail) {
           CustomDialog(context).showErrorDialog("", "", state.errorMessage);
@@ -140,7 +141,7 @@ class _RatePassengerViewState extends State<RatePassengerView> {
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: ColorManager.titlesTextColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: FontSize.s22),
+                    fontSize: FontSize.s16),
               ),
               FittedBox(
                 child: Container(
