@@ -9,11 +9,13 @@ class CustomVerificationCode extends StatefulWidget {
   Function(String) onComplete;
   Function(String) onChanged;
   Function(String)? validator;
+  TextEditingController plateNumberController;
 
   CustomVerificationCode(
       {Key? key,
       required this.onComplete,
       required this.onChanged,
+      required this.plateNumberController,
       this.validator})
       : super(key: key);
 
@@ -49,6 +51,7 @@ class _CustomVerificationCodeState extends State<CustomVerificationCode> {
       ),
     );
     return Pinput(
+      controller: widget.plateNumberController,
       length: 6,
       keyboardType: TextInputType.name,
       defaultPinTheme: defaultPinTheme,

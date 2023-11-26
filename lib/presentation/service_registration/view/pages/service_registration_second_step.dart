@@ -14,15 +14,10 @@ import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 
-import '../../../../app/app_prefs.dart';
 import '../../../../app/constants.dart';
-import '../../../../app/di.dart';
-import '../../../../domain/model/service_type_model.dart';
 import '../../../../domain/model/car_brand_models_model.dart';
-import '../../../../domain/model/vehicle_model.dart';
 import '../../../../utils/helpers/keep_alive_widget.dart';
 import '../../../../utils/resources/color_manager.dart';
-import '../../../../utils/resources/constants_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 import '../../../../utils/resources/styles_manager.dart';
@@ -33,10 +28,8 @@ import '../../../common/widgets/custom_date_picker.dart';
 import '../../../common/widgets/custom_scaffold.dart';
 import '../../../common/widgets/multi_pick_image.dart';
 import '../../../common/widgets/page_builder.dart';
-import '../../../login/view/login_view.dart';
 import '../../bloc/serivce_registration_bloc.dart';
 import '../helpers/registration_request.dart';
-import '../widgets/services_card_widget.dart';
 import '../widgets/uploadDocumentWidget.dart';
 
 class ServiceRegistrationSecondStep extends StatefulWidget {
@@ -59,6 +52,8 @@ class _ServiceRegistrationSecondStepState
   List<CarModel>? carModelList;
   CarModel? selectedCarModel;
   String plateNumberValidation = "";
+  TextEditingController _carNotesController = TextEditingController();
+  TextEditingController _plateNumberController = TextEditingController();
 
   final ImagePicker _imagePicker = ImagePicker();
   List<XFile> carPhotos = [];
@@ -91,6 +86,10 @@ class _ServiceRegistrationSecondStepState
 
   @override
   void initState() {
+    _carNotesController.text = widget.registrationRequest.carNotes?.toString() ?? "";
+    _plateNumberController.text =
+        widget.registrationRequest.plateNumber?.toString() ?? "";
+
     BlocProvider.of<ServiceRegistrationBloc>(context)
         .add(GetCarBrandAndModel());
     super.initState();
@@ -146,6 +145,11 @@ class _ServiceRegistrationSecondStepState
         if (state is CarBrandsAndModelsSuccess) {
           _loadingCars = false;
           carModelList = state.carModelList;
+          if (widget.registrationRequest.carModelId != null &&
+              carModelList != null) {
+            selectedCarModel = carModelList!.firstWhere((element) =>
+                element.id.toString() == widget.registrationRequest.carModelId);
+          }
         }
 
         if (state is ServiceRegistrationSuccess) {
@@ -313,6 +317,7 @@ class _ServiceRegistrationSecondStepState
               height: AppSize.s12,
             ),
             CustomVerificationCode(
+              plateNumberController: _plateNumberController,
               onChanged: (value) {
                 plateNumber = value;
                 setState(() {
@@ -322,6 +327,7 @@ class _ServiceRegistrationSecondStepState
                         AppStrings.plateNumberValidationMessage.tr();
                   } else {
                     plateNumberValidation = "";
+                    widget.registrationRequest.plateNumber = plateNumber;
                   }
                 });
               },
@@ -339,8 +345,10 @@ class _ServiceRegistrationSecondStepState
               height: AppSize.s18,
             ),
             TextFormField(
+              controller: _carNotesController,
               onChanged: (value) {
                 carNotes = value;
+                widget.registrationRequest.carNotes = carNotes;
               },
               decoration: new InputDecoration(
                 fillColor: Colors.white,
@@ -796,6 +804,8 @@ class _ServiceRegistrationSecondStepState
                       setState(() {
                         Navigator.pop(context);
                         selectedCarModel = carModelList[index];
+                        widget.registrationRequest.carModelId =
+                            selectedCarModel!.id.toString();
                       });
                     },
                     child: ListTile(
