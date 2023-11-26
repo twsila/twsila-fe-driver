@@ -112,7 +112,6 @@ class ServiceRegistrationBloc
       // content
       // emit success state
       // navigate to main screen
-      print(registrationRequest.vehicleTypeId);
       emit(CarBrandsAndModelsSuccess(carModelsList));
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
@@ -312,23 +311,28 @@ class ServiceRegistrationBloc
     registrationRequest.gender = event.gender;
     registrationRequest.email = event.email;
     registrationRequest.dateOfBirth = event.birthDate;
-    emit(captainDataAddedState());
+    emit(captainDataAddedState(registrationRequest));
   }
 
   FutureOr<void> _setFirstStepData(
       SetFirstStepData event, Emitter<ServiceRegistrationState> emit) async {
     registrationRequest.driverServiceType = event.driverServiceType;
     registrationRequest.vehicleTypeId = event.vehicleTypeId;
-    registrationRequest.canTransportFurniture = event.additionalServicesModel.canTransportFurniture;
-    registrationRequest.canTransportGoods = event.additionalServicesModel.canTransportGoods;
-    registrationRequest.canTransportFrozen = event.additionalServicesModel.canTransportFrozen;
-    registrationRequest.hasWaterTank = event.additionalServicesModel.hasWaterTank;
-    registrationRequest.hasOtherTanks = event.additionalServicesModel.hasOtherTanks;
+    registrationRequest.canTransportFurniture =
+        event.additionalServicesModel.canTransportFurniture;
+    registrationRequest.canTransportGoods =
+        event.additionalServicesModel.canTransportGoods;
+    registrationRequest.canTransportFrozen =
+        event.additionalServicesModel.canTransportFrozen;
+    registrationRequest.hasWaterTank =
+        event.additionalServicesModel.hasWaterTank;
+    registrationRequest.hasOtherTanks =
+        event.additionalServicesModel.hasOtherTanks;
     registrationRequest.hasLifting = event.additionalServicesModel.hasLifting;
     registrationRequest.hasLoading = event.additionalServicesModel.hasLoading;
     registrationRequest.hasPacking = event.additionalServicesModel.hasPacking;
     registrationRequest.hasAssembly = event.additionalServicesModel.hasAssembly;
-    emit(FirstStepDataAddedState());
+    emit(FirstStepDataAddedState(registrationRequest));
   }
 
   FutureOr<void> _setSecondStepData(

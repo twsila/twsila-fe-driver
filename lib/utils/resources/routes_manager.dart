@@ -87,12 +87,20 @@ class RouteGenerator {
         );
       case Routes.serviceRegistrationFirstStep:
         initRegistrationServiceModule();
+        final args =
+            settings.arguments as ServiceRegistrationFirstStepArguments;
         return MaterialPageRoute(
-            builder: (_) => const ServiceRegistrationFirstStepView());
+            builder: (_) => ServiceRegistrationFirstStepView(
+                  requestModel: args.registrationRequest,
+                ));
       case Routes.serviceRegistrationSecondStep:
         initRegistrationServiceModule();
+        final args =
+            settings.arguments as ServiceRegistrationSecondStepArguments;
         return MaterialPageRoute(
-            builder: (_) => const ServiceRegistrationSecondStep());
+            builder: (_) => ServiceRegistrationSecondStep(
+                  registrationRequest: args.registrationRequest,
+                ));
       case Routes.myServices:
         initServiceStatusModule();
         return MaterialPageRoute(builder: (_) => const MyServicesView());

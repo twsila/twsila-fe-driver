@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/addiontal_serivces_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/services_card_widget.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
@@ -19,7 +21,10 @@ import '../../../common/widgets/page_builder.dart';
 import '../../bloc/serivce_registration_bloc.dart';
 
 class ServiceRegistrationFirstStepView extends StatefulWidget {
-  const ServiceRegistrationFirstStepView({Key? key}) : super(key: key);
+  final RegistrationRequest requestModel;
+
+  const ServiceRegistrationFirstStepView({required this.requestModel, Key? key})
+      : super(key: key);
 
   @override
   State<ServiceRegistrationFirstStepView> createState() =>
@@ -29,7 +34,6 @@ class ServiceRegistrationFirstStepView extends StatefulWidget {
 class _ServiceRegistrationFirstStepViewState
     extends State<ServiceRegistrationFirstStepView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   List<ServiceTypeModel>? serviceModelList;
   AdditionalServicesModel additionalServicesModel = AdditionalServicesModel();
@@ -82,7 +86,9 @@ class _ServiceRegistrationFirstStepViewState
           print(state.serviceTypeModelList.length);
         }
         if (state is FirstStepDataAddedState) {
-          Navigator.pushNamed(context, Routes.serviceRegistrationSecondStep);
+          Navigator.pushNamed(context, Routes.serviceRegistrationSecondStep,
+              arguments: ServiceRegistrationSecondStepArguments(
+                  state.registrationRequest));
         }
       },
       builder: (context, state) {
@@ -123,6 +129,7 @@ class _ServiceRegistrationFirstStepViewState
               serviceModelList != null
                   ? Container(
                       child: ServiceCard(
+                        registrationRequest: widget.requestModel,
                         serviceTypeModelList: this.serviceModelList!,
                         showServiceCarTypes: false,
                         selectedService: (ServiceTypeModel service) {
@@ -167,4 +174,10 @@ class _ServiceRegistrationFirstStepViewState
       },
     );
   }
+}
+
+class ServiceRegistrationFirstStepArguments {
+  RegistrationRequest registrationRequest;
+
+  ServiceRegistrationFirstStepArguments(this.registrationRequest);
 }

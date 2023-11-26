@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
@@ -13,6 +15,7 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../../utils/helpers/cast_helpers.dart';
+import '../helpers/registration_request.dart';
 import 'addiontal_serivces_widget.dart';
 
 class ServiceCard extends StatefulWidget {
@@ -21,6 +24,7 @@ class ServiceCard extends StatefulWidget {
   Function(ServiceTypeModel service) selectedService;
   Function(VehicleModel? vehcileType) selectedVehicleType;
   AdditionalServicesModel additionalServicesModel;
+  final RegistrationRequest registrationRequest;
 
   ServiceCard(
       {Key? key,
@@ -28,7 +32,8 @@ class ServiceCard extends StatefulWidget {
       required this.showServiceCarTypes,
       required this.selectedService,
       required this.selectedVehicleType,
-      required this.additionalServicesModel})
+      required this.additionalServicesModel,
+      required this.registrationRequest})
       : super(key: key);
 
   @override
@@ -42,7 +47,33 @@ class _ServiceCardState extends State<ServiceCard> {
 
   @override
   void initState() {
+    checkSelectedValues();
     super.initState();
+  }
+
+  checkSelectedValues() {
+    if (widget.registrationRequest.driverServiceType != null) {
+      selectedService = widget.serviceTypeModelList.firstWhere((element) =>
+          element.serviceName == widget.registrationRequest.driverServiceType);
+      if (widget.registrationRequest.vehicleTypeId != null &&
+          selectedService != null) {
+        int vehicleIndex = selectedService!.VehicleModels.indexWhere(
+            (element) =>
+                element.id.toString() ==
+                widget.registrationRequest.vehicleTypeId);
+        selectedVehicleModel = selectedService!.VehicleModels[vehicleIndex];
+      }
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          if (selectedService != null && selectedVehicleModel != null) {
+            selectedService!.isSelected = true;
+            selectedVehicleModel!.isSelected = true;
+            widget.selectedService(selectedService!);
+            widget.selectedVehicleType(selectedVehicleModel!);
+          }
+        });
+      });
+    }
   }
 
   @override
@@ -93,10 +124,10 @@ class _ServiceCardState extends State<ServiceCard> {
                           child: Container(
                             padding: EdgeInsets.all(AppPadding.p8),
                             decoration: BoxDecoration(
-                              color: widget
-                                      .serviceTypeModelList[index].isSelected
-                                  ? ColorManager.primaryBlueBackgroundColor
-                                  : ColorManager.white,
+                              color:
+                                  widget.serviceTypeModelList[index].isSelected
+                                      ? ColorManager.primaryBlueBackgroundColor
+                                      : ColorManager.white,
                               borderRadius: BorderRadius.circular(2),
                               border:
                                   Border.all(color: ColorManager.borderColor),
@@ -113,16 +144,15 @@ class _ServiceCardState extends State<ServiceCard> {
                                   width: AppSize.s8,
                                 ),
                                 Text(
-                                  widget.serviceTypeModelList[index]
-                                      .serviceName,
+                                  widget
+                                      .serviceTypeModelList[index].serviceName,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleMedium
                                       ?.copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: FontSize.s12,
-                                          color:
-                                              ColorManager.headersTextColor),
+                                          color: ColorManager.headersTextColor),
                                 )
                               ],
                             ),
@@ -178,8 +208,7 @@ class _ServiceCardState extends State<ServiceCard> {
                                 child: Container(
                                   padding: EdgeInsets.all(AppPadding.p8),
                                   decoration: BoxDecoration(
-                                    color: selectedService
-                                                ?.VehicleModels[index]
+                                    color: selectedService?.VehicleModels[index]
                                                 .isSelected ??
                                             false
                                         ? ColorManager
@@ -190,8 +219,7 @@ class _ServiceCardState extends State<ServiceCard> {
                                         color: ColorManager.borderColor),
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Image.asset(
                                         ImageAssets.appBarLogo,
@@ -226,13 +254,13 @@ class _ServiceCardState extends State<ServiceCard> {
                 ],
               )
             : Container(),
-        selectedService != null && selectedService!.serviceName == "GOODS"
-            ? selectedService!.serviceName == "GOODS"
-                ? AdditionalServicesWidget(
-                  additionalServicesModel: widget.additionalServicesModel,
-                )
-                : Container()
-            : Container()
+        // selectedService != null && selectedService!.serviceName == "GOODS"
+        //     ? selectedService!.serviceName == "GOODS"
+        //         ? AdditionalServicesWidget(
+        //           additionalServicesModel: widget.additionalServicesModel,
+        //         )
+        //         : Container()
+        //     : Container()
       ],
     );
   }

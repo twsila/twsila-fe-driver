@@ -52,6 +52,7 @@ class DocumentDataState extends ServiceRegistrationState {
   XFile? frontImageFile;
   XFile? backImageFile;
   String? expiryDate;
+
   // Documents document;
 
   DocumentDataState(
@@ -115,9 +116,17 @@ class UploadDocumentDataIfExists extends ServiceRegistrationState {
       this.frontImageFile, this.backImageFile, this.expiryDate);
 }
 
-class captainDataAddedState extends ServiceRegistrationState {}
+class captainDataAddedState extends ServiceRegistrationState {
+  RegistrationRequest registrationRequest;
 
-class FirstStepDataAddedState extends ServiceRegistrationState {}
+  captainDataAddedState(this.registrationRequest);
+}
+
+class FirstStepDataAddedState extends ServiceRegistrationState {
+  RegistrationRequest registrationRequest;
+
+  FirstStepDataAddedState(this.registrationRequest);
+}
 
 class SecondStepDataAddedState extends ServiceRegistrationState {}
 

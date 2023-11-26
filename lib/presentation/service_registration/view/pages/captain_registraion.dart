@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
@@ -83,7 +84,9 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
     return BlocConsumer<ServiceRegistrationBloc, ServiceRegistrationState>(
         listener: (context, state) {
       if (state is captainDataAddedState) {
-        Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep);
+        Navigator.pushNamed(context, Routes.serviceRegistrationFirstStep,
+            arguments: ServiceRegistrationFirstStepArguments(
+                state.registrationRequest));
       }
       if (state is CaptainDataIsValid) {
         continueFunction = () {

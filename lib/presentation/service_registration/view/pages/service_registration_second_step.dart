@@ -35,11 +35,16 @@ import '../../../common/widgets/multi_pick_image.dart';
 import '../../../common/widgets/page_builder.dart';
 import '../../../login/view/login_view.dart';
 import '../../bloc/serivce_registration_bloc.dart';
+import '../helpers/registration_request.dart';
 import '../widgets/services_card_widget.dart';
 import '../widgets/uploadDocumentWidget.dart';
 
 class ServiceRegistrationSecondStep extends StatefulWidget {
-  const ServiceRegistrationSecondStep({Key? key}) : super(key: key);
+  final RegistrationRequest registrationRequest;
+
+  const ServiceRegistrationSecondStep(
+      {required this.registrationRequest, Key? key})
+      : super(key: key);
 
   @override
   State<ServiceRegistrationSecondStep> createState() =>
@@ -49,7 +54,6 @@ class ServiceRegistrationSecondStep extends StatefulWidget {
 class _ServiceRegistrationSecondStepState
     extends State<ServiceRegistrationSecondStep> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  final AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   bool _loadingCars = false;
   List<CarModel>? carModelList;
@@ -833,4 +837,10 @@ class DocumentData {
 
   DocumentData(
       {this.frontImage, this.backImage, this.expireDate, this.document});
+}
+
+class ServiceRegistrationSecondStepArguments {
+  RegistrationRequest registrationRequest;
+
+  ServiceRegistrationSecondStepArguments(this.registrationRequest);
 }
