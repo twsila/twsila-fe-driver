@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
+import '../pages/service_registration_second_step.dart';
+
 class RegistrationRequest {
   String? firstName;
   String? lastName;
@@ -28,6 +30,10 @@ class RegistrationRequest {
   bool? hasAssembly;
   bool? hasLifting;
 
+  DocumentData? carDocumentPhotosData;
+  DocumentData? carDriverLicensePhotosData;
+  DocumentData? carOwnerNationalIdPhotosData;
+  DocumentData? carDriverNationalIdPhotosData;
 
   bool? isAcknowledged;
 
@@ -57,5 +63,10 @@ class RegistrationRequest {
       this.hasLoading,
       this.hasAssembly,
       this.hasLifting,
-      this.isAcknowledged);
+      this.isAcknowledged,
+      {this.carDocumentPhotosData,
+      this.carDriverLicensePhotosData,
+      this.carDriverNationalIdPhotosData,
+      this.carOwnerNationalIdPhotosData});
 }
+

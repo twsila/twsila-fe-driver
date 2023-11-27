@@ -69,6 +69,7 @@ extension DocumentExpirationDateTitles on DocumentType {
   }
 }
 
+
 class DocumentObject {
   XFile? front;
   XFile? back;

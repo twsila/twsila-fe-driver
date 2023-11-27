@@ -91,6 +91,8 @@ class _ServiceRegistrationSecondStepState
     _plateNumberController.text =
         widget.registrationRequest.plateNumber?.toString() ?? "";
 
+    handlePreSelectedDocumentsData();
+
     BlocProvider.of<ServiceRegistrationBloc>(context)
         .add(GetCarBrandAndModel());
     super.initState();
@@ -118,6 +120,43 @@ class _ServiceRegistrationSecondStepState
     setState(() {
       _displayLoadingIndicator = false;
     });
+  }
+
+  checkSelectedDocumentDataBefore(String frontImageTitle) {
+    if (frontImageTitle == AppStrings.carDocumentFrontImage.tr() &&
+        widget.registrationRequest.carDocumentPhotosData != null) {
+      frontImageFile =
+          widget.registrationRequest.carDocumentPhotosData!.frontImage;
+      backImageFile =
+          widget.registrationRequest.carDocumentPhotosData!.backImage;
+      expiryDate = widget.registrationRequest.carDocumentPhotosData!.expireDate;
+    } else if (frontImageTitle == AppStrings.carDriverLicenseFrontImage.tr() &&
+        widget.registrationRequest.carDriverLicensePhotosData != null) {
+      frontImageFile =
+          widget.registrationRequest.carDriverLicensePhotosData!.frontImage;
+      backImageFile =
+          widget.registrationRequest.carDriverLicensePhotosData!.backImage;
+      expiryDate =
+          widget.registrationRequest.carDriverLicensePhotosData!.expireDate;
+    } else if (frontImageTitle ==
+            AppStrings.carDriverIdentityCardFrontImage.tr() &&
+        widget.registrationRequest.carDriverNationalIdPhotosData != null) {
+      frontImageFile =
+          widget.registrationRequest.carDriverNationalIdPhotosData!.frontImage;
+      backImageFile =
+          widget.registrationRequest.carDriverNationalIdPhotosData!.backImage;
+      expiryDate =
+          widget.registrationRequest.carDriverNationalIdPhotosData!.expireDate;
+    } else if (frontImageTitle ==
+            AppStrings.carOwnerIdentityCardFrontImage.tr() &&
+        widget.registrationRequest.carOwnerNationalIdPhotosData != null) {
+      frontImageFile =
+          widget.registrationRequest.carOwnerNationalIdPhotosData!.frontImage;
+      backImageFile =
+          widget.registrationRequest.carOwnerNationalIdPhotosData!.backImage;
+      expiryDate =
+          widget.registrationRequest.carOwnerNationalIdPhotosData!.expireDate;
+    }
   }
 
   @override
@@ -187,24 +226,33 @@ class _ServiceRegistrationSecondStepState
           backImageFile = state.backImageFile;
           expiryDate = state.expiryDate;
 
+          checkSelectedDocumentDataBefore(state.documentPhotoFrontTitle);
+
           _animateTo(1);
         }
         //check if user upload the document or not
         if (state is CarDocumentValid) {
           carDocument = state.carDocument;
           isCarDocumentValid = true;
+          widget.registrationRequest.carDocumentPhotosData = state.carDocument;
         }
         if (state is driverIdValid) {
           driverIdDocument = state.driverIdDocument;
           isDriverIdValid = true;
+          widget.registrationRequest.carDriverNationalIdPhotosData =
+              state.driverIdDocument;
         }
         if (state is ownerIdValid) {
           ownerIdDocument = state.ownerIdDocument;
           isOwnerIdValid = true;
+          widget.registrationRequest.carOwnerNationalIdPhotosData =
+              state.ownerIdDocument;
         }
         if (state is driverLicenseValid) {
           driverLicenseDocument = state.driverLicenseDocument;
           isDriverLicValid = true;
+          widget.registrationRequest.carDriverLicensePhotosData =
+              state.driverLicenseDocument;
         }
 
         if (state is SecondStepDataAddedState) {
@@ -826,6 +874,36 @@ class _ServiceRegistrationSecondStepState
     ServiceRegistrationBloc.driverIdDocument = DocumentData();
     ServiceRegistrationBloc.driverLicenseDocument = DocumentData();
     ServiceRegistrationBloc.ownerIdDocument = DocumentData();
+  }
+
+  void handlePreSelectedDocumentsData() {
+    if (widget.registrationRequest.carDocumentPhotosData != null) {
+      carDocument = widget.registrationRequest.carDocumentPhotosData!;
+      isCarDocumentValid = true;
+    }
+    if (widget.registrationRequest.carDriverLicensePhotosData != null) {
+      driverLicenseDocument = widget.registrationRequest.carDriverLicensePhotosData!;
+      isDriverLicValid = true;
+    }
+    if (widget.registrationRequest.carOwnerNationalIdPhotosData != null) {
+      ownerIdDocument = widget.registrationRequest.carOwnerNationalIdPhotosData!;
+      isOwnerIdValid = true;
+    }
+    if (widget.registrationRequest.carDriverNationalIdPhotosData != null) {
+      driverIdDocument = widget.registrationRequest.carDriverNationalIdPhotosData!;
+      isDriverIdValid = true;
+    }
+    if (widget.registrationRequest.carImages != null) {
+      carPhotos.addAll(widget.registrationRequest.carImages!);
+    }
+    if (widget.registrationRequest.plateNumber != null &&
+        widget.registrationRequest.plateNumber!.isNotEmpty) {
+      plateNumber = widget.registrationRequest.plateNumber!;
+    }
+    if (widget.registrationRequest.carNotes != null &&
+        widget.registrationRequest.carNotes!.isNotEmpty) {
+      carNotes = widget.registrationRequest.carNotes!;
+    }
   }
 }
 
