@@ -29,6 +29,7 @@ class RegistrationUseCase
         input.carManufacturerTypeId,
         input.carModelId,
         input.carNotes,
+        null,//car images can be null cause we use it in view only
         input.plateNumber,
         input.driverImages,
         input.canTransportFurniture,

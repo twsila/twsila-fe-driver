@@ -153,18 +153,17 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
               },
             ),
           ),
-          MutliPickImageWidget(
-            (images) {
-              if (images == null) return;
-              widget.viewModel.businessOwnerModel.images =
-                  images.map<File>((xfile) => File(xfile.path)).toList();
-              checkValidations();
-            },
-            AppStrings.uploadBOid.tr(),
-            AppStrings.boImage.tr(),
-            Icon(Icons.person, color: Colors.white),
-            ColorManager.headersTextColor,
-          ),
+          MutliPickImageWidget((images) {
+            if (images == null) return;
+            widget.viewModel.businessOwnerModel.images =
+                images.map<File>((xfile) => File(xfile.path)).toList();
+            checkValidations();
+          },
+              AppStrings.uploadBOid.tr(),
+              AppStrings.boImage.tr(),
+              Icon(Icons.person, color: Colors.white),
+              ColorManager.headersTextColor,
+              null),
           TermsAndConditionsWidget(onChecked: (check) {
             widget.viewModel.termsAndCondition = check;
             checkValidations();

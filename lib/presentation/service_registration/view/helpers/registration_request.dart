@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 class RegistrationRequest {
   String? firstName;
   String? lastName;
@@ -14,6 +16,7 @@ class RegistrationRequest {
   String? carNotes;
   String? plateNumber;
   List<File>? driverImages;
+  List<XFile>? carImages;
 
   bool? canTransportFurniture;
   bool? canTransportGoods;
@@ -42,6 +45,7 @@ class RegistrationRequest {
       this.carManufacturerTypeId,
       this.carModelId,
       this.carNotes,
+      this.carImages,
       this.plateNumber,
       this.driverImages,
       this.canTransportFurniture,

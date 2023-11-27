@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/styles_manager.dart';
@@ -14,6 +15,8 @@ import '../state_renderer/dialogs.dart';
 
 class MutliPickImageWidget extends StatefulWidget {
   final Function(List<XFile>? images) onPickedImages;
+  RegistrationRequest? registrationRequest;
+  List<XFile>? selectedBeforeImages;
   final String titleText;
   final String btnText;
   final Widget btnIcon;
@@ -22,8 +25,10 @@ class MutliPickImageWidget extends StatefulWidget {
   double? fontSize;
 
   MutliPickImageWidget(this.onPickedImages, this.titleText, this.btnText,
-      this.btnIcon, this.btnBackgroundColor,
-      {this.addMultiplePhotos = true, this.fontSize});
+      this.btnIcon, this.btnBackgroundColor, this.registrationRequest,
+      {this.addMultiplePhotos = true,
+      this.fontSize,
+      this.selectedBeforeImages});
 
   @override
   State<MutliPickImageWidget> createState() => _MutliPickImageWidgetState();
@@ -32,6 +37,16 @@ class MutliPickImageWidget extends StatefulWidget {
 class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
   final ImagePicker imgpicker = ImagePicker();
   List<XFile> imagefiles = [];
+
+  @override
+  void initState() {
+    if (widget.registrationRequest != null &&
+        widget.registrationRequest!.carImages != null &&
+        widget.registrationRequest!.carImages!.isNotEmpty) {
+      imagefiles.addAll(widget.registrationRequest!.carImages!);
+    }
+    super.initState();
+  }
 
   openImages() async {
     showModalBottomSheet(
@@ -59,6 +74,9 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
 
                         imagefiles = pickedfiles;
                         widget.onPickedImages(imagefiles);
+                        if (widget.registrationRequest != null) {
+                          widget.registrationRequest!.carImages = imagefiles;
+                        }
                         setState(() {});
                       } catch (e) {
                         ShowDialogHelper.showErrorMessage(
@@ -82,6 +100,9 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
 
                         imagefiles.add(pickedfile!);
                         widget.onPickedImages(imagefiles);
+                        if (widget.registrationRequest != null) {
+                          widget.registrationRequest!.carImages = imagefiles;
+                        }
                         setState(() {});
                       } catch (e) {
                         ShowDialogHelper.showErrorMessage(
@@ -134,6 +155,16 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                               setState(() {
                                 imagefiles
                                     .removeAt(imagefiles.indexOf(imageone));
+                                if (widget.registrationRequest != null &&
+                                    widget.registrationRequest!.carImages !=
+                                        null &&
+                                    widget.registrationRequest!.carImages!
+                                        .isNotEmpty) {
+                                  widget.registrationRequest!.carImages!
+                                      .removeAt(widget
+                                          .registrationRequest!.carImages!
+                                          .indexOf(imageone));
+                                }
                               });
                             },
                             child: Container(

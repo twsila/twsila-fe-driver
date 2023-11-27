@@ -86,7 +86,8 @@ class _ServiceRegistrationSecondStepState
 
   @override
   void initState() {
-    _carNotesController.text = widget.registrationRequest.carNotes?.toString() ?? "";
+    _carNotesController.text =
+        widget.registrationRequest.carNotes?.toString() ?? "";
     _plateNumberController.text =
         widget.registrationRequest.plateNumber?.toString() ?? "";
 
@@ -153,8 +154,6 @@ class _ServiceRegistrationSecondStepState
         }
 
         if (state is ServiceRegistrationSuccess) {
-          // Navigator.pushNamed(context, Routes.loginRoute, arguments:
-          // LoginViewArguments(RegistrationConstants.captain),);
           Navigator.pushReplacementNamed(
               context, Routes.serviceAppliedSuccessfullyView);
         }
@@ -377,6 +376,7 @@ class _ServiceRegistrationSecondStepState
               AppStrings.addPhotos.tr(),
               Image.asset(ImageAssets.photosIcon, width: AppSize.s20),
               ColorManager.secondaryColor,
+              widget.registrationRequest,
               fontSize: FontSize.s10,
             ),
             isCarDocumentValid
