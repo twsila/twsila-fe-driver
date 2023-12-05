@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
@@ -43,6 +46,7 @@ class _MainViewState extends State<MainView> {
   var _title = AppStrings.home.tr();
   var _currentIndex = 0;
 
+
   @override
   void initState() {
     getCurrentLocation();
@@ -53,22 +57,25 @@ class _MainViewState extends State<MainView> {
     BlocProvider.of<MapsBloc>(context, listen: false).add(GetCurrentLocation());
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         CustomDialog(context).showCupertinoDialog(
-            AppStrings.logout.tr(),
-            AppStrings.areYouSureYouWantToLogout.tr(),
-            AppStrings.confirmLogout.tr(),
+            AppStrings.exitApp.tr(),
+            AppStrings.areYouSureYouWantToExitFromApp.tr(),
+            AppStrings.exit.tr(),
             AppStrings.cancel.tr(),
             ColorManager.error, () {
-          BlocProvider.of<MyProfileBloc>(context).add(
-            logoutEvent(context),
-          );
-          Navigator.pop(context);
+          if (Platform.isAndroid) {
+            SystemNavigator.pop();
+          } else if (Platform.isIOS) {
+            exit(0);
+          }
         }, () {
-          Navigator.pop(context);
+          Navigator.of(context).pop(false);
         });
         return true;
       },

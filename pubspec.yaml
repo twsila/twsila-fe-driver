@@ -94,6 +94,7 @@ dependencies:
   dio_smart_retry: ^1.4.0
   flutter_verification_code: ^1.1.7
   pin_code_fields: ^8.0.1
+  double_back_to_close_app: ^1.2.0
 
 dev_dependencies:
   flutter_test:

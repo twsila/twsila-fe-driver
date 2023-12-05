@@ -88,6 +88,9 @@ class AppStrings {
   static const String contactUs = "contact_us";
   static const String inviteYourFriends = "invite_your_friends";
   static const String logout = "logout";
+  static const String exitApp = "exit_app";
+  static const String areYouSureYouWantToExitFromApp = "are_you_sure_you_want_to_exit_app";
+  static const String exit = "exit";
   static const String phoneVerification = "phone_verification";
   static const String enterOtpHint = "enter_otp_hint";
   static const String otpValidated = "otp_validated";
@@ -343,6 +346,9 @@ class AppStrings {
   static const serviceData = 'service_data';
   static const selectServiceType = 'select_service_type';
   static const selectServiceVehicleType = 'select_service_vehicle_type';
+  static const numberOfPassengers = 'number_of_passenger';
+  static const vehicleShape = 'vehicle_shape';
+  static const passengerTitle = 'passenger_title';
   static const selectServiceTruckType = 'select_service_truck_type';
   static const alsoProvideThisServices = 'aslo_provide_this_services';
   static const carData = 'car_data';

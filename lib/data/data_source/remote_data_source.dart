@@ -28,7 +28,10 @@ abstract class RemoteDataSource {
 
   Future<CarBrandAndModelsModel> carBrandAndModel();
 
-  Future<RegistrationResponse> registerCaptainWithService(
+  Future<RegistrationResponse> registerCaptainWithPersonsService(
+      RegistrationRequest registrationRequest);
+
+  Future<RegistrationResponse> registerCaptainWithGoodsService(
       RegistrationRequest registrationRequest);
 
   Future<RegistrationBOResponse> registerBOWithService(
@@ -45,7 +48,8 @@ abstract class RemoteDataSource {
       Map<String, dynamic>? currentLocation,
       String? sortCriterion);
 
-  Future<BaseResponse> myTripsByModuleId( String endPoint,String tripTypeModuleId, int userId);
+  Future<BaseResponse> myTripsByModuleId(
+      String endPoint, String tripTypeModuleId, int userId);
 
   Future<GeneralResponse> acceptOffer(int userId, int tripId);
 
@@ -86,10 +90,11 @@ abstract class RemoteDataSource {
   Future<BaseResponse> boAssignDriverForTrip(
       int businessOwnerId, int driverId, int tripId);
 
-  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId,int driverId);
+  Future<BaseResponse> boAcceptOffer(
+      int businessOwnerId, int tripId, int driverId);
 
   Future<BaseResponse> boSuggestNewOffer(
-      int businessOwnerId, int tripId, double newSuggestedOffer,int driverId);
+      int businessOwnerId, int tripId, double newSuggestedOffer, int driverId);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -149,9 +154,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<RegistrationResponse> registerCaptainWithService(
+  Future<RegistrationResponse> registerCaptainWithPersonsService(
       RegistrationRequest registrationRequest) async {
-    return await _appServiceClient.registerCaptainWithService(
+    return await _appServiceClient.registerCaptainWithPersonService(
+        registrationRequest.firstName!,
+        registrationRequest.lastName!,
+        registrationRequest.mobile!,
+        registrationRequest.email!,
+        registrationRequest.gender!,
+        registrationRequest.dateOfBirth!,
+        registrationRequest.driverServiceType!,
+        registrationRequest.vehicleTypeId!,
+        registrationRequest.carManufacturerTypeId!,
+        registrationRequest.carModelId!,
+        registrationRequest.plateNumber!,
+        registrationRequest.isAcknowledged!,
+        registrationRequest.vehicleShapeId.toString(),
+        registrationRequest.driverImages!);
+  }
+
+  @override
+  Future<RegistrationResponse> registerCaptainWithGoodsService(
+      RegistrationRequest registrationRequest) async {
+    return await _appServiceClient.registerCaptainWithGoodsService(
         registrationRequest.firstName!,
         registrationRequest.lastName!,
         registrationRequest.mobile!,
@@ -173,6 +198,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.hasLifting!,
         registrationRequest.plateNumber!,
         registrationRequest.isAcknowledged!,
+        registrationRequest.vehicleShapeId.toString(),
         registrationRequest.driverImages!);
   }
 
@@ -193,22 +219,29 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> tripsByModuleId( String endPoint,
+  Future<BaseResponse> tripsByModuleId(
+      String endPoint,
       String tripTypeModuleId,
       int userId,
       Map<String, dynamic>? dateFilter,
       Map<String, dynamic>? locationFilter,
       Map<String, dynamic>? currentLocation,
       String? sortCriterion) async {
-    return await _appServiceClient.getTripsByModuleId(endPoint,tripTypeModuleId, userId,
-        dateFilter, locationFilter, currentLocation, sortCriterion);
+    return await _appServiceClient.getTripsByModuleId(
+        endPoint,
+        tripTypeModuleId,
+        userId,
+        dateFilter,
+        locationFilter,
+        currentLocation,
+        sortCriterion);
   }
 
   @override
-  Future<BaseResponse> myTripsByModuleId( String endPoint,
-      String tripTypeModuleId, int userId) async {
-    return await _appServiceClient.getMyTripsByModuleId(endPoint,
-        tripTypeModuleId, userId);
+  Future<BaseResponse> myTripsByModuleId(
+      String endPoint, String tripTypeModuleId, int userId) async {
+    return await _appServiceClient.getMyTripsByModuleId(
+        endPoint, tripTypeModuleId, userId);
   }
 
   @override
@@ -258,10 +291,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<BaseResponse> updateProfileWithoutPhoto(
       UpdateProfileRequest updateProfileRequest) async {
     return await _appServiceClient.updateProfileWithoutPhoto(
-        updateProfileRequest.driverId,
-        updateProfileRequest.firstName,
-        updateProfileRequest.lastName,
-        updateProfileRequest.email,);
+      updateProfileRequest.driverId,
+      updateProfileRequest.firstName,
+      updateProfileRequest.lastName,
+      updateProfileRequest.email,
+    );
   }
 
   @override
@@ -307,8 +341,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> boAcceptOffer(int businessOwnerId, int tripId,int driverId) async {
-    return await _appServiceClient.boAcceptNewOffer(businessOwnerId, tripId,driverId);
+  Future<BaseResponse> boAcceptOffer(
+      int businessOwnerId, int tripId, int driverId) async {
+    return await _appServiceClient.boAcceptNewOffer(
+        businessOwnerId, tripId, driverId);
   }
 
   @override
@@ -319,9 +355,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> boSuggestNewOffer(
-      int businessOwnerId, int tripId, double newSuggestedOffer,int driverId) async {
+  Future<BaseResponse> boSuggestNewOffer(int businessOwnerId, int tripId,
+      double newSuggestedOffer, int driverId) async {
     return await _appServiceClient.boSuggestNewOffer(
-        businessOwnerId, tripId, newSuggestedOffer,driverId);
+        businessOwnerId, tripId, newSuggestedOffer, driverId);
   }
+
+
 }

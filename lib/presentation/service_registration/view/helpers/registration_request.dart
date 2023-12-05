@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/widgets/addiontal_serivces_widget.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/widgets/services_card_widget.dart';
 
 import '../pages/service_registration_second_step.dart';
 
@@ -17,6 +19,7 @@ class RegistrationRequest {
   String? carModelId;
   String? carNotes;
   String? plateNumber;
+  String? vehicleShapeId;
   List<File>? driverImages;
   List<XFile>? carImages;
 
@@ -34,6 +37,8 @@ class RegistrationRequest {
   DocumentData? carDriverLicensePhotosData;
   DocumentData? carOwnerNationalIdPhotosData;
   DocumentData? carDriverNationalIdPhotosData;
+
+  AdditionalServicesModel? additionalServicesModel;
 
   bool? isAcknowledged;
 
@@ -67,6 +72,7 @@ class RegistrationRequest {
       {this.carDocumentPhotosData,
       this.carDriverLicensePhotosData,
       this.carDriverNationalIdPhotosData,
-      this.carOwnerNationalIdPhotosData});
+      this.carOwnerNationalIdPhotosData,
+      this.vehicleShapeId,
+      this.additionalServicesModel});
 }
-

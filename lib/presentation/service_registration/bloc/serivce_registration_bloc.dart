@@ -9,6 +9,7 @@ import 'package:taxi_for_you/domain/usecase/registration_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/widgets/services_card_widget.dart';
 
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
@@ -141,6 +142,10 @@ class ServiceRegistrationBloc
             hasPacking: registrationRequest.hasPacking,
             hasLoading: registrationRequest.hasLoading,
             hasLifting: registrationRequest.hasLifting,
+            numberOfPassengersId:
+                registrationRequest.vehicleShapeId,
+            vehicleShapeId:
+                registrationRequest.vehicleShapeId,
             hasAssembly: registrationRequest.hasAssembly,
             plateNumber: registrationRequest.plateNumber!,
             driverImages: registrationRequest.driverImages!,
@@ -328,6 +333,7 @@ class ServiceRegistrationBloc
         event.additionalServicesModel.hasWaterTank;
     registrationRequest.hasOtherTanks =
         event.additionalServicesModel.hasOtherTanks;
+    registrationRequest.vehicleShapeId = event.vehicleShapeId.toString();
     registrationRequest.hasLifting = event.additionalServicesModel.hasLifting;
     registrationRequest.hasLoading = event.additionalServicesModel.hasLoading;
     registrationRequest.hasPacking = event.additionalServicesModel.hasPacking;

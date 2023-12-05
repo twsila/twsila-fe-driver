@@ -66,6 +66,13 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
     });
   }
 
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(

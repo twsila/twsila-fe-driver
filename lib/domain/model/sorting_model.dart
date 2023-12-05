@@ -1,3 +1,5 @@
+import '../../utils/ext/enums.dart';
+
 enum SortCriterion {
   REQUEST_DATE,
   NEAREST_TO_ME,
@@ -8,8 +10,11 @@ enum SortCriterion {
 }
 
 class SortingModel {
-  SortCriterion id;
-  String title;
+  TripModelType? tripModelType;
+  SortCriterion? id;
+  String? title;
+  bool? sendCurrentLocation;
 
-  SortingModel(this.id, this.title);
+  SortingModel(this.tripModelType, this.id, this.title,
+      {this.sendCurrentLocation = true});
 }

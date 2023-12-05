@@ -7,6 +7,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
+import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
@@ -23,6 +25,7 @@ class ServiceCard extends StatefulWidget {
   final bool showServiceCarTypes;
   Function(ServiceTypeModel service) selectedService;
   Function(VehicleModel? vehcileType) selectedVehicleType;
+  Function(ThirdServiceLevel? selectedThirdLevel) selectedThirdLevel;
   AdditionalServicesModel additionalServicesModel;
   final RegistrationRequest registrationRequest;
 
@@ -33,6 +36,7 @@ class ServiceCard extends StatefulWidget {
       required this.selectedService,
       required this.selectedVehicleType,
       required this.additionalServicesModel,
+      required this.selectedThirdLevel,
       required this.registrationRequest})
       : super(key: key);
 
@@ -43,6 +47,8 @@ class ServiceCard extends StatefulWidget {
 class _ServiceCardState extends State<ServiceCard> {
   ServiceTypeModel? selectedService;
   VehicleModel? selectedVehicleModel;
+  ThirdServiceLevel? selectedThirdLevelOfService;
+  List<ThirdServiceLevel>? listOfThirdServiceLevel;
   bool refreshVehicleTypes = false;
 
   @override
@@ -62,6 +68,15 @@ class _ServiceCardState extends State<ServiceCard> {
                 element.id.toString() ==
                 widget.registrationRequest.vehicleTypeId);
         selectedVehicleModel = selectedService!.VehicleModels[vehicleIndex];
+        listOfThirdServiceLevel = handleThirdServiceTypeString(
+            selectedService!, selectedVehicleModel!);
+        if (widget.registrationRequest.vehicleShapeId != null &&
+            listOfThirdServiceLevel != null) {
+          selectedThirdLevelOfService = listOfThirdServiceLevel!.firstWhere(
+              (element) =>
+                  element.id.toString() ==
+                  widget.registrationRequest.vehicleShapeId.toString());
+        }
       }
       SchedulerBinding.instance.addPostFrameCallback((_) {
         setState(() {
@@ -70,6 +85,10 @@ class _ServiceCardState extends State<ServiceCard> {
             selectedVehicleModel!.isSelected = true;
             widget.selectedService(selectedService!);
             widget.selectedVehicleType(selectedVehicleModel!);
+            if (selectedThirdLevelOfService != null) {
+              selectedThirdLevelOfService!.isSelected = true;
+              widget.selectedThirdLevel(selectedThirdLevelOfService);
+            }
           }
         });
       });
@@ -118,6 +137,7 @@ class _ServiceCardState extends State<ServiceCard> {
                               selectedService!.isSelected = true;
                             }
                             widget.selectedService(selectedService!);
+                            listOfThirdServiceLevel = null;
                           });
                         },
                         child: FittedBox(
@@ -135,10 +155,15 @@ class _ServiceCardState extends State<ServiceCard> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset(
-                                  ImageAssets.appBarLogo,
-                                  height: AppSize.s33,
-                                  width: AppSize.s33,
+                                Container(
+                                  width: AppSize.s28,
+                                  height: AppSize.s32,
+                                  child: CustomNetworkImageWidget(
+                                      imageUrl: widget
+                                              .serviceTypeModelList[index]
+                                              .serviceIcon!
+                                              .url ??
+                                          ""),
                                 ),
                                 SizedBox(
                                   width: AppSize.s8,
@@ -195,6 +220,8 @@ class _ServiceCardState extends State<ServiceCard> {
                                     selectedVehicleModel =
                                         selectedService!.VehicleModels[index];
                                     selectedVehicleModel!.isSelected = true;
+                                    selectedThirdLevelOfService = null;
+                                    widget.selectedThirdLevel(null);
                                   } else {
                                     selectedVehicleModel =
                                         selectedService!.VehicleModels[index];
@@ -202,6 +229,10 @@ class _ServiceCardState extends State<ServiceCard> {
                                   }
                                   widget.selectedVehicleType(
                                       selectedVehicleModel!);
+                                  listOfThirdServiceLevel =
+                                      handleThirdServiceTypeString(
+                                          selectedService!,
+                                          selectedVehicleModel!);
                                 });
                               },
                               child: FittedBox(
@@ -221,10 +252,15 @@ class _ServiceCardState extends State<ServiceCard> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset(
-                                        ImageAssets.appBarLogo,
-                                        height: AppSize.s33,
-                                        width: AppSize.s33,
+                                      Container(
+                                        width: AppSize.s28,
+                                        height: AppSize.s32,
+                                        child: CustomNetworkImageWidget(
+                                            imageUrl: selectedService!
+                                                    .VehicleModels[index]
+                                                    .icon
+                                                    ?.url ??
+                                                ""),
                                       ),
                                       SizedBox(
                                         width: AppSize.s8,
@@ -251,18 +287,113 @@ class _ServiceCardState extends State<ServiceCard> {
                   SizedBox(
                     height: 15,
                   ),
+                  Text(
+                    selectedService! == widget.serviceTypeModelList[1]
+                        ? AppStrings.vehicleShape.tr()
+                        : AppStrings.numberOfPassengers.tr(),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: ColorManager.titlesTextColor),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  listOfThirdServiceLevel != null
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                              listOfThirdServiceLevel!.length ?? 0,
+                              (index) => GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (selectedThirdLevelOfService !=
+                                                null &&
+                                            selectedThirdLevelOfService !=
+                                                listOfThirdServiceLevel![
+                                                    index]) {
+                                          selectedThirdLevelOfService!
+                                              .isSelected = false;
+                                          selectedThirdLevelOfService =
+                                              listOfThirdServiceLevel![index];
+                                          selectedThirdLevelOfService!
+                                              .isSelected = true;
+                                        } else {
+                                          selectedThirdLevelOfService =
+                                              listOfThirdServiceLevel![index];
+                                          selectedThirdLevelOfService!
+                                              .isSelected = true;
+                                        }
+                                        widget.selectedThirdLevel(
+                                            selectedThirdLevelOfService!);
+                                        widget.registrationRequest
+                                                .vehicleShapeId =
+                                            selectedThirdLevelOfService!.id
+                                                .toString();
+                                      });
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          listOfThirdServiceLevel![index].name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(
+                                                  color: ColorManager
+                                                      .headersTextColor),
+                                        ),
+                                        SizedBox(
+                                          width: AppSize.s30,
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              listOfThirdServiceLevel![index]
+                                                          .isSelected ??
+                                                      false
+                                                  ? true
+                                                  : false,
+                                          child: Icon(
+                                            Icons.check,
+                                            color: ColorManager
+                                                .purpleMainTextColor,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )),
+                        )
+                      : Container(),
                 ],
               )
             : Container(),
-        // selectedService != null && selectedService!.serviceName == "GOODS"
-        //     ? selectedService!.serviceName == "GOODS"
-        //         ? AdditionalServicesWidget(
-        //           additionalServicesModel: widget.additionalServicesModel,
-        //         )
-        //         : Container()
-        //     : Container()
+        selectedService != null &&
+                selectedService! == widget.serviceTypeModelList[1]
+            ? AdditionalServicesWidget(
+                additionalServicesModel: widget.additionalServicesModel,
+                registrationRequest: widget.registrationRequest,
+              )
+            : Container()
       ],
     );
+  }
+
+  List<ThirdServiceLevel> handleThirdServiceTypeString(
+      ServiceTypeModel serviceTypeModel, VehicleModel vehicleModel) {
+    List<ThirdServiceLevel> thirdServiceLevel = [];
+    if (serviceTypeModel == widget.serviceTypeModelList[1]) {
+      vehicleModel.vehicleShapes.forEach((vehicleShape) {
+        thirdServiceLevel
+            .add(ThirdServiceLevel(vehicleShape.id, vehicleShape.shape));
+      });
+    } else {
+      vehicleModel.numberOfPassengers.forEach((numberOfPassenger) {
+        thirdServiceLevel.add(ThirdServiceLevel(numberOfPassenger.id,
+            "${numberOfPassenger.numberOfPassengers.toString()}"));
+      });
+    }
+    return thirdServiceLevel;
   }
 }
 
@@ -279,4 +410,12 @@ class Vehicle {
   String driverServiceType;
 
   Vehicle(this.id, this.vehicleType, this.driverServiceType);
+}
+
+class ThirdServiceLevel {
+  int id;
+  String name;
+  bool? isSelected;
+
+  ThirdServiceLevel(this.id, this.name, {this.isSelected = false});
 }

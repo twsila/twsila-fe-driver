@@ -206,7 +206,104 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<RegistrationResponse> registerCaptainWithService(
+  Future<RegistrationResponse> registerCaptainWithPersonService(
+    firstName,
+    lastName,
+    mobile,
+    email,
+    gender,
+    dateOfBirth,
+    driverServiceType,
+    vehicleTypeId,
+    carManufacturerTypeId,
+    carModelId,
+    plateNumber,
+    isAcknowledged,
+    numberOfPassengers,
+    driverImages,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'firstName',
+      firstName,
+    ));
+    _data.fields.add(MapEntry(
+      'lastName',
+      lastName,
+    ));
+    _data.fields.add(MapEntry(
+      'mobile',
+      mobile,
+    ));
+    _data.fields.add(MapEntry(
+      'email',
+      email,
+    ));
+    _data.fields.add(MapEntry(
+      'gender',
+      gender,
+    ));
+    _data.fields.add(MapEntry(
+      'dateOfBirth',
+      dateOfBirth,
+    ));
+    _data.fields.add(MapEntry(
+      'serviceType',
+      driverServiceType,
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleType.id',
+      vehicleTypeId,
+    ));
+    _data.fields.add(MapEntry(
+      'carManufacturerType.id',
+      carManufacturerTypeId,
+    ));
+    _data.fields.add(MapEntry(
+      'carModel.id',
+      carModelId,
+    ));
+    _data.fields.add(MapEntry(
+      'plateNumber',
+      plateNumber,
+    ));
+    _data.fields.add(MapEntry(
+      'isAcknowledged',
+      isAcknowledged.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'numberOfPassengers',
+      numberOfPassengers,
+    ));
+    _data.files.addAll(driverImages.map((i) => MapEntry(
+        'driverImages',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<RegistrationResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              '/drivers/register',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = RegistrationResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<RegistrationResponse> registerCaptainWithGoodsService(
     firstName,
     lastName,
     mobile,
@@ -228,6 +325,7 @@ class _AppServiceClient implements AppServiceClient {
     hasLifting,
     plateNumber,
     isAcknowledged,
+    vehicleShapeId,
     driverImages,
   ) async {
     const _extra = <String, dynamic>{};
@@ -317,6 +415,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'isAcknowledged',
       isAcknowledged.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleShape.id',
+      vehicleShapeId,
     ));
     _data.files.addAll(driverImages.map((i) => MapEntry(
         'driverImages',

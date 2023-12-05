@@ -9,7 +9,6 @@ import 'package:taxi_for_you/presentation/service_registration/view/pages/servic
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/addiontal_serivces_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/services_card_widget.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
-import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
@@ -40,6 +39,7 @@ class _ServiceRegistrationFirstStepViewState
 
   ServiceTypeModel? selectedService;
   VehicleModel? selectedVehicleType;
+  ThirdServiceLevel? selectedThirdServiceLevel;
 
   @override
   void initState() {
@@ -95,80 +95,82 @@ class _ServiceRegistrationFirstStepViewState
         return Container(
           margin: EdgeInsets.only(
               left: AppMargin.m16, right: AppMargin.m16, top: AppMargin.m16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Icon(Icons.close),
+          child: SingleChildScrollView(
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Icon(Icons.close),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: AppSize.s10,
-              ),
-              Text(
-                AppStrings.stepOne.tr(),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: ColorManager.headersTextColor),
-              ),
-              Text(
-                AppStrings.serviceData.tr(),
-                style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: FontSize.s30,
-                    color: ColorManager.headersTextColor),
-              ),
-              SizedBox(
-                height: AppSize.s20,
-              ),
-              serviceModelList != null
-                  ? Container(
-                      child: ServiceCard(
-                        registrationRequest: widget.requestModel,
-                        serviceTypeModelList: this.serviceModelList!,
-                        showServiceCarTypes: false,
-                        selectedService: (ServiceTypeModel service) {
-                          setState(() {
-                            selectedService = service;
-                          });
-                        },
-                        selectedVehicleType: (VehicleModel? vehicleType) {
-                          setState(() {
-                            selectedVehicleType = vehicleType;
-                          });
-                        },
-                        additionalServicesModel: additionalServicesModel,
-                      ),
-                    )
-                  : Center(
-                      child: CircularProgressIndicator(
-                        color: ColorManager.primary,
-                      ),
-                    ),
-              Spacer(),
-              CustomTextButton(
-                text: AppStrings.continueStr.tr(),
-                icon: Icon(
-                  Icons.arrow_forward,
-                  color: ColorManager.white,
+                SizedBox(
+                  height: AppSize.s10,
                 ),
-                onPressed:
-                    selectedVehicleType != null && selectedService != null
-                        ? () {
-                            BlocProvider.of<ServiceRegistrationBloc>(context)
-                                .add(SetFirstStepData(
-                                    selectedService!.serviceName.toString(),
-                                    selectedVehicleType!.id.toString(),
-                                    additionalServicesModel));
-                          }
-                        : null,
-              )
-            ],
+                Text(
+                  AppStrings.stepOne.tr(),
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: ColorManager.headersTextColor),
+                ),
+                SizedBox(
+                  height: AppSize.s10,
+                ),
+                serviceModelList != null
+                    ? Container(
+                        child: ServiceCard(
+                          registrationRequest: widget.requestModel,
+                          serviceTypeModelList: this.serviceModelList!,
+                          showServiceCarTypes: false,
+                          selectedService: (ServiceTypeModel service) {
+                            setState(() {
+                              selectedService = service;
+                            });
+                          },
+                          selectedVehicleType: (VehicleModel? vehicleType) {
+                            setState(() {
+                              selectedVehicleType = vehicleType;
+                            });
+                          },
+                          selectedThirdLevel: (selectedThirdLevel) {
+                            setState(() {
+                              selectedThirdServiceLevel = selectedThirdLevel;
+                            });
+                          },
+                          additionalServicesModel: additionalServicesModel,
+                        ),
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(
+                          color: ColorManager.primary,
+                        ),
+                      ),
+                CustomTextButton(
+                  text: AppStrings.continueStr.tr(),
+                  icon: Icon(
+                    Icons.arrow_forward,
+                    color: ColorManager.white,
+                  ),
+                  onPressed: selectedVehicleType != null &&
+                          selectedService != null &&
+                          selectedThirdServiceLevel != null
+                      ? () {
+                          BlocProvider.of<ServiceRegistrationBloc>(context).add(
+                              SetFirstStepData(
+                                  selectedService!.serviceName.toString(),
+                                  selectedVehicleType!.id.toString(),
+                                  selectedThirdServiceLevel!.id.toString(),
+                                  additionalServicesModel));
+                        }
+                      : null,
+                )
+              ],
+            ),
           ),
         );
       },

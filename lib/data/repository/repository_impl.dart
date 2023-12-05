@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/data/mapper/driver.dart';
@@ -13,6 +15,7 @@ import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
+import 'package:taxi_for_you/utils/ext/enums.dart';
 
 import '../../domain/model/driver_model.dart';
 import '../../domain/model/requested_drivers_response.dart';
@@ -171,10 +174,11 @@ class RepositoryImpl implements Repository {
           List<ServiceTypeModel> servicesList = [];
 
           response.result.forEach((key, value) {
-            List<VehicleModel> x = List<VehicleModel>.from(
-                value.map((x) => VehicleModel.fromJson(x)));
+            List<VehicleModel> vehicleModels = List<VehicleModel>.from(
+                value["vehicleTypes"].map((x) => VehicleModel.fromJson(x)));
+            ServiceIcon serviceIcon = ServiceIcon.fromJson(value["serviceIcon"]);
 
-            servicesList.add(ServiceTypeModel(key, x));
+            servicesList.add(ServiceTypeModel(key, vehicleModels,serviceIcon));
           });
 
           return Right(servicesList);
@@ -269,9 +273,14 @@ class RepositoryImpl implements Repository {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource
-            .registerCaptainWithService(registrationRequest);
-
+        final response;
+        if (registrationRequest.driverServiceType! == TripType.GOODS.name) {
+          response = await _remoteDataSource
+              .registerCaptainWithGoodsService(registrationRequest);
+        } else {
+          response = await _remoteDataSource
+              .registerCaptainWithPersonsService(registrationRequest);
+        }
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
         } else {

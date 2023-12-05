@@ -56,7 +56,25 @@ abstract class AppServiceClient {
 
   @POST("/drivers/register")
   @MultiPart()
-  Future<RegistrationResponse> registerCaptainWithService(
+  Future<RegistrationResponse> registerCaptainWithPersonService(
+      @Part(name: "firstName") String firstName,
+      @Part(name: "lastName") String lastName,
+      @Part(name: "mobile") String mobile,
+      @Part(name: "email") String email,
+      @Part(name: "gender") String gender,
+      @Part(name: "dateOfBirth") String dateOfBirth,
+      @Part(name: "serviceType") String driverServiceType,
+      @Part(name: "vehicleType.id") String vehicleTypeId,
+      @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
+      @Part(name: "carModel.id") String carModelId,
+      @Part(name: "plateNumber") String plateNumber,
+      @Part(name: "isAcknowledged") bool isAcknowledged,
+      @Part(name: "numberOfPassengers") String numberOfPassengers,
+      @Part(name: "driverImages") List<File> driverImages);
+
+  @POST("/drivers/register")
+  @MultiPart()
+  Future<RegistrationResponse> registerCaptainWithGoodsService(
       @Part(name: "firstName") String firstName,
       @Part(name: "lastName") String lastName,
       @Part(name: "mobile") String mobile,
@@ -78,6 +96,7 @@ abstract class AppServiceClient {
       @Part(name: "hasLifting") bool hasLifting,
       @Part(name: "plateNumber") String plateNumber,
       @Part(name: "isAcknowledged") bool isAcknowledged,
+      @Part(name: "vehicleShape.id") String vehicleShapeId,
       @Part(name: "driverImages") List<File> driverImages);
 
   @POST("/bo/register")

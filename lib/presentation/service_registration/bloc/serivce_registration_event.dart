@@ -106,9 +106,10 @@ class SetCaptainData extends ServiceRegistrationEvent {
 class SetFirstStepData extends ServiceRegistrationEvent {
   final String driverServiceType;
   final String vehicleTypeId;
+  final String vehicleShapeId;
   final AdditionalServicesModel additionalServicesModel ;
 
-  SetFirstStepData(this.driverServiceType, this.vehicleTypeId,this.additionalServicesModel);
+  SetFirstStepData(this.driverServiceType, this.vehicleTypeId,this.vehicleShapeId,this.additionalServicesModel);
 }
 
 class SetSecondStepData extends ServiceRegistrationEvent {

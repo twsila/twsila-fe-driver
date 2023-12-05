@@ -23,6 +23,7 @@ import '../../../../../app/app_prefs.dart';
 import '../../../../../app/constants.dart';
 import '../../../../../app/di.dart';
 import '../../../../../domain/model/date_filter_model.dart';
+import '../../../../../domain/model/driver_model.dart';
 import '../../../../../domain/model/trip_details_model.dart';
 import '../../../../../utils/resources/strings_manager.dart';
 import '../../../../../utils/resources/values_manager.dart';
@@ -56,16 +57,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   int currentSortingIndex = 0;
   List<TripDetailsModel> trips = [];
   DateFilter? dateFilter = null;
-  List<SortingModel> sortingModelList = [
-    SortingModel(SortCriterion.REQUEST_DATE, AppStrings.requestedDate.tr()),
-    SortingModel(SortCriterion.NEAREST_TO_ME, AppStrings.nearestToMe.tr()),
-    SortingModel(SortCriterion.LIGHT_WEIGHT, AppStrings.lightWeight.tr()),
-    SortingModel(SortCriterion.SHORT_DISTANCE, AppStrings.shortestWay.tr()),
-    SortingModel(SortCriterion.HIGH_PRICE, AppStrings.highestPrice.tr()),
-    SortingModel(
-        SortCriterion.TOP_RATED_CLIENT, AppStrings.highestRateClient.tr()),
-  ];
   int currentIndex = 0;
+  List<SortingModel> sortingModelList = [];
 
   getCurrentLocation() async {
     try {
@@ -110,10 +103,14 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                       currentSortingIndex = index;
                       BlocProvider.of<SearchTripsBloc>(context).add(
                           GetTripsTripModuleId(
-                              tripTypeId: 'ALL_TRIPS',
+                              tripTypeId: selectedSortModel.tripModelType!.name
+                                  .toString(),
                               sortCriterion:
-                                  selectedSortModel.id.name.toString(),
-                              currentLocation: currentLocationFilter));
+                                  selectedSortModel.id?.name.toString() ?? null,
+                              currentLocation:
+                                  selectedSortModel.sendCurrentLocation!
+                                      ? currentLocationFilter
+                                      : null));
                       Navigator.pop(context);
                     });
                   },
@@ -123,7 +120,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          selectedSortModel.title,
+                          selectedSortModel.title!,
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -176,10 +173,15 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   @override
   void initState() {
     // BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
+    DriverBaseModel? driver = _appPreferences.getCachedDriver();
+    sortingModelList = SearchTripsBloc().getSortingList(driver!);
     BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
-        tripTypeId: 'ALL_TRIPS',
+        tripTypeId: sortingModelList[currentSortingIndex]
+            .tripModelType!
+            .name
+            .toString(),
         sortCriterion:
-            sortingModelList[currentSortingIndex].id.name.toString()));
+            sortingModelList[currentSortingIndex].id!.name.toString()));
 
     getCurrentLocation();
     super.initState();
@@ -207,7 +209,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                         as FilterTripsModel;
                 BlocProvider.of<SearchTripsBloc>(context).add(
                     GetTripsTripModuleId(
-                        tripTypeId: 'ALL_TRIPS',
+                        tripTypeId: TripModelType.ALL_TRIPS.name,
                         dateFilter: filterData.dateFilter,
                         locationFilter: filterData.locationFilter,
                         currentLocation: filterData.currentLocation));
@@ -243,8 +245,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           } else {
             tripsTitles.addAll(state.englishTripTitles);
           }
-          BlocProvider.of<SearchTripsBloc>(context)
-              .add(GetTripsTripModuleId(tripTypeId: 'ALL_TRIPS'));
+          BlocProvider.of<SearchTripsBloc>(context).add(
+              GetTripsTripModuleId(tripTypeId: TripModelType.ALL_TRIPS.name));
         }
 
         if (state is SearchTripsSuccess) {
@@ -331,7 +333,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
           setState(() {
             currentIndex = index;
             BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
-                tripTypeId: 'ALL_TRIPS', dateFilter: null));
+                tripTypeId: TripModelType.ALL_TRIPS.name, dateFilter: null));
           });
         },
         child: Container(
@@ -371,10 +373,13 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                   arguments: TripExecutionArguments(trip))
               .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
                   GetTripsTripModuleId(
-                      tripTypeId: 'ALL_TRIPS',
+                      tripTypeId: sortingModelList[currentSortingIndex]
+                          .tripModelType!
+                          .name
+                          .toString(),
                       dateFilter: null,
                       sortCriterion: sortingModelList[currentSortingIndex]
-                          .id
+                          .id!
                           .name
                           .toString())));
         else
@@ -382,10 +387,13 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                   arguments: TripDetailsArguments(tripModel: trip))
               .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
                   GetTripsTripModuleId(
-                      tripTypeId: 'ALL_TRIPS',
+                      tripTypeId: sortingModelList[currentSortingIndex]
+                          .tripModelType!
+                          .name
+                          .toString(),
                       dateFilter: null,
                       sortCriterion: sortingModelList[currentSortingIndex]
-                          .id
+                          .id!
                           .name
                           .toString())));
       },

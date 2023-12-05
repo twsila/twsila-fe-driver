@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:meta/meta.dart';
 import 'package:taxi_for_you/domain/model/current_location_model.dart';
 import 'package:taxi_for_you/domain/model/date_filter_model.dart';
+import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/domain/model/location_filter_model.dart';
+import 'package:taxi_for_you/domain/model/sorting_model.dart';
 import 'package:taxi_for_you/domain/usecase/trips_usecase.dart';
 
 import '../../../../../app/app_prefs.dart';
@@ -13,7 +16,9 @@ import '../../../../../app/di.dart';
 import '../../../../../domain/model/trip_details_model.dart';
 import '../../../../../domain/model/trip_model.dart';
 import '../../../../../domain/usecase/lookups_usecase.dart';
+import '../../../../../utils/ext/enums.dart';
 import '../../../../../utils/resources/constants_manager.dart';
+import '../../../../../utils/resources/strings_manager.dart';
 
 part 'search_trips_event.dart';
 
@@ -25,6 +30,38 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
   SearchTripsBloc() : super(SearchTripsInitial()) {
     on<GetTripsTripModuleId>(_getTripsByModuleId);
     on<getLookups>(_getLookups);
+  }
+
+  List<SortingModel> getSortingList(DriverBaseModel driver) {
+    List<SortingModel> sortingModelList = [
+      SortingModel(TripModelType.ALL_TRIPS, SortCriterion.REQUEST_DATE,
+          AppStrings.requestedDate.tr()),
+      SortingModel(TripModelType.ALL_TRIPS, SortCriterion.NEAREST_TO_ME,
+          AppStrings.nearestToMe.tr()),
+      SortingModel(TripModelType.ALL_TRIPS, SortCriterion.SHORT_DISTANCE,
+          AppStrings.shortestWay.tr()),
+      SortingModel(TripModelType.ALL_TRIPS, SortCriterion.HIGH_PRICE,
+          AppStrings.highestPrice.tr()),
+      SortingModel(TripModelType.ALL_TRIPS, SortCriterion.TOP_RATED_CLIENT,
+          AppStrings.highestRateClient.tr()),
+      SortingModel(
+          TripModelType.SCHEDULED_TRIPS, null, AppStrings.scheduledTrips.tr(),
+          sendCurrentLocation: false),
+      SortingModel(TripModelType.TODAY_TRIPS, null, AppStrings.todayTrips.tr(),
+          sendCurrentLocation: false),
+      SortingModel(
+          TripModelType.OFFERED_TRIPS, null, AppStrings.offerHasBeenSent.tr(),
+          sendCurrentLocation: false),
+    ];
+    if (driver.captainType == RegistrationConstants.captain) {
+      if ((driver as Driver).serviceType! == TripType.GOODS) {
+        sortingModelList.add(
+          SortingModel(TripModelType.ALL_TRIPS, SortCriterion.LIGHT_WEIGHT,
+              AppStrings.lightWeight.tr()),
+        );
+      }
+    }
+    return sortingModelList;
   }
 
   FutureOr<void> _getLookups(

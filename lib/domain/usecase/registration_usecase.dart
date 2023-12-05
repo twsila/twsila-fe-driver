@@ -29,7 +29,8 @@ class RegistrationUseCase
         input.carManufacturerTypeId,
         input.carModelId,
         input.carNotes,
-        null,//car images can be null cause we use it in view only
+        null,
+        //car images can be null cause we use it in view only
         input.plateNumber,
         input.driverImages,
         input.canTransportFurniture,
@@ -41,7 +42,8 @@ class RegistrationUseCase
         input.hasLoading,
         input.hasAssembly,
         input.hasLifting,
-        input.isAcknowledged));
+        input.isAcknowledged,
+        vehicleShapeId: input.vehicleShapeId));
   }
 }
 
@@ -59,6 +61,9 @@ class RegistrationUseCaseInput {
   String carNotes;
   String plateNumber;
   List<File> driverImages;
+
+  String? vehicleShapeId;
+  String? numberOfPassengersId;
 
   bool? canTransportFurniture;
   bool? canTransportGoods;
@@ -86,6 +91,8 @@ class RegistrationUseCaseInput {
       required this.carNotes,
       required this.plateNumber,
       required this.driverImages,
+      this.numberOfPassengersId,
+      this.vehicleShapeId,
       this.canTransportFurniture = false,
       this.canTransportGoods = false,
       this.canTransportFrozen = false,
