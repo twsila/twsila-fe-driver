@@ -350,6 +350,8 @@
   "logout": "Log out",
   "number_of_passenger": "Number of passengers",
   "vehicle_shape": "Vehicle shape",
+  "goods_type": "Goods type",
+  "trip_type": "Trip type",
   "passenger_title": "Passenger",
   "exit_app": "Close Twsila",
   "are_you_sure_you_want_to_exit_app": "Are you sure you want to close the app",

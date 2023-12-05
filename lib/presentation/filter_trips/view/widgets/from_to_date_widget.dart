@@ -15,7 +15,7 @@ import '../../../common/widgets/custom_bottom_sheet.dart';
 import '../../../common/widgets/custom_text_button.dart';
 
 class FromToDateWidget extends StatefulWidget {
-  final Function(String fromDate, String toDate,bool todayDate) onSelectDate;
+  final Function(String fromDate, String toDate, bool todayDate) onSelectDate;
 
   FromToDateWidget({required this.onSelectDate});
 
@@ -152,13 +152,16 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                         if (todayDate) {
                           selectedFromDate = getDateOfNow();
                           selectedToDate = getDateOfNow();
-                        } else if (
-                            (dateFromPicker != null &&
+                          print(selectedFromDate);
+                          print(selectedFromDate);
+                        } else if ((dateFromPicker != null &&
                                 dateFromPicker!.isNotEmpty) &&
                             dateToPicker != null &&
                             dateToPicker!.isNotEmpty) {
                           selectedFromDate = dateFromPicker;
                           selectedToDate = dateToPicker;
+                          print(selectedFromDate);
+                          print(selectedFromDate);
                         }
                       });
                     }),
@@ -181,8 +184,8 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                     selectedFromDate!.isNotEmpty &&
                     selectedToDate != null &&
                     selectedToDate!.isNotEmpty) {
-                  widget.onSelectDate(selectedFromDate!,
-                      selectedToDate!,todayDate);
+                  widget.onSelectDate(
+                      selectedFromDate!, selectedToDate!, todayDate);
                   Navigator.pop(context);
                 } else {
                   ToastHandler(context).showToast(
@@ -220,7 +223,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
 
   String getDateOfNow() {
     var now = new DateTime.now();
-    var formatter = new DateFormat('yyyy-MM-dd');
+    var formatter = new DateFormat('dd-MM-yyyy');
     String formattedDate = formatter.format(now);
     return formattedDate;
   }

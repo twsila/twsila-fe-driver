@@ -1,15 +1,22 @@
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/domain/model/current_location_model.dart';
+import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/domain/model/location_filter_model.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_checkbox.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/filter_trips/view/widgets/city_filter_widget.dart';
 import 'package:taxi_for_you/presentation/filter_trips/view/widgets/from_to_date_widget.dart';
+import 'package:taxi_for_you/utils/ext/enums.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/date_filter_model.dart';
 import '../../../utils/resources/assets_manager.dart';
+import '../../../utils/resources/color_manager.dart';
+import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../../common/widgets/custom_scaffold.dart';
@@ -30,6 +37,19 @@ class _FilterTripsViewState extends State<FilterTripsView> {
   LocationFilter? locationFilter;
   CurrentLocationFilter? currentLocationFilter;
   bool? isTodayDate;
+  bool isOfferedTrip = false;
+  int selectedOption = 1;
+  bool showGoodsFilter = false;
+
+  @override
+  void initState() {
+    DriverBaseModel driverBaseModel = _appPreferences.getCachedDriver()!;
+    if (driverBaseModel.captainType == RegistrationConstants.captain &&
+        (driverBaseModel as Driver).serviceType == TripType.GOODS.name) {
+      showGoodsFilter = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +76,13 @@ class _FilterTripsViewState extends State<FilterTripsView> {
         ),
         CityFilterWidget(
           onSelectLocationFilter: (pickup, destination, currentFilter) {
-            locationFilter = LocationFilter(
-                    pickup: pickup, destination: destination);
+            locationFilter =
+                LocationFilter(pickup: pickup, destination: destination);
             currentLocationFilter = currentFilter;
           },
         ),
+        filterGoodsOrFurnitureRadioButtons(),
+        tripTypeFiltration(),
         Spacer(),
         CustomTextButton(
           text: AppStrings.searchTrips.tr(),
@@ -69,10 +91,97 @@ class _FilterTripsViewState extends State<FilterTripsView> {
             Navigator.pop(
                 context,
                 FilterTripsModel(dateFilter ?? null, locationFilter ?? null,
-                    currentLocationFilter ?? null));
+                    currentLocationFilter ?? null, isOfferedTrip));
           },
         )
       ],
+    );
+  }
+
+  Widget filterGoodsOrFurnitureRadioButtons() {
+    return Visibility(
+      visible: showGoodsFilter,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: AppPadding.p12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppStrings.goodsType.tr(),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: ColorManager.titlesTextColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize.s16),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: ListTile(
+                    title: Text(
+                      AppStrings.goods.tr(),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    leading: Radio(
+                      value: 1,
+                      groupValue: selectedOption,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOption = value! as int;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListTile(
+                    title: Text(
+                      AppStrings.furniture.tr(),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    leading: Radio(
+                      value: 2,
+                      groupValue: selectedOption,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOption = value! as int;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget tripTypeFiltration() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: AppPadding.p12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppStrings.tripType.tr(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: ColorManager.titlesTextColor,
+                fontWeight: FontWeight.bold,
+                fontSize: FontSize.s16),
+          ),
+          SizedBox(
+            height: AppSize.s12,
+          ),
+          CustomCheckBox(
+              checked: isOfferedTrip,
+              fieldName: AppStrings.offerHasBeenSent.tr(),
+              onChange: (value) {
+                isOfferedTrip = value;
+              }),
+        ],
+      ),
     );
   }
 }

@@ -44,14 +44,9 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
           AppStrings.highestPrice.tr()),
       SortingModel(TripModelType.ALL_TRIPS, SortCriterion.TOP_RATED_CLIENT,
           AppStrings.highestRateClient.tr()),
-      SortingModel(
-          TripModelType.SCHEDULED_TRIPS, null, AppStrings.scheduledTrips.tr(),
-          sendCurrentLocation: false),
-      SortingModel(TripModelType.TODAY_TRIPS, null, AppStrings.todayTrips.tr(),
-          sendCurrentLocation: false),
-      SortingModel(
-          TripModelType.OFFERED_TRIPS, null, AppStrings.offerHasBeenSent.tr(),
-          sendCurrentLocation: false),
+      // SortingModel(
+      //     TripModelType.OFFERED_TRIPS, null, AppStrings.offerHasBeenSent.tr(),
+      //     sendCurrentLocation: false),
     ];
     if (driver.captainType == RegistrationConstants.captain) {
       if ((driver as Driver).serviceType! == TripType.GOODS) {

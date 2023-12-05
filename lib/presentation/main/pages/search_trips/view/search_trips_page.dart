@@ -209,7 +209,9 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                         as FilterTripsModel;
                 BlocProvider.of<SearchTripsBloc>(context).add(
                     GetTripsTripModuleId(
-                        tripTypeId: TripModelType.ALL_TRIPS.name,
+                        tripTypeId: filterData.isOfferedTrips!
+                            ? TripModelType.OFFERED_TRIPS.name
+                            : TripModelType.ALL_TRIPS.name,
                         dateFilter: filterData.dateFilter,
                         locationFilter: filterData.locationFilter,
                         currentLocation: filterData.currentLocation));
@@ -557,6 +559,8 @@ class FilterTripsModel {
   DateFilter? dateFilter;
   LocationFilter? locationFilter;
   CurrentLocationFilter? currentLocation;
+  bool? isOfferedTrips;
 
-  FilterTripsModel(this.dateFilter, this.locationFilter, this.currentLocation);
+  FilterTripsModel(this.dateFilter, this.locationFilter, this.currentLocation,
+      this.isOfferedTrips);
 }

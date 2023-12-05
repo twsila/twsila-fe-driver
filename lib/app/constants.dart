@@ -46,7 +46,7 @@ class TripTypeConstants {
   static const String furnitureType = "FURNITURE";
   static const String goodsType = "GOODS";
   static const String otherTankType = "OTHER_TANK";
-  static const String personType = "PERSON";
+  static const String personType = "PERSONS";
 }
 
 class TripStatusConstants {

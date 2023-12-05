@@ -373,6 +373,8 @@
   "exit_app": "الخروج من التطبيق",
   "are_you_sure_you_want_to_exit_app": "هل تريد الخروج من التطبيق",
   "exit": "خروج",
+  "goods_type": "نوع البضاعة",
+  "trip_type": "نوع الرحلة",
   "cancel": "إلغاء",
   "first_name": "اسم الاول",
   "last_name": "اللقب",

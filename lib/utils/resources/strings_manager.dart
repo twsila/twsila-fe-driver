@@ -17,6 +17,7 @@ class AppStrings {
       "update_profile_done_successfully";
   static const goodmorning = "good_morning";
   static const tripDate = "trip_date";
+  static const goodsType = "goods_type";
   static const vehicleType = "vehicle_type";
   static const numOfPassengers = "number_of_passengers";
   static const waterTankSize = "water_tank_size";
@@ -29,6 +30,7 @@ class AppStrings {
   static const currentCity = "current_city";
   static const pleaseRatePassenger = "please_rate_passenger";
   static const trip = "trip";
+  static const tripType = "trip_type";
   static const city = "city";
   static const pleaseEnterCity = "please_enter_city";
   static const withK = "with";

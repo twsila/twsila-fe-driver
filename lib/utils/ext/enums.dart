@@ -53,6 +53,8 @@ String getIconName(String tripType) {
       return ImageAssets.tripSwarekIc;
     case TripTypeConstants.drinkWaterType:
       return ImageAssets.tripWaterTankIc;
+    case TripTypeConstants.personType:
+      return ImageAssets.tripPersonsIc;
     default:
       return ImageAssets.tripGoodsIc;
   }

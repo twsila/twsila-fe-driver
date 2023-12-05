@@ -1,4 +1,5 @@
 import 'package:taxi_for_you/app/constants.dart';
+import 'package:taxi_for_you/domain/model/persons_model.dart';
 import 'package:taxi_for_you/domain/model/transportation_base_model.dart';
 import 'package:taxi_for_you/domain/model/water_model.dart';
 
@@ -30,7 +31,7 @@ class TripDetailsModel {
     } else if (tripType == TripTypeConstants.otherTankType) {
       details = CisternsModel.fromJson(json);
     } else if (tripType == TripTypeConstants.personType) {
-      details = CisternsModel.fromJson(json);
+      details = PersonsModel.fromJson(json);
     }
 
     return TripDetailsModel(tripDetails: details);
