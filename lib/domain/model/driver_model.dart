@@ -26,7 +26,7 @@ abstract class DriverBaseModel {
 
 class Driver extends DriverBaseModel {
   String dateOfBirth;
-  String? serviceType;
+  List<String>? serviceTypes;
   String registrationStatus;
   DriverVehicleType? vehicleType;
   DriverCarManufacturer carManufacturerType;
@@ -57,7 +57,7 @@ class Driver extends DriverBaseModel {
       required gender,
       required captainType,
       required this.dateOfBirth,
-      this.serviceType,
+      this.serviceTypes,
       required this.registrationStatus,
       this.vehicleType,
       this.driverStatus,
@@ -103,7 +103,9 @@ class Driver extends DriverBaseModel {
         email: json["email"],
         gender: json["gender"],
         dateOfBirth: json["dateOfBirth"] ?? "",
-        serviceType: json["serviceType"],
+        serviceTypes: json["serviceTypes"] != null
+            ? List<String>.from(json["serviceTypes"]).toList()
+            : [],
         registrationStatus: json["registrationStatus"] ?? "",
         vehicleType: json["vehicleType"] != null
             ? DriverVehicleType.fromJson(json["vehicleType"])
@@ -143,7 +145,7 @@ class Driver extends DriverBaseModel {
         "driverStatus": driverStatus,
         "gender": gender,
         "dateOfBirth": dateOfBirth,
-        "serviceType": serviceType,
+        "serviceType": serviceTypes,
         "registrationStatus": registrationStatus,
         "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,
         "carManufacturerType": carManufacturerType.toJson(),

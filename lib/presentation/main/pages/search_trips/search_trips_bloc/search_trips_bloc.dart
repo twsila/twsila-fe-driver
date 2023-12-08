@@ -49,7 +49,7 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
       //     sendCurrentLocation: false),
     ];
     if (driver.captainType == RegistrationConstants.captain) {
-      if ((driver as Driver).serviceType! == TripType.GOODS) {
+      if ((driver as Driver).serviceTypes!.contains(TripType.GOODS)) {
         sortingModelList.add(
           SortingModel(TripModelType.ALL_TRIPS, SortCriterion.LIGHT_WEIGHT,
               AppStrings.lightWeight.tr()),

@@ -45,7 +45,9 @@ class _FilterTripsViewState extends State<FilterTripsView> {
   void initState() {
     DriverBaseModel driverBaseModel = _appPreferences.getCachedDriver()!;
     if (driverBaseModel.captainType == RegistrationConstants.captain &&
-        (driverBaseModel as Driver).serviceType == TripType.GOODS.name) {
+        (driverBaseModel as Driver)
+            .serviceTypes!
+            .contains(TripType.GOODS.name)) {
       showGoodsFilter = true;
     }
     super.initState();
