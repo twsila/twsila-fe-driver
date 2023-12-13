@@ -16,6 +16,8 @@ import '../network/requests.dart';
 import '../response/responses.dart';
 
 abstract class RemoteDataSource {
+  Future<BaseResponse> getCountriesLookup();
+
   Future<LoginResponse> login(LoginRequest loginRequest);
 
   Future<GeneralResponse> loginBO(LoginRequest loginRequest);
@@ -361,5 +363,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         businessOwnerId, tripId, newSuggestedOffer, driverId);
   }
 
-
+  @override
+  Future<BaseResponse> getCountriesLookup() async {
+    return await _appServiceClient.getCountriesLookup();
+  }
 }

@@ -32,6 +32,7 @@ import '../data/network/dio_factory.dart';
 import '../data/network/network_info.dart';
 import '../data/repository/repository_impl.dart';
 import '../domain/repository/repository.dart';
+import '../domain/usecase/countries_lookup_usecase.dart';
 import '../domain/usecase/generate_otp_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/mytrips_usecase.dart';
@@ -73,6 +74,13 @@ Future<void> initAppModule() async {
   // repository
   instance.registerLazySingleton<Repository>(
       () => RepositoryImpl(instance(), instance(), instance()));
+}
+
+initSplashModule() {
+  if (!GetIt.I.isRegistered<CountriesLookupUseCase>()) {
+    instance.registerFactory<CountriesLookupUseCase>(
+        () => CountriesLookupUseCase(instance()));
+  }
 }
 
 initLoginModule() {

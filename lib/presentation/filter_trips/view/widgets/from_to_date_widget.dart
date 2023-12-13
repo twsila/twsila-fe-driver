@@ -223,7 +223,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
 
   String getDateOfNow() {
     var now = new DateTime.now();
-    var formatter = new DateFormat('dd-MM-yyyy');
+    var formatter = new DateFormat('yyyy-MM-dd');
     String formattedDate = formatter.format(now);
     return formattedDate;
   }

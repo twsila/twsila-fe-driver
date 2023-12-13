@@ -1,15 +1,19 @@
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/constants.dart';
+import 'package:taxi_for_you/domain/model/country_lookup_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
+import '../utils/resources/assets_manager.dart';
 import '../utils/resources/langauge_manager.dart';
+import '../utils/resources/strings_manager.dart';
 
 const String PREFS_KEY_LANG = "PREFS_KEY_LANG";
 const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED =
@@ -21,6 +25,7 @@ const String DRIVER_FCM_TOKEN = "DRIVER_FCM_TOKEN";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
+  List<CountryLookupModel> countries = [];
 
   AppPreferences(this._sharedPreferences);
 
@@ -118,6 +123,35 @@ class AppPreferences {
 
   Future<String?> getFCMToken() async {
     return _sharedPreferences.getString(DRIVER_FCM_TOKEN);
+  }
+
+  setCountries(List<CountryLookupModel> countries) {
+    this.countries = countries;
+  }
+
+  List<CountryLookupModel> getCountries() {
+    return countries.isNotEmpty
+        ? countries
+        : [
+            CountryLookupModel(
+              countryName: AppStrings.saudiArabia.tr(),
+              country: "SA",
+              countryCode: "+966",
+              countryCodeAr: "+٩٦٦",
+              imageUrl: ImageAssets.saudiFlag,
+              countryId: 2,
+              language: 'ar',
+            ),
+            CountryLookupModel(
+              countryName: AppStrings.egypt.tr(),
+              country: "EG",
+              countryCode: "+20",
+              countryCodeAr: "+٢٠",
+              countryId: 4,
+              imageUrl: ImageAssets.egyptFlag,
+              language: 'ar',
+            ),
+          ];
   }
 
   DriverBaseModel? getCachedDriver() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:taxi_for_you/domain/usecase/countries_lookup_usecase.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
 import 'package:taxi_for_you/utils/push_notification/firebase_messaging_helper.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
@@ -25,12 +26,21 @@ class _SplashViewState extends State<SplashView> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
+  CountriesLookupUseCase countriesLookupUseCase =
+      instance<CountriesLookupUseCase>();
+
   @override
   void initState() {
-    new Future.delayed(const Duration(seconds: 3), () {
+    getCountries();
+    super.initState();
+  }
+
+  getCountries() async {
+    (await countriesLookupUseCase.execute(LookupsUseCaseInput()))
+        .fold((failure) => {_goNext()}, (countries) async {
+      _appPreferences.setCountries(countries);
       _goNext();
     });
-    super.initState();
   }
 
   @override

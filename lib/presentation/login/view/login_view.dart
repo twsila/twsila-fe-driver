@@ -10,7 +10,9 @@ import 'package:taxi_for_you/utils/helpers/language_helper.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 
 import 'dart:math' as math;
+import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
+import '../../../app/di.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
@@ -32,6 +34,7 @@ class _LoginViewState extends State<LoginView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
   CountryCodes selectedCountry = Constants.countryList.first;
+  final AppPreferences _appPreferences = instance<AppPreferences>();
   Function()? onPressFun;
   String mobileNumber = "";
   final TextEditingController _controller = TextEditingController();
@@ -153,7 +156,7 @@ class _LoginViewState extends State<LoginView> {
                     topRight: Radius.circular(16))),
             alignment: Alignment.center,
             child: ListView.builder(
-              itemCount: Constants.countryList.length,
+              itemCount: _appPreferences.getCountries().length,
               itemBuilder: (context, index) {
                 final selectedCountry = Constants.countryList[index];
                 return InkWell(

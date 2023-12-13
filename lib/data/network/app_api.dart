@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:taxi_for_you/domain/model/country_lookup_model.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
@@ -20,6 +21,10 @@ part 'app_api.g.dart';
 @RestApi(baseUrl: Constants.baseUrl)
 abstract class AppServiceClient {
   factory AppServiceClient(Dio dio, {String baseUrl}) = _AppServiceClient;
+
+
+  @GET("/lookups/country")
+  Future<BaseResponse> getCountriesLookup();
 
   @POST("/drivers/login")
   Future<LoginResponse> login(

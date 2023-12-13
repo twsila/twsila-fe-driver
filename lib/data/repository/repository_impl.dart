@@ -17,6 +17,7 @@ import 'package:taxi_for_you/presentation/business_owner/registration/model/Busi
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 
+import '../../domain/model/country_lookup_model.dart';
 import '../../domain/model/driver_model.dart';
 import '../../domain/model/requested_drivers_response.dart';
 import '../../domain/model/trip_details_model.dart';
@@ -176,9 +177,10 @@ class RepositoryImpl implements Repository {
           response.result.forEach((key, value) {
             List<VehicleModel> vehicleModels = List<VehicleModel>.from(
                 value["vehicleTypes"].map((x) => VehicleModel.fromJson(x)));
-            ServiceIcon serviceIcon = ServiceIcon.fromJson(value["serviceIcon"]);
+            ServiceIcon serviceIcon =
+                ServiceIcon.fromJson(value["serviceIcon"]);
 
-            servicesList.add(ServiceTypeModel(key, vehicleModels,serviceIcon));
+            servicesList.add(ServiceTypeModel(key, vehicleModels, serviceIcon));
           });
 
           return Right(servicesList);
@@ -761,6 +763,31 @@ class RepositoryImpl implements Repository {
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CountryLookupModel>>> getCountriesLookup() async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.getCountriesLookup();
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<CountryLookupModel> countries = List<CountryLookupModel>.from(
+              response.result.map((x) => CountryLookupModel.fromJson(x)));
+          return Right(countries);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));
