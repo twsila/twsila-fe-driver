@@ -116,7 +116,7 @@ class _$LoginObjectImpl implements _LoginObject {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoginObjectImpl &&
@@ -332,7 +332,7 @@ class _$RegisterObjectImpl implements _RegisterObject {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RegisterObjectImpl &&

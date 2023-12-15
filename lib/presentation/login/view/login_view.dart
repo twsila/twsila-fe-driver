@@ -87,57 +87,63 @@ class _LoginViewState extends State<LoginView> {
         }
       },
       builder: (context, state) {
-        return Container(
-            padding: const EdgeInsets.only(
-                top: AppPadding.p40,
-                right: AppPadding.p20,
-                left: AppPadding.p20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+            child: Container(
+                padding: const EdgeInsets.only(
+                    top: AppPadding.p40,
+                    right: AppPadding.p20,
+                    left: AppPadding.p20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Text(
+                          AppStrings.welcomeInto.tr(),
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(
+                          width: AppSize.s8,
+                        ),
+                        Text(
+                          AppStrings.twsela.tr(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: ColorManager.primary),
+                        ),
+                      ],
+                    ),
                     Text(
-                      AppStrings.welcomeInto.tr(),
-                      style: Theme.of(context).textTheme.titleMedium,
+                      AppStrings.enterPhoneNumberToContinue.tr(),
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          fontWeight: FontWeight.bold, fontSize: FontSize.s26),
                     ),
                     const SizedBox(
-                      width: AppSize.s8,
+                      height: AppSize.s18,
                     ),
-                    Text(
-                      AppStrings.twsela.tr(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(color: ColorManager.primary),
+                    phoneNumberWidget(),
+                    const SizedBox(
+                      height: AppSize.s30,
                     ),
+                    CustomTextButton(
+                      onPressed: onPressFun,
+                      text: AppStrings.continueStr.tr(),
+                      icon: Icon(
+                        Icons.arrow_forward,
+                        color: onPressFun != null
+                            ? ColorManager.white
+                            : ColorManager.disableTextColor,
+                      ),
+                    ),
+                    const Spacer(),
                   ],
-                ),
-                Text(
-                  AppStrings.enterPhoneNumberToContinue.tr(),
-                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      fontWeight: FontWeight.bold, fontSize: FontSize.s26),
-                ),
-                const SizedBox(
-                  height: AppSize.s18,
-                ),
-                phoneNumberWidget(),
-                const SizedBox(
-                  height: AppSize.s30,
-                ),
-                CustomTextButton(
-                  onPressed: onPressFun,
-                  text: AppStrings.continueStr.tr(),
-                  icon: Icon(
-                    Icons.arrow_forward,
-                    color: onPressFun != null
-                        ? ColorManager.white
-                        : ColorManager.disableTextColor,
-                  ),
-                ),
-                const Spacer(),
-              ],
-            ));
+                )),
+          ),
+        );
       },
     );
   }

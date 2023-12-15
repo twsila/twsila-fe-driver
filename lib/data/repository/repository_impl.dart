@@ -51,7 +51,8 @@ class RepositoryImpl implements Repository {
           // return either right
           // return data
           //save driver data
-          return Right(LoginResponse.fromJson(response.result!).toDomain());
+          return Right(LoginResponse.fromJson(response.result!["user"]).toDomain());
+
         } else {
           // failure --return business error
           // return either left

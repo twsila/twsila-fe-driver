@@ -370,11 +370,11 @@ class _ServiceCardState extends State<ServiceCard> {
             : Container(),
         selectedService != null &&
                 selectedService! == widget.serviceTypeModelList[1]
-            ? AdditionalServicesWidget(
-                additionalServicesModel: widget.additionalServicesModel,
+                ? AdditionalServicesWidget(
+                  additionalServicesModel: widget.additionalServicesModel,
                 registrationRequest: widget.registrationRequest,
-              )
-            : Container()
+                )
+                : Container()
       ],
     );
   }

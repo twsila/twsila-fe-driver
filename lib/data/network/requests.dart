@@ -1,11 +1,10 @@
 import 'dart:io';
 
 class LoginRequest {
-  String mobileNumber;
-  String language;
-  Map<String, dynamic> userDeviceDTO;
+  String login;
+  Map<String, dynamic> mobileUserDeviceDTO;
 
-  LoginRequest(this.mobileNumber, this.language, this.userDeviceDTO);
+  LoginRequest(this.login,  this.mobileUserDeviceDTO);
 }
 
 class RegisterRequest {

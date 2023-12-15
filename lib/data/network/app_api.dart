@@ -26,17 +26,15 @@ abstract class AppServiceClient {
   @GET("/lookups/country")
   Future<BaseResponse> getCountriesLookup();
 
-  @POST("/drivers/login")
+  @POST("/api/v1/auth/login")
   Future<LoginResponse> login(
-      @Field("mobile") String mobile,
-      @Field("language") String language,
-      @Field("userDeviceDTO") Map<String, dynamic> userDeviceDTO);
+      @Field("login") String login,
+      @Field("mobileUserDeviceDTO") Map<String, dynamic> userDeviceDTO);
 
-  @POST("/bo/login")
+  @POST("/api/v1/auth/login")
   Future<GeneralResponse> loginBO(
-      @Field("mobile") String mobile,
-      @Field("language") String language,
-      @Field("userDeviceDTO") Map<String, dynamic> userDeviceDTO);
+      @Field("login") String login,
+      @Field("mobileUserDeviceDTO") Map<String, dynamic> userDeviceDTO);
 
   @POST("/otp/generate")
   Future<GenerateOtpModel> generateOtp(

@@ -13,6 +13,7 @@ const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "language";
 const String ACCEPT_LANGUAGE = "Accept-Language";
 const String RETRY_COUNTER = "Retry-Count";
+const String USER_TYPE = "User-Type";
 
 class DioFactory {
   final AppPreferences _appPreferences;
@@ -26,9 +27,7 @@ class DioFactory {
     Map<String, String> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
-      AUTHORIZATION: await _appPreferences.isUserLoggedIn()
-          ? "Bearer " + (_appPreferences.getCachedDriver()?.token ?? "")
-          : "",
+      USER_TYPE: _appPreferences.getUserType() ?? "",
       ACCEPT_LANGUAGE: language
     };
 
@@ -38,26 +37,20 @@ class DioFactory {
         receiveTimeout: Constants.apiTimeOut,
         sendTimeout: Constants.apiTimeOut);
 
-    // dio.interceptors.add(RetryInterceptor(
-    //   dio: dio,
-    //   logPrint: print, // specify log function (optional)
-    //   retries: 3, // retry count (optional)
-    //   retryableExtraStatuses: { 401 },
-    //   retryDelays: const [
-    //     // set delays between retries (optional)
-    //     Duration(seconds: 1), // wait 1 sec before first retry
-    //     Duration(seconds: 2), // wait 2 sec before second retry
-    //     Duration(seconds: 3), // wait 3 sec before third retry
-    //   ],
-    // ));
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           // Add the access token to the request header
           String token = await _appPreferences.isUserLoggedIn()
-              ? "Bearer " + (_appPreferences.getCachedDriver()?.token ?? "")
+              ? "Bearer " +
+                  (_appPreferences.getCachedDriver()?.accessToken ?? "")
               : "";
-          options.headers[AUTHORIZATION] = token;
+          if (options.path != EndPointsConstants.loginPath) {
+            options.headers[AUTHORIZATION] = token;
+          } else {
+            options.cancelToken;
+          }
+          options.headers[USER_TYPE] = _appPreferences.getUserType() ?? "";
           return handler.next(options);
         },
         onError: (DioError error, handler) async {
@@ -96,15 +89,18 @@ class DioFactory {
   }
 
   Future<String> refreshToken() async {
-    Response response =
-        await Dio(BaseOptions(headers: {"Content-Type": "application/json"}))
-            .post(Constants.baseUrl + '/refresh-token', data: {
-      "mobileNumber": _appPreferences.getCachedDriver()?.mobile ?? ""
+    Response response = await Dio(BaseOptions(headers: {
+      CONTENT_TYPE: APPLICATION_JSON,
+      ACCEPT: APPLICATION_JSON,
+      AUTHORIZATION: await _appPreferences.isUserLoggedIn()
+          ? "Bearer " + (_appPreferences.getCachedDriver()?.accessToken ?? "")
+          : "",
+      USER_TYPE: _appPreferences.getUserType() ?? "",
+    })).post(Constants.baseUrl + '/refresh-token', data: {
+      "refreshToken": _appPreferences.getCachedDriver()?.refreshToken ?? ""
     });
     print(response.data["result"]);
 
     return response.data["result"];
   }
 }
-
-

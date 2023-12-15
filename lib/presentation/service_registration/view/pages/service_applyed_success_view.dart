@@ -96,9 +96,7 @@ class _ServiceAppliedSuccessViewState extends State<ServiceAppliedSuccessView> {
             onPressed: () {
               Navigator.pushNamed(
                 context,
-                Routes.loginRoute,
-                arguments:
-                    LoginViewArguments(RegistrationConstants.captain),
+                Routes.selectRegistrationType,
               );
             },
           )

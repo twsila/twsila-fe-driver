@@ -56,14 +56,14 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     //     .add(SendOtpEvent(widget.mobileNumberForApi));
     if (widget.registerAs == RegistrationConstants.captain) {
       BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-          /*'1234567890'*/
-          widget.mobileNumberForApi,
-          _appPreferences.getAppLanguage()));
+        /*'1234567890'*/
+        widget.mobileNumberForApi,
+      ));
     } else {
       BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-          /*'1234567890'*/
-          widget.mobileNumberForApi,
-          _appPreferences.getAppLanguage()));
+        /*'1234567890'*/
+        widget.mobileNumberForApi,
+      ));
     }
     super.initState();
   }
@@ -162,12 +162,10 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                   .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
               if (widget.registerAs == RegistrationConstants.captain) {
                 BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-                    widget.mobileNumberForApi,
-                    _appPreferences.getAppLanguage()));
+                    widget.mobileNumberForApi,));
               } else {
                 BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-                    widget.mobileNumberForApi,
-                    _appPreferences.getAppLanguage()));
+                    widget.mobileNumberForApi,));
               }
             }
             if (state is VerifyOtpFail) {

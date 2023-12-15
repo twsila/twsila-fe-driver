@@ -15,8 +15,9 @@ extension LoginResponseMapper on LoginResponse? {
       email: this?.driver!.email.orEmpty() ?? Constants.empty,
       gender: this?.driver!.gender.orEmpty() ?? Constants.empty,
       dateOfBirth: this?.driver!.dateOfBirth.orEmpty() ?? Constants.empty,
-      token: this?.token.orEmpty() ?? Constants.empty,
-      userDevice: this!.userDevice,
+      accessToken: this?.accessToken.orEmpty() ?? Constants.empty,
+      refreshToken: this?.refreshToken.orEmpty() ?? Constants.empty,
+      userDevice: this!.mobileUserDevice,
       captainType: RegistrationConstants.captain,
       tokenExpirationTime:
           this?.tokenExpirationTime.orEmpty() ?? Constants.empty,

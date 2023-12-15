@@ -5,6 +5,7 @@ import 'package:taxi_for_you/domain/model/trip_model.dart';
 
 import '../../utils/helpers/double_prase.dart';
 
+
 class TransportationBaseModel {
   int? tripId;
   String? tripEndPoint;
@@ -47,20 +48,20 @@ class TransportationBaseModel {
         ? List<ImageModel>.from(json['images'].map((x) => ImageModel.fromJson(x)))
         : null;
     clientOffer =
-        json["clientOffer"] != null ? json["clientOffer"]?.toDouble() : null;
+    json["clientOffer"] != null ? json["clientOffer"]?.toDouble() : null;
     paymentValue = (json['clientOffer'] != null)
         ? dynamicToDouble(json['clientOffer'])
         : null;
     pickupLocation = json['pickupLocation'] == null
         ? TransportationLocation()
         : TransportationLocation.fromJson(json['pickupLocation'] is String
-            ? jsonDecode(json['pickupLocation'])
-            : json['pickupLocation']);
+        ? jsonDecode(json['pickupLocation'])
+        : json['pickupLocation']);
     destinationLocation = json['destination'] == null
         ? TransportationLocation()
         : TransportationLocation.fromJson(json['destination'] is String
-            ? jsonDecode(json['destination'])
-            : json['destination']);
+        ? jsonDecode(json['destination'])
+        : json['destination']);
     offers = json["offers"] != null
         ? List<Offer>.from(json["offers"].map((x) => Offer.fromJson(x)))
         : [];
@@ -154,26 +155,26 @@ class Passenger {
   });
 
   factory Passenger.fromJson(Map<String, dynamic> json) => Passenger(
-        id: json["passengerId"],
-        firstName: json["firstName"] ?? "",
-        lastName: json["lastName"] ?? " ",
-        mobile: json["mobile"],
-        email: json["email"] ?? "",
-        gender: json["gender"] ?? "",
-        dateOfBirth: json["dateOfBirth"] ?? "",
-        rating: json["rating"]?.toDouble(),
-      );
+    id: json["passengerId"],
+    firstName: json["firstName"] ?? "",
+    lastName: json["lastName"] ?? " ",
+    mobile: json["mobile"],
+    email: json["email"] ?? "",
+    gender: json["gender"] ?? "",
+    dateOfBirth: json["dateOfBirth"] ?? "",
+    rating: json["rating"]?.toDouble(),
+  );
 
   Map<String, dynamic> toJson() => {
-        "passengerId": id,
-        "firstName": firstName,
-        "lastName": lastName,
-        "mobile": mobile,
-        "email": email,
-        "gender": gender,
-        "dateOfBirth": dateOfBirth,
-        "rating": rating,
-      };
+    "passengerId": id,
+    "firstName": firstName,
+    "lastName": lastName,
+    "mobile": mobile,
+    "email": email,
+    "gender": gender,
+    "dateOfBirth": dateOfBirth,
+    "rating": rating,
+  };
 }
 
 class ImageModel {
@@ -188,14 +189,14 @@ class ImageModel {
   });
 
   factory ImageModel.fromJson(Map<String, dynamic> json) => ImageModel(
-        id: json["id"],
-        imageName: json["imageName"],
-        url: json["url"],
-      );
+    id: json["id"],
+    imageName: json["imageName"],
+    url: json["url"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "imageName": imageName,
-        "url": url,
-      };
+    "id": id,
+    "imageName": imageName,
+    "url": url,
+  };
 }

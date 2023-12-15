@@ -4,15 +4,13 @@ part of 'login_bloc.dart';
 abstract class LoginEvent {}
 
 class MakeLoginEvent extends LoginEvent {
-  final String mobileNumber;
-  final String appLanguage;
-  MakeLoginEvent(this.mobileNumber, this.appLanguage);
+  final String login;
+  MakeLoginEvent(this.login);
 }
 
 class MakeLoginBOEvent extends LoginEvent {
-  final String mobileNumber;
-  final String appLanguage;
-  MakeLoginBOEvent(this.mobileNumber, this.appLanguage);
+  final String login;
+  MakeLoginBOEvent(this.login);
 }
 
 class CheckInputIsValidEvent extends LoginEvent {

@@ -15,16 +15,15 @@ class LoginUseCase implements BaseUseCase<LoginUseCaseInput, Driver> {
   @override
   Future<Either<Failure, Driver>> execute(LoginUseCaseInput input) async {
     return await _repository.login(
-        LoginRequest(input.mobileNumber, input.language, input.userDeviceDTO));
+        LoginRequest(input.login, input.mobileUserDeviceDTO));
   }
 }
 
 class LoginUseCaseInput {
-  String mobileNumber;
-  String language;
-  Map<String, dynamic> userDeviceDTO;
+  String login;
+  Map<String, dynamic> mobileUserDeviceDTO;
 
-  LoginUseCaseInput(this.mobileNumber, this.language, this.userDeviceDTO);
+  LoginUseCaseInput(this.login, this.mobileUserDeviceDTO);
 }
 
 class LoginBOUseCase
@@ -37,14 +36,13 @@ class LoginBOUseCase
   Future<Either<Failure, BusinessOwnerModel>> execute(
       LoginBOUseCaseInput input) async {
     return await _repository.loginBO(
-        LoginRequest(input.mobileNumber, input.language, input.userDeviceDTO));
+        LoginRequest(input.login, input.mobileUserDeviceDTO));
   }
 }
 
 class LoginBOUseCaseInput {
-  String mobileNumber;
-  String language;
-  Map<String, dynamic> userDeviceDTO;
+  String login;
+  Map<String, dynamic> mobileUserDeviceDTO;
 
-  LoginBOUseCaseInput(this.mobileNumber, this.language, this.userDeviceDTO);
+  LoginBOUseCaseInput(this.login, this.mobileUserDeviceDTO);
 }

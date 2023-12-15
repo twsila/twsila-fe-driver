@@ -39,6 +39,14 @@ class Constants {
   ];
 }
 
+class UserTypeConstants{
+  static const String DRIVER = "DRIVER";
+  static const String BUSINESS_OWNER = "BUSINESS_OWNER";
+}
+class EndPointsConstants{
+  static const String loginPath = "/api/v1/auth/login";
+}
+
 class TripTypeConstants {
   static const String carAidType = "CAR_AID";
   static const String drinkWaterType = "DRINK_WATER_TANK";

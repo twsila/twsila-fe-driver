@@ -27,7 +27,7 @@ class ImageAssets {
   static const String checkIcon = "$imagePath/check.png";
   static const String languageIc = "$imagePath/language_ic.png";
   static const String verifyOtpGraphic = "$imagePath/verify_otp_grp.png";
-  static const String splashIcon = "$imagePath/tawsela_splash_icon.png";
+  static const String splashSVGIcon = "$imagePath/splash_icon.svg";
   static const String filterIcon = "$imagePath/filter_icon.png";
   static const String welcomeToTawselaGraphic =
       "$imagePath/welcome_to_tawsela_graphic.png";
@@ -72,7 +72,6 @@ class ImageAssets {
       "$imagePath/search_inactive_nav_icon.svg";
 
   //my profile
-
   static const String MyServicesIc = "$imagePath/ic_myservices.svg";
   static const String inviteFriends = "$imagePath/ic_invitefriends.svg";
   static const String walletAndRevenueIc = "$imagePath/ic_walletandrevenue.svg";
@@ -81,8 +80,6 @@ class ImageAssets {
   static const String placeholeder = "$imagePath/img.png";
 
   //search for trips
-
-
   static const String asSoonAsPossibleTripIc = "$imagePath/asap_ic.png";
   static const String scheduledTripIc = "$imagePath/scheduled_ic.png";
   static const String truckX4Ic = "$imagePath/truck_x4.png";

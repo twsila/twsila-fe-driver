@@ -38,15 +38,17 @@ class BaseResponse {
 class LoginResponse extends BaseResponse {
   @JsonKey(name: "driver")
   Driver? driver;
-  @JsonKey(name: "token")
-  String? token;
+  @JsonKey(name: "accessToken")
+  String? accessToken;
+  @JsonKey(name: "refreshToken")
+  String? refreshToken;
   @JsonKey(name: "tokenExpirationTime")
   String? tokenExpirationTime;
-  @JsonKey(name: "userDevice")
-  UserDevice? userDevice;
+  @JsonKey(name: "mobileUserDevice")
+  UserDevice? mobileUserDevice;
 
   LoginResponse(
-      this.driver, this.token, this.tokenExpirationTime, this.userDevice);
+      this.driver, this.accessToken, this.refreshToken,this.tokenExpirationTime, this.mobileUserDevice);
 
   // from json
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>

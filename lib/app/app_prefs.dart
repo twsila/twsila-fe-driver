@@ -22,6 +22,7 @@ const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String USER_SELECTED_COUNTRY = "USER_SELECTED_COUNTRY";
 const String DRIVER_MODEL = "DRIVER_MODEL";
 const String DRIVER_FCM_TOKEN = "DRIVER_FCM_TOKEN";
+const String USER_TYPE = "USER_TYPE";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -116,6 +117,14 @@ class AppPreferences {
     return _sharedPreferences.getString(USER_SELECTED_COUNTRY);
   }
 
+  String? getUserType() {
+    return _sharedPreferences.getString(USER_TYPE);
+  }
+
+  setUserType(String userType) {
+    return _sharedPreferences.setString(USER_TYPE, userType);
+  }
+
   //USER Firebase Token
   Future setFCMToken(String token) async {
     await _sharedPreferences.setString(DRIVER_FCM_TOKEN, token);
@@ -175,7 +184,7 @@ class AppPreferences {
   Future<bool> setRefreshedToken(String newToken) async {
     DriverBaseModel? driver = getCachedDriver();
     if (driver != null) {
-      driver.token = newToken;
+      driver.accessToken = newToken;
       await setDriver(driver);
       return true;
     } else {

@@ -106,14 +106,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<LoginResponse> login(LoginRequest loginRequest) async {
-    return await _appServiceClient.login(loginRequest.mobileNumber,
-        loginRequest.language, loginRequest.userDeviceDTO);
+    return await _appServiceClient.login(loginRequest.login,loginRequest.mobileUserDeviceDTO);
   }
 
   @override
   Future<GeneralResponse> loginBO(LoginRequest loginRequest) async {
-    return await _appServiceClient.loginBO(loginRequest.mobileNumber,
-        loginRequest.language, loginRequest.userDeviceDTO);
+    return await _appServiceClient.loginBO(loginRequest.login,loginRequest.mobileUserDeviceDTO);
   }
 
   @override

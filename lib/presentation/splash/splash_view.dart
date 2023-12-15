@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/domain/usecase/countries_lookup_usecase.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
@@ -31,7 +32,10 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   void initState() {
-    getCountries();
+    // getCountries();
+    new Future.delayed(const Duration(seconds: 3), () {
+      _goNext();
+    });
     super.initState();
   }
 
@@ -97,7 +101,9 @@ class _SplashViewState extends State<SplashView> {
         const SizedBox(
           height: AppSize.s210,
         ),
-        Image.asset(ImageAssets.splashIcon),
+        SvgPicture.asset(
+          ImageAssets.splashSVGIcon,
+        ),
         const SizedBox(height: 16),
         const Spacer(),
         BlocConsumer<MapsBloc, MapsState>(

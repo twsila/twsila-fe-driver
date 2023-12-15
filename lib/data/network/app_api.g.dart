@@ -46,16 +46,14 @@ class _AppServiceClient implements AppServiceClient {
   @override
   Future<LoginResponse> login(
     mobile,
-    language,
     userDeviceDTO,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'mobile': mobile,
-      'language': language,
-      'userDeviceDTO': userDeviceDTO,
+      'login': mobile,
+      'mobileUserDeviceDTO': userDeviceDTO,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
@@ -65,7 +63,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/drivers/login',
+              '/api/v1/auth/login',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -77,16 +75,14 @@ class _AppServiceClient implements AppServiceClient {
   @override
   Future<GeneralResponse> loginBO(
     mobile,
-    language,
     userDeviceDTO,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'mobile': mobile,
-      'language': language,
-      'userDeviceDTO': userDeviceDTO,
+      'login': mobile,
+      'mobileUserDeviceDTO': userDeviceDTO,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<GeneralResponse>(Options(
@@ -96,7 +92,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/bo/login',
+              '/api/v1/auth/login',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -16,16 +16,17 @@ class LoginViewModel extends BaseViewModel
     const PhoneLoginView(),
     // VerifyOtpView(),
   ];
+
   //Stream Input Controllers
   final StreamController _countryCodeStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
   final StreamController _phoneNumberStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
   final StreamController _pageStreamController = StreamController.broadcast();
 
   //Stream Success Controller
   StreamController isUserLoggedInSuccessfullyStreamController =
-      StreamController<bool>();
+  StreamController<bool>();
 
   var loginObject = LoginObject("", "");
   final LoginUseCase _loginUseCase;
@@ -72,13 +73,14 @@ class LoginViewModel extends BaseViewModel
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
     (await _loginUseCase.execute(LoginUseCaseInput(
-            loginObject.countryCode, loginObject.phoneNumber, {})))
+        loginObject.countryCode + loginObject.phoneNumber, {})))
         .fold(
-            (failure) => {
-                  // left -> failure
-                  inputState.add(ErrorState(
-                      StateRendererType.popupErrorState, failure.message))
-                }, (data) {
+            (failure) =>
+        {
+          // left -> failure
+          inputState.add(ErrorState(
+              StateRendererType.popupErrorState, failure.message))
+        }, (data) {
       // right -> data (success)
       // content
       inputState.add(ContentState());
@@ -116,12 +118,16 @@ class LoginViewModel extends BaseViewModel
 abstract class LoginViewModelInputs {
   //Login Methods
   setCountryCode(String countryCode);
+
   setPhoneNumber(String phoneNumber);
+
   login();
 
   //Login Inputs
   Sink get inputCountryCode;
+
   Sink get inputPhoneNumber;
+
   Sink get inputPageController;
 }
 

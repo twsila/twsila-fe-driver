@@ -30,8 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     UserDevice userDevice = await setUserDevice();
     (await loginUseCase.execute(
       LoginUseCaseInput(
-        event.mobileNumber,
-        event.appLanguage,
+        event.login,
         userDevice.toJson(),
       ),
     ))
@@ -59,8 +58,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     UserDevice userDevice = await setUserDevice();
     (await loginBOUseCase.execute(
       LoginBOUseCaseInput(
-        event.mobileNumber,
-        event.appLanguage,
+        event.login,
         userDevice.toJson(),
       ),
     ))

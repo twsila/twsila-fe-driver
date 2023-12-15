@@ -19,7 +19,8 @@ abstract class DriverBaseModel {
   String? email;
   String? gender;
   String? captainType;
-  String? token;
+  String? accessToken;
+  String? refreshToken;
   UserDevice? userDevice;
   String? tokenExpirationTime;
 }
@@ -76,7 +77,8 @@ class Driver extends DriverBaseModel {
       required this.images,
       required this.rating,
       required this.acknowledged,
-      required token,
+      required accessToken,
+      required refreshToken,
       required userDevice,
       this.businessOwnerModel,
       required tokenExpirationTime,
@@ -87,7 +89,8 @@ class Driver extends DriverBaseModel {
     this.mobile = mobile;
     this.email = email;
     this.gender = gender;
-    this.token = token;
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
     this.userDevice = userDevice;
     this.tokenExpirationTime = tokenExpirationTime;
     this.captainType = RegistrationConstants.captain;
@@ -131,7 +134,8 @@ class Driver extends DriverBaseModel {
             json["images"].map((x) => DriverImage.fromJson(x))).toList(),
         rating: json["rating"],
         acknowledged: json["acknowledged"],
-        token: json["token"],
+    accessToken: json["accessToken"],
+    refreshToken: json["refreshToken"],
         userDevice: json["userDevice"],
         tokenExpirationTime: json["tokenExpirationTime"] ?? "",
       );
@@ -165,7 +169,8 @@ class Driver extends DriverBaseModel {
         "images": List<dynamic>.from(images.map((x) => x.toJson())),
         "rating": rating,
         "acknowledged": acknowledged,
-        "token": token,
+        "accessToken": accessToken,
+        "refreshToken": refreshToken,
         "userDevice": userDevice,
         "tokenExpirationTime": tokenExpirationTime,
       };
@@ -276,6 +281,8 @@ UserDevice userDeviceFromJson(String str) =>
 String userDeviceToJson(UserDevice data) => json.encode(data.toJson());
 
 class UserDevice {
+  String? id;
+  String? userId;
   String? registrationId;
   String? deviceOs;
   String? appVersion;
@@ -287,12 +294,16 @@ class UserDevice {
   });
 
   UserDevice.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['userId'];
     registrationId = json['registrationId'];
     deviceOs = json['deviceOS'];
     appVersion = json['appVersion'];
   }
 
   Map<String, dynamic> toJson() => {
+        // "id": registrationId,
+        // "userId": registrationId,
         "registrationId": registrationId,
         "deviceOs": deviceOs,
         "appVersion": appVersion,

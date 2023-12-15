@@ -101,7 +101,6 @@ class _RegisterBusinessOwnerScreenState
                   BlocProvider.of<LoginBloc>(context).add(
                     MakeLoginBOEvent(
                       businessOwnerViewModel.mobileNumberController.text,
-                      businessOwnerViewModel.appPreferences.getAppLanguage(),
                     ),
                   );
                 }
