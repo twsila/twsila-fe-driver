@@ -27,6 +27,18 @@ class ServicesTypesSuccess extends ServiceRegistrationState {
   ServicesTypesSuccess(this.serviceTypeModelList);
 }
 
+class GoodsServicesTypesSuccess extends ServiceRegistrationState {
+  final List<GoodsServiceTypeModel> goodsServiceTypesList;
+
+  GoodsServicesTypesSuccess(this.goodsServiceTypesList);
+}
+
+class PersonsVehicleTypesSuccess extends ServiceRegistrationState {
+  final List<PersonsVehicleTypeModel> personsVehicleTypesList;
+
+  PersonsVehicleTypesSuccess(this.personsVehicleTypesList);
+}
+
 class ServicesTypesFail extends ServiceRegistrationState {
   final String message;
 

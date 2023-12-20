@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
+import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
@@ -15,6 +16,7 @@ import '../../data/network/requests.dart';
 import '../model/country_lookup_model.dart';
 import '../model/general_response.dart';
 import '../model/generate_otp_model.dart';
+import '../model/goods_service_type_model.dart';
 import '../model/logout_model.dart';
 import '../model/requested_drivers_response.dart';
 import '../model/service_status_model.dart';
@@ -22,8 +24,8 @@ import '../model/trip_details_model.dart';
 import '../model/verify_otp_model.dart';
 
 abstract class Repository {
-
   Future<Either<Failure, List<CountryLookupModel>>> getCountriesLookup();
+
   Future<Either<Failure, Driver>> login(LoginRequest loginRequest);
 
   Future<Either<Failure, BusinessOwnerModel>> loginBO(
@@ -102,4 +104,9 @@ abstract class Repository {
 
   Future<Either<Failure, BaseResponse>> boSuggestNewOffer(
       int businessOwnerId, int tripId, double newSuggestedOffer, int driverId);
+
+  Future<Either<Failure, List<GoodsServiceTypeModel>>> getGoodsServiceTypes();
+
+  Future<Either<Failure, List<PersonsVehicleTypeModel>>>
+      getPersonsVehicleTypes();
 }

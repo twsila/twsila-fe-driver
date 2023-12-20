@@ -16,7 +16,6 @@ part 'my_profile_event.dart';
 part 'my_profile_state.dart';
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
-
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
   MyProfileBloc() : super(MyProfileInitial()) {
@@ -31,9 +30,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
     if (_appPreferences.getCachedDriver()!.captainType ==
         RegistrationConstants.captain) {
       (await logoutUseCase.execute(LogoutUseCaseInput(
-              _appPreferences.getCachedDriver()!.id!,
-              _appPreferences.getCachedDriver()!.userDevice!.registrationId!,
-              _appPreferences.getAppLanguage())))
+              _appPreferences.getCachedDriver()!.refreshToken!)))
           .fold(
               (failure) => {
                     // left -> failure
@@ -48,9 +45,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
       });
     } else {
       (await boLogoutUseCase.execute(BoLogoutUseCaseInput(
-              _appPreferences.getCachedDriver()!.id!,
-              _appPreferences.getCachedDriver()!.userDevice!.registrationId!,
-              _appPreferences.getAppLanguage())))
+              _appPreferences.getCachedDriver()!.refreshToken!)))
           .fold(
               (failure) => {
                     // left -> failure

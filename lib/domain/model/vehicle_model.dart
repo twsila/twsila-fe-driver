@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'goods_service_type_model.dart';
+
 VehicleModel vehicleModelFromJson(String str) =>
     VehicleModel.fromJson(json.decode(str));
 
@@ -92,24 +94,3 @@ class NumberOfPassenger {
       };
 }
 
-class VehicleShape {
-  int id;
-  String shape;
-  bool? isSelected;
-
-  VehicleShape({
-    required this.id,
-    required this.shape,
-    this.isSelected = false,
-  });
-
-  factory VehicleShape.fromJson(Map<String, dynamic> json) => VehicleShape(
-        id: json["id"],
-        shape: json["shape"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "shape": shape,
-      };
-}

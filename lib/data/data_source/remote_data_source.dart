@@ -97,6 +97,10 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> boSuggestNewOffer(
       int businessOwnerId, int tripId, double newSuggestedOffer, int driverId);
+
+  Future<BaseResponse> getGoodsServiceTypes();
+
+  Future<BaseResponse> getPersonsVehicleTypes();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -106,12 +110,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<LoginResponse> login(LoginRequest loginRequest) async {
-    return await _appServiceClient.login(loginRequest.login,loginRequest.mobileUserDeviceDTO);
+    return await _appServiceClient.login(
+        loginRequest.login, loginRequest.mobileUserDeviceDTO);
   }
 
   @override
   Future<GeneralResponse> loginBO(LoginRequest loginRequest) async {
-    return await _appServiceClient.loginBO(loginRequest.login,loginRequest.mobileUserDeviceDTO);
+    return await _appServiceClient.loginBO(
+        loginRequest.login, loginRequest.mobileUserDeviceDTO);
   }
 
   @override
@@ -149,8 +155,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<LogoutModel> logout(LogoutRequest logoutRequest) async {
-    return await _appServiceClient.logout(logoutRequest.userId,
-        logoutRequest.registrationId, logoutRequest.language);
+    return await _appServiceClient.logout(logoutRequest.refreshToken);
   }
 
   @override
@@ -163,7 +168,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.email!,
         registrationRequest.gender!,
         registrationRequest.dateOfBirth!,
-        registrationRequest.driverServiceType!,
+        registrationRequest.serviceTypeParam!,
         registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
         registrationRequest.carModelId!,
@@ -183,7 +188,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.email!,
         registrationRequest.gender!,
         registrationRequest.dateOfBirth!,
-        registrationRequest.driverServiceType!,
+        registrationRequest.serviceTypeParam!,
         registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
         registrationRequest.carModelId!,
@@ -336,8 +341,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<LogoutModel> boLogout(LogoutRequest logoutRequest) async {
-    return await _appServiceClient.boLogout(logoutRequest.userId,
-        logoutRequest.registrationId, logoutRequest.language);
+    return await _appServiceClient.boLogout(logoutRequest.refreshToken);
   }
 
   @override
@@ -364,5 +368,15 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> getCountriesLookup() async {
     return await _appServiceClient.getCountriesLookup();
+  }
+
+  @override
+  Future<BaseResponse> getGoodsServiceTypes() async {
+    return await _appServiceClient.getGoodsServiceTypes();
+  }
+
+  @override
+  Future<BaseResponse> getPersonsVehicleTypes() async {
+    return await _appServiceClient.getPersonsVehicleTypes();
   }
 }

@@ -13,7 +13,7 @@ class RegistrationRequest {
   String? email;
   String? gender;
   String? dateOfBirth;
-  String? driverServiceType;
+  String? serviceTypeParam;
   String? vehicleTypeId;
   String? carManufacturerTypeId;
   String? carModelId;
@@ -42,6 +42,8 @@ class RegistrationRequest {
 
   bool? isAcknowledged;
 
+  int? serviceModelId;
+
   RegistrationRequest.empty();
 
   RegistrationRequest(
@@ -51,7 +53,7 @@ class RegistrationRequest {
       this.email,
       this.gender,
       this.dateOfBirth,
-      this.driverServiceType,
+      this.serviceTypeParam,
       this.vehicleTypeId,
       this.carManufacturerTypeId,
       this.carModelId,
@@ -74,5 +76,5 @@ class RegistrationRequest {
       this.carDriverNationalIdPhotosData,
       this.carOwnerNationalIdPhotosData,
       this.vehicleShapeId,
-      this.additionalServicesModel});
+      this.additionalServicesModel,this.serviceModelId});
 }

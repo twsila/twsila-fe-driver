@@ -58,9 +58,9 @@ class _ServiceCardState extends State<ServiceCard> {
   }
 
   checkSelectedValues() {
-    if (widget.registrationRequest.driverServiceType != null) {
+    if (widget.registrationRequest.serviceTypeParam != null) {
       selectedService = widget.serviceTypeModelList.firstWhere((element) =>
-          element.serviceName == widget.registrationRequest.driverServiceType);
+          element.serviceName == widget.registrationRequest.serviceTypeParam);
       if (widget.registrationRequest.vehicleTypeId != null &&
           selectedService != null) {
         int vehicleIndex = selectedService!.VehicleModels.indexWhere(

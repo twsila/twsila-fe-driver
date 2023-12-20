@@ -4,7 +4,11 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
+import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
+import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/goods_service_types_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/persons_vehicle_types_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
@@ -38,6 +42,8 @@ class ServiceRegistrationBloc
 
   ServiceRegistrationBloc() : super(ServiceRegistrationInitial()) {
     on<GetServiceTypes>(_getServicesTypes);
+    on<GetGoodsServiceTypes>(_getGoodsServiceTypes);
+    on<GetPersonsVehicleTypes>(_getPersonsVehicleTypes);
     on<GetCarBrandAndModel>(_getCarBrandsAndModels);
     on<NavigateToUploadDocument>(_setDocumentData);
     on<SelectToUploadEvent>(_selectToUpload);
@@ -96,6 +102,47 @@ class ServiceRegistrationBloc
     });
   }
 
+  FutureOr<void> _getGoodsServiceTypes(GetGoodsServiceTypes event,
+      Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    GoodsServiceTypesUseCase goodsServiceTypesUseCase =
+        instance<GoodsServiceTypesUseCase>();
+    (await goodsServiceTypesUseCase.execute(GoodsServiceTypesUseCaseInput()))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(ServicesTypesFail(failure.message))
+                }, (goodsServiceTypeList) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      emit(GoodsServicesTypesSuccess(goodsServiceTypeList));
+    });
+  }
+
+  FutureOr<void> _getPersonsVehicleTypes(GetPersonsVehicleTypes event,
+      Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    PersonsVehicleTypesUseCase personsVehicleTypesUseCase =
+        instance<PersonsVehicleTypesUseCase>();
+    (await personsVehicleTypesUseCase
+            .execute(PersonsVehicleTypesUseCaseInput()))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(ServicesTypesFail(failure.message))
+                }, (personsVehicleTypeList) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      emit(PersonsVehicleTypesSuccess(personsVehicleTypeList));
+    });
+  }
+
   FutureOr<void> _getCarBrandsAndModels(
       GetCarBrandAndModel event, Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
@@ -129,7 +176,7 @@ class ServiceRegistrationBloc
             email: registrationRequest.email!,
             gender: registrationRequest.gender!,
             dateOfBirth: registrationRequest.dateOfBirth!,
-            driverServiceType: registrationRequest.driverServiceType!,
+            driverServiceType: registrationRequest.serviceTypeParam!,
             vehicleTypeId: registrationRequest.vehicleTypeId!,
             carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
             carModelId: registrationRequest.carModelId!,
@@ -142,14 +189,13 @@ class ServiceRegistrationBloc
             hasPacking: registrationRequest.hasPacking,
             hasLoading: registrationRequest.hasLoading,
             hasLifting: registrationRequest.hasLifting,
-            numberOfPassengersId:
-                registrationRequest.vehicleShapeId,
-            vehicleShapeId:
-                registrationRequest.vehicleShapeId,
+            numberOfPassengersId: registrationRequest.vehicleShapeId,
+            vehicleShapeId: registrationRequest.vehicleShapeId,
             hasAssembly: registrationRequest.hasAssembly,
             plateNumber: registrationRequest.plateNumber!,
             driverImages: registrationRequest.driverImages!,
-            isAcknowledged: registrationRequest.isAcknowledged ?? true)))
+            isAcknowledged: registrationRequest.isAcknowledged ?? true,
+            serviceModelId: registrationRequest.serviceModelId)))
         .fold(
             (failure) => {
                   // left -> failure
@@ -321,7 +367,8 @@ class ServiceRegistrationBloc
 
   FutureOr<void> _setFirstStepData(
       SetFirstStepData event, Emitter<ServiceRegistrationState> emit) async {
-    registrationRequest.driverServiceType = event.driverServiceType;
+    registrationRequest.serviceModelId = event.serviceModelId;
+    registrationRequest.serviceTypeParam = event.serviceTypeParam;
     registrationRequest.vehicleTypeId = event.vehicleTypeId;
     registrationRequest.canTransportFurniture =
         event.additionalServicesModel.canTransportFurniture;

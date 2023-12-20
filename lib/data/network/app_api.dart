@@ -22,18 +22,15 @@ part 'app_api.g.dart';
 abstract class AppServiceClient {
   factory AppServiceClient(Dio dio, {String baseUrl}) = _AppServiceClient;
 
-
   @GET("/lookups/country")
   Future<BaseResponse> getCountriesLookup();
 
   @POST("/api/v1/auth/login")
-  Future<LoginResponse> login(
-      @Field("login") String login,
+  Future<LoginResponse> login(@Field("login") String login,
       @Field("mobileUserDeviceDTO") Map<String, dynamic> userDeviceDTO);
 
   @POST("/api/v1/auth/login")
-  Future<GeneralResponse> loginBO(
-      @Field("login") String login,
+  Future<GeneralResponse> loginBO(@Field("login") String login,
       @Field("mobileUserDeviceDTO") Map<String, dynamic> userDeviceDTO);
 
   @POST("/otp/generate")
@@ -66,7 +63,7 @@ abstract class AppServiceClient {
       @Part(name: "email") String email,
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
-      @Part(name: "serviceType") String driverServiceType,
+      @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "vehicleType.id") String vehicleTypeId,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
@@ -84,7 +81,7 @@ abstract class AppServiceClient {
       @Part(name: "email") String email,
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
-      @Part(name: "serviceType") String driverServiceType,
+      @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "vehicleType.id") String vehicleTypeId,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
@@ -158,18 +155,14 @@ abstract class AppServiceClient {
   @GET("/lookups")
   Future<LookupsModel> getLookups();
 
-  @POST("/drivers/logout")
+  @POST("/api/v1/auth/logout")
   Future<LogoutModel> logout(
-    @Field("userId") int userId,
-    @Field("registrationId") String registrationId,
-    @Field("language") String language,
+    @Field("refreshToken") String refreshToken,
   );
 
-  @POST("/bo/logout")
+  @POST("/api/v1/auth/logout")
   Future<LogoutModel> boLogout(
-    @Field("userId") int userId,
-    @Field("registrationId") String registrationId,
-    @Field("language") String language,
+    @Field("refreshToken") String refreshToken,
   );
 
   @POST("/drivers/trips/change-status")
@@ -260,4 +253,10 @@ abstract class AppServiceClient {
     @Field("tripId") int tripId,
     @Field("driverId") int driverId,
   );
+
+  @GET(EndPointsConstants.goodsServiceTypes)
+  Future<BaseResponse> getGoodsServiceTypes();
+
+  @GET(EndPointsConstants.personsVehicleTypes)
+  Future<BaseResponse> getPersonsVehicleTypes();
 }

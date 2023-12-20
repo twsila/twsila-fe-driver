@@ -1,4 +1,3 @@
-
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
@@ -39,12 +38,32 @@ class Constants {
   ];
 }
 
-class UserTypeConstants{
+class UserTypeConstants {
   static const String DRIVER = "DRIVER";
   static const String BUSINESS_OWNER = "BUSINESS_OWNER";
 }
-class EndPointsConstants{
+
+class EndPointsConstants {
   static const String loginPath = "/api/v1/auth/login";
+  static const String refreshTokenPath = "/api/v1/auth/refresh-token";
+  static const String logoutPath = "/api/v1/auth/logout";
+
+  static const String goodsServiceTypes = "/drivers/service-types";
+  static const String personsVehicleTypes = "/drivers/vehicle-types";
+  static const String carModels = "/drivers/car-model";
+  static const String lookups = "/lookups";
+  static const String countryLookup = "/lookups/country";
+
+  static const List<String> cancelTokenApis = [
+    logoutPath,
+    refreshTokenPath,
+    loginPath,
+    goodsServiceTypes,
+    personsVehicleTypes,
+    carModels,
+    lookups,
+    countryLookup
+  ];
 }
 
 class TripTypeConstants {

@@ -45,14 +45,14 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<LoginResponse> login(
-    mobile,
+    login,
     userDeviceDTO,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'login': mobile,
+      'login': login,
       'mobileUserDeviceDTO': userDeviceDTO,
     };
     final _result = await _dio
@@ -74,14 +74,14 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<GeneralResponse> loginBO(
-    mobile,
+    login,
     userDeviceDTO,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'login': mobile,
+      'login': login,
       'mobileUserDeviceDTO': userDeviceDTO,
     };
     final _result = await _dio
@@ -746,19 +746,11 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<LogoutModel> logout(
-    userId,
-    registrationId,
-    language,
-  ) async {
+  Future<LogoutModel> logout(refreshToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {
-      'userId': userId,
-      'registrationId': registrationId,
-      'language': language,
-    };
+    final _data = {'refreshToken': refreshToken};
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<LogoutModel>(Options(
       method: 'POST',
@@ -767,7 +759,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/drivers/logout',
+              '/api/v1/auth/logout',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -777,19 +769,11 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<LogoutModel> boLogout(
-    userId,
-    registrationId,
-    language,
-  ) async {
+  Future<LogoutModel> boLogout(refreshToken) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {
-      'userId': userId,
-      'registrationId': registrationId,
-      'language': language,
-    };
+    final _data = {'refreshToken': refreshToken};
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<LogoutModel>(Options(
       method: 'POST',
@@ -798,7 +782,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/bo/logout',
+              '/api/v1/auth/logout',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -1225,6 +1209,52 @@ class _AppServiceClient implements AppServiceClient {
             .compose(
               _dio.options,
               '/driver-acquisition/accept-offer',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> getGoodsServiceTypes() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/drivers/service-types',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> getPersonsVehicleTypes() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/drivers/vehicle-types',
               queryParameters: queryParameters,
               data: _data,
             )

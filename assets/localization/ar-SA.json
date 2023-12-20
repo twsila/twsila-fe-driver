@@ -331,6 +331,7 @@
   "step_two": "خطوة ٢/٢",
   "service_data": "بيانات الخدمة",
   "select_service_type": "إختر نوع الخدمة",
+  "select_subservice_type": "إختر نوع الخدمة الفرعية",
   "select_service_vehicle_type": "إختر نوع المركبة",
   "select_service_truck_type": "إختر نوع الشاحنة",
   "aslo_provide_this_services": "اقدم ايضا الخدمات التالية",

@@ -322,6 +322,7 @@
   "step_two": "Step 2/2",
   "service_data": "Service Data",
   "select_service_type": "Select service type",
+  "select_subservice_type": "Select sub service type",
   "select_service_vehicle_type": "select service vehicle type",
   "select_service_truck_type": "select service truck type",
   "aslo_provide_this_services": "also i provide this services",

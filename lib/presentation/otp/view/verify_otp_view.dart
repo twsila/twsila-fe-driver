@@ -120,7 +120,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
             }
             if (state is LoginFailState) {
               if ((state.errorCode == ResponseCode.NOT_FOUND.toString() ||
-                      state.errorCode == ResponseCode.BAD_REQUEST.toString()) &&
+                      state.errorCode == ResponseCode.BAD_REQUEST.toString() ||
+                      state.errorCode == ResponseCode.INTERNAL_SERVER_ERROR.toString()) &&
                   widget.registerAs == RegistrationConstants.captain) {
                 Navigator.pushReplacementNamed(
                     context, Routes.captainRegisterRoute,
@@ -162,10 +163,12 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                   .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
               if (widget.registerAs == RegistrationConstants.captain) {
                 BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-                    widget.mobileNumberForApi,));
+                  widget.mobileNumberForApi,
+                ));
               } else {
                 BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-                    widget.mobileNumberForApi,));
+                  widget.mobileNumberForApi,
+                ));
               }
             }
             if (state is VerifyOtpFail) {

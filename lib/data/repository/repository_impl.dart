@@ -5,7 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/data/mapper/driver.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
+import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
+import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
@@ -51,8 +53,12 @@ class RepositoryImpl implements Repository {
           // return either right
           // return data
           //save driver data
-          return Right(LoginResponse.fromJson(response.result!["user"]).toDomain());
-
+          String accessToken = response.result["accessToken"];
+          String refreshToken = response.result["refreshToken"];
+          Driver driver = Driver.fromJson(response.result!["user"]["driver"]);
+          driver.accessToken = accessToken;
+          driver.refreshToken = refreshToken;
+          return Right(driver);
         } else {
           // failure --return business error
           // return either left
@@ -83,7 +89,13 @@ class RepositoryImpl implements Repository {
           // return either right
           // return data
           //save driver data
-          return Right(BusinessOwnerModel.fromJson(response.result!));
+          String accessToken = response.result["accessToken"];
+          String refreshToken = response.result["refreshToken"];
+          BusinessOwnerModel businessOwner = BusinessOwnerModel.fromJson(
+              response.result!["user"]["businessOwner"]);
+          businessOwner.accessToken = accessToken;
+          businessOwner.refreshToken = refreshToken;
+          return Right(businessOwner);
         } else {
           // failure --return business error
           // return either left
@@ -277,7 +289,7 @@ class RepositoryImpl implements Repository {
       // its connected to internet, its safe to call API
       try {
         final response;
-        if (registrationRequest.driverServiceType! == TripType.GOODS.name) {
+        if (registrationRequest.serviceModelId! == 1) {
           response = await _remoteDataSource
               .registerCaptainWithGoodsService(registrationRequest);
         } else {
@@ -789,6 +801,61 @@ class RepositoryImpl implements Repository {
           List<CountryLookupModel> countries = List<CountryLookupModel>.from(
               response.result.map((x) => CountryLookupModel.fromJson(x)));
           return Right(countries);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<GoodsServiceTypeModel>>>
+      getGoodsServiceTypes() async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.getGoodsServiceTypes();
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<GoodsServiceTypeModel> goodsServiceTypesList =
+              List<GoodsServiceTypeModel>.from(response
+                  .result["serviceTypeLookup"]
+                  .map((x) => GoodsServiceTypeModel.fromJson(x)));
+          return Right(goodsServiceTypesList);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PersonsVehicleTypeModel>>>
+      getPersonsVehicleTypes() async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.getPersonsVehicleTypes();
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<PersonsVehicleTypeModel> personsVehicleTypesList =
+              List<PersonsVehicleTypeModel>.from(response.result["vehicleTypes"]
+                  .map((x) => PersonsVehicleTypeModel.fromJson(x)));
+          return Right(personsVehicleTypesList);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));

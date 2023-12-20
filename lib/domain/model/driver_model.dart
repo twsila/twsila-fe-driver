@@ -134,8 +134,8 @@ class Driver extends DriverBaseModel {
             json["images"].map((x) => DriverImage.fromJson(x))).toList(),
         rating: json["rating"],
         acknowledged: json["acknowledged"],
-    accessToken: json["accessToken"],
-    refreshToken: json["refreshToken"],
+        accessToken: json["accessToken"],
+        refreshToken: json["refreshToken"],
         userDevice: json["userDevice"],
         tokenExpirationTime: json["tokenExpirationTime"] ?? "",
       );

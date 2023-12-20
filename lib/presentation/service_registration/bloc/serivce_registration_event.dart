@@ -6,6 +6,12 @@ abstract class ServiceRegistrationEvent {}
 class GetServiceTypes extends ServiceRegistrationEvent {
   GetServiceTypes();
 }
+class GetGoodsServiceTypes extends ServiceRegistrationEvent {
+  GetGoodsServiceTypes();
+}
+class GetPersonsVehicleTypes extends ServiceRegistrationEvent {
+  GetPersonsVehicleTypes();
+}
 
 class GetCarBrandAndModel extends ServiceRegistrationEvent {
   GetCarBrandAndModel();
@@ -104,12 +110,13 @@ class SetCaptainData extends ServiceRegistrationEvent {
 }
 
 class SetFirstStepData extends ServiceRegistrationEvent {
-  final String driverServiceType;
+  final String serviceTypeParam;
   final String vehicleTypeId;
   final String vehicleShapeId;
+  final int serviceModelId;
   final AdditionalServicesModel additionalServicesModel ;
 
-  SetFirstStepData(this.driverServiceType, this.vehicleTypeId,this.vehicleShapeId,this.additionalServicesModel);
+  SetFirstStepData(this.serviceTypeParam, this.vehicleTypeId,this.vehicleShapeId,this.serviceModelId,this.additionalServicesModel);
 }
 
 class SetSecondStepData extends ServiceRegistrationEvent {

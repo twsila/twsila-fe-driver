@@ -347,6 +347,7 @@ class AppStrings {
   static const stepTwo = 'step_two';
   static const serviceData = 'service_data';
   static const selectServiceType = 'select_service_type';
+  static const selectSubServiceType = 'select_subservice_type';
   static const selectServiceVehicleType = 'select_service_vehicle_type';
   static const numberOfPassengers = 'number_of_passenger';
   static const vehicleShape = 'vehicle_shape';

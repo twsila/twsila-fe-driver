@@ -45,10 +45,10 @@ class DioFactory {
               ? "Bearer " +
                   (_appPreferences.getCachedDriver()?.accessToken ?? "")
               : "";
-          if (options.path != EndPointsConstants.loginPath) {
-            options.headers[AUTHORIZATION] = token;
-          } else {
+          if (EndPointsConstants.cancelTokenApis.contains(options.path)) {
             options.cancelToken;
+          } else {
+            options.headers[AUTHORIZATION] = token;
           }
           options.headers[USER_TYPE] = _appPreferences.getUserType() ?? "";
           return handler.next(options);
@@ -96,7 +96,7 @@ class DioFactory {
           ? "Bearer " + (_appPreferences.getCachedDriver()?.accessToken ?? "")
           : "",
       USER_TYPE: _appPreferences.getUserType() ?? "",
-    })).post(Constants.baseUrl + '/refresh-token', data: {
+    })).post(Constants.baseUrl + EndPointsConstants.refreshTokenPath, data: {
       "refreshToken": _appPreferences.getCachedDriver()?.refreshToken ?? ""
     });
     print(response.data["result"]);

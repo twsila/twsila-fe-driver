@@ -8,7 +8,6 @@ class BusinessOwnerModel extends DriverBaseModel {
   String? taxNumber;
   String? nationalId;
   String? commercialNumber;
-  String? token;
   List<File>? images;
   List<DriverImage>? imagesFromApi;
   UserDevice? userDevice;
@@ -37,7 +36,6 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.email = email;
     this.gender = gender;
     this.imagesFromApi = imagesFromApi;
-    this.token = token;
     this.userDevice = userDevice;
     this.tokenExpirationTime = tokenExpirationTime;
     this.profileImage = profileImage;
@@ -45,19 +43,18 @@ class BusinessOwnerModel extends DriverBaseModel {
   }
 
   BusinessOwnerModel.fromJson(Map<String, dynamic> json) {
-    id = json['businessOwner']['id'];
-    firstName = json['businessOwner']['firstName'];
-    lastName = json['businessOwner']['lastName'];
-    mobile = json['businessOwner']['mobile'];
-    email = json['businessOwner']['email'];
-    gender = json['businessOwner']['gender'];
-    taxNumber = json['businessOwner']['taxNumber'];
-    nationalId = json['businessOwner']['nationalId'];
-    entityName = json['businessOwner']['entityName'];
+    id = json['id'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    mobile = json['mobile'];
+    email = json['email'];
+    gender = json['gender'];
+    taxNumber = json['taxNumber'];
+    nationalId = json['nationalId'];
+    entityName = json['entityName'];
     imagesFromApi = List<DriverImage>.from(
-        json['businessOwner']["images"].map((x) => DriverImage.fromJson(x)));
-    commercialNumber = json['businessOwner']['commercialNumber'];
-    token = json['businessOwner']["token"];
+        json["images"].map((x) => DriverImage.fromJson(x)));
+    commercialNumber = json['commercialNumber'];
     userDevice = json["userDevice"] != null ? UserDevice.fromJson(json["userDevice"]) : null;
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
@@ -76,7 +73,6 @@ class BusinessOwnerModel extends DriverBaseModel {
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['commercialNumber'];
-    token = json["token"];
     userDevice = json["userDevice"] != null ? UserDevice.fromJson(json["userDevice"]) : null;
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
@@ -92,10 +88,11 @@ class BusinessOwnerModel extends DriverBaseModel {
     taxNumber = json['taxNumber'];
     nationalId = json['nationalId'];
     entityName = json['entityName'];
+    accessToken = json["accessToken"];
+    refreshToken = json["refreshToken"];
     commercialNumber = json['commercialNumber'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
-    token = json["token"];
     userDevice = json["userDevice"];
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
@@ -110,8 +107,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     data['mobile'] = mobile;
     data['gender'] = gender;
     data['taxNumber'] = taxNumber;
-    data['token'] = token;
     data['nationalId'] = nationalId;
+    data['accessToken'] = accessToken;
+    data['refreshToken'] = refreshToken;
     data['images'] = imagesFromApi;
     data['entityName'] = entityName;
     data['commercialNumber'] = commercialNumber;

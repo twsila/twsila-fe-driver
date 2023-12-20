@@ -18,32 +18,34 @@ class RegistrationUseCase
   Future<Either<Failure, RegistrationResponse>> execute(
       RegistrationUseCaseInput input) async {
     return await _repository.register(RegistrationRequest(
-        input.firstName,
-        input.lastName,
-        input.mobile,
-        input.email,
-        input.gender,
-        input.dateOfBirth,
-        input.driverServiceType,
-        input.vehicleTypeId,
-        input.carManufacturerTypeId,
-        input.carModelId,
-        input.carNotes,
-        null,
-        //car images can be null cause we use it in view only
-        input.plateNumber,
-        input.driverImages,
-        input.canTransportFurniture,
-        input.canTransportGoods,
-        input.canTransportFrozen,
-        input.hasWaterTank,
-        input.hasOtherTanks,
-        input.hasPacking,
-        input.hasLoading,
-        input.hasAssembly,
-        input.hasLifting,
-        input.isAcknowledged,
-        vehicleShapeId: input.vehicleShapeId));
+      input.firstName,
+      input.lastName,
+      input.mobile,
+      input.email,
+      input.gender,
+      input.dateOfBirth,
+      input.driverServiceType,
+      input.vehicleTypeId,
+      input.carManufacturerTypeId,
+      input.carModelId,
+      input.carNotes,
+      null,
+      //car images can be null cause we use it in view only
+      input.plateNumber,
+      input.driverImages,
+      input.canTransportFurniture,
+      input.canTransportGoods,
+      input.canTransportFrozen,
+      input.hasWaterTank,
+      input.hasOtherTanks,
+      input.hasPacking,
+      input.hasLoading,
+      input.hasAssembly,
+      input.hasLifting,
+      input.isAcknowledged,
+      vehicleShapeId: input.vehicleShapeId,
+      serviceModelId: input.serviceModelId
+    ));
   }
 }
 
@@ -77,6 +79,8 @@ class RegistrationUseCaseInput {
 
   bool isAcknowledged;
 
+  int? serviceModelId;
+
   RegistrationUseCaseInput(
       {required this.firstName,
       required this.lastName,
@@ -102,5 +106,6 @@ class RegistrationUseCaseInput {
       this.hasLoading = false,
       this.hasAssembly = false,
       this.hasLifting = false,
-      required this.isAcknowledged});
+      required this.isAcknowledged,
+      this.serviceModelId});
 }

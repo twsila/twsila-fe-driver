@@ -16,16 +16,14 @@ class LogoutUseCase implements BaseUseCase<LogoutUseCaseInput, LogoutModel> {
   @override
   Future<Either<Failure, LogoutModel>> execute(LogoutUseCaseInput input) async {
     return await _repository.logout(
-        LogoutRequest(input.userId, input.registrationId, input.language));
+        LogoutRequest(input.refreshToken));
   }
 }
 
 class LogoutUseCaseInput {
-  int userId;
-  String registrationId;
-  String language;
+  String refreshToken;
 
-  LogoutUseCaseInput(this.userId, this.registrationId, this.language);
+  LogoutUseCaseInput(this.refreshToken);
 }class BoLogoutUseCase implements BaseUseCase<BoLogoutUseCaseInput, LogoutModel> {
   final Repository _repository;
 
@@ -34,14 +32,12 @@ class LogoutUseCaseInput {
   @override
   Future<Either<Failure, LogoutModel>> execute(BoLogoutUseCaseInput input) async {
     return await _repository.boLogout(
-        LogoutRequest(input.userId, input.registrationId, input.language));
+        LogoutRequest(input.refreshToken));
   }
 }
 
 class BoLogoutUseCaseInput {
-  int userId;
-  String registrationId;
-  String language;
+  String refreshToken;
 
-  BoLogoutUseCaseInput(this.userId, this.registrationId, this.language);
+  BoLogoutUseCaseInput(this.refreshToken);
 }

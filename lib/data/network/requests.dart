@@ -44,11 +44,9 @@ class VerifyOTPRequest {
 }
 
 class LogoutRequest {
-  int userId;
-  String registrationId;
-  String language;
+  String refreshToken;
 
-  LogoutRequest(this.userId, this.registrationId, this.language);
+  LogoutRequest(this.refreshToken);
 }
 
 class UpdateProfileRequest {

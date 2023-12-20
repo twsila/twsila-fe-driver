@@ -41,7 +41,7 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
         Text(
           widget._fieldName,
           style: getRegularStyle(
-              color: ColorManager.headersTextColor, fontSize: FontSize.s14),
+              color: ColorManager.headersTextColor, fontSize: 13),
         ),
       ],
     );
