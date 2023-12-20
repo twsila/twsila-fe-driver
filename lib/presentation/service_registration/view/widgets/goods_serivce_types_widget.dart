@@ -158,6 +158,7 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
                   )),
         ),
         VehicleShapeWidget(
+          lang: widget.lang,
             preselectedVehicle: this.vehicleShape,
             vehicleShapesList:
                 selectedGoodsServiceTypeModel?.vehicleShapes ?? [],

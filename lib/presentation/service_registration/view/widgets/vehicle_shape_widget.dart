@@ -5,16 +5,19 @@ import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
 import '../../../../domain/model/goods_service_type_model.dart';
 import '../../../../domain/model/vehicle_model.dart';
 import '../../../../utils/resources/color_manager.dart';
+import '../../../../utils/resources/langauge_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 import '../../../../utils/resources/values_manager.dart';
 
 class VehicleShapeWidget extends StatefulWidget {
+  final String lang;
   final VehicleShape? preselectedVehicle;
   final List<VehicleShape> vehicleShapesList;
   final Function(VehicleShape vehicleShape) selectedVehicle;
 
   VehicleShapeWidget(
-      {this.preselectedVehicle,
+      {required this.lang,
+      this.preselectedVehicle,
       required this.vehicleShapesList,
       required this.selectedVehicle});
 
@@ -81,7 +84,11 @@ class _VehicleShapeWidgetState extends State<VehicleShapeWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.vehicleShapesList[index].shape.toString(),
+                          widget.lang == ARABIC
+                              ? widget.vehicleShapesList[index].shapeAr
+                                  .toString()
+                              : widget.vehicleShapesList[index].shape
+                                  .toString(),
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium

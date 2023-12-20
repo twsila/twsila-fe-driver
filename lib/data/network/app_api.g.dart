@@ -232,7 +232,7 @@ class _AppServiceClient implements AppServiceClient {
     email,
     gender,
     dateOfBirth,
-    driverServiceType,
+    serviceTypeParam,
     vehicleTypeId,
     carManufacturerTypeId,
     carModelId,
@@ -270,8 +270,8 @@ class _AppServiceClient implements AppServiceClient {
       dateOfBirth,
     ));
     _data.fields.add(MapEntry(
-      'serviceType',
-      driverServiceType,
+      'serviceTypes',
+      serviceTypeParam,
     ));
     _data.fields.add(MapEntry(
       'vehicleType.id',
@@ -329,7 +329,7 @@ class _AppServiceClient implements AppServiceClient {
     email,
     gender,
     dateOfBirth,
-    driverServiceType,
+    serviceTypeParam,
     vehicleTypeId,
     carManufacturerTypeId,
     carModelId,
@@ -376,8 +376,8 @@ class _AppServiceClient implements AppServiceClient {
       dateOfBirth,
     ));
     _data.fields.add(MapEntry(
-      'serviceType',
-      driverServiceType,
+      'serviceTypes',
+      serviceTypeParam,
     ));
     _data.fields.add(MapEntry(
       'vehicleType.id',

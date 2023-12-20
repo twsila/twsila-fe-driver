@@ -54,7 +54,7 @@ abstract class AppServiceClient {
   @POST("/customers/forgotPassword")
   Future<ForgotPasswordResponse> forgotPassword(@Field("email") String email);
 
-  @POST("/drivers/register")
+  @POST(EndPointsConstants.registration)
   @MultiPart()
   Future<RegistrationResponse> registerCaptainWithPersonService(
       @Part(name: "firstName") String firstName,

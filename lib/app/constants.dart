@@ -47,6 +47,7 @@ class EndPointsConstants {
   static const String loginPath = "/api/v1/auth/login";
   static const String refreshTokenPath = "/api/v1/auth/refresh-token";
   static const String logoutPath = "/api/v1/auth/logout";
+  static const String registration = "/drivers/register";
 
   static const String goodsServiceTypes = "/drivers/service-types";
   static const String personsVehicleTypes = "/drivers/vehicle-types";
@@ -58,6 +59,7 @@ class EndPointsConstants {
     logoutPath,
     refreshTokenPath,
     loginPath,
+    registration,
     goodsServiceTypes,
     personsVehicleTypes,
     carModels,
