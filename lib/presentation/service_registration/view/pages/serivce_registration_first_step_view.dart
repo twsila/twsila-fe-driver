@@ -265,12 +265,12 @@ class _ServiceRegistrationFirstStepViewState
                                           .toString()
                                       : this
                                           .selectedPersonVehicleType!
-                                          .vehicleType
+                                          .serviceType
                                           .toString(),
-                                  this.vehicleShape != null
-                                      ? this.vehicleShape!.id.toString()
+                                  this.goodsServiceType != null
+                                      ? this.goodsServiceType!.id.toString()
                                       : this
-                                          .selectedNumberOfPassengers!
+                                          .selectedPersonVehicleType!
                                           .id
                                           .toString(),
                                   _showPersonsData
