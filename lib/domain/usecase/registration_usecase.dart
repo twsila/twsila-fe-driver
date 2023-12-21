@@ -29,6 +29,7 @@ class RegistrationUseCase
       input.carManufacturerTypeId,
       input.carModelId,
       input.carNotes,
+      input.countryCode,
       null,
       //car images can be null cause we use it in view only
       input.plateNumber,
@@ -61,6 +62,7 @@ class RegistrationUseCaseInput {
   String carManufacturerTypeId;
   String carModelId;
   String carNotes;
+  String countryCode;
   String plateNumber;
   List<File> driverImages;
 
@@ -97,6 +99,7 @@ class RegistrationUseCaseInput {
       required this.driverImages,
       this.numberOfPassengersId,
       this.vehicleShapeId,
+      required this.countryCode,
       this.canTransportFurniture = false,
       this.canTransportGoods = false,
       this.canTransportFrozen = false,

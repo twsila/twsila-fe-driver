@@ -43,6 +43,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     setCountryCodeValue(selectedCountry);
+    _appPreferences.setUserSelectedCountry(selectedCountry.countryIsoCode);
     super.initState();
   }
 
@@ -165,6 +166,8 @@ class _LoginViewState extends State<LoginView> {
               itemCount: _appPreferences.getCountries().length,
               itemBuilder: (context, index) {
                 final selectedCountry = Constants.countryList[index];
+                _appPreferences
+                    .setUserSelectedCountry(selectedCountry.countryIsoCode);
                 return InkWell(
                   onTap: () {
                     setState(() {

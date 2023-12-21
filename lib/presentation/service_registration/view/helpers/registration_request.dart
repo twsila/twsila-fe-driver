@@ -20,6 +20,7 @@ class RegistrationRequest {
   String? carNotes;
   String? plateNumber;
   String? vehicleShapeId;
+  String? countryCode;
   List<File>? driverImages;
   List<XFile>? carImages;
 
@@ -58,6 +59,7 @@ class RegistrationRequest {
       this.carManufacturerTypeId,
       this.carModelId,
       this.carNotes,
+      this.countryCode,
       this.carImages,
       this.plateNumber,
       this.driverImages,

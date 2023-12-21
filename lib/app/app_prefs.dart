@@ -23,6 +23,7 @@ const String USER_SELECTED_COUNTRY = "USER_SELECTED_COUNTRY";
 const String DRIVER_MODEL = "DRIVER_MODEL";
 const String DRIVER_FCM_TOKEN = "DRIVER_FCM_TOKEN";
 const String USER_TYPE = "USER_TYPE";
+const String CURRENT_COUNTRY_CODE = "CURRENT_COUNTRY_CODE";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -161,6 +162,10 @@ class AppPreferences {
               language: 'ar',
             ),
           ];
+  }
+
+  setCurrentCountryCode(String countryCode){
+
   }
 
   DriverBaseModel? getCachedDriver() {

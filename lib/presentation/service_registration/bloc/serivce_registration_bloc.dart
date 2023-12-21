@@ -15,6 +15,7 @@ import 'package:taxi_for_you/presentation/business_owner/registration/model/Busi
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/services_card_widget.dart';
 
+import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/service_type_model.dart';
@@ -30,6 +31,7 @@ part 'serivce_registration_state.dart';
 
 class ServiceRegistrationBloc
     extends Bloc<ServiceRegistrationEvent, ServiceRegistrationState> {
+  AppPreferences appPreferences = instance<AppPreferences>();
   RegistrationRequest registrationRequest = RegistrationRequest.empty();
   static DocumentData carDocument = DocumentData();
   static DocumentData driverIdDocument = DocumentData();
@@ -195,7 +197,8 @@ class ServiceRegistrationBloc
             plateNumber: registrationRequest.plateNumber!,
             driverImages: registrationRequest.driverImages!,
             isAcknowledged: registrationRequest.isAcknowledged ?? true,
-            serviceModelId: registrationRequest.serviceModelId)))
+            serviceModelId: registrationRequest.serviceModelId,
+            countryCode: appPreferences.getUserSelectedCountry().toString())))
         .fold(
             (failure) => {
                   // left -> failure

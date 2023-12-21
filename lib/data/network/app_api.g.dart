@@ -240,6 +240,7 @@ class _AppServiceClient implements AppServiceClient {
     isAcknowledged,
     numberOfPassengers,
     driverImages,
+    countryCode,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -303,6 +304,10 @@ class _AppServiceClient implements AppServiceClient {
           i.path,
           filename: i.path.split(Platform.pathSeparator).last,
         ))));
+    _data.fields.add(MapEntry(
+      'countryCode',
+      countryCode,
+    ));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<RegistrationResponse>(Options(
       method: 'POST',
@@ -346,6 +351,7 @@ class _AppServiceClient implements AppServiceClient {
     isAcknowledged,
     vehicleShapeId,
     driverImages,
+    countryCode,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -445,6 +451,10 @@ class _AppServiceClient implements AppServiceClient {
           i.path,
           filename: i.path.split(Platform.pathSeparator).last,
         ))));
+    _data.fields.add(MapEntry(
+      'countryCode',
+      countryCode,
+    ));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<RegistrationResponse>(Options(
       method: 'POST',

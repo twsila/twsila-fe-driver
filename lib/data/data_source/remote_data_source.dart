@@ -175,7 +175,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.plateNumber!,
         registrationRequest.isAcknowledged!,
         registrationRequest.vehicleShapeId.toString(),
-        registrationRequest.driverImages!);
+        registrationRequest.driverImages!,
+        registrationRequest.countryCode.toString());
   }
 
   @override
@@ -204,7 +205,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.plateNumber!,
         registrationRequest.isAcknowledged!,
         registrationRequest.vehicleShapeId.toString(),
-        registrationRequest.driverImages!);
+        registrationRequest.driverImages!,
+        registrationRequest.countryCode.toString());
   }
 
   @override
