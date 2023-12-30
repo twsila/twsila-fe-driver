@@ -39,8 +39,9 @@ class GenerateOTPRequest {
 class VerifyOTPRequest {
   String otp;
   String mobileNumber;
+  String generatedOtp;
 
-  VerifyOTPRequest(this.otp, this.mobileNumber);
+  VerifyOTPRequest(this.otp, this.mobileNumber,this.generatedOtp);
 }
 
 class LogoutRequest {

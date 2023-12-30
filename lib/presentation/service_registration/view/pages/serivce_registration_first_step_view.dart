@@ -56,8 +56,8 @@ class _ServiceRegistrationFirstStepViewState
   PersonsVehicleTypeModel? selectedPersonVehicleType;
   NumberOfPassenger? selectedNumberOfPassengers;
 
-  GoodsServiceTypeModel? goodsServiceType;
-  VehicleShape? vehicleShape;
+  GoodsServiceTypeModel? selectedGoodsServiceType;
+  VehicleShape? selectedVehicleShape;
 
   @override
   void initState() {
@@ -207,7 +207,8 @@ class _ServiceRegistrationFirstStepViewState
                           setState(() {
                             this.selectedPersonVehicleType =
                                 selectedPersonsVehicleTypeModel;
-                            this.goodsServiceType = null;
+                            this.selectedGoodsServiceType = null;
+                            this.selectedNumberOfPassengers = null;
                           });
                         },
                         selectedNumberOfPassengers:
@@ -215,7 +216,7 @@ class _ServiceRegistrationFirstStepViewState
                           setState(() {
                             this.selectedNumberOfPassengers =
                                 selectedNumberOfPassengers;
-                            this.vehicleShape = null;
+                            this.selectedVehicleShape = null;
                           });
                         })
                     : Column(
@@ -227,13 +228,15 @@ class _ServiceRegistrationFirstStepViewState
                               goodsServiceTypesList: this.goodsServiceTypesList,
                               selectedService: (selectedService) {
                                 setState(() {
-                                  this.goodsServiceType = selectedService;
+                                  this.selectedGoodsServiceType =
+                                      selectedService;
                                   this.selectedPersonVehicleType = null;
+                                  this.selectedVehicleShape = null;
                                 });
                               },
                               selectedVehicleShape: (selectedVehicleShape) {
                                 setState(() {
-                                  this.vehicleShape = selectedVehicleShape;
+                                  this.selectedVehicleShape = selectedVehicleShape;
                                   this.selectedNumberOfPassengers = null;
                                 });
                               }),
@@ -251,24 +254,32 @@ class _ServiceRegistrationFirstStepViewState
                     Icons.arrow_forward,
                     color: ColorManager.white,
                   ),
-                  onPressed: (this.goodsServiceType != null &&
-                              this.vehicleShape != null) ||
+                  onPressed: ((this.selectedGoodsServiceType != null &&
+                                  this
+                                      .selectedGoodsServiceType!
+                                      .vehicleShapes
+                                      .isEmpty) ||
+                              this.selectedGoodsServiceType != null &&
+                                  this.selectedVehicleShape != null) ||
                           (this.selectedPersonVehicleType != null &&
                               this.selectedNumberOfPassengers != null)
                       ? () {
                           BlocProvider.of<ServiceRegistrationBloc>(context).add(
                               SetFirstStepData(
-                                  this.goodsServiceType != null
+                                  this.selectedGoodsServiceType != null
                                       ? this
-                                          .goodsServiceType!
+                                          .selectedGoodsServiceType!
                                           .serviceTypeParam
                                           .toString()
                                       : this
                                           .selectedPersonVehicleType!
                                           .serviceType
                                           .toString(),
-                                  this.goodsServiceType != null
-                                      ? this.goodsServiceType!.id.toString()
+                                  this.selectedGoodsServiceType != null
+                                      ? this
+                                          .selectedGoodsServiceType!
+                                          .id
+                                          .toString()
                                       : this
                                           .selectedPersonVehicleType!
                                           .id
@@ -278,7 +289,9 @@ class _ServiceRegistrationFirstStepViewState
                                           .selectedNumberOfPassengers!
                                           .id
                                           .toString()
-                                      : this.vehicleShape!.id.toString(),
+                                      : this.selectedVehicleShape != null
+                                          ? this.selectedVehicleShape!.id.toString()
+                                          : "-1",
                                   widget.requestModel.serviceModelId!,
                                   additionalServicesModel));
                         }
@@ -295,8 +308,8 @@ class _ServiceRegistrationFirstStepViewState
   void resetSelectedValuesToNull() {
     this.selectedPersonVehicleType = null;
     this.selectedNumberOfPassengers = null;
-    this.goodsServiceType = null;
-    this.vehicleShape = null;
+    this.selectedGoodsServiceType = null;
+    this.selectedVehicleShape = null;
   }
 }
 

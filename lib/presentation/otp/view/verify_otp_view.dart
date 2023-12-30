@@ -48,23 +48,25 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
   bool isTimerFinished = false;
 
+  String generatedOtp = "";
+
   TextEditingController otpController = TextEditingController();
 
   @override
   void initState() {
-    // BlocProvider.of<VerifyOtpBloc>(context)
-    //     .add(SendOtpEvent(widget.mobileNumberForApi));
-    if (widget.registerAs == RegistrationConstants.captain) {
-      BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-        /*'1234567890'*/
-        widget.mobileNumberForApi,
-      ));
-    } else {
-      BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-        /*'1234567890'*/
-        widget.mobileNumberForApi,
-      ));
-    }
+    BlocProvider.of<VerifyOtpBloc>(context)
+        .add(SendOtpEvent(widget.mobileNumberForApi));
+    // if (widget.registerAs == RegistrationConstants.captain) {
+    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+    //     /*'1234567890'*/
+    //     widget.mobileNumberForApi,
+    //   ));
+    // } else {
+    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
+    //     /*'1234567890'*/
+    //     widget.mobileNumberForApi,
+    //   ));
+    // }
     super.initState();
   }
 
@@ -85,6 +87,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     return CustomScaffold(
       pageBuilder: PageBuilder(
         appbar: true,
+        resizeToAvoidBottomInsets: true,
         context: context,
         body: _getContentWidget(context),
         scaffoldKey: _key,
@@ -95,190 +98,197 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return Column(
-      children: [
-        BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) async {
-            if (state is LoginLoadingState) {
-              startLoading();
-            } else {
-              stopLoading();
-            }
-            if (state is LoginSuccessState) {
-              _appPreferences.setUserLoggedIn();
-              DriverBaseModel cachedDriver = state.driver;
-              if (widget.registerAs == RegistrationConstants.captain) {
-                cachedDriver.captainType = RegistrationConstants.captain;
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          BlocListener<LoginBloc, LoginState>(
+            listener: (context, state) async {
+              if (state is LoginLoadingState) {
+                startLoading();
               } else {
-                cachedDriver.captainType = RegistrationConstants.businessOwner;
+                stopLoading();
               }
-              await _appPreferences.setDriver(cachedDriver);
-              DriverBaseModel? driver = _appPreferences.getCachedDriver();
-              if (driver != null) {
-                Navigator.pushReplacementNamed(context, Routes.mainRoute);
+              if (state is LoginSuccessState) {
+                _appPreferences.setUserLoggedIn();
+                DriverBaseModel cachedDriver = state.driver;
+                if (widget.registerAs == RegistrationConstants.captain) {
+                  cachedDriver.captainType = RegistrationConstants.captain;
+                } else {
+                  cachedDriver.captainType =
+                      RegistrationConstants.businessOwner;
+                }
+                await _appPreferences.setDriver(cachedDriver);
+                DriverBaseModel? driver = _appPreferences.getCachedDriver();
+                if (driver != null) {
+                  Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                }
               }
-            }
-            if (state is LoginFailState) {
-              if ((state.errorCode == ResponseCode.NOT_FOUND.toString() ||
-                      state.errorCode == ResponseCode.BAD_REQUEST.toString() ||
-                      state.errorCode == ResponseCode.INTERNAL_SERVER_ERROR.toString()) &&
-                  widget.registerAs == RegistrationConstants.captain) {
-                Navigator.pushReplacementNamed(
-                    context, Routes.captainRegisterRoute,
-                    arguments:
-                        captainRegistrationArgs(widget.mobileNumberForApi));
-              } else if (widget.registerAs ==
-                  RegistrationConstants.businessOwner) {
-                Navigator.pushNamed(context, Routes.boRegistration,
-                    arguments:
-                        BoRegistrationArguments(widget.mobileNumberForApi));
+              if (state is LoginFailState) {
+                if ((state.errorCode == ResponseCode.NOT_FOUND.toString() ||
+                        state.errorCode ==
+                            ResponseCode.BAD_REQUEST.toString() ||
+                        state.errorCode ==
+                            ResponseCode.INTERNAL_SERVER_ERROR.toString()) &&
+                    widget.registerAs == RegistrationConstants.captain) {
+                  Navigator.pushReplacementNamed(
+                      context, Routes.captainRegisterRoute,
+                      arguments:
+                          captainRegistrationArgs(widget.mobileNumberForApi));
+                } else if (widget.registerAs ==
+                    RegistrationConstants.businessOwner) {
+                  Navigator.pushNamed(context, Routes.boRegistration,
+                      arguments:
+                          BoRegistrationArguments(widget.mobileNumberForApi));
+                } else {
+                  CustomDialog(context).showErrorDialog('', '', state.message);
+                }
+              }
+            },
+            child: const SizedBox(),
+          ),
+          BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
+            listener: (context, state) async {
+              if (state is VerifyOtpLoading) {
+                startLoading();
               } else {
-                CustomDialog(context).showErrorDialog('', '', state.message);
+                stopLoading();
               }
-            }
-          },
-          child: const SizedBox(),
-        ),
-        BlocConsumer<VerifyOtpBloc, VerifyOtpState>(
-          listener: (context, state) async {
-            if (state is VerifyOtpLoading) {
-              startLoading();
-            } else {
-              stopLoading();
-            }
-            if (state is GenerateOtpSuccess) {
-              // ToastHandler(context).showToast(
-              //     "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
-              ToastHandler(context)
-                  .showToast(AppStrings.otpSent.tr(), Toast.LENGTH_LONG);
-            }
-            if (state is GenerateOtpFail) {
-              CustomDialog(context).showErrorDialog(
-                  "", "", AppStrings.cannotSendOtp.tr(), onBtnPressed: () {
-                Navigator.pop(context);
-              });
-            }
-            if (state is VerifyOtpSuccess) {
-              ToastHandler(context)
-                  .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
-              if (widget.registerAs == RegistrationConstants.captain) {
-                BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-                  widget.mobileNumberForApi,
-                ));
-              } else {
-                BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-                  widget.mobileNumberForApi,
-                ));
+              if (state is GenerateOtpSuccess) {
+                // ToastHandler(context).showToast(
+                //     "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
+                this.generatedOtp = state.otp;
+                ToastHandler(context)
+                    .showToast(AppStrings.otpSent.tr(), Toast.LENGTH_LONG);
               }
-            }
-            if (state is VerifyOtpFail) {
-              if (state.code == ResponseMessage.NOT_FOUND) {
-                CustomDialog(context)
-                    .showErrorDialog("", "", AppStrings.wrongOtp.tr());
-              } else {
-                CustomDialog(context).showErrorDialog("", "", state.message);
+              if (state is GenerateOtpFail) {
+                CustomDialog(context).showErrorDialog(
+                    "", "", AppStrings.cannotSendOtp.tr(), onBtnPressed: () {
+                  Navigator.pop(context);
+                });
               }
-            }
-          },
-          builder: (context, state) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: AppSize.s16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(
-                    height: AppSize.s40,
-                  ),
-                  Text(
-                    AppStrings.enterVerificationCode.tr(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayLarge
-                        ?.copyWith(fontSize: FontSize.s26),
-                  ),
-                  Text(
-                    AppStrings.enterHereSentCodeForNumber.tr(),
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        fontSize: FontSize.s16,
-                        color: ColorManager.formLabelTextColor),
-                  ),
-                  Text(
-                    LanguageHelper()
-                        .replaceArabicNumber(widget.mobileNumberForDisplay),
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        fontSize: FontSize.s16,
-                        color: ColorManager.blackTextColor),
-                  ),
-                  const SizedBox(
-                    height: AppSize.s30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: CustomVerificationCodeWidget(
-                      autoFocus: false,
-                      onCodeSubmitted: (code) {
-                        BlocProvider.of<VerifyOtpBloc>(context).add(
-                            VerifyOtpBEEvent(widget.mobileNumberForApi, code));
-                      },
-                      controller: otpController,
-                      onCodeChanged: (otpChangedValue) {},
+              if (state is VerifyOtpSuccess) {
+                ToastHandler(context)
+                    .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
+                if (widget.registerAs == RegistrationConstants.captain) {
+                  BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+                    widget.mobileNumberForApi,
+                  ));
+                } else {
+                  BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
+                    widget.mobileNumberForApi,
+                  ));
+                }
+              }
+              if (state is VerifyOtpFail) {
+                if (state.code == ResponseMessage.NOT_FOUND) {
+                  CustomDialog(context)
+                      .showErrorDialog("", "", AppStrings.wrongOtp.tr());
+                } else {
+                  CustomDialog(context).showErrorDialog("", "", state.message);
+                }
+              }
+            },
+            builder: (context, state) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: AppSize.s16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(
+                      height: AppSize.s40,
                     ),
-                  ),
-                  const SizedBox(
-                    height: AppSize.s30,
-                  ),
-                  Text(
-                    AppStrings.didNotReceiveTheCode.tr(),
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                        fontSize: FontSize.s16,
-                        color: ColorManager.blackTextColor),
-                  ),
-                  const SizedBox(
-                    height: AppSize.s4,
-                  ),
-                  isTimerFinished
-                      ? GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isTimerFinished = false;
-                              BlocProvider.of<VerifyOtpBloc>(context).add(
-                                  ReSendOtpEvent(widget.mobileNumberForApi));
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                ImageAssets.retryIcon,
-                                width: AppSize.s16,
-                              ),
-                              const SizedBox(
-                                width: AppSize.s10,
-                              ),
-                              Text(
-                                AppStrings.resendCode.tr(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displaySmall
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: FontSize.s16,
-                                        color: ColorManager.primary),
-                              ),
-                            ],
-                          ))
-                      : CustomCountDownTimer(
-                          onTimerFinished: () {
-                            setState(() {
-                              isTimerFinished = true;
-                            });
-                          },
-                        ),
-                ],
-              ),
-            );
-          },
-        ),
-      ],
+                    Text(
+                      AppStrings.enterVerificationCode.tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displayLarge
+                          ?.copyWith(fontSize: FontSize.s26),
+                    ),
+                    Text(
+                      AppStrings.enterHereSentCodeForNumber.tr(),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: FontSize.s16,
+                          color: ColorManager.formLabelTextColor),
+                    ),
+                    Text(
+                      LanguageHelper()
+                          .replaceArabicNumber(widget.mobileNumberForDisplay),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: FontSize.s16,
+                          color: ColorManager.blackTextColor),
+                    ),
+                    const SizedBox(
+                      height: AppSize.s30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: CustomVerificationCodeWidget(
+                        autoFocus: false,
+                        onCodeSubmitted: (code) {
+                          BlocProvider.of<VerifyOtpBloc>(context).add(
+                              VerifyOtpBEEvent(
+                                  widget.mobileNumberForApi, code,this.generatedOtp));
+                        },
+                        controller: otpController,
+                        onCodeChanged: (otpChangedValue) {},
+                      ),
+                    ),
+                    const SizedBox(
+                      height: AppSize.s30,
+                    ),
+                    Text(
+                      AppStrings.didNotReceiveTheCode.tr(),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: FontSize.s16,
+                          color: ColorManager.blackTextColor),
+                    ),
+                    const SizedBox(
+                      height: AppSize.s4,
+                    ),
+                    isTimerFinished
+                        ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isTimerFinished = false;
+                                BlocProvider.of<VerifyOtpBloc>(context).add(
+                                    ReSendOtpEvent(widget.mobileNumberForApi));
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  ImageAssets.retryIcon,
+                                  width: AppSize.s16,
+                                ),
+                                const SizedBox(
+                                  width: AppSize.s10,
+                                ),
+                                Text(
+                                  AppStrings.resendCode.tr(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displaySmall
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: FontSize.s16,
+                                          color: ColorManager.primary),
+                                ),
+                              ],
+                            ))
+                        : CustomCountDownTimer(
+                            onTimerFinished: () {
+                              setState(() {
+                                isTimerFinished = true;
+                              });
+                            },
+                          ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

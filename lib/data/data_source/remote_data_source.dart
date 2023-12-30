@@ -135,7 +135,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> verifyOtp(VerifyOTPRequest verifyOTPRequest) async {
     return await _appServiceClient.verifyOtp(verifyOTPRequest.mobileNumber,
-        verifyOTPRequest.otp, verifyOTPRequest.otp);
+        verifyOTPRequest.otp, verifyOTPRequest.generatedOtp);
   }
 
   @override
@@ -190,7 +190,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.gender!,
         registrationRequest.dateOfBirth!,
         registrationRequest.serviceTypeParam!,
-        registrationRequest.vehicleTypeId!,
+        // registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
         registrationRequest.carModelId!,
         registrationRequest.canTransportFurniture!,

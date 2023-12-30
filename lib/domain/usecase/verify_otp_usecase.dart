@@ -17,7 +17,7 @@ class VerifyOtpUseCase
 
   @override
   Future<Either<Failure, BaseResponse>> execute(VerifyOtpUseCaseInput input) {
-    return _repository.verifyOtp(VerifyOTPRequest(input.code, input.mobileNumber));
+    return _repository.verifyOtp(VerifyOTPRequest(input.code, input.mobileNumber,input.generatedOtp));
   }
 
 }
@@ -25,6 +25,7 @@ class VerifyOtpUseCase
 class VerifyOtpUseCaseInput {
   String mobileNumber;
   String code;
+  String generatedOtp;
 
-  VerifyOtpUseCaseInput(this.mobileNumber,this.code);
+  VerifyOtpUseCaseInput(this.mobileNumber,this.code,this.generatedOtp);
 }

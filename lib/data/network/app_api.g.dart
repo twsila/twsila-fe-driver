@@ -335,7 +335,6 @@ class _AppServiceClient implements AppServiceClient {
     gender,
     dateOfBirth,
     serviceTypeParam,
-    vehicleTypeId,
     carManufacturerTypeId,
     carModelId,
     canTransportFurniture,
@@ -384,10 +383,6 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'serviceTypes',
       serviceTypeParam,
-    ));
-    _data.fields.add(MapEntry(
-      'vehicleType.id',
-      vehicleTypeId,
     ));
     _data.fields.add(MapEntry(
       'carManufacturerType.id',

@@ -45,9 +45,11 @@ class UserTypeConstants {
 
 class EndPointsConstants {
   static const String loginPath = "/api/v1/auth/login";
-  static const String refreshTokenPath = "/api/v1/auth/refresh-token";
+  static const String refreshToken = "/api/v1/auth/refresh-token";
   static const String logoutPath = "/api/v1/auth/logout";
   static const String registration = "/drivers/register";
+  static const String otpGenerate = "/otp/generate";
+  static const String otpValidate = "/otp/validate";
 
   static const String goodsServiceTypes = "/drivers/service-types";
   static const String personsVehicleTypes = "/drivers/vehicle-types";
@@ -57,8 +59,10 @@ class EndPointsConstants {
 
   static const List<String> cancelTokenApis = [
     logoutPath,
-    refreshTokenPath,
     loginPath,
+    otpGenerate,
+    refreshToken,
+    otpValidate,
     registration,
     goodsServiceTypes,
     personsVehicleTypes,

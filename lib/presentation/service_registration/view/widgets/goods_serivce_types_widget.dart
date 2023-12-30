@@ -55,7 +55,7 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
             widget.goodsServiceTypesList[serviceIndex];
 
         if (widget.registrationRequest.vehicleTypeId != null &&
-            selectedGoodsServiceTypeModel != null) {
+            selectedGoodsServiceTypeModel != null ) {
           int vehicleIndex = selectedGoodsServiceTypeModel!.vehicleShapes
               .indexWhere((element) =>
                   element.id.toString() ==
@@ -158,7 +158,7 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
                   )),
         ),
         VehicleShapeWidget(
-          lang: widget.lang,
+            lang: widget.lang,
             preselectedVehicle: this.vehicleShape,
             vehicleShapesList:
                 selectedGoodsServiceTypeModel?.vehicleShapes ?? [],

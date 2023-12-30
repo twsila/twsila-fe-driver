@@ -33,12 +33,12 @@ abstract class AppServiceClient {
   Future<GeneralResponse> loginBO(@Field("login") String login,
       @Field("mobileUserDeviceDTO") Map<String, dynamic> userDeviceDTO);
 
-  @POST("/otp/generate")
+  @POST(EndPointsConstants.otpGenerate)
   Future<GenerateOtpModel> generateOtp(
     @Field("mobile") String mobile,
   );
 
-  @POST("/otp/validate")
+  @POST(EndPointsConstants.otpValidate)
   Future<BaseResponse> verifyOtp(
     @Field("mobile") String mobile,
     @Field("userOtp") String userOtp,
@@ -83,7 +83,6 @@ abstract class AppServiceClient {
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
       @Part(name: "serviceTypes") String serviceTypeParam,
-      @Part(name: "vehicleType.id") String vehicleTypeId,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
       @Part(name: "canTransportFurniture") bool canTransportFurniture,

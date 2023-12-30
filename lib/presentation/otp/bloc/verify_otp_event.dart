@@ -18,6 +18,7 @@ class ReSendOtpEvent extends VerifyOtpEvent {
 class VerifyOtpBEEvent extends VerifyOtpEvent {
   final String mobileNumber;
   final String otpCode;
+  final String generatedOtp;
 
-  VerifyOtpBEEvent(this.mobileNumber, this.otpCode);
+  VerifyOtpBEEvent(this.mobileNumber, this.otpCode,this.generatedOtp);
 }

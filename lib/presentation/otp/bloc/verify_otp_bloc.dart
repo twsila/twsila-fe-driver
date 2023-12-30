@@ -14,7 +14,6 @@ part 'verify_otp_event.dart';
 part 'verify_otp_state.dart';
 
 class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
-
   VerifyOtpBloc() : super(VerifyOtpInitial()) {
     on<SendOtpEvent>(_sendOtp);
     on<ReSendOtpEvent>(_reSendOtp);
@@ -55,8 +54,8 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
       VerifyOtpBEEvent event, Emitter<VerifyOtpState> emit) async {
     VerifyOtpUseCase verifyOtpUseCase = instance<VerifyOtpUseCase>();
     emit(VerifyOtpLoading());
-    (await verifyOtpUseCase
-            .execute(VerifyOtpUseCaseInput(event.mobileNumber, event.otpCode)))
+    (await verifyOtpUseCase.execute(VerifyOtpUseCaseInput(
+            event.mobileNumber, event.otpCode, event.generatedOtp)))
         .fold(
             (failure) => {
                   emit(VerifyOtpFail(failure.message, failure.code.toString()))

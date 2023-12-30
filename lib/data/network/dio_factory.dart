@@ -96,7 +96,7 @@ class DioFactory {
           ? "Bearer " + (_appPreferences.getCachedDriver()?.accessToken ?? "")
           : "",
       USER_TYPE: _appPreferences.getUserType() ?? "",
-    })).post(Constants.baseUrl + EndPointsConstants.refreshTokenPath, data: {
+    })).post(Constants.baseUrl + EndPointsConstants.refreshToken, data: {
       "refreshToken": _appPreferences.getCachedDriver()?.refreshToken ?? ""
     });
     print(response.data["result"]);
