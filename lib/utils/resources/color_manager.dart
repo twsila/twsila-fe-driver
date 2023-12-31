@@ -7,6 +7,7 @@ class ColorManager {
   static const Color grey = const Color(0xff737477);
   static const Color lightGrey = const Color(0xff9E9E9E);
   static const Color black = const Color(0xff000000);
+  static const Color splashBGColor = const Color(0xfff15a25);
 
   //accent
 

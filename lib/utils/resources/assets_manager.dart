@@ -16,9 +16,12 @@ class ImageAssets {
   static const String sortingIcon = "$imagePath/sorting_icon.png";
   static const String changeLangIc = "$imagePath/change_lang_ic.svg";
   static const String contactUsIc = "$imagePath/contact_us_ic.svg";
+  static const String splashIc = "$imagePath/twsila_splash_logo_hd.png";
   static const String car = "$imagePath/car.png";
   static const String inviteFriendsIc = "$imagePath/invite_friends_ic.svg";
   static const String logoutIc = "$imagePath/logout_ic.svg";
+  static const String newAppBarLogo = "$imagePath/new_app_bar_logo.png";
+  static const String appIcon = "$imagePath/app_icon.jpeg";
   static const String rightArrowSettingsIc =
       "$imagePath/right_arrow_settings_ic.svg";
   static const String line = "$imagePath/line.png";
@@ -35,7 +38,7 @@ class ImageAssets {
       "$imagePath/rate_passenger_gr.png";
 
   //registration
-  static const String appBarLogo = "$imagePath/appbar_logo.png";
+  // static const String appBarLogo = "$imagePath/appbar_logo.png";
   static const String captainApplyIcon = "$imagePath/ic_apply_captain.png";
   static const String boApplyIcon = "$imagePath/ic_apply_bo.png";
   static const String saudiFlag = "$imagePath/saudi_flag.png";

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
+import 'package:taxi_for_you/utils/resources/color_manager.dart';
 
 class CustomNetworkImageWidget extends StatefulWidget {
   String imageUrl;
@@ -17,9 +18,10 @@ class _CustomNetworkImageWidgetState extends State<CustomNetworkImageWidget> {
     return Container(
         child: FadeInImage(
       image: NetworkImage(widget.imageUrl),
-      placeholder: AssetImage(ImageAssets.appBarLogo),
+      placeholder: AssetImage(ImageAssets.newAppBarLogo),
       imageErrorBuilder: (context, error, stackTrace) {
-        return Image.asset(ImageAssets.appBarLogo, fit: BoxFit.fitWidth);
+        return Image.asset(ImageAssets.newAppBarLogo,
+            color: ColorManager.splashBGColor, fit: BoxFit.fitWidth);
       },
       fit: BoxFit.fitWidth,
     ));

@@ -38,8 +38,10 @@ class _RegistrationTypesViewState extends State<RegistrationTypesView> {
           showLanguageChange: true,
           appBarActions: [
             SizedBox(
-                width: AppSize.s120,
-                child: Image.asset(ImageAssets.appBarLogo)),
+                child: Image.asset(
+              ImageAssets.newAppBarLogo,
+              color: ColorManager.splashBGColor,
+            )),
           ]),
     );
   }

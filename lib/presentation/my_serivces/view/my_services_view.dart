@@ -130,8 +130,9 @@ class _MyServicesViewState extends State<MyServicesView> {
                         ],
                       ),
                       Image.asset(
-                        ImageAssets.appBarLogo,
+                        ImageAssets.newAppBarLogo,
                         width: AppSize.s90,
+                        color: ColorManager.splashBGColor,
                       )
                     ],
                   ),

@@ -128,11 +128,15 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
             fit: BoxFit.cover,
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {
-              return Image.asset(ImageAssets.appBarLogo);
+              return Image.asset(
+                ImageAssets.newAppBarLogo,
+                color: ColorManager.splashBGColor,
+              );
             },
           ));
     } catch (e) {
-      return Image.asset(ImageAssets.appBarLogo);
+      return Image.asset(ImageAssets.newAppBarLogo,
+        color: ColorManager.splashBGColor,);
     }
   }
 

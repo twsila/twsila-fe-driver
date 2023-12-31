@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/domain/usecase/countries_lookup_usecase.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_scaffold.dart';
 import 'package:taxi_for_you/utils/push_notification/firebase_messaging_helper.dart';
+import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
@@ -33,10 +35,18 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     // getCountries();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     new Future.delayed(const Duration(seconds: 3), () {
       _goNext();
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    super.dispose();
   }
 
   getCountries() async {
@@ -83,7 +93,8 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     return CustomScaffold(
       pageBuilder: PageBuilder(
-        appbar: true,
+        extendBodyBehindAppBar: true,
+        appbar: false,
         context: context,
         body: _getContentWidget(context),
         scaffoldKey: _key,
@@ -93,31 +104,17 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(
-          height: AppSize.s210,
+    return Container(
+      color: ColorManager.splashBGColor,
+      child: Center(
+        child: Container(
+          width: AppSize.s320,
+          height: AppSize.s320,
+          child: Image.asset(
+            ImageAssets.splashIc,
+          ),
         ),
-        SvgPicture.asset(
-          ImageAssets.splashSVGIcon,
-        ),
-        const SizedBox(height: 16),
-        const Spacer(),
-        BlocConsumer<MapsBloc, MapsState>(
-          listener: ((context, state) async {}),
-          builder: ((context, state) {
-            return const SizedBox();
-          }),
-        )
-      ],
-    ));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+      ),
+    );
   }
 }

@@ -90,7 +90,8 @@ class _ServiceTypeWidgetState extends State<ServiceTypeWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
-                                  ImageAssets.appBarLogo,
+                                  ImageAssets.newAppBarLogo,
+                                  color: ColorManager.splashBGColor,
                                   height: AppSize.s33,
                                   width: AppSize.s33,
                                 ),

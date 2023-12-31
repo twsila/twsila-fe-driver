@@ -122,7 +122,8 @@ class _AssignDriverBottomSheetViewState
                                       //             .id!,
                                       //         driversList[i].id!,
                                       //         widget.tripId));
-                                      widget.onAssignDriver(driversList[i].driver);
+                                      widget.onAssignDriver(
+                                          driversList[i].driver);
                                       Navigator.pop(context);
                                     },
                                     bodyWidget: Row(
@@ -188,10 +189,13 @@ class _AssignDriverBottomSheetViewState
                                                       .imageUrl ==
                                                   null
                                               ? Image.asset(
-                                                  ImageAssets.appBarLogo)
+                                                  ImageAssets.newAppBarLogo,
+                                                  color: ColorManager
+                                                      .splashBGColor,
+                                                )
                                               : FadeInImage.assetNetwork(
                                                   placeholder:
-                                                      ImageAssets.appBarLogo,
+                                                      ImageAssets.newAppBarLogo,
                                                   image: driversList[i]
                                                       .driver
                                                       .images[0]

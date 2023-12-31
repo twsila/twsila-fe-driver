@@ -166,10 +166,15 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                           width: AppSize.s90,
                           child: driversList[i].driver.images != null &&
                                   driversList[i].driver.images.length > 1 &&
-                                  driversList[i].driver.images[1].imageUrl != null
+                                  driversList[i].driver.images[1].imageUrl !=
+                                      null
                               ? CustomNetworkImageWidget(
-                                  imageUrl: driversList[i].driver.images[1].imageUrl!)
-                              : Image.asset(ImageAssets.appBarLogo),
+                                  imageUrl:
+                                      driversList[i].driver.images[1].imageUrl!)
+                              : Image.asset(
+                                  ImageAssets.newAppBarLogo,
+                                  color: ColorManager.splashBGColor,
+                                ),
                         )
                       ],
                     ),
