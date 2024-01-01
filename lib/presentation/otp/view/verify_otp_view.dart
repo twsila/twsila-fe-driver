@@ -54,19 +54,19 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 
   @override
   void initState() {
-    BlocProvider.of<VerifyOtpBloc>(context)
-        .add(SendOtpEvent(widget.mobileNumberForApi));
-    // if (widget.registerAs == RegistrationConstants.captain) {
-    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-    //     /*'1234567890'*/
-    //     widget.mobileNumberForApi,
-    //   ));
-    // } else {
-    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-    //     /*'1234567890'*/
-    //     widget.mobileNumberForApi,
-    //   ));
-    // }
+    // BlocProvider.of<VerifyOtpBloc>(context)
+    //     .add(SendOtpEvent(widget.mobileNumberForApi));
+    if (widget.registerAs == RegistrationConstants.captain) {
+      BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+        /*'1234567890'*/
+        widget.mobileNumberForApi,
+      ));
+    } else {
+      BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
+        /*'1234567890'*/
+        widget.mobileNumberForApi,
+      ));
+    }
     super.initState();
   }
 

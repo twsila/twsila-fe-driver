@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
 
 import '../../../../domain/model/vehicle_model.dart';
@@ -34,16 +35,22 @@ class _NumberOfPassengerWidgetState extends State<NumberOfPassengerWidget> {
 
   checkPreSelectedValues() {
     try {
-      if (widget.preSelectedNumberOfPassengers != null) {
+      if (widget.preSelectedNumberOfPassengers != null && mounted) {
         selectedNumberOfPassengers = widget.numberOfPassengersList.firstWhere(
             (element) => element == widget.preSelectedNumberOfPassengers);
-        if (selectedNumberOfPassengers != null) {
-          current = widget.numberOfPassengersList
-              .indexOf(selectedNumberOfPassengers!);
-          widget.selectedNumberOfPassenger(selectedNumberOfPassengers!);
-        }
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            if (selectedNumberOfPassengers != null) {
+              current = widget.numberOfPassengersList
+                  .indexOf(selectedNumberOfPassengers!);
+              widget.selectedNumberOfPassenger(selectedNumberOfPassengers!);
+            }
+          });
+        });
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override

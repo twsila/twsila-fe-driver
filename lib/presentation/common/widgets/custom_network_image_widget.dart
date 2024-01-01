@@ -18,7 +18,7 @@ class _CustomNetworkImageWidgetState extends State<CustomNetworkImageWidget> {
     return Container(
         child: FadeInImage(
       image: NetworkImage(widget.imageUrl),
-      placeholder: AssetImage(ImageAssets.newAppBarLogo),
+      placeholder: AssetImage(ImageAssets.appIcon),
       imageErrorBuilder: (context, error, stackTrace) {
         return Image.asset(ImageAssets.newAppBarLogo,
             color: ColorManager.splashBGColor, fit: BoxFit.fitWidth);

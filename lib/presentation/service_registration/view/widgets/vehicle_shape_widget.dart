@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
 
 import '../../../../domain/model/goods_service_type_model.dart';
@@ -39,15 +40,21 @@ class _VehicleShapeWidgetState extends State<VehicleShapeWidget> {
 
   checkPreSelectedValues() {
     try {
-      if (widget.preselectedVehicle != null) {
+      if (widget.preselectedVehicle != null && mounted) {
         selectedVehicle = widget.vehicleShapesList
             .firstWhere((element) => element == widget.preselectedVehicle);
         if (selectedVehicle != null) {
-          current = widget.vehicleShapesList.indexOf(selectedVehicle!);
-          widget.selectedVehicle(selectedVehicle!);
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              current = widget.vehicleShapesList.indexOf(selectedVehicle!);
+              widget.selectedVehicle(selectedVehicle!);
+            });
+          });
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -58,11 +65,14 @@ class _VehicleShapeWidgetState extends State<VehicleShapeWidget> {
         SizedBox(
           height: AppSize.s14,
         ),
-        Text(
-          AppStrings.vehicleShape.tr(),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.normal,
-              color: ColorManager.titlesTextColor),
+        Visibility(
+          visible: widget.vehicleShapesList.isNotEmpty,
+          child: Text(
+            AppStrings.vehicleShape.tr(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.normal,
+                color: ColorManager.titlesTextColor),
+          ),
         ),
         SizedBox(
           height: AppSize.s14,

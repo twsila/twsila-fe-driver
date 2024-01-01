@@ -48,19 +48,21 @@ class _PersonsVehicleTypesWidgetState extends State<PersonsVehicleTypesWidget> {
 
   checkSelectedValues() {
     try {
-      if (widget.registrationRequest.serviceTypeParam != null && mounted) {
+      if (widget.registrationRequest.serviceTypeParam != null &&
+          widget.registrationRequest.serviceTypeParam == "PERSONS" &&
+          widget.registrationRequest.vehicleTypeId != null &&
+          mounted) {
         int serviceIndex = widget.personsVehicleTypesList.indexWhere(
             (element) =>
-                element.vehicleType ==
-                widget.registrationRequest.serviceTypeParam);
+                element.id.toString() == widget.registrationRequest.vehicleTypeId);
         selectedPersonVehicle = widget.personsVehicleTypesList[serviceIndex];
 
-        if (widget.registrationRequest.vehicleTypeId != null &&
+        if (widget.registrationRequest.vehicleShapeId != null &&
             selectedPersonVehicle != null) {
           int numberOfPassengerIndex = selectedPersonVehicle!.numberOfPassengers
               .indexWhere((element) =>
                   element.id.toString() ==
-                  widget.registrationRequest.vehicleTypeId);
+                  widget.registrationRequest.vehicleShapeId);
 
           selectedNumberOfPassenger =
               selectedPersonVehicle!.numberOfPassengers[numberOfPassengerIndex];

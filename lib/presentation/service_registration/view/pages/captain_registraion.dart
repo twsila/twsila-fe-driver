@@ -45,7 +45,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   Function()? continueFunction;
   ImagePicker imgpicker = ImagePicker();
 
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime(2005, 1);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -66,10 +66,8 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
     });
   }
 
-
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -282,6 +280,8 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           labelText: AppStrings.firstName.tr(),
           showLabelText: true,
           hintText: AppStrings.enterFirstNameHere.tr(),
+          validateSpecialCharacter: true,
+          isCharacterOnly: true,
           onChanged: (value) {
             firstName = value;
             validateInputsToContinue();
@@ -291,6 +291,8 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           labelText: AppStrings.lastName.tr(),
           showLabelText: true,
           hintText: AppStrings.enterLastNameHere.tr(),
+          validateSpecialCharacter: true,
+          isCharacterOnly: true,
           onChanged: (value) {
             lastName = value;
             validateInputsToContinue();
@@ -474,8 +476,8 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(1940, 8),
-        lastDate: DateTime.now());
-    if (picked != null && picked != selectedDate) {
+        lastDate: DateTime(2005, 1));
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
         birthDate = DateFormat.yMd().format(selectedDate);

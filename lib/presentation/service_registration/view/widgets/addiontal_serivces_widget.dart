@@ -75,83 +75,97 @@ class _AdditionalServicesWidgetState extends State<AdditionalServicesWidget> {
         SizedBox(
           height: AppSize.s16,
         ),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: CustomCheckBox(
-                  checked:
-                      widget.additionalServicesModel.canTransportFurniture ??
-                          false,
-                  fieldName: AppStrings.canTransportFurniture.tr(),
-                  onChange: (checked) {
-                    widget.additionalServicesModel.canTransportFurniture =
-                        checked;
-                    widget.registrationRequest.canTransportFurniture = checked;
-                  }),
-            ),
-            Expanded(
-              flex: 1,
-              child: CustomCheckBox(
-                  checked:
-                      widget.additionalServicesModel.canTransportGoods ?? false,
-                  fieldName: AppStrings.canTransportGoods.tr(),
-                  onChange: (checked) {
-                    widget.additionalServicesModel.canTransportGoods = checked;
-                    widget.registrationRequest.canTransportGoods = checked;
-                  }),
-            ),
-          ],
+        Visibility(
+          visible: false,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: CustomCheckBox(
+                    checked:
+                        widget.additionalServicesModel.canTransportFurniture ??
+                            false,
+                    fieldName: AppStrings.canTransportFurniture.tr(),
+                    onChange: (checked) {
+                      widget.additionalServicesModel.canTransportFurniture =
+                          checked;
+                      widget.registrationRequest.canTransportFurniture =
+                          checked;
+                    }),
+              ),
+              Expanded(
+                flex: 1,
+                child: CustomCheckBox(
+                    checked: widget.additionalServicesModel.canTransportGoods ??
+                        false,
+                    fieldName: AppStrings.canTransportGoods.tr(),
+                    onChange: (checked) {
+                      widget.additionalServicesModel.canTransportGoods =
+                          checked;
+                      widget.registrationRequest.canTransportGoods = checked;
+                    }),
+              ),
+            ],
+          ),
         ),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: CustomCheckBox(
-                  checked: widget.additionalServicesModel.canTransportFrozen ??
-                      false,
-                  fieldName: AppStrings.canTransportFrozen.tr(),
-                  onChange: (checked) {
-                    widget.additionalServicesModel.canTransportFrozen = checked;
-                    widget.registrationRequest.canTransportFrozen = checked;
-                  }),
-            ),
-            Expanded(
-              flex: 1,
-              child: CustomCheckBox(
-                  checked: widget.additionalServicesModel.hasWaterTank ?? false,
-                  fieldName: AppStrings.hasWaterTank.tr(),
-                  onChange: (checked) {
-                    widget.additionalServicesModel.hasWaterTank = checked;
-                    widget.registrationRequest.hasWaterTank = checked;
-                  }),
-            ),
-          ],
+        Visibility(
+          visible: false,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: CustomCheckBox(
+                    checked:
+                        widget.additionalServicesModel.canTransportFrozen ??
+                            false,
+                    fieldName: AppStrings.canTransportFrozen.tr(),
+                    onChange: (checked) {
+                      widget.additionalServicesModel.canTransportFrozen =
+                          checked;
+                      widget.registrationRequest.canTransportFrozen = checked;
+                    }),
+              ),
+              Expanded(
+                flex: 1,
+                child: CustomCheckBox(
+                    checked:
+                        widget.additionalServicesModel.hasWaterTank ?? false,
+                    fieldName: AppStrings.hasWaterTank.tr(),
+                    onChange: (checked) {
+                      widget.additionalServicesModel.hasWaterTank = checked;
+                      widget.registrationRequest.hasWaterTank = checked;
+                    }),
+              ),
+            ],
+          ),
         ),
-        Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: CustomCheckBox(
-                  checked:
-                      widget.additionalServicesModel.hasOtherTanks ?? false,
-                  fieldName: AppStrings.hasOtherTanks.tr(),
-                  onChange: (checked) {
-                    widget.additionalServicesModel.hasOtherTanks = checked;
-                    widget.registrationRequest.hasOtherTanks = checked;
-                  }),
-            ),
-            Expanded(
-              flex: 1,
-              child: CustomCheckBox(
-                  checked: widget.additionalServicesModel.hasPacking ?? false,
-                  fieldName: AppStrings.hasPacking.tr(),
-                  onChange: (checked) {
-                    widget.additionalServicesModel.hasPacking = checked;
-                    widget.registrationRequest.hasPacking = checked;
-                  }),
-            ),
-          ],
+        Visibility(
+          visible: false,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: CustomCheckBox(
+                    checked:
+                        widget.additionalServicesModel.hasOtherTanks ?? false,
+                    fieldName: AppStrings.hasOtherTanks.tr(),
+                    onChange: (checked) {
+                      widget.additionalServicesModel.hasOtherTanks = checked;
+                      widget.registrationRequest.hasOtherTanks = checked;
+                    }),
+              ),
+              Expanded(
+                flex: 1,
+                child: CustomCheckBox(
+                    checked: widget.additionalServicesModel.hasPacking ?? false,
+                    fieldName: AppStrings.hasPacking.tr(),
+                    onChange: (checked) {
+                      widget.additionalServicesModel.hasPacking = checked;
+                      widget.registrationRequest.hasPacking = checked;
+                    }),
+              ),
+            ],
+          ),
         ),
         Row(
           children: [
@@ -177,13 +191,30 @@ class _AdditionalServicesWidgetState extends State<AdditionalServicesWidget> {
             ),
           ],
         ),
-        CustomCheckBox(
-            checked: widget.additionalServicesModel.hasLifting ?? false,
-            fieldName: AppStrings.hasLifting.tr(),
-            onChange: (checked) {
-              widget.additionalServicesModel.hasLifting = checked;
-              widget.registrationRequest.hasLifting = checked;
-            }),
+        Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: CustomCheckBox(
+                  checked: widget.additionalServicesModel.hasLifting ?? false,
+                  fieldName: AppStrings.hasLifting.tr(),
+                  onChange: (checked) {
+                    widget.additionalServicesModel.hasLifting = checked;
+                    widget.registrationRequest.hasLifting = checked;
+                  }),
+            ),
+            Expanded(
+              flex: 1,
+              child: CustomCheckBox(
+                  checked: widget.additionalServicesModel.hasPacking ?? false,
+                  fieldName: AppStrings.hasPacking.tr(),
+                  onChange: (checked) {
+                    widget.additionalServicesModel.hasPacking = checked;
+                    widget.registrationRequest.hasPacking = checked;
+                  }),
+            ),
+          ],
+        ),
       ],
     );
   }

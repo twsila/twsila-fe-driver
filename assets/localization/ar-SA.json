@@ -47,8 +47,8 @@
   "has_other_tanks": "خزان اخر",
   "has_packing": "تغليف",
   "has_loading": "تحميل",
-  "has_assembly": "تجميع",
-  "has_lifting": "رفع",
+  "has_assembly": "تفريغ",
+  "has_lifting": "امتلك رافعة",
   "others": "أخرى",
   "material_type": "البضاعة عبارة عن",
   "packaging_type": "نوع البضاعة",
@@ -377,7 +377,7 @@
   "goods_type": "نوع البضاعة",
   "trip_type": "نوع الرحلة",
   "cancel": "إلغاء",
-  "first_name": "اسم الاول",
+  "first_name": "الاسم الاول",
   "last_name": "اللقب",
   "first_name_hint": "ادخل الاسم الاول هنا",
   "last_name_hint": "ادخل اللقب هنا",
@@ -471,5 +471,7 @@
   "driver_mobile_number": "رقم موبايل السائق",
   "add_driver_mobile_number": "ادخل رقم موبايل السائق",
   "sending_request_done": "تم ارسال الطلب",
-  "assign_driver": "قم بتعيين سائق"
+  "assign_driver": "قم بتعيين سائق",
+
+  "no_internet_error": "مشكلة فى الاتصال بالانترنت"
 }

@@ -245,15 +245,18 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                           ? _myFocusNode!.requestFocus()
                           : 0
                       : 0;
-                  return RegExp(
-                    r"^[a-zA-Z]+$",
-                  ).hasMatch(val)
+                  return (RegExp(
+                                r"^[a-zA-Z0-9_ ]*$",
+                              ).hasMatch(val) ||
+                              RegExp(r"^[ء-ي]").hasMatch(val)) &&
+                         ! (val.contains(new RegExp(r'[0-9]')))
                       ? null
                       : widget.customSpecialCharachterMessage ??
                           AppStrings.errorPleaseEnter.tr() +
                               ' ' +
                               (widget.errorLabel ?? widget.labelText!) +
-                              AppStrings.errorPleaseEnter.tr();
+                              ' ' +
+                              AppStrings.correct.tr();
                 }
                 if (widget.validateSpecialCharacter == true) {
                   widget.shouldRequestFocus != null

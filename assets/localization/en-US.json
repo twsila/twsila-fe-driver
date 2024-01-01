@@ -470,5 +470,7 @@
   "driver_mobile_number": "Driver mobile",
   "add_driver_mobile_number": "Enter driver mobile",
   "sending_request_done": "Request sent successfully",
-  "assign_driver": "Assign driver"
+  "assign_driver": "Assign driver",
+
+  "no_internet_error": "Not connected to internet"
 }
