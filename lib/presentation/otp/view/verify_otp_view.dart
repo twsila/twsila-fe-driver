@@ -67,7 +67,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     //     /*'1234567890'*/
     //     widget.mobileNumberForApi,
     //   ));
-  // }
+    // }
     super.initState();
   }
 
