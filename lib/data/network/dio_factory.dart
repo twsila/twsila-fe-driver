@@ -13,6 +13,7 @@ const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "language";
 const String ACCEPT_LANGUAGE = "Accept-Language";
 const String RETRY_COUNTER = "Retry-Count";
+const String TRY_AUTH_REFRESH = "TRY_AUTH_REFRESH";
 const String USER_TYPE = "User-Type";
 
 class DioFactory {
@@ -28,7 +29,7 @@ class DioFactory {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
       USER_TYPE: _appPreferences.getUserType() ?? "",
-      ACCEPT_LANGUAGE: language
+      ACCEPT_LANGUAGE: language,
     };
 
     dio.options = BaseOptions(
@@ -45,6 +46,7 @@ class DioFactory {
               ? "Bearer " +
                   (_appPreferences.getCachedDriver()?.accessToken ?? "")
               : "";
+
           if (EndPointsConstants.cancelTokenApis.contains(options.path)) {
             options.cancelToken;
           } else {
@@ -56,6 +58,7 @@ class DioFactory {
         onError: (DioError error, handler) async {
           if (error.response?.statusCode == 401) {
             // If a 401 response is received, refresh the access token
+
             if (error.requestOptions.headers[RETRY_COUNTER] == 1) {
               return handler.next(error);
             }
@@ -92,15 +95,15 @@ class DioFactory {
     Response response = await Dio(BaseOptions(headers: {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
+      USER_TYPE: _appPreferences.getUserType() ?? "",
       AUTHORIZATION: await _appPreferences.isUserLoggedIn()
           ? "Bearer " + (_appPreferences.getCachedDriver()?.accessToken ?? "")
           : "",
-      USER_TYPE: _appPreferences.getUserType() ?? "",
     })).post(Constants.baseUrl + EndPointsConstants.refreshToken, data: {
       "refreshToken": _appPreferences.getCachedDriver()?.refreshToken ?? ""
     });
     print(response.data["result"]);
 
-    return response.data["result"];
+    return response.data["result"]["accessToken"];
   }
 }

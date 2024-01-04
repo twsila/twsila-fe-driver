@@ -54,19 +54,20 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 
   @override
   void initState() {
-    // BlocProvider.of<VerifyOtpBloc>(context)
-    //     .add(SendOtpEvent(widget.mobileNumberForApi));
-    if (widget.registerAs == RegistrationConstants.captain) {
-      BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-        /*'1234567890'*/
-        widget.mobileNumberForApi,
-      ));
-    } else {
-      BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-        /*'1234567890'*/
-        widget.mobileNumberForApi,
-      ));
-    }
+    //TODO Return sendOtp Feature
+    BlocProvider.of<VerifyOtpBloc>(context)
+        .add(SendOtpEvent(widget.mobileNumberForApi));
+    // if (widget.registerAs == RegistrationConstants.captain) {
+    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
+    //     /*'1234567890'*/
+    //     widget.mobileNumberForApi,
+    //   ));
+    // } else {
+    //   BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
+    //     /*'1234567890'*/
+    //     widget.mobileNumberForApi,
+    //   ));
+  // }
     super.initState();
   }
 
@@ -154,11 +155,11 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                 stopLoading();
               }
               if (state is GenerateOtpSuccess) {
-                // ToastHandler(context).showToast(
-                //     "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
+                ToastHandler(context).showToast(
+                    "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
                 this.generatedOtp = state.otp;
-                ToastHandler(context)
-                    .showToast(AppStrings.otpSent.tr(), Toast.LENGTH_LONG);
+                // ToastHandler(context)
+                //     .showToast(AppStrings.otpSent.tr(), Toast.LENGTH_LONG);
               }
               if (state is GenerateOtpFail) {
                 CustomDialog(context).showErrorDialog(
