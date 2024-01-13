@@ -15,8 +15,8 @@ class VehicleModel {
   int id;
   String vehicleType;
   String serviceType;
-  List<NumberOfPassenger> numberOfPassengers;
-  List<VehicleShape> vehicleShapes;
+  List<NumberOfPassenger>? numberOfPassengers;
+  List<VehicleShape>? vehicleShapes;
   VehicleIcon? icon;
   bool? isSelected;
 
@@ -25,28 +25,35 @@ class VehicleModel {
       required this.vehicleType,
       required this.serviceType,
       required this.numberOfPassengers,
-      required this.vehicleShapes, this.icon,
+      required this.vehicleShapes,
+      this.icon,
       this.isSelected = false});
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(
         id: json["id"],
         vehicleType: json["vehicleType"],
         serviceType: json["serviceType"],
-        numberOfPassengers: List<NumberOfPassenger>.from(
-            json["numberOfPassengers"]
-                .map((x) => NumberOfPassenger.fromJson(x))),
-        vehicleShapes: List<VehicleShape>.from(json["vehicleShapes"]
-            .map((x) => VehicleShape.fromJson(x))),
-        icon: json["icon"]!=null ? VehicleIcon.fromJson(json["icon"]) : null,
+        numberOfPassengers: json["numberOfPassengers"] != null
+            ? List<NumberOfPassenger>.from(json["numberOfPassengers"]
+                .map((x) => NumberOfPassenger.fromJson(x)))
+            : null,
+        vehicleShapes: json["vehicleShapes"] != null
+            ? List<VehicleShape>.from(
+                json["vehicleShapes"].map((x) => VehicleShape.fromJson(x)))
+            : null,
+        icon: json["icon"] != null ? VehicleIcon.fromJson(json["icon"]) : null,
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "vehicleType": vehicleType,
         "serviceType": serviceType,
-        "numberOfPassengers":
-            List<dynamic>.from(numberOfPassengers.map((x) => x.toJson())),
-        "vehicleShapes": List<dynamic>.from(vehicleShapes.map((x) => x)),
+        "numberOfPassengers": numberOfPassengers != null
+            ? List<dynamic>.from(numberOfPassengers!.map((x) => x.toJson()))
+            : null,
+        "vehicleShapes": vehicleShapes != null
+            ? List<dynamic>.from(vehicleShapes!.map((x) => x))
+            : [],
         "icon": icon!.toJson(),
       };
 }
@@ -93,4 +100,3 @@ class NumberOfPassenger {
         "numberOfPassengers": numberOfPassengers,
       };
 }
-

@@ -14,13 +14,14 @@ class RatePassengerUseCase
   @override
   Future<Either<Failure, BaseResponse>> execute(
       RatePassengerUseCaseInput input) {
-    return _repository.ratePassenger(input.passengerId, input.ratingNumber);
+    return _repository.ratePassenger(input.driverId,input.tripId,input.ratingNumber);
   }
 }
 
 class RatePassengerUseCaseInput {
-  int passengerId;
+  int driverId;
+  int tripId;
   double ratingNumber;
 
-  RatePassengerUseCaseInput(this.passengerId, this.ratingNumber);
+  RatePassengerUseCaseInput(this.driverId, this.tripId, this.ratingNumber);
 }

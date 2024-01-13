@@ -50,6 +50,8 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             validateEmptyString: true,
             labelText: AppStrings.ownerfirstName.tr(),
             showLabelText: true,
+            validateSpecialCharacter: true,
+            isCharacterOnly: true,
             hintText: AppStrings.enterFirstNameHint.tr(),
             onChanged: (value) {
               widget.viewModel.businessOwnerModel.firstName = value;
@@ -62,6 +64,8 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             validateEmptyString: true,
             labelText: AppStrings.ownerlastName.tr(),
             showLabelText: true,
+            validateSpecialCharacter: true,
+            isCharacterOnly: true,
             hintText: AppStrings.enterLastNameHint.tr(),
             onChanged: (value) {
               widget.viewModel.businessOwnerModel.lastName = value;
@@ -88,6 +92,8 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             validateEmptyString: true,
             labelText: AppStrings.companyName.tr(),
             showLabelText: true,
+            validateSpecialCharacter: true,
+            isCharacterOnly: true,
             hintText: AppStrings.companyNameHint.tr(),
             onChanged: (value) {
               widget.viewModel.businessOwnerModel.entityName = value;
@@ -100,6 +106,7 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             validateEmptyString: true,
             labelText: AppStrings.commercialNumber.tr(),
             showLabelText: true,
+            keyboardType: TextInputType.number,
             hintText: AppStrings.commercialNumberHint.tr(),
             onChanged: (value) {
               widget.viewModel.businessOwnerModel.commercialNumber = value;
@@ -112,6 +119,7 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             validateEmptyString: true,
             labelText: AppStrings.taxNumber.tr(),
             showLabelText: true,
+            keyboardType: TextInputType.number,
             hintText: AppStrings.commercialNumberHint.tr(),
             onChanged: (value) {
               widget.viewModel.businessOwnerModel.taxNumber = value;
@@ -124,6 +132,7 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             validateEmptyString: true,
             labelText: AppStrings.nationalID.tr(),
             showLabelText: true,
+            keyboardType: TextInputType.number,
             hintText: AppStrings.nationalIDHint.tr(),
             onChanged: (value) {
               widget.viewModel.businessOwnerModel.nationalId = value;

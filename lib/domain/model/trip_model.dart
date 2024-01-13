@@ -216,7 +216,7 @@ class Offer {
         offerId: json['id'],
         driverModel: Driver.fromJson(json['driver']),
         acceptanceStatus: json['acceptanceStatus'],
-        creationDate: json['creationDate'],
+        creationDate: json['creationDate'] ?? "",
         driverOffer: json['driverOffer'],
         woman: json['woman'],
       );

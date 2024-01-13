@@ -29,7 +29,10 @@ class PersonDetailsWidget extends StatelessWidget {
             Expanded(
               child: ItemWidget(
                 title: AppStrings.numOfPassengers.tr(),
-                text: personsModel.vehicleType?.numberOfPassengers[0].numberOfPassengers.toString() ?? "-",
+                text: personsModel
+                        .vehicleType?.numberOfPassengers?[0].numberOfPassengers
+                        .toString() ??
+                    "-",
               ),
             ),
           ],

@@ -7,6 +7,7 @@ import 'package:taxi_for_you/presentation/main/pages/mytrips/view/widgets/ongoin
 import 'package:taxi_for_you/presentation/main/pages/mytrips/view/widgets/precedent_item.dart';
 import 'package:taxi_for_you/presentation/main/pages/mytrips/view/widgets/scheduled_item.dart';
 import 'package:taxi_for_you/presentation/trip_execution/view/trip_execution_view.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
@@ -149,7 +150,7 @@ class _MyTripsPageState extends State<MyTripsPage> {
   tripItemView(TripDetailsModel trip) {
     String? date;
     if (trip.tripDetails.date != null) {
-      date = handleDateString(trip.tripDetails.date!);
+      date = trip.tripDetails.date!.getTimeStampFromDate();
     }
     return current == 0
         ? OngoingItemView(

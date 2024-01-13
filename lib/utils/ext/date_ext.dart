@@ -1,25 +1,26 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
 
-extension DateFormatString on String {
-  String formatStringToDateString() {
+
+extension TimeStampFromDate on String {
+  String getTimeStampFromDate({pattern = 'dd MMM yyyy/ hh:mm a'}) {
     final AppPreferences _appPrefs = instance<AppPreferences>();
-    return DateFormat('dd MMM yyyy/ hh:mm a', _appPrefs.getAppLanguage())
-        .format(DateFormat('dd/MM/yyyy hh:mm:ss').parse(this));
+    int? timestamp = int.tryParse(this);
+
+    if (timestamp == null) {
+      return '';
+    }
+    return DateFormat(pattern, _appPrefs.getAppLanguage())
+        .format(DateTime.fromMillisecondsSinceEpoch(timestamp));
   }
 
-  String formatDate() {
-    return DateFormat('yyyy-MM-d', AppStrings.en)
-        .format(DateFormat('dd-MM-yyyy').parse(this));
-  }
-
-  String getCurrentDateFormatted(){
-    var now = new DateTime.now();
-    var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(now);
-    return formattedDate;
+  TimeOfDay getTimeStampFromTimeOfDay({pattern = 'dd MMM yyyy/ hh:mm a'}) {
+    final AppPreferences _appPrefs = instance<AppPreferences>();
+    return TimeOfDay.fromDateTime(
+        DateFormat(pattern, _appPrefs.getAppLanguage()).parse(this));
   }
 }

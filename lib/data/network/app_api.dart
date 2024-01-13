@@ -45,10 +45,10 @@ abstract class AppServiceClient {
     @Field("generatedOtp") String generatedOtp,
   );
 
-  @GET("/drivers/vehicle-types")
+  @GET(EndPointsConstants.personsVehicleTypes)
   Future<RegistrationServicesTypesResponse> registrationServices();
 
-  @GET("/drivers/car-model")
+  @GET(EndPointsConstants.carModels)
   Future<CarBrandAndModelsModel> carBrandsAndModels();
 
   @POST("/customers/forgotPassword")
@@ -73,7 +73,7 @@ abstract class AppServiceClient {
       @Part(name: "driverImages") List<File> driverImages,
       @Part(name: "countryCode") String countryCode);
 
-  @POST("/drivers/register")
+  @POST(EndPointsConstants.registration)
   @MultiPart()
   Future<RegistrationResponse> registerCaptainWithGoodsService(
       @Part(name: "firstName") String firstName,
@@ -100,7 +100,7 @@ abstract class AppServiceClient {
       @Part(name: "driverImages") List<File> driverImages,
       @Part(name: "countryCode") String countryCode);
 
-  @POST("/bo/register")
+  @POST(EndPointsConstants.BoRegistration)
   @MultiPart()
   Future<RegistrationBOResponse> registerBOWithService(
     @Part(name: "firstName") String firstName,
@@ -174,9 +174,10 @@ abstract class AppServiceClient {
     @Field("tripStatus") String tripStatus,
   );
 
-  @POST("/passengers/trips/rate")
+  @POST("/drivers/trips/rate")
   Future<BaseResponse> ratePassenger(
-    @Field("passengerId") int passengerId,
+    @Field("userId") int driverId,
+    @Field("tripId") int tripId,
     @Field("rating") double rateNumber,
   );
 

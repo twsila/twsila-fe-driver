@@ -186,6 +186,8 @@ class AppStrings {
   static const String enterPriceThatYouWant = "enter_price_that_you_want";
   static const String sendSuggestedPrice = "send_suggest_price";
   static const String tripDetails = "trip_details";
+  static const String navigateToTrackingPage = "navigate_to_tracking_page";
+  static const String navigation = "navigation";
   static const String carDocumentsInfo = "car_document_info";
   static const String carDriverIdentityInfo = "car_driver_identity_info";
   static const String carDriverLicenseInfo = "car_driver_license_info";

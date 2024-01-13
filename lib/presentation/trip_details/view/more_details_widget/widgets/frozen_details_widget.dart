@@ -8,6 +8,7 @@ import 'item_widget.dart';
 
 class FrozenDetailsWidget extends StatelessWidget {
   final FreezersModel freezersModel;
+
   const FrozenDetailsWidget({
     Key? key,
     required this.freezersModel,
@@ -25,13 +26,17 @@ class FrozenDetailsWidget extends StatelessWidget {
             Expanded(
               child: ItemWidget(
                 title: AppStrings.shippedTypes.tr(),
-                text: freezersModel.shippedType ?? "-",
+                text: freezersModel.shippedType != null
+                    ? freezersModel.shippedType!.value
+                    : "-",
               ),
             ),
             Expanded(
               child: ItemWidget(
                 title: AppStrings.materialsTobeShipped.tr(),
-                text: freezersModel.frozenMaterial ?? "-",
+                text: freezersModel.frozenType != null
+                    ? freezersModel.frozenType!.value
+                    : "-",
               ),
             ),
           ],

@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/vehicle_shape_widget.dart';
+import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 
@@ -55,14 +57,18 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
             widget.goodsServiceTypesList[serviceIndex];
 
         if (widget.registrationRequest.vehicleTypeId != null &&
-            selectedGoodsServiceTypeModel != null ) {
+            selectedGoodsServiceTypeModel != null &&
+            selectedGoodsServiceTypeModel!.vehicleShapes.isNotEmpty) {
           int vehicleIndex = selectedGoodsServiceTypeModel!.vehicleShapes
               .indexWhere((element) =>
                   element.id.toString() ==
                   widget.registrationRequest.vehicleTypeId);
 
-          vehicleShape =
-              selectedGoodsServiceTypeModel!.vehicleShapes[vehicleIndex];
+          if (vehicleIndex <
+              selectedGoodsServiceTypeModel!.vehicleShapes.length) {
+            vehicleShape =
+                selectedGoodsServiceTypeModel!.vehicleShapes[vehicleIndex];
+          }
         }
         SchedulerBinding.instance.addPostFrameCallback((_) {
           setState(() {
@@ -103,6 +109,14 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
               (index) => GestureDetector(
                     onTap: () {
                       current = index;
+                      if (widget
+                              .goodsServiceTypesList[index].serviceTypeParam ==
+                          "OTHER_TANK") {
+                        ToastHandler(context).showToast(
+                            widget
+                                .goodsServiceTypesList[index].serviceTypeParam,
+                            Toast.LENGTH_SHORT);
+                      }
                       setState(() {
                         widget.selectedService(
                             widget.goodsServiceTypesList[index]);

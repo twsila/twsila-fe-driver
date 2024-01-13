@@ -29,6 +29,7 @@ import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
 import '../../google_maps/model/location_model.dart';
 import '../../google_maps/model/maps_repo.dart';
+import '../../rate_passenger/view/rate_passenger_view.dart';
 import '../../trip_details/view/more_details_widget/more_details_widget.dart';
 import '../bloc/trip_execution_bloc.dart';
 import 'navigation_tracking_view.dart';
@@ -132,7 +133,9 @@ class _TripExecutionViewState extends State<TripExecutionView> {
 
         if (state is TripStatusChangedSuccess) {
           if (state.isLastStep) {
-            Navigator.pop(context);
+            // Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, Routes.ratePassenger,
+                arguments: RatePassengerArguments(widget.tripModel));
           } else if (state.openMapWidget) {
             Navigator.pushNamed(context, Routes.locationTrackingPage,
                 arguments: NavigationTrackingArguments(widget.tripModel));
@@ -152,6 +155,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ShowTrackingWidget(),
                 tripDataHeader(),
                 _fromToWidget(),
                 Divider(
@@ -175,6 +179,44 @@ class _TripExecutionViewState extends State<TripExecutionView> {
           ),
         );
       },
+    );
+  }
+
+  Widget ShowTrackingWidget() {
+    return Visibility(
+      visible: tripStatusStepModel.stepIndex == 1 ||
+          tripStatusStepModel.stepIndex == 2 ||
+          tripStatusStepModel.stepIndex == 3,
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "${AppStrings.navigateToTrackingPage.tr()}",
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: ColorManager.splashBGColor,
+                  fontSize: FontSize.s14,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            CustomTextButton(
+              width: AppSize.s120,
+              height: AppSize.s40,
+              backgroundColor: ColorManager.splashBGColor,
+              isWaitToEnable: false,
+              text: AppStrings.navigation.tr(),
+              icon: Icon(
+                Icons.map,
+                color: ColorManager.white,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.locationTrackingPage,
+                    arguments: NavigationTrackingArguments(widget.tripModel));
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -434,7 +476,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       ),
                 continueButtonLabel: widget.tripModel.tripDetails.date != null
                     ? ''
-                    : AppStrings.navigationToPickupLocation.tr(),
+                    : AppStrings.navigateToTrackingPage.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null

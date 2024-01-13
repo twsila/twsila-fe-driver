@@ -11,6 +11,7 @@ import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/documents_helper.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 
@@ -33,10 +34,9 @@ import '../helpers/registration_request.dart';
 import '../widgets/uploadDocumentWidget.dart';
 
 class ServiceRegistrationSecondStep extends StatefulWidget {
-  final RegistrationRequest registrationRequest;
+  RegistrationRequest registrationRequest;
 
-  const ServiceRegistrationSecondStep(
-      {required this.registrationRequest, Key? key})
+  ServiceRegistrationSecondStep({required this.registrationRequest, Key? key})
       : super(key: key);
 
   @override
@@ -81,6 +81,8 @@ class _ServiceRegistrationSecondStepState
   bool isDriverIdValid = false;
   bool isDriverLicValid = false;
   bool isOwnerIdValid = false;
+
+  bool wantKeepAlive = true;
 
   final PageController _pageController = PageController(initialPage: 0);
 
@@ -176,7 +178,6 @@ class _ServiceRegistrationSecondStepState
   Widget _getContentWidget(BuildContext context) {
     return BlocConsumer<ServiceRegistrationBloc, ServiceRegistrationState>(
       listener: (context, state) {
-        print(state.toString());
         if (state is ServiceRegistrationLoading) {
           startLoading();
         } else {
@@ -193,6 +194,30 @@ class _ServiceRegistrationSecondStepState
         }
 
         if (state is ServiceRegistrationSuccess) {
+          widget.registrationRequest.driverImages = null;
+          widget.registrationRequest.firstName = null;
+          widget.registrationRequest.lastName = null;
+          widget.registrationRequest.email = null;
+          widget.registrationRequest.dateOfBirth = null;
+          widget.registrationRequest.gender = null;
+          widget.registrationRequest.mobile = null;
+          widget.registrationRequest.serviceTypeParam = null;
+          widget.registrationRequest.serviceModelId = null;
+          widget.registrationRequest.vehicleTypeId = null;
+          widget.registrationRequest.vehicleShapeId = null;
+          widget.registrationRequest.carManufacturerTypeId = null;
+          widget.registrationRequest.additionalServicesModel = null;
+          widget.registrationRequest.carModelId = null;
+          widget.registrationRequest.carNotes = null;
+          widget.registrationRequest.plateNumber = null;
+          widget.registrationRequest.countryCode = null;
+          widget.registrationRequest.driverImages = null;
+          widget.registrationRequest.carImages = null;
+          widget.registrationRequest.carImages = null;
+          widget.registrationRequest.carDriverNationalIdPhotosData = null;
+          widget.registrationRequest.carDriverLicensePhotosData = null;
+          widget.registrationRequest.carOwnerNationalIdPhotosData = null;
+          widget.registrationRequest.carDocumentPhotosData = null;
           Navigator.pushReplacementNamed(
               context, Routes.serviceAppliedSuccessfullyView);
         }
@@ -267,7 +292,7 @@ class _ServiceRegistrationSecondStepState
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: [
-                KeepAlivePage(child: SecondStepRegistration()),
+                SecondStepRegistration(),
                 UploadDocumentPage(selectedDocument)
               ]),
         );
@@ -640,7 +665,8 @@ class _ServiceRegistrationSecondStepState
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          expiryDate!,
+                                          expiryDate!.getTimeStampFromDate(
+                                              pattern: 'dd MMM yyyy'),
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium
@@ -882,15 +908,18 @@ class _ServiceRegistrationSecondStepState
       isCarDocumentValid = true;
     }
     if (widget.registrationRequest.carDriverLicensePhotosData != null) {
-      driverLicenseDocument = widget.registrationRequest.carDriverLicensePhotosData!;
+      driverLicenseDocument =
+          widget.registrationRequest.carDriverLicensePhotosData!;
       isDriverLicValid = true;
     }
     if (widget.registrationRequest.carOwnerNationalIdPhotosData != null) {
-      ownerIdDocument = widget.registrationRequest.carOwnerNationalIdPhotosData!;
+      ownerIdDocument =
+          widget.registrationRequest.carOwnerNationalIdPhotosData!;
       isOwnerIdValid = true;
     }
     if (widget.registrationRequest.carDriverNationalIdPhotosData != null) {
-      driverIdDocument = widget.registrationRequest.carDriverNationalIdPhotosData!;
+      driverIdDocument =
+          widget.registrationRequest.carDriverNationalIdPhotosData!;
       isDriverIdValid = true;
     }
     if (widget.registrationRequest.carImages != null) {

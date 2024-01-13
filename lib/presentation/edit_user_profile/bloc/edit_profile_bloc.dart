@@ -43,7 +43,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
               ? Constants.DRIVER_PHOTO_IMAGE_STRING
               : Constants.BUSINESS_OWNER_PHOTO_IMAGE_STRING);
     }
-    print(profilePhoto!.path);
     if (user != null) {
       if (user.captainType == RegistrationConstants.captain) {
         (await updateProfileUseCase.execute(
@@ -67,6 +66,8 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           UserDevice userDevice = await setUserDevice();
           Driver driver = Driver.fromJson(driverModelResponse.result);
           driver.userDevice = userDevice;
+          driver.accessToken= appPreferences.getCachedDriver()!.accessToken;
+          driver.refreshToken= appPreferences.getCachedDriver()!.refreshToken;
           await appPreferences.setDriver(driver);
         });
       } else {
@@ -91,6 +92,8 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
           BusinessOwnerModel driver =
               BusinessOwnerModel.fromJsonDirect(driverModelResponse.result);
           driver.userDevice = userDevice;
+          driver.accessToken= appPreferences.getCachedDriver()!.accessToken;
+          driver.refreshToken= appPreferences.getCachedDriver()!.refreshToken;
           await appPreferences.setDriver(driver);
         });
       }

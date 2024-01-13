@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
@@ -70,12 +71,14 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
   }
 
   String convertDate(DateTime dateTime) {
-    String dateFormatted =
-        DateFormat(widget.dateFormatterString, widget.locale != null ? widget.locale!.languageCode : _appPrefs.getAppLanguage())
-            .format(dateTime);
-    widget.onSelectDate(dateFormatted);
-    return DateFormat(widget.dateFormatterString, _appPrefs.getAppLanguage())
-        .format(dateTime);
+    if (dateTime == null) return '';
+    DateTime dateFormatted =
+    widget.pickTime ?  dateTime : DateUtils.dateOnly(dateTime);
+    String timestamp = dateFormatted.millisecondsSinceEpoch.toString();
+
+    widget.onSelectDate(timestamp);
+    String date = timestamp.getTimeStampFromDate(pattern: widget.pickTime ? 'dd MMM yyyy/ hh:mm a' : 'dd MMM yyyy');
+    return date;
   }
 
   @override

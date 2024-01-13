@@ -22,7 +22,7 @@ class RatePassengerBloc extends Bloc<RatePassengerEvent, RatePassengerState> {
     RatePassengerUseCase ratePassengerUseCase =
         instance<RatePassengerUseCase>();
     (await ratePassengerUseCase.execute(
-            RatePassengerUseCaseInput(event.passengerId, event.rateNumber)))
+            RatePassengerUseCaseInput(event.driverId,event.tripId,event.rateNumber)))
         .fold(
             (failure) => {
                   // left -> failure
@@ -33,7 +33,7 @@ class RatePassengerBloc extends Bloc<RatePassengerEvent, RatePassengerState> {
       // right -> data (success)
       // content
       // emit success state
-      RatePassengerSuccess();
+      emit(RatePassengerSuccess());
     });
   }
 }

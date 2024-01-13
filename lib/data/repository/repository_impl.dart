@@ -528,12 +528,12 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, BaseResponse>> ratePassenger(
-      int passengerId, double ratingNumber) async {
+      int driverId,int tripId,rate) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response =
-            await _remoteDataSource.ratePassenger(passengerId, ratingNumber);
+            await _remoteDataSource.ratePassenger(driverId,tripId,rate);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

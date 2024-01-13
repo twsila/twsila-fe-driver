@@ -8,6 +8,7 @@ import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
@@ -454,7 +455,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p2),
               child: Text(
-                birthDate != null ? birthDate! : AppStrings.birtDateHint.tr(),
+                birthDate != null ? birthDate!.getTimeStampFromDate(pattern: 'dd MMM yyyy') : AppStrings.birtDateHint.tr(),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: birthDate != null
                         ? ColorManager.headersTextColor
@@ -480,7 +481,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
     if (picked != null) {
       setState(() {
         selectedDate = picked;
-        birthDate = DateFormat.yMd().format(selectedDate);
+        birthDate = selectedDate.millisecondsSinceEpoch.toString();
         validateInputsToContinue();
       });
     }

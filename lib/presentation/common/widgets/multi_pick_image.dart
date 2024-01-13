@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
@@ -69,10 +70,28 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                     onTap: () async {
                       try {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        var pickedfiles = await imgpicker.pickMultiImage(
-                            imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
+                        var pickedfiles = await imgpicker.pickMultiImage();
 
-                        imagefiles = pickedfiles;
+                        await Future.forEach<XFile>(pickedfiles,
+                            (element) async {
+                          String filePath = element.path;
+                          final lastIndex =
+                              filePath.lastIndexOf(RegExp(r'.jp'));
+                          final splitted = filePath.substring(0, (lastIndex));
+                          final outPath =
+                              "${splitted}_out${filePath.substring(lastIndex)}";
+
+                          var result =
+                              await FlutterImageCompress.compressAndGetFile(
+                            filePath,
+                            outPath,
+                            quality: Constants.IMAGE_QUALITY_COMPRESS,
+                          );
+
+                          if (result == null) return;
+                          imagefiles.add(result);
+                        });
+
                         widget.onPickedImages(imagefiles);
                         if (widget.registrationRequest != null) {
                           widget.registrationRequest!.carImages = imagefiles;
@@ -95,11 +114,28 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                     onTap: () async {
                       try {
                         var pickedfile = await imgpicker.pickImage(
-                            source: ImageSource.camera,
-                            imageQuality: Constants.IMAGE_QUALITY_COMPRESS);
+                            source: ImageSource.camera);
 
-                        imagefiles.add(pickedfile!);
+                        if (pickedfile == null) return;
+
+                        String filePath = pickedfile.path;
+                        final lastIndex = filePath.lastIndexOf(RegExp(r'.jp'));
+                        final splitted = filePath.substring(0, (lastIndex));
+                        final outPath =
+                            "${splitted}_out${filePath.substring(lastIndex)}";
+
+                        var result =
+                            await FlutterImageCompress.compressAndGetFile(
+                          filePath,
+                          outPath,
+                          quality: Constants.IMAGE_QUALITY_COMPRESS,
+                        );
+
+                        if (result == null) return;
+
+                        imagefiles.add(result);
                         widget.onPickedImages(imagefiles);
+                        setState(() {});
                         if (widget.registrationRequest != null) {
                           widget.registrationRequest!.carImages = imagefiles;
                         }

@@ -12,6 +12,7 @@ import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_b
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
 import 'package:taxi_for_you/presentation/trip_execution/view/trip_execution_view.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
@@ -366,7 +367,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   tripItemView(TripDetailsModel trip) {
     String? date;
     if (trip.tripDetails.date != null) {
-      date = handleDateString(trip.tripDetails.date!);
+      // date = trip.tripDetails.date!.formatStringToDateString();
+      date = trip.tripDetails.date!.getTimeStampFromDate();
     }
     return CustomCard(
       onClick: () {

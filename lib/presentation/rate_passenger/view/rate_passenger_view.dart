@@ -33,7 +33,8 @@ class RatePassengerView extends StatefulWidget {
 class _RatePassengerViewState extends State<RatePassengerView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
-  double rating = 3;
+
+  double rating = 3;  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   @override
   void initState() {
@@ -206,7 +207,8 @@ class _RatePassengerViewState extends State<RatePassengerView> {
                 isWaitToEnable: false,
                 onPressed: () {
                   BlocProvider.of<RatePassengerBloc>(context).add(RatePassenger(
-                      widget.tripDetailsModel.tripDetails.passenger!.id,
+                      _appPreferences.getCachedDriver()!.id!,
+                      widget.tripDetailsModel.tripDetails.tripId!,
                       rating));
                 },
                 backgroundColor: ColorManager.primary,

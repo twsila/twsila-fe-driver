@@ -62,7 +62,7 @@ abstract class RemoteDataSource {
 
   Future<GeneralResponse> tripSummary(int userId, int tripId);
 
-  Future<BaseResponse> ratePassenger(int passengerId, double rateNumber);
+  Future<BaseResponse> ratePassenger(int driverId,int tripId,double rate);
 
   Future<BaseResponse> updateProfile(UpdateProfileRequest updateProfileRequest);
 
@@ -279,8 +279,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> ratePassenger(int passengerId, double rateNumber) async {
-    return await _appServiceClient.ratePassenger(passengerId, rateNumber);
+  Future<BaseResponse> ratePassenger(int driverId,int tripId, double rateNumber) async {
+    return await _appServiceClient.ratePassenger(driverId,tripId, rateNumber);
   }
 
   @override

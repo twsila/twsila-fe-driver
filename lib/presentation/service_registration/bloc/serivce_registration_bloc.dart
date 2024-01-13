@@ -59,6 +59,8 @@ class ServiceRegistrationBloc
     on<RegisterBOWithService>(_registerBOWithService);
   }
 
+
+
   FutureOr<void> _addCaptainData(
       addCaptainData event, Emitter<ServiceRegistrationState> emit) async {
     if (event.captainPhoto != null &&
@@ -411,6 +413,7 @@ class ServiceRegistrationBloc
     registrationRequest.driverImages?.addAll(driverImages);
 
     emit(SecondStepDataAddedState());
+    emit(ServiceRegistrationInitial());
   }
 
   Future<File> changeFileNameOnly(XFile image, String newFileName) {

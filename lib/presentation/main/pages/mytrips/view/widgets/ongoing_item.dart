@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 
 import '../../../../../../domain/model/trip_details_model.dart';
 import '../../../../../../utils/ext/enums.dart';
@@ -72,7 +73,8 @@ class _OngoingItemViewState extends State<OngoingItemView> {
                         ),
                         Text(
                           widget.date != null && widget.date != ""
-                              ? AppStrings.scheduled.tr() + " : ${widget.date}"
+                              ? AppStrings.scheduled.tr() +
+                                  " : ${widget.date.getTimeStampFromDate()}"
                               : AppStrings.asSoonAsPossible.tr(),
                           style: Theme.of(context)
                               .textTheme

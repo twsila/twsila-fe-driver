@@ -75,7 +75,8 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
                         ),
                         Text(
                           widget.date != null && widget.date != ""
-                              ? AppStrings.scheduled.tr() + " : ${widget.date}"
+                              ? AppStrings.scheduled.tr() +
+                                  " : ${widget.date.getTimeStampFromDate()}"
                               : AppStrings.asSoonAsPossible.tr(),
                           style: Theme.of(context)
                               .textTheme
@@ -171,19 +172,20 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
             ),
             Text(
               widget.trip.tripDetails.completionDate != null
-                  ? "${AppStrings.tripCompletedInDay.tr()}"
-                      "${widget.trip.tripDetails.completionDate ?? "-"}"
+                  ? "${AppStrings.tripCompletedInDay.tr()} "
+                      "${widget.trip.tripDetails.completionDate?.getTimeStampFromDate() ?? "-"}"
                   : '${AppStrings.tripCompletedInDay.tr()} -',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s14,
                   fontWeight: FontWeight.bold),
             ),
-            widget.trip.tripDetails.passengerRating != null
+            widget.trip.tripDetails.driverRating != null &&
+                    widget.trip.tripDetails.driverRating != -1.0
                 ? Row(
                     children: [
                       Text(
-                        "${AppStrings.passengerWasRatedBy.tr()}: ${widget.trip.tripDetails.passengerRating}",
+                        "${AppStrings.passengerWasRatedBy.tr()} : ${widget.trip.tripDetails.driverRating}",
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: ColorManager.headersTextColor,
                             fontSize: FontSize.s14,

@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/constants.dart';
+import '../../utils/resources/global_key.dart';
+import '../../utils/resources/routes_manager.dart';
 
 const String APPLICATION_JSON = "application/json";
 const String CONTENT_TYPE = "content-type";
@@ -92,18 +95,23 @@ class DioFactory {
   }
 
   Future<String> refreshToken() async {
-    Response response = await Dio(BaseOptions(headers: {
-      CONTENT_TYPE: APPLICATION_JSON,
-      ACCEPT: APPLICATION_JSON,
-      USER_TYPE: _appPreferences.getUserType() ?? "",
-      AUTHORIZATION: await _appPreferences.isUserLoggedIn()
-          ? "Bearer " + (_appPreferences.getCachedDriver()?.accessToken ?? "")
-          : "",
-    })).post(Constants.baseUrl + EndPointsConstants.refreshToken, data: {
-      "refreshToken": _appPreferences.getCachedDriver()?.refreshToken ?? ""
-    });
-    print(response.data["result"]);
-
-    return response.data["result"]["accessToken"];
+    try {
+      Response response = await Dio(BaseOptions(headers: {
+        CONTENT_TYPE: APPLICATION_JSON,
+        ACCEPT: APPLICATION_JSON,
+        USER_TYPE: _appPreferences.getUserType() ?? "",
+        AUTHORIZATION: await _appPreferences.isUserLoggedIn()
+            ? "Bearer " + (_appPreferences.getCachedDriver()?.accessToken ?? "")
+            : "",
+      })).post(Constants.baseUrl + EndPointsConstants.refreshToken, data: {
+        "refreshToken": _appPreferences.getCachedDriver()?.refreshToken ?? ""
+      });
+      return response.data["result"]["accessToken"];
+    } catch (e) {
+      _appPreferences.removeCachedDriver();
+      _appPreferences.setUserLoggedOut(
+          NavigationService.navigatorKey.currentState!.context);
+      return "";
+    }
   }
 }

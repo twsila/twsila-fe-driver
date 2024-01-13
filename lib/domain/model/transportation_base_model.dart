@@ -39,7 +39,7 @@ class TransportationBaseModel {
     tripStatus = json['tripStatus'];
     creationDate = json['creationDate'];
     stringDate = json['stringDate'];
-    date = json['date'];
+    date = json['launchDateTimestamp'];
     notes = json['notes'];
     completionDate = json['completionDate'];
     passengerRating = json['passengerRating'];
@@ -76,7 +76,7 @@ class TransportationBaseModel {
     if (tripId != null) data['id'] = tripId.toString();
     if (creationDate != null) data['creationDate'] = creationDate;
     if (stringDate != null) data['stringDate'] = stringDate;
-    if (date != null) data['date'] = date;
+    if (date != null) data['launchDateTimestamp'] = date;
     if (notes != null) data['notes'] = notes;
     if (completionDate != null) data['completionDate'] = notes;
     if (passengerRating != null) data['passengerRating'] = notes;

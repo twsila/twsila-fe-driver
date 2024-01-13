@@ -829,14 +829,16 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<BaseResponse> ratePassenger(
-    passengerId,
+    driverId,
+    tripId,
     rateNumber,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'passengerId': passengerId,
+      'userId': driverId,
+      'tripId': tripId,
       'rating': rateNumber,
     };
     final _result = await _dio
@@ -847,7 +849,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/passengers/trips/rate',
+              '/drivers/trips/rate',
               queryParameters: queryParameters,
               data: _data,
             )

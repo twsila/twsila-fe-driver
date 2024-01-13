@@ -20,9 +20,10 @@ class ScheduledItemView extends StatefulWidget {
   String currentTripModelId;
   String date;
 
-  ScheduledItemView({required this.trip,
-    required this.currentTripModelId,
-    required this.date});
+  ScheduledItemView(
+      {required this.trip,
+      required this.currentTripModelId,
+      required this.date});
 
   @override
   State<ScheduledItemView> createState() => _ScheduledItemViewState();
@@ -34,120 +35,102 @@ class _ScheduledItemViewState extends State<ScheduledItemView> {
     return CustomCard(
       onClick: () {
         Navigator.pushNamed(context, Routes.tripExecution,
-            arguments: TripExecutionArguments(widget.trip))
-            .then((value) =>
-            BlocProvider.of<MyTripsBloc>(context)
+                arguments: TripExecutionArguments(widget.trip))
+            .then((value) => BlocProvider.of<MyTripsBloc>(context)
                 .add(GetTripsTripModuleId(widget.currentTripModelId)));
         // Navigator.pushNamed(context, Routes.tripDetails,
         //     arguments: TripDetailsArguments(tripModel: trip));
       },
       bodyWidget: Container(
-          margin: EdgeInsets.all(AppMargin.m8),
-          padding: EdgeInsets.only(
-              top: AppPadding.p8,
-              left: AppPadding.p8,
-              right: AppPadding.p8,
-              bottom: AppPadding.p2),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        margin: EdgeInsets.all(AppMargin.m8),
+        padding: EdgeInsets.only(
+            top: AppPadding.p8,
+            left: AppPadding.p8,
+            right: AppPadding.p8,
+            bottom: AppPadding.p2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                color: ColorManager.primaryBlueBackgroundColor,
-                padding: EdgeInsets.all(AppPadding.p2),
-                child: Padding(
-                  padding: const EdgeInsets.all(AppPadding.p4),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        widget.trip.tripDetails.date != null &&
-                            widget.trip.tripDetails.date != ""
-                            ? ImageAssets.scheduledTripIc
-                            : ImageAssets.asSoonAsPossibleTripIc,
-                        width: AppSize.s14,
-                      ),
-                      SizedBox(
-                        width: AppSize.s4,
-                      ),
-                      Text(
-                        widget.date != null && widget.date != ""
-                            ? AppStrings.scheduled.tr() + " : ${widget.date}"
-                            : AppStrings.asSoonAsPossible.tr(),
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(
-                            color: ColorManager.headersTextColor,
-                            fontSize: FontSize.s12,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  color: ColorManager.primaryBlueBackgroundColor,
+                  padding: EdgeInsets.all(AppPadding.p2),
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppPadding.p4),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          widget.trip.tripDetails.date != null &&
+                                  widget.trip.tripDetails.date != ""
+                              ? ImageAssets.scheduledTripIc
+                              : ImageAssets.asSoonAsPossibleTripIc,
+                          width: AppSize.s14,
+                        ),
+                        SizedBox(
+                          width: AppSize.s4,
+                        ),
+                        Text(
+                          widget.date != null && widget.date != ""
+                              ? AppStrings.scheduled.tr() + " : ${widget.date}"
+                              : AppStrings.asSoonAsPossible.tr(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                  color: ColorManager.headersTextColor,
+                                  fontSize: FontSize.s12,
+                                  fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              // SvgPicture.asset(ImageAssets.truckIc,),
-              Image.asset(
-                getIconName(widget.trip.tripDetails.tripType!),
-                width: AppSize.s40,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: AppSize.s4,
-          ),
-          Text(
-            getTitle(widget.trip.tripDetails.tripType!),
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(
-                color: ColorManager.headersTextColor,
-                fontSize: FontSize.s14,
-                fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: AppSize.s4,
-          ),
-          Text(
-            "${widget.trip.tripDetails.pickupLocation.locationName} - ${widget
-                .trip.tripDetails.destinationLocation.locationName}",
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(
-                color: ColorManager.headersTextColor,
-                fontSize: FontSize.s14,
-                fontWeight: FontWeight.normal),
-          ),
-          Divider(
-            color: ColorManager.dividerColor,
-            thickness: 1,
-          ),
-          SizedBox(
-            height: AppSize.s4,
-          ),
-          Text(
-              '${AppStrings.tripWillStartInDay.tr()} ${widget.trip.tripDetails
-                  .date ?? "-"}',
-      style: Theme
-          .of(context)
-          .textTheme
-          .bodySmall
-          ?.copyWith(
-          color: ColorManager.supportTextColor,
-          fontSize: FontSize.s14,
-          fontWeight: FontWeight.bold),
-    ),]
-    ,
-    )
-    ,
-    )
-    ,
+                // SvgPicture.asset(ImageAssets.truckIc,),
+                Image.asset(
+                  getIconName(widget.trip.tripDetails.tripType!),
+                  width: AppSize.s40,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: AppSize.s4,
+            ),
+            Text(
+              getTitle(widget.trip.tripDetails.tripType!),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: ColorManager.headersTextColor,
+                  fontSize: FontSize.s14,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: AppSize.s4,
+            ),
+            Text(
+              "${widget.trip.tripDetails.pickupLocation.locationName} - ${widget.trip.tripDetails.destinationLocation.locationName}",
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: ColorManager.headersTextColor,
+                  fontSize: FontSize.s14,
+                  fontWeight: FontWeight.normal),
+            ),
+            Divider(
+              color: ColorManager.dividerColor,
+              thickness: 1,
+            ),
+            SizedBox(
+              height: AppSize.s4,
+            ),
+            Text(
+              '${AppStrings.tripWillStartInDay.tr()} ${widget.trip.tripDetails.date?.getTimeStampFromDate() ?? "-"}',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: ColorManager.supportTextColor,
+                  fontSize: FontSize.s14,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

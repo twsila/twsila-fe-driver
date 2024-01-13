@@ -18,7 +18,7 @@ part 'trip_execution_state.dart';
 class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
   AppPreferences _appPreferences = instance<AppPreferences>();
 
-  static List<TripStatusStepModel> tripStatusSteps = [
+  List<TripStatusStepModel> tripStatusSteps = [
     TripStatusStepModel(0, TripStatus.WAIT_FOR_TAKEOFF.name),
     TripStatusStepModel(1, TripStatus.TAKEOFF.name),
     TripStatusStepModel(2, TripStatus.EXECUTED.name),
@@ -52,11 +52,11 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
         // right -> data (success)
         // content
         // emit success state
-        emit(TripStatusChangedSuccess(event.isLastStep!,event.openMapWidget!));
+        emit(TripStatusChangedSuccess(event.isLastStep!, event.openMapWidget!));
         // isUserLoggedInSuccessfullyStreamController.add(true);
       });
     } else {
-      emit(TripStatusChangedSuccess(event.isLastStep!,event.openMapWidget!));
+      emit(TripStatusChangedSuccess(event.isLastStep!, event.openMapWidget!));
     }
   }
 
@@ -84,14 +84,18 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
   FutureOr<void> _getTripStatusForStepper(
       getTripStatusForStepper event, Emitter<TripExecutionState> emit) async {
     emit(TripExecutionLoading());
-    try {
-      TripStatusStepModel tripStatusStepModel = tripStatusSteps.firstWhere(
-          (element) =>
-              element.tripStatus ==
-              event.tripDetailsModel.tripDetails.tripStatus);
 
-      emit(TripCurrentStepSuccess(tripStatusStepModel));
-    } catch (e) {
+    TripStatusStepModel? tripStatusStepModel;
+    tripStatusSteps.forEach((element) {
+      if (element.tripStatus == event.tripDetailsModel.tripDetails.tripStatus) {
+        tripStatusStepModel =
+            TripStatusStepModel(element.stepIndex, element.tripStatus);
+      }
+    });
+
+    if (tripStatusStepModel != null) {
+      emit(TripCurrentStepSuccess(tripStatusStepModel!));
+    } else {
       emit(TripCurrentStepSuccess(tripStatusSteps.first));
     }
   }

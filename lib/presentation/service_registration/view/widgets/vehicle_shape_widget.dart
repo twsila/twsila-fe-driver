@@ -40,7 +40,7 @@ class _VehicleShapeWidgetState extends State<VehicleShapeWidget> {
 
   checkPreSelectedValues() {
     try {
-      if (widget.preselectedVehicle != null && mounted) {
+      if (widget.preselectedVehicle != null &&  widget.vehicleShapesList.isNotEmpty && mounted) {
         selectedVehicle = widget.vehicleShapesList
             .firstWhere((element) => element == widget.preselectedVehicle);
         if (selectedVehicle != null) {

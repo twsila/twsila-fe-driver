@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:taxi_for_you/domain/usecase/login_usecase.dart';
-import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 import 'package:taxi_for_you/utils/resources/theme_manager.dart';
 
+import '../utils/resources/global_key.dart';
 import '../utils/resources/routes_manager.dart';
 import 'app_prefs.dart';
 import 'bloc_providers.dart';
@@ -26,6 +25,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> navigatorKey =
+      new GlobalKey<NavigatorState>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
   @override
@@ -45,6 +46,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RouteGenerator.getRoute,
         initialRoute: Routes.splashRoute,
+        navigatorKey: NavigationService.navigatorKey,
         theme: getApplicationTheme(),
       ),
     );

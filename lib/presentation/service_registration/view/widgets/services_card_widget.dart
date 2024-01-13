@@ -370,11 +370,11 @@ class _ServiceCardState extends State<ServiceCard> {
             : Container(),
         selectedService != null &&
                 selectedService! == widget.serviceTypeModelList[1]
-                ? AdditionalServicesWidget(
-                  additionalServicesModel: widget.additionalServicesModel,
+            ? AdditionalServicesWidget(
+                additionalServicesModel: widget.additionalServicesModel,
                 registrationRequest: widget.registrationRequest,
-                )
-                : Container()
+              )
+            : Container()
       ],
     );
   }
@@ -383,15 +383,20 @@ class _ServiceCardState extends State<ServiceCard> {
       ServiceTypeModel serviceTypeModel, VehicleModel vehicleModel) {
     List<ThirdServiceLevel> thirdServiceLevel = [];
     if (serviceTypeModel == widget.serviceTypeModelList[1]) {
-      vehicleModel.vehicleShapes.forEach((vehicleShape) {
-        thirdServiceLevel
-            .add(ThirdServiceLevel(vehicleShape.id, vehicleShape.shape));
-      });
+      if (vehicleModel.vehicleShapes != null &&
+          vehicleModel.vehicleShapes!.isNotEmpty) {
+        vehicleModel.vehicleShapes!.forEach((vehicleShape) {
+          thirdServiceLevel
+              .add(ThirdServiceLevel(vehicleShape.id, vehicleShape.shape));
+        });
+      }
     } else {
-      vehicleModel.numberOfPassengers.forEach((numberOfPassenger) {
-        thirdServiceLevel.add(ThirdServiceLevel(numberOfPassenger.id,
-            "${numberOfPassenger.numberOfPassengers.toString()}"));
-      });
+     if(vehicleModel.numberOfPassengers != null && vehicleModel.numberOfPassengers!.isNotEmpty){
+       vehicleModel.numberOfPassengers!.forEach((numberOfPassenger) {
+         thirdServiceLevel.add(ThirdServiceLevel(numberOfPassenger.id,
+             "${numberOfPassenger.numberOfPassengers.toString()}"));
+       });
+     }
     }
     return thirdServiceLevel;
   }

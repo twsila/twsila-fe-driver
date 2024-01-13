@@ -62,6 +62,10 @@ String getIconName(String tripType) {
 
 String getTitle(String tripType) {
   switch (tripType) {
+    case TripTypeConstants.personType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.personsTransportation.tr();
     case TripTypeConstants.furnitureType:
       return AppStrings.request.tr() +
           ' ' +

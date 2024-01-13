@@ -4,8 +4,9 @@ part of 'rate_passenger_bloc.dart';
 abstract class RatePassengerEvent {}
 
 class RatePassenger extends RatePassengerEvent {
-  final int passengerId;
+  final int driverId;
+  final int tripId;
   final double rateNumber;
 
-  RatePassenger(this.passengerId, this.rateNumber);
+  RatePassenger(this.driverId, this.tripId, this.rateNumber);
 }

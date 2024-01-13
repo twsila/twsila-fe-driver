@@ -48,6 +48,7 @@ class EndPointsConstants {
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static const String logoutPath = "/api/v1/auth/logout";
   static const String registration = "/drivers/register";
+  static const String BoRegistration = "/bo/register";
   static const String otpGenerate = "/otp/generate";
   static const String otpValidate = "/otp/validate";
 
@@ -64,6 +65,7 @@ class EndPointsConstants {
     refreshToken,
     otpValidate,
     registration,
+    BoRegistration,
     goodsServiceTypes,
     personsVehicleTypes,
     carModels,

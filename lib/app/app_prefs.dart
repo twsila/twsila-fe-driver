@@ -40,7 +40,9 @@ class AppPreferences {
       return LanguageType.ENGLISH.getValue();
     }
   }
-
+  bool isEnglish() {
+    return getAppLanguage() == LanguageType.ENGLISH.getValue();
+  }
   Future<void> changeAppLanguage() async {
     String currentLang = getAppLanguage();
 

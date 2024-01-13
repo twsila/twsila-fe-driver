@@ -74,7 +74,7 @@ abstract class Repository {
   Future<Either<Failure, TripDetailsModel>> tripSummary(int userId, int tripId);
 
   Future<Either<Failure, BaseResponse>> ratePassenger(
-      int passengerId, double ratingNumber);
+      int driverId,int tripId,double rate);
 
   Future<Either<Failure, BaseResponse>> UpdateProfile(
       UpdateProfileRequest updateProfileRequest);
