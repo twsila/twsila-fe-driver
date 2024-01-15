@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/app/di.dart';
 
 import '../../../../../domain/model/persons_model.dart';
 import '../../../../../utils/resources/strings_manager.dart';
@@ -13,6 +15,7 @@ class PersonDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppPreferences appPreferences = instance<AppPreferences>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,14 +26,15 @@ class PersonDetailsWidget extends StatelessWidget {
             Expanded(
               child: ItemWidget(
                 title: AppStrings.vehicleType.tr(),
-                text: personsModel.vehicleType?.vehicleType ?? "-",
+                text: appPreferences.getAppLanguage() == "ar"
+                    ? personsModel.vehicleType?.vehicleTypeAr ?? "-"
+                    : personsModel.vehicleType?.vehicleType ?? "-",
               ),
             ),
             Expanded(
               child: ItemWidget(
                 title: AppStrings.numOfPassengers.tr(),
-                text: personsModel
-                        .vehicleType?.numberOfPassengers?[0].numberOfPassengers
+                text: personsModel.numberOfPassengers?.numberOfPassengers
                         .toString() ??
                     "-",
               ),

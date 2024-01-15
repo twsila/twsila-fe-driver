@@ -541,7 +541,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       ),
                 continueButtonLabel: widget.tripModel.tripDetails.date != null
                     ? ''
-                    : AppStrings.cancel.tr(),
+                    : AppStrings.complete.tr(),
                 cancelButtonLabel: ''),
           ],
         ),

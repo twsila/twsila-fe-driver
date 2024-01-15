@@ -12,6 +12,7 @@ import 'package:taxi_for_you/presentation/google_maps/view/google_maps_widget.da
 import 'package:taxi_for_you/presentation/trip_details/widgets/dotted_seperator.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 import '../../../app/app_prefs.dart';
@@ -491,7 +492,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
         ),
         _IconTextDataWidget(
             widget.tripModel.tripDetails.date != null
-                ? "${AppStrings.scheduled.tr()} ${widget.tripModel.tripDetails.date}"
+                ? "${AppStrings.scheduled.tr()} ${widget.tripModel.tripDetails.date!.getTimeStampFromDate()}"
                 : "${AppStrings.asSoonAsPossible.tr()}",
             ImageAssets.tripDetailsAsapIcon),
       ],

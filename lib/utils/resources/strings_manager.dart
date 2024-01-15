@@ -12,6 +12,7 @@ class AppStrings {
   static const whatsYourNumber = "whats_your_number";
   static const letsGetStarted = "lets_get_started";
   static const goodAfternoon = "good_afternoon";
+  static const complete = "complete";
   static const needLocationPermission = "need_location_permission";
   static const updateProfileDoneSuccessfully =
       "update_profile_done_successfully";

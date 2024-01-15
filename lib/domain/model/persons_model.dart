@@ -5,6 +5,7 @@ import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 class PersonsModel extends TransportationBaseModel {
   bool isWoman = false;
   VehicleModel? vehicleType;
+  NumberOfPassenger? numberOfPassengers;
   int? vehicleId;
 
   PersonsModel();
@@ -19,6 +20,9 @@ class PersonsModel extends TransportationBaseModel {
     vehicleType = json['vehicleType'] != null
         ? VehicleModel.fromJson(json['vehicleType'])
         : null;
+    numberOfPassengers = json['numberOfPassengers'] != null
+        ? NumberOfPassenger.fromJson(json['numberOfPassengers'])
+        : null;
   }
 
   Map<String, dynamic> toPersonsJson() {
@@ -26,6 +30,9 @@ class PersonsModel extends TransportationBaseModel {
     data = toJSON();
     if (vehicleType != null) {
       data['vehicleType'] = vehicleType;
+    }
+    if (numberOfPassengers != null) {
+      data['numberOfPassengers'] = numberOfPassengers;
     }
     data['isWoman'] = isWoman.toString();
     return data;
