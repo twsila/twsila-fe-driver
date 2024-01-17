@@ -23,7 +23,9 @@ class TripsUseCase implements BaseUseCase<TripsInput, List<TripDetailsModel>> {
         input.dateFilter,
         input.locationFilter,
         input.currentLocation,
-        input.sortCriterion);
+        input.sortCriterion,
+        input.serviceTypesSelectedByBusinessOwner,
+        input.serviceTypesSelectedByDriver);
   }
 }
 
@@ -35,7 +37,17 @@ class TripsInput {
   Map<String, dynamic>? locationFilter;
   Map<String, dynamic>? currentLocation;
   String? sortCriterion;
+  String? serviceTypesSelectedByBusinessOwner;
+  String? serviceTypesSelectedByDriver;
 
-  TripsInput(this.endPoint, this.tripModuleId, this.userId, this.dateFilter,
-      this.locationFilter, this.currentLocation, this.sortCriterion);
+  TripsInput(
+      this.endPoint,
+      this.tripModuleId,
+      this.userId,
+      this.dateFilter,
+      this.locationFilter,
+      this.currentLocation,
+      this.sortCriterion,
+      this.serviceTypesSelectedByBusinessOwner,
+      this.serviceTypesSelectedByDriver);
 }

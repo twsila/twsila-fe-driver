@@ -132,7 +132,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 suffixIcon: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    AppStrings.ryalSuadi.tr(),
+                    "${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: ColorManager.black,
                         fontWeight: FontWeight.bold,
@@ -372,7 +372,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                     width: 7,
                   ),
                   Text(
-                      "${AppStrings.offerHasBeenSent.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                      "${AppStrings.offerHasBeenSent.tr()} (${trip.tripDetails.offers![0].driverOffer} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")})",
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: ColorManager.purpleMainTextColor,
                           fontSize: FontSize.s16,
@@ -402,7 +402,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                         width: 7,
                       ),
                       Text(
-                          "${AppStrings.clientRejectYourOffer.tr()} (${trip.tripDetails.offers![0].driverOffer} ${AppStrings.ryalSuadi.tr()})",
+                          "${AppStrings.clientRejectYourOffer.tr()} (${trip.tripDetails.offers![0].driverOffer} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")})",
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall

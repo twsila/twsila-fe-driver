@@ -577,6 +577,8 @@ class _AppServiceClient implements AppServiceClient {
     locationFilter,
     currentLocation,
     sortCriterion,
+    serviceTypesSelectedByBusinessOwner,
+    serviceTypesSelectedByDriver,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -589,6 +591,9 @@ class _AppServiceClient implements AppServiceClient {
       'locationFilter': locationFilter,
       'currentLocation': currentLocation,
       'sortCriterion': sortCriterion,
+      'serviceTypesSelectedByBusinessOwner':
+          serviceTypesSelectedByBusinessOwner,
+      'serviceTypesSelectedByDriver': serviceTypesSelectedByDriver,
     };
     _data.removeWhere((k, v) => v == null);
     final _result = await _dio
@@ -1262,6 +1267,35 @@ class _AppServiceClient implements AppServiceClient {
             .compose(
               _dio.options,
               '/drivers/vehicle-types',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> getLookupByKey(
+    lookupKey,
+    language,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'lookupKey': lookupKey,
+      'language': language,
+    };
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/lookups/by-key',
               queryParameters: queryParameters,
               data: _data,
             )

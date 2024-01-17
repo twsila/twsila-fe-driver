@@ -272,7 +272,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             detailsItem(
                 ImageAssets.tripDetailsVisaIcon,
                 AppStrings.withBudget.tr(),
-                "${widget.tripModel.tripDetails.clientOffer} ${AppStrings.ryalSuadi.tr()}"),
+                "${widget.tripModel.tripDetails.clientOffer} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}}"),
             detailsItem(
                 widget.tripModel.tripDetails.date != null
                     ? ImageAssets.scheduledTripIc

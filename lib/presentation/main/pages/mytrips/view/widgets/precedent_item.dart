@@ -153,7 +153,7 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
                       width: 9,
                     ),
                     Text(
-                      "${widget.trip.tripDetails.paymentValue} ${AppStrings.ryalSuadi.tr()} ",
+                      "${widget.trip.tripDetails.paymentValue} ${getCurrency(widget.trip.tripDetails.passenger?.countryCode ?? "")} ",
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: ColorManager.headersTextColor,
                             fontSize: FontSize.s14,

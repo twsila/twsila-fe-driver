@@ -86,7 +86,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                           borderRadius: BorderRadius.circular(8)),
                       child: Center(
                         child: Text(
-                          '${AppStrings.from.tr()} ${selectedFromDate} - ${AppStrings.to.tr()} ${selectedToDate}',
+                          '${AppStrings.from.tr()} ${selectedFromDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')} - ${AppStrings.to.tr()} ${selectedToDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')}',
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -116,7 +116,6 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
             ),
             CustomDatePickerWidget(
               locale: ENGLISH_LOCAL,
-              dateFormatterString: 'yyyy-MM-dd',
               onSelectDate: (date) {
                 selectedFromDate = date;
                 dateFromPicker = selectedFromDate;
@@ -124,10 +123,10 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
               isDimmed: todayDate,
               pickTime: false,
               labelText: AppStrings.from.tr(),
+              initialDate: DateTime(2023),
             ),
             CustomDatePickerWidget(
               locale: ENGLISH_LOCAL,
-              dateFormatterString: 'yyyy-MM-dd',
               onSelectDate: (date) {
                 selectedToDate = date;
                 dateToPicker = selectedToDate;
@@ -135,6 +134,7 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
               isDimmed: todayDate,
               pickTime: false,
               labelText: AppStrings.to.tr(),
+              initialDate: DateTime(2023),
             ),
             Row(
               children: [
@@ -150,8 +150,8 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                       setState(() {
                         todayDate = value!;
                         if (todayDate) {
-                          selectedFromDate = getDateOfNow();
-                          selectedToDate = getDateOfNow();
+                          selectedFromDate = getDateOfNow(false);
+                          selectedToDate = getDateOfNow(true);
                           print(selectedFromDate);
                           print(selectedFromDate);
                         } else if ((dateFromPicker != null &&
@@ -221,10 +221,16 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
     ).then((value) => (setState(() {})));
   }
 
-  String getDateOfNow() {
+  String getDateOfNow(bool isLastOfDay) {
     var now = new DateTime.now();
+    var twelve;
+    if (isLastOfDay) {
+      twelve = now.copyWith(hour: 23, minute: 59, second: 1);
+    } else {
+      twelve = now.copyWith(hour: 0, minute: 0, second: 1);
+    }
     var formatter = new DateFormat('yyyy-MM-dd');
-    String formattedDate = formatter.format(now);
+    String formattedDate = twelve.millisecondsSinceEpoch.toString();
     return formattedDate;
   }
 }

@@ -459,6 +459,7 @@ class AppStrings {
   static const back = 'back';
   static const sendOfferWithPrice = 'send_offer_with_price';
   static const ryalSuadi = 'ryal_suadi';
+  static const gnehMasry = 'gnehMasry';
   static const sendOffer = 'send_offer';
   static const rs = 'rs';
   static const offerAccepted = 'offer_accepted';

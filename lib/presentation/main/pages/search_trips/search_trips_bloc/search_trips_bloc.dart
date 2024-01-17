@@ -97,7 +97,9 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
             event.dateFilter?.toJson() ?? null,
             event.locationFilter?.toJson() ?? null,
             event.currentLocation?.toJson() ?? null,
-            event.sortCriterion)))
+            event.sortCriterion,
+            event.serviceTypesSelectedByBusinessOwner,
+            event.serviceTypesSelectedByDriver)))
         .fold(
             (failure) => {
                   // left -> failure

@@ -13,6 +13,7 @@ import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/change_trip_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/get_business_owner_drivers_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/lookup_by_key_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/lookups_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/rate_passenger_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_bo_usecase.dart';
@@ -57,7 +58,7 @@ Future<void> initAppModule() async {
 
   // network info
   instance.registerLazySingleton<NetworkInfo>(
-          () => NetworkInfoImpl(InternetConnectionChecker()));
+      () => NetworkInfoImpl(InternetConnectionChecker()));
 
   // dio factory
   instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));
@@ -68,20 +69,20 @@ Future<void> initAppModule() async {
 
   // remote data source
   instance.registerLazySingleton<RemoteDataSource>(
-          () => RemoteDataSourceImpl(instance<AppServiceClient>()));
+      () => RemoteDataSourceImpl(instance<AppServiceClient>()));
 
   // local data source
   instance.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
 
   // repository
   instance.registerLazySingleton<Repository>(
-          () => RepositoryImpl(instance(), instance(), instance()));
+      () => RepositoryImpl(instance(), instance(), instance()));
 }
 
 initSplashModule() {
   if (!GetIt.I.isRegistered<CountriesLookupUseCase>()) {
     instance.registerFactory<CountriesLookupUseCase>(
-            () => CountriesLookupUseCase(instance()));
+        () => CountriesLookupUseCase(instance()));
   }
 }
 
@@ -101,7 +102,7 @@ initVerifyOtpModule() {
   }
   if (!GetIt.I.isRegistered<GenerateOtpUseCase>()) {
     instance.registerFactory<GenerateOtpUseCase>(
-            () => GenerateOtpUseCase(instance()));
+        () => GenerateOtpUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
     instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
@@ -111,41 +112,48 @@ initVerifyOtpModule() {
 initGenerateOtpModule() {
   if (!GetIt.I.isRegistered<GenerateOtpUseCase>()) {
     instance.registerFactory<GenerateOtpUseCase>(
-            () => GenerateOtpUseCase(instance()));
+        () => GenerateOtpUseCase(instance()));
   }
 }
 
 initRegistrationServiceModule() {
   if (!GetIt.I.isRegistered<RegistrationServiceUseCase>()) {
     instance.registerFactory<RegistrationServiceUseCase>(
-            () => RegistrationServiceUseCase(instance()));
+        () => RegistrationServiceUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<CarBrandsAndModelsUseCase>()) {
     instance.registerFactory<CarBrandsAndModelsUseCase>(
-            () => CarBrandsAndModelsUseCase(instance()));
+        () => CarBrandsAndModelsUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<RegistrationUseCase>()) {
     instance.registerFactory<RegistrationUseCase>(
-            () => RegistrationUseCase(instance()));
+        () => RegistrationUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<GoodsServiceTypesUseCase>()) {
     instance.registerFactory<GoodsServiceTypesUseCase>(
-            () => GoodsServiceTypesUseCase(instance()));
+        () => GoodsServiceTypesUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<PersonsVehicleTypesUseCase>()) {
     instance.registerFactory<PersonsVehicleTypesUseCase>(
-            () => PersonsVehicleTypesUseCase(instance()));
+        () => PersonsVehicleTypesUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<RegistrationBOUseCase>()) {
     instance.registerFactory<RegistrationBOUseCase>(
-            () => RegistrationBOUseCase(instance()));
+        () => RegistrationBOUseCase(instance()));
   }
 }
 
 initServiceStatusModule() {
   if (!GetIt.I.isRegistered<ServiceStatusUseCase>()) {
     instance.registerFactory<ServiceStatusUseCase>(
-            () => ServiceStatusUseCase(instance()));
+        () => ServiceStatusUseCase(instance()));
+  }
+}
+
+initFilterModule() {
+  if (!GetIt.I.isRegistered<LookupByKeyUseCase>()) {
+    instance.registerFactory<LookupByKeyUseCase>(
+        () => LookupByKeyUseCase(instance()));
   }
 }
 
@@ -168,18 +176,18 @@ initTripsModule() {
 initTripExecutionModule() {
   if (!GetIt.I.isRegistered<ChangeTripStatusUseCase>()) {
     instance.registerFactory<ChangeTripStatusUseCase>(
-            () => ChangeTripStatusUseCase(instance()));
+        () => ChangeTripStatusUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<TripSummaryUseCase>()) {
     instance.registerFactory<TripSummaryUseCase>(
-            () => TripSummaryUseCase(instance()));
+        () => TripSummaryUseCase(instance()));
   }
 }
 
 initTripDetailsModule() {
   if (!GetIt.I.isRegistered<AcceptOfferUseCase>()) {
     instance.registerFactory<AcceptOfferUseCase>(
-            () => AcceptOfferUseCase(instance()));
+        () => AcceptOfferUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<AddOfferUseCase>()) {
     instance
@@ -187,23 +195,23 @@ initTripDetailsModule() {
   }
   if (!GetIt.I.isRegistered<BOAcceptOfferUseCase>()) {
     instance.registerFactory<BOAcceptOfferUseCase>(
-            () => BOAcceptOfferUseCase(instance()));
+        () => BOAcceptOfferUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<BoSuggestNewOfferUseCase>()) {
     instance.registerFactory<BoSuggestNewOfferUseCase>(
-            () => BoSuggestNewOfferUseCase(instance()));
+        () => BoSuggestNewOfferUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<TripSummaryUseCase>()) {
     instance.registerFactory<TripSummaryUseCase>(
-            () => TripSummaryUseCase(instance()));
+        () => TripSummaryUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<BusinessOwnerDriversUseCase>()) {
     instance.registerFactory<BusinessOwnerDriversUseCase>(
-            () => BusinessOwnerDriversUseCase(instance()));
+        () => BusinessOwnerDriversUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<BoAssignDriverToTripUseCase>()) {
     instance.registerFactory<BoAssignDriverToTripUseCase>(
-            () => BoAssignDriverToTripUseCase(instance()));
+        () => BoAssignDriverToTripUseCase(instance()));
   }
 }
 
@@ -216,7 +224,7 @@ initMyTripsModule() {
 initAcceptOfferModule() {
   if (!GetIt.I.isRegistered<AcceptOfferUseCase>()) {
     instance.registerFactory<AcceptOfferUseCase>(
-            () => AcceptOfferUseCase(instance()));
+        () => AcceptOfferUseCase(instance()));
   }
 }
 
@@ -230,7 +238,7 @@ initAddOfferModule() {
 initTripSummaryModule() {
   if (!GetIt.I.isRegistered<TripSummaryUseCase>()) {
     instance.registerFactory<TripSummaryUseCase>(
-            () => TripSummaryUseCase(instance()));
+        () => TripSummaryUseCase(instance()));
   }
 }
 
@@ -243,51 +251,51 @@ initLoopkupsModule() {
 initChangeTripStatusModule() {
   if (!GetIt.I.isRegistered<ChangeTripStatusUseCase>()) {
     instance.registerFactory<ChangeTripStatusUseCase>(
-            () => ChangeTripStatusUseCase(instance()));
+        () => ChangeTripStatusUseCase(instance()));
   }
 }
 
 initRatePassengerModule() {
   if (!GetIt.I.isRegistered<RatePassengerUseCase>()) {
     instance.registerFactory<RatePassengerUseCase>(
-            () => RatePassengerUseCase(instance()));
+        () => RatePassengerUseCase(instance()));
   }
 }
 
 initBODriversCarsModule() {
   if (!GetIt.I.isRegistered<BusinessOwnerDriversUseCase>()) {
     instance.registerFactory<BusinessOwnerDriversUseCase>(
-            () => BusinessOwnerDriversUseCase(instance()));
+        () => BusinessOwnerDriversUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<SearchDriversByMobileUseCase>()) {
     instance.registerFactory<SearchDriversByMobileUseCase>(
-            () => SearchDriversByMobileUseCase(instance()));
+        () => SearchDriversByMobileUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<SearchDriversByMobileUseCase>()) {
     instance.registerFactory<SearchDriversByMobileUseCase>(
-            () => SearchDriversByMobileUseCase(instance()));
+        () => SearchDriversByMobileUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<AddDriverForBOUseCase>()) {
     instance.registerFactory<AddDriverForBOUseCase>(
-            () => AddDriverForBOUseCase(instance()));
+        () => AddDriverForBOUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<BoAssignDriverToTripUseCase>()) {
     instance.registerFactory<BoAssignDriverToTripUseCase>(
-            () => BoAssignDriverToTripUseCase(instance()));
+        () => BoAssignDriverToTripUseCase(instance()));
   }
 }
 
 initSearchDriversByMobileModule() {
   if (!GetIt.I.isRegistered<SearchDriversByMobileUseCase>()) {
     instance.registerFactory<SearchDriversByMobileUseCase>(
-            () => SearchDriversByMobileUseCase(instance()));
+        () => SearchDriversByMobileUseCase(instance()));
   }
 }
 
 initAddDriverForBOModule() {
   if (!GetIt.I.isRegistered<AddDriverForBOUseCase>()) {
     instance.registerFactory<AddDriverForBOUseCase>(
-            () => AddDriverForBOUseCase(instance()));
+        () => AddDriverForBOUseCase(instance()));
   }
 }
 
@@ -301,31 +309,31 @@ initBoLogoutModule() {
 initBoAssignDriverToTripModule() {
   if (!GetIt.I.isRegistered<BoAssignDriverToTripUseCase>()) {
     instance.registerFactory<BoAssignDriverToTripUseCase>(
-            () => BoAssignDriverToTripUseCase(instance()));
+        () => BoAssignDriverToTripUseCase(instance()));
   }
 }
 
 initBOAcceptOfferModule() {
   if (!GetIt.I.isRegistered<BOAcceptOfferUseCase>()) {
     instance.registerFactory<BOAcceptOfferUseCase>(
-            () => BOAcceptOfferUseCase(instance()));
+        () => BOAcceptOfferUseCase(instance()));
   }
 }
 
 initBoSuggestNewOfferModule() {
   if (!GetIt.I.isRegistered<BoSuggestNewOfferUseCase>()) {
     instance.registerFactory<BoSuggestNewOfferUseCase>(
-            () => BoSuggestNewOfferUseCase(instance()));
+        () => BoSuggestNewOfferUseCase(instance()));
   }
 }
 
 initUpdateProfileModule() {
   if (!GetIt.I.isRegistered<UpdateProfileUseCase>()) {
     instance.registerFactory<UpdateProfileUseCase>(
-            () => UpdateProfileUseCase(instance()));
+        () => UpdateProfileUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<UpdateBOProfileUseCase>()) {
     instance.registerFactory<UpdateBOProfileUseCase>(
-            () => UpdateBOProfileUseCase(instance()));
+        () => UpdateBOProfileUseCase(instance()));
   }
 }

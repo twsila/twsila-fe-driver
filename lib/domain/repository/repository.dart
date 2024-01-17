@@ -18,6 +18,7 @@ import '../model/general_response.dart';
 import '../model/generate_otp_model.dart';
 import '../model/goods_service_type_model.dart';
 import '../model/logout_model.dart';
+import '../model/lookupValueModel.dart';
 import '../model/requested_drivers_response.dart';
 import '../model/service_status_model.dart';
 import '../model/trip_details_model.dart';
@@ -58,7 +59,9 @@ abstract class Repository {
       Map<String, dynamic>? dateFilter,
       Map<String, dynamic>? locationFilter,
       Map<String, dynamic>? currentLocation,
-      String? sortCriterion);
+      String? sortCriterion,
+      String? serviceTypesSelectedByBusinessOwner,
+      String? serviceTypesSelectedByDriver);
 
   Future<Either<Failure, List<TripDetailsModel>>> getMyTrips(
       String endPoint, String tripTypeModuleId, int userId);
@@ -74,7 +77,7 @@ abstract class Repository {
   Future<Either<Failure, TripDetailsModel>> tripSummary(int userId, int tripId);
 
   Future<Either<Failure, BaseResponse>> ratePassenger(
-      int driverId,int tripId,double rate);
+      int driverId, int tripId, double rate);
 
   Future<Either<Failure, BaseResponse>> UpdateProfile(
       UpdateProfileRequest updateProfileRequest);
@@ -87,6 +90,9 @@ abstract class Repository {
   Future<Either<Failure, LogoutModel>> boLogout(LogoutRequest logoutRequest);
 
   Future<Either<Failure, LookupsModel>> getLookups();
+
+  Future<Either<Failure, List<LookupValueModel>>> getLookupByKey(
+      String key, String lang);
 
   Future<Either<Failure, List<RequestedDriversResponse>>> getBODrivers(
       int businessOwnerId);

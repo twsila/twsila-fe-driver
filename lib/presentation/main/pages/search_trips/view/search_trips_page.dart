@@ -215,7 +215,11 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                             : TripModelType.ALL_TRIPS.name,
                         dateFilter: filterData.dateFilter,
                         locationFilter: filterData.locationFilter,
-                        currentLocation: filterData.currentLocation));
+                        currentLocation: filterData.currentLocation,
+                        serviceTypesSelectedByBusinessOwner:
+                            filterData.boFilteredTrips,
+                        serviceTypesSelectedByDriver:
+                            filterData.driverFilteredTrips));
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: AppMargin.m8),
@@ -500,7 +504,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
       );
     } else if (trip.tripDetails.offers!.length > 0 &&
         trip.tripDetails.acceptedOffer == null) {
-      return handleOfferStatus(trip.tripDetails.offers![0]);
+      return handleOfferStatus(trip.tripDetails.offers![0],getCurrency(trip.tripDetails.passenger?.countryCode ?? ""));
     } else if (trip.tripDetails.acceptedOffer != null) {
       return Text(
         AppStrings.offerAccepted.tr(),
@@ -514,24 +518,24 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     }
   }
 
-  Text handleOfferStatus(Offer offer) {
+  Text handleOfferStatus(Offer offer,String currency) {
     if (offer.acceptanceStatus == AcceptanceType.PROPOSED.name) {
       return Text(
-          "${AppStrings.offerHasBeenSent.tr()} (${offer.driverOffer} ${AppStrings.ryalSuadi.tr()})",
+          "${AppStrings.offerHasBeenSent.tr()} (${offer.driverOffer} ${currency})",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorManager.purpleMainTextColor,
               fontSize: FontSize.s16,
               fontWeight: FontWeight.bold));
     } else if (offer.acceptanceStatus == AcceptanceType.EXPIRED.name) {
       return Text(
-          "${AppStrings.clientRejectYourOffer.tr()} (${offer.driverOffer} ${AppStrings.ryalSuadi.tr()})",
+          "${AppStrings.clientRejectYourOffer.tr()} (${offer.driverOffer} ${currency})",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorManager.error,
               fontSize: FontSize.s16,
               fontWeight: FontWeight.bold));
     } else {
       return Text(
-          "${AppStrings.offerAccepted.tr()} (${offer.driverOffer} ${AppStrings.ryalSuadi.tr()})",
+          "${AppStrings.offerAccepted.tr()} (${offer.driverOffer} ${currency})",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorManager.primary,
               fontSize: FontSize.s16,
@@ -562,7 +566,14 @@ class FilterTripsModel {
   LocationFilter? locationFilter;
   CurrentLocationFilter? currentLocation;
   bool? isOfferedTrips;
+  String? boFilteredTrips;
+  String? driverFilteredTrips;
 
-  FilterTripsModel(this.dateFilter, this.locationFilter, this.currentLocation,
-      this.isOfferedTrips);
+  FilterTripsModel(
+      {this.dateFilter,
+      this.locationFilter,
+      this.currentLocation,
+      this.isOfferedTrips,
+      this.boFilteredTrips,
+      this.driverFilteredTrips});
 }

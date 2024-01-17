@@ -75,9 +75,7 @@ String getTitle(String tripType) {
     case TripTypeConstants.goodsType:
       return AppStrings.request.tr() + ' ' + AppStrings.goodsDeliver.tr();
     case TripTypeConstants.carAidType:
-      return AppStrings.request.tr() +
-          ' ' +
-          AppStrings.carAid.tr();
+      return AppStrings.request.tr() + ' ' + AppStrings.carAid.tr();
     case TripTypeConstants.otherTankType:
       return AppStrings.request.tr() + ' ' + AppStrings.cisterns.tr();
     case TripTypeConstants.drinkWaterType:
@@ -86,6 +84,44 @@ String getTitle(String tripType) {
       return AppStrings.request.tr() +
           ' ' +
           AppStrings.furnitureTransportation.tr();
+  }
+}
+
+String getServiceTypeName(String tripType) {
+  switch (tripType) {
+    case TripTypeConstants.personType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.personsTransportation.tr();
+    case TripTypeConstants.furnitureType:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.furnitureTransportation.tr();
+    case TripTypeConstants.frozenType:
+      return AppStrings.request.tr() + ' ' + AppStrings.freezers.tr();
+    case TripTypeConstants.goodsType:
+      return AppStrings.request.tr() + ' ' + AppStrings.goodsDeliver.tr();
+    case TripTypeConstants.carAidType:
+      return AppStrings.request.tr() + ' ' + AppStrings.carAid.tr();
+    case TripTypeConstants.otherTankType:
+      return AppStrings.request.tr() + ' ' + AppStrings.cisterns.tr();
+    case TripTypeConstants.drinkWaterType:
+      return AppStrings.wanet.tr() + ' ' + AppStrings.waterCisterns.tr();
+    default:
+      return AppStrings.request.tr() +
+          ' ' +
+          AppStrings.furnitureTransportation.tr();
+  }
+}
+
+String getCurrency(String countryCode) {
+  switch (countryCode) {
+    case "SA":
+      return AppStrings.ryalSuadi.tr();
+    case "EG":
+      return AppStrings.gnehMasry.tr();
+    default:
+      return "";
   }
 }
 
@@ -113,8 +149,6 @@ String getTripStatusDiscs(String tripStatus) {
       return "";
   }
 }
-
-
 
 String getTripStatusSubDis(String tripStatus) {
   switch (tripStatus) {

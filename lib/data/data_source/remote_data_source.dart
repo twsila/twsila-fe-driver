@@ -1,6 +1,7 @@
 import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/logout_model.dart';
+import 'package:taxi_for_you/domain/model/lookupValueModel.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/requested_drivers_response.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
@@ -48,7 +49,9 @@ abstract class RemoteDataSource {
       Map<String, dynamic>? dateFilter,
       Map<String, dynamic>? locationFilter,
       Map<String, dynamic>? currentLocation,
-      String? sortCriterion);
+      String? sortCriterion,
+      String? serviceTypesSelectedByBusinessOwner,
+      String? serviceTypesSelectedByDriver);
 
   Future<BaseResponse> myTripsByModuleId(
       String endPoint, String tripTypeModuleId, int userId);
@@ -62,7 +65,7 @@ abstract class RemoteDataSource {
 
   Future<GeneralResponse> tripSummary(int userId, int tripId);
 
-  Future<BaseResponse> ratePassenger(int driverId,int tripId,double rate);
+  Future<BaseResponse> ratePassenger(int driverId, int tripId, double rate);
 
   Future<BaseResponse> updateProfile(UpdateProfileRequest updateProfileRequest);
 
@@ -101,6 +104,8 @@ abstract class RemoteDataSource {
   Future<BaseResponse> getGoodsServiceTypes();
 
   Future<BaseResponse> getPersonsVehicleTypes();
+
+  Future<BaseResponse> getLookupByKey(String key, String lang);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -233,7 +238,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       Map<String, dynamic>? dateFilter,
       Map<String, dynamic>? locationFilter,
       Map<String, dynamic>? currentLocation,
-      String? sortCriterion) async {
+      String? sortCriterion,
+      String? serviceTypesSelectedByBusinessOwner,
+      String? serviceTypesSelectedByDriver) async {
     return await _appServiceClient.getTripsByModuleId(
         endPoint,
         tripTypeModuleId,
@@ -241,7 +248,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         dateFilter,
         locationFilter,
         currentLocation,
-        sortCriterion);
+        sortCriterion,
+        serviceTypesSelectedByBusinessOwner,
+        serviceTypesSelectedByDriver);
   }
 
   @override
@@ -279,8 +288,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> ratePassenger(int driverId,int tripId, double rateNumber) async {
-    return await _appServiceClient.ratePassenger(driverId,tripId, rateNumber);
+  Future<BaseResponse> ratePassenger(
+      int driverId, int tripId, double rateNumber) async {
+    return await _appServiceClient.ratePassenger(driverId, tripId, rateNumber);
   }
 
   @override
@@ -380,5 +390,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> getPersonsVehicleTypes() async {
     return await _appServiceClient.getPersonsVehicleTypes();
+  }
+
+  @override
+  Future<BaseResponse> getLookupByKey(String key, String lang) async {
+    return await _appServiceClient.getLookupByKey(key, lang);
   }
 }

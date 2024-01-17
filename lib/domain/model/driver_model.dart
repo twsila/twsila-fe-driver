@@ -149,7 +149,7 @@ class Driver extends DriverBaseModel {
         "driverStatus": driverStatus,
         "gender": gender,
         "dateOfBirth": dateOfBirth,
-        "serviceType": serviceTypes,
+        "serviceTypes": serviceTypes,
         "registrationStatus": registrationStatus,
         "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,
         "carManufacturerType": carManufacturerType.toJson(),

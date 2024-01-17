@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/presentation/business_owner_cars_and_drivers/bloc/bo_drivers_cars_bloc.dart';
 import 'package:taxi_for_you/presentation/edit_user_profile/bloc/edit_profile_bloc.dart';
+import 'package:taxi_for_you/presentation/filter_trips/bloc/filter_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 import 'package:taxi_for_you/presentation/rate_passenger/bloc/rate_passenger_bloc.dart';
@@ -35,6 +36,7 @@ blocProviders(BuildContext context) {
     BlocProvider.value(value: TripDetailsBloc()),
     BlocProvider.value(value: BoDriversCarsBloc()),
     BlocProvider.value(value: EditProfileBloc()),
+    BlocProvider.value(value: FilterBloc()),
     ChangeNotifierProvider(create: (_) => MapProvider()),
   ];
 }

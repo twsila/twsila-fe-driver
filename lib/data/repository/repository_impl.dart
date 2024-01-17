@@ -6,6 +6,7 @@ import 'package:taxi_for_you/data/mapper/driver.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
+import 'package:taxi_for_you/domain/model/lookupValueModel.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
@@ -339,13 +340,16 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, List<TripDetailsModel>>> getTrips(
-      String endPoint,
-      String tripTypeModuleId,
-      int userId,
-      Map<String, dynamic>? dateFilter,
-      Map<String, dynamic>? locationFilter,
-      Map<String, dynamic>? currentLocation,
-      String? sortCriterion) async {
+    String endPoint,
+    String tripTypeModuleId,
+    int userId,
+    Map<String, dynamic>? dateFilter,
+    Map<String, dynamic>? locationFilter,
+    Map<String, dynamic>? currentLocation,
+    String? sortCriterion,
+    String? serviceTypesSelectedByBusinessOwner,
+    String? serviceTypesSelectedByDriver,
+  ) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
@@ -356,7 +360,9 @@ class RepositoryImpl implements Repository {
             dateFilter,
             locationFilter,
             currentLocation,
-            sortCriterion);
+            sortCriterion,
+            serviceTypesSelectedByBusinessOwner,
+            serviceTypesSelectedByDriver);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           List<TripDetailsModel> trips = List<TripDetailsModel>.from(
@@ -528,12 +534,12 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, BaseResponse>> ratePassenger(
-      int driverId,int tripId,rate) async {
+      int driverId, int tripId, rate) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response =
-            await _remoteDataSource.ratePassenger(driverId,tripId,rate);
+            await _remoteDataSource.ratePassenger(driverId, tripId, rate);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
@@ -856,6 +862,32 @@ class RepositoryImpl implements Repository {
               List<PersonsVehicleTypeModel>.from(response.result["vehicleTypes"]
                   .map((x) => PersonsVehicleTypeModel.fromJson(x)));
           return Right(personsVehicleTypesList);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<LookupValueModel>>> getLookupByKey(
+      String key, String lang) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.getLookupByKey(key, lang);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<LookupValueModel> lookupsValues = List<LookupValueModel>.from(
+              response.result.map((x) => LookupValueModel.fromJson(x)));
+          return Right(lookupsValues);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));

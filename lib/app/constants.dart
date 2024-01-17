@@ -57,6 +57,7 @@ class EndPointsConstants {
   static const String carModels = "/drivers/car-model";
   static const String lookups = "/lookups";
   static const String countryLookup = "/lookups/country";
+  static const String lookupByKey = "/lookups/by-key";
 
   static const List<String> cancelTokenApis = [
     logoutPath,
@@ -70,7 +71,8 @@ class EndPointsConstants {
     personsVehicleTypes,
     carModels,
     lookups,
-    countryLookup
+    countryLookup,
+    lookupByKey
   ];
 }
 
@@ -82,6 +84,9 @@ class TripTypeConstants {
   static const String goodsType = "GOODS";
   static const String otherTankType = "OTHER_TANK";
   static const String personType = "PERSONS";
+}
+class LookupKeys {
+  static const String serviceType = "ServiceType";
 }
 
 class TripStatusConstants {

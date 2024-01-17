@@ -4,6 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:taxi_for_you/domain/model/trip_details_model.dart';
 
 import '../../../../domain/model/trip_model.dart';
+import '../../../../utils/ext/enums.dart';
 import '../../../../utils/resources/color_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
@@ -78,7 +79,7 @@ class _CustomerInfoHeaderState extends State<CustomerInfoHeader> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "${widget.tripModel.tripDetails.clientOffer} ${AppStrings.ryalSuadi.tr()}",
+                "${widget.tripModel.tripDetails.clientOffer} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}}",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: ColorManager.headersTextColor,
                     fontSize: FontSize.s14,

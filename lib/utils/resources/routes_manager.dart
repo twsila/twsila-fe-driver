@@ -167,6 +167,7 @@ class RouteGenerator {
                 ));
       case Routes.filterTrips:
         // final args = settings.arguments as EditProfileArguments;
+        initFilterModule();
         return MaterialPageRoute(
             builder: (_) => FilterTripsView(
                 // driver: args.driver,

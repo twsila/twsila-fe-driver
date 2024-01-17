@@ -17,15 +17,17 @@ class CustomDatePickerWidget extends StatefulWidget {
   final bool? isDimmed;
   final String dateFormatterString;
   final Locale? locale;
+  DateTime? initialDate;
 
-  const CustomDatePickerWidget(
+  CustomDatePickerWidget(
       {Key? key,
       required this.onSelectDate,
       required this.pickTime,
       this.isDimmed = false,
       this.dateFormatterString = 'dd MMM, yyyy',
       this.locale,
-      this.labelText})
+      this.labelText,
+      this.initialDate})
       : super(key: key);
 
   @override
@@ -73,11 +75,12 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
   String convertDate(DateTime dateTime) {
     if (dateTime == null) return '';
     DateTime dateFormatted =
-    widget.pickTime ?  dateTime : DateUtils.dateOnly(dateTime);
+        widget.pickTime ? dateTime : DateUtils.dateOnly(dateTime);
     String timestamp = dateFormatted.millisecondsSinceEpoch.toString();
 
     widget.onSelectDate(timestamp);
-    String date = timestamp.getTimeStampFromDate(pattern: widget.pickTime ? 'dd MMM yyyy/ hh:mm a' : 'dd MMM yyyy');
+    String date = timestamp.getTimeStampFromDate(
+        pattern: widget.pickTime ? 'dd MMM yyyy/ hh:mm a' : 'dd MMM yyyy');
     return date;
   }
 
@@ -101,8 +104,12 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                                       ? ENGLISH_LOCAL
                                       : ARABIC_LOCAL,
                               context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
+                              initialDate: widget.initialDate != null
+                                  ? widget.initialDate!
+                                  : DateTime.now(),
+                              firstDate: widget.initialDate != null
+                                  ? widget.initialDate!
+                                  : DateTime.now(),
                               lastDate: DateTime(2050),
                               currentDate: DateTime.now(),
                               initialEntryMode: DatePickerEntryMode.calendar,

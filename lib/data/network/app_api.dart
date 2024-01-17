@@ -8,6 +8,7 @@ import 'package:taxi_for_you/domain/model/generate_otp_model.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
+import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 
 import '../../app/constants.dart';
 import '../../domain/model/car_brand_models_model.dart';
@@ -127,6 +128,8 @@ abstract class AppServiceClient {
     @Field("locationFilter") Map<String, dynamic>? locationFilter,
     @Field("currentLocation") Map<String, dynamic>? currentLocation,
     @Field("sortCriterion") String? sortCriterion,
+    @Field("serviceTypesSelectedByBusinessOwner") String? serviceTypesSelectedByBusinessOwner,
+    @Field("serviceTypesSelectedByDriver") String? serviceTypesSelectedByDriver,
   );
 
   @POST("{endpoint}")
@@ -262,4 +265,10 @@ abstract class AppServiceClient {
 
   @GET(EndPointsConstants.personsVehicleTypes)
   Future<BaseResponse> getPersonsVehicleTypes();
+
+  @POST(EndPointsConstants.lookupByKey)
+  Future<BaseResponse> getLookupByKey(
+    @Field("lookupKey") String lookupKey,
+    @Field("language") String language,
+  );
 }
