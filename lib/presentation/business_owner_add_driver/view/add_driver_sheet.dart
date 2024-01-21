@@ -80,7 +80,7 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: AppPadding.p8),
           height: MediaQuery.of(context).size.height *
-              0.95, //to control height of bottom sheet
+              0.85, //to control height of bottom sheet
           child: Stack(children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,

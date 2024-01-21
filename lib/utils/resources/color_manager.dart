@@ -27,6 +27,8 @@ class ColorManager {
   static const Color buttonTextColor = const Color(0xffffffff);
   static const Color headersTextColor = const Color(0xff080957);
   static const Color formHintTextColor = const Color(0xffA4A4AD);
+  static const Color disableColor = const Color(0xffd1d1d1);
+  static const Color disableCardTextColor = const Color(0xffafafb2);
   static const Color formLabelTextColor = const Color(0xff676876);
   static const Color hintTextColor = const Color(0xff9393BB);
   static const Color titlesTextColor = const Color(0xff363778);

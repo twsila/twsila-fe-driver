@@ -48,7 +48,7 @@ class BoDriversCarsBloc extends Bloc<BoDriversCarsEvent, BoDriversCarsState> {
       // content
       // emit success state
 
-      emit(BoDriversCarsSuccess(driversList));
+      emit(BoDriversCarsSuccess(driversList,event.forceRefresh));
     });
   }
 

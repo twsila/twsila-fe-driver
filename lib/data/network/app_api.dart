@@ -128,7 +128,8 @@ abstract class AppServiceClient {
     @Field("locationFilter") Map<String, dynamic>? locationFilter,
     @Field("currentLocation") Map<String, dynamic>? currentLocation,
     @Field("sortCriterion") String? sortCriterion,
-    @Field("serviceTypesSelectedByBusinessOwner") String? serviceTypesSelectedByBusinessOwner,
+    @Field("serviceTypesSelectedByBusinessOwner")
+    String? serviceTypesSelectedByBusinessOwner,
     @Field("serviceTypesSelectedByDriver") String? serviceTypesSelectedByDriver,
   );
 
@@ -270,5 +271,16 @@ abstract class AppServiceClient {
   Future<BaseResponse> getLookupByKey(
     @Field("lookupKey") String lookupKey,
     @Field("language") String language,
+  );
+
+  @POST("/driver-acquisition/get-acquisition-requests")
+  Future<BaseResponse> getAddRequests(
+    @Field("driverId") int driverId,
+  );
+
+  @POST("/driver-acquisition/driver-action")
+  Future<BaseResponse> changeRequestStatus(
+    @Field("acquisitionId") int acquisitionId,
+    @Field("driverAcquisitionDecision") String driverAcquisitionDecision,
   );
 }

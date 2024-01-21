@@ -10,6 +10,7 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../utils/dialogs/custom_dialog.dart';
+import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
@@ -39,7 +40,7 @@ class _AssignDriverBottomSheetViewState
 
   @override
   void initState() {
-    BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars());
+    BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars(false));
     super.initState();
   }
 
@@ -112,96 +113,107 @@ class _AssignDriverBottomSheetViewState
                                 padding: const EdgeInsets.all(8),
                                 itemCount: driversList.length,
                                 itemBuilder: (context, i) {
+                                  bool isPending =
+                                      driversList[i].driverAcquisitionEnum ==
+                                          DriverAcquisitionEnum.PENDING.name;
                                   return CustomCard(
+                                    backgroundColor: isPending
+                                        ? ColorManager.disableColor
+                                        : ColorManager.white,
                                     onClick: () {
-                                      // BlocProvider.of<BoDriversCarsBloc>(
-                                      //         context)
-                                      //     .add(assignDriverForTrip(
-                                      //         appPreferences
-                                      //             .getCachedDriver()!
-                                      //             .id!,
-                                      //         driversList[i].id!,
-                                      //         widget.tripId));
-                                      widget.onAssignDriver(
-                                          driversList[i].driver);
-                                      Navigator.pop(context);
+                                      if (isPending == false) {
+                                        widget.onAssignDriver(
+                                            driversList[i].driver);
+                                        Navigator.pop(context);
+                                      }
                                     },
-                                    bodyWidget: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${driversList[i].driver.carModel.carManufacturerId.carManufacturer} / ${driversList[i].driver.carModel.modelName}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displayLarge
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: FontSize.s18,
-                                                      color: ColorManager
-                                                          .secondaryColor),
-                                            ),
-                                            Text(
-                                              "${driversList[i].driver.firstName} ${driversList[i].driver.lastName}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displayLarge
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: FontSize.s18,
-                                                      color: ColorManager
-                                                          .secondaryColor),
-                                            ),
-                                            Text(
-                                              "${driversList[i].driver.mobile}",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .displayLarge
-                                                  ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      fontSize: FontSize.s16,
-                                                      color: ColorManager
-                                                          .primaryPurple),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsets.all(AppPadding.p8),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              border: Border.all(
-                                                  color:
-                                                      ColorManager.lightGrey)),
-                                          height: AppSize.s120,
-                                          width: AppSize.s90,
-                                          child: driversList[i]
-                                                      .driver
-                                                      .images[0]
-                                                      .imageUrl ==
-                                                  null
-                                              ? Image.asset(
-                                                  ImageAssets.newAppBarLogo,
-                                                  color: ColorManager
-                                                      .splashBGColor,
-                                                )
-                                              : FadeInImage.assetNetwork(
-                                                  placeholder:
-                                                      ImageAssets.newAppBarLogo,
-                                                  image: driversList[i]
-                                                      .driver
-                                                      .images[0]
-                                                      .imageUrl!),
-                                        )
-                                      ],
+                                    bodyWidget: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${driversList[i].driver.carModel.carManufacturerId.carManufacturer} / ${driversList[i].driver.carModel.modelName}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: FontSize.s18,
+                                                        color: isPending
+                                                            ? ColorManager
+                                                                .disableCardTextColor
+                                                            : ColorManager
+                                                                .secondaryColor),
+                                              ),
+                                              Text(
+                                                "${driversList[i].driver.firstName} ${driversList[i].driver.lastName}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: FontSize.s18,
+                                                        color: isPending
+                                                            ? ColorManager
+                                                                .disableCardTextColor
+                                                            : ColorManager
+                                                                .secondaryColor),
+                                              ),
+                                              Text(
+                                                "${driversList[i].driver.mobile}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .displayLarge
+                                                    ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        fontSize: FontSize.s16,
+                                                        color: isPending
+                                                            ? ColorManager
+                                                                .disableCardTextColor
+                                                            : ColorManager
+                                                                .secondaryColor),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                            padding:
+                                                EdgeInsets.all(AppPadding.p8),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                border: Border.all(
+                                                    color: ColorManager
+                                                        .lightGrey)),
+                                            height: AppSize.s120,
+                                            width: AppSize.s90,
+                                            child: driversList[i]
+                                                        .driver
+                                                        .images[0]
+                                                        .imageUrl ==
+                                                    null
+                                                ? Image.asset(
+                                                    ImageAssets.newAppBarLogo,
+                                                    color: ColorManager
+                                                        .splashBGColor,
+                                                  )
+                                                : FadeInImage.assetNetwork(
+                                                    placeholder: ImageAssets
+                                                        .newAppBarLogo,
+                                                    image: driversList[i]
+                                                        .driver
+                                                        .images[0]
+                                                        .imageUrl!),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   );
                                 })

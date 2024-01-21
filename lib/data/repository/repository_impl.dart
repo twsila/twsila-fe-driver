@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/data/mapper/driver.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
+import 'package:taxi_for_you/domain/model/add_request_model.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
 import 'package:taxi_for_you/domain/model/lookupValueModel.dart';
@@ -888,6 +889,58 @@ class RepositoryImpl implements Repository {
           List<LookupValueModel> lookupsValues = List<LookupValueModel>.from(
               response.result.map((x) => LookupValueModel.fromJson(x)));
           return Right(lookupsValues);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<AddRequestModel>>> getAddRequests(
+      int driverId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.getAddRequestsForDriver(driverId);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<AddRequestModel> addRequestList = List<AddRequestModel>.from(
+              response.result.map((x) => AddRequestModel.fromJson(x)));
+          return Right(addRequestList);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> changeRequestStatus(
+      int acquisitionId, String driverAcquisitionDecision) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.changeRequestStatus(
+            acquisitionId, driverAcquisitionDecision);
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));

@@ -16,6 +16,7 @@ import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
@@ -30,6 +31,7 @@ import '../../../../../utils/resources/strings_manager.dart';
 import '../../../../../utils/resources/values_manager.dart';
 import '../../../../common/widgets/custom_scaffold.dart';
 import '../../../../common/widgets/page_builder.dart';
+import '../../../../filter_trips/view/helpers/filtration_helper.dart';
 import '../../../../google_maps/model/location_model.dart';
 import '../../../../google_maps/model/maps_repo.dart';
 import '../../../../trip_execution/helper/location_helper.dart';
@@ -60,6 +62,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   DateFilter? dateFilter = null;
   int currentIndex = 0;
   List<SortingModel> sortingModelList = [];
+  DriverBaseModel? driver;
 
   getCurrentLocation() async {
     try {
@@ -111,7 +114,19 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                               currentLocation:
                                   selectedSortModel.sendCurrentLocation!
                                       ? currentLocationFilter
-                                      : null));
+                                      : null,
+                              serviceTypesSelectedByBusinessOwner: driver!
+                                          .captainType ==
+                                      RegistrationConstants.businessOwner
+                                  ? FiltrationHelper()
+                                      .serviceTypesList
+                                      .join(",")
+                                  : null,
+                              serviceTypesSelectedByDriver: driver!
+                                          .captainType ==
+                                      RegistrationConstants.captain
+                                  ? (driver as Driver).serviceTypes!.join(',')
+                                  : null));
                       Navigator.pop(context);
                     });
                   },
@@ -174,7 +189,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   @override
   void initState() {
     // BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
-    DriverBaseModel? driver = _appPreferences.getCachedDriver();
+    driver = _appPreferences.getCachedDriver();
     sortingModelList = SearchTripsBloc().getSortingList(driver!);
     BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
         tripTypeId: sortingModelList[currentSortingIndex]
@@ -182,7 +197,15 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
             .name
             .toString(),
         sortCriterion:
-            sortingModelList[currentSortingIndex].id!.name.toString()));
+            sortingModelList[currentSortingIndex].id!.name.toString(),
+        serviceTypesSelectedByBusinessOwner:
+            driver!.captainType == RegistrationConstants.businessOwner
+                ? FiltrationHelper().serviceTypesList.join(",")
+                : null,
+        serviceTypesSelectedByDriver:
+            driver!.captainType == RegistrationConstants.captain
+                ? (driver as Driver).serviceTypes!.join(',')
+                : null));
 
     getCurrentLocation();
     super.initState();
@@ -217,9 +240,14 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                         locationFilter: filterData.locationFilter,
                         currentLocation: filterData.currentLocation,
                         serviceTypesSelectedByBusinessOwner:
-                            filterData.boFilteredTrips,
+                            driver!.captainType ==
+                                    RegistrationConstants.businessOwner
+                                ? filterData.filteredService
+                                : null,
                         serviceTypesSelectedByDriver:
-                            filterData.driverFilteredTrips));
+                            driver!.captainType == RegistrationConstants.captain
+                                ? filterData.filteredService
+                                : null));
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: AppMargin.m8),
@@ -389,7 +417,16 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                       sortCriterion: sortingModelList[currentSortingIndex]
                           .id!
                           .name
-                          .toString())));
+                          .toString(),
+                      serviceTypesSelectedByBusinessOwner:
+                          driver!.captainType ==
+                                  RegistrationConstants.businessOwner
+                              ? FiltrationHelper().serviceTypesList.join(",")
+                              : null,
+                      serviceTypesSelectedByDriver:
+                          driver!.captainType == RegistrationConstants.captain
+                              ? (driver as Driver).serviceTypes!.join(',')
+                              : null)));
         else
           Navigator.pushNamed(context, Routes.tripDetails,
                   arguments: TripDetailsArguments(tripModel: trip))
@@ -403,7 +440,16 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                       sortCriterion: sortingModelList[currentSortingIndex]
                           .id!
                           .name
-                          .toString())));
+                          .toString(),
+                      serviceTypesSelectedByBusinessOwner:
+                          driver!.captainType ==
+                                  RegistrationConstants.businessOwner
+                              ? FiltrationHelper().serviceTypesList.join(",")
+                              : null,
+                      serviceTypesSelectedByDriver:
+                          driver!.captainType == RegistrationConstants.captain
+                              ? (driver as Driver).serviceTypes!.join(',')
+                              : null)));
       },
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
@@ -504,7 +550,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
       );
     } else if (trip.tripDetails.offers!.length > 0 &&
         trip.tripDetails.acceptedOffer == null) {
-      return handleOfferStatus(trip.tripDetails.offers![0],getCurrency(trip.tripDetails.passenger?.countryCode ?? ""));
+      return handleOfferStatus(trip.tripDetails.offers![0],
+          getCurrency(trip.tripDetails.passenger?.countryCode ?? ""));
     } else if (trip.tripDetails.acceptedOffer != null) {
       return Text(
         AppStrings.offerAccepted.tr(),
@@ -518,7 +565,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     }
   }
 
-  Text handleOfferStatus(Offer offer,String currency) {
+  Text handleOfferStatus(Offer offer, String currency) {
     if (offer.acceptanceStatus == AcceptanceType.PROPOSED.name) {
       return Text(
           "${AppStrings.offerHasBeenSent.tr()} (${offer.driverOffer} ${currency})",
@@ -566,14 +613,13 @@ class FilterTripsModel {
   LocationFilter? locationFilter;
   CurrentLocationFilter? currentLocation;
   bool? isOfferedTrips;
-  String? boFilteredTrips;
-  String? driverFilteredTrips;
+  String? filteredService;
 
-  FilterTripsModel(
-      {this.dateFilter,
-      this.locationFilter,
-      this.currentLocation,
-      this.isOfferedTrips,
-      this.boFilteredTrips,
-      this.driverFilteredTrips});
+  FilterTripsModel({
+    this.dateFilter,
+    this.locationFilter,
+    this.currentLocation,
+    this.isOfferedTrips,
+    this.filteredService,
+  });
 }

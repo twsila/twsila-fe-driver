@@ -6,10 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/usecase/accept_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_driver_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_offer_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/add_requests_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_accept_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_assign_driver_to_trip_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_suggest_new_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/change_request_status.dart';
 import 'package:taxi_for_you/domain/usecase/change_trip_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/get_business_owner_drivers_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
@@ -335,5 +337,16 @@ initUpdateProfileModule() {
   if (!GetIt.I.isRegistered<UpdateBOProfileUseCase>()) {
     instance.registerFactory<UpdateBOProfileUseCase>(
         () => UpdateBOProfileUseCase(instance()));
+  }
+}
+
+initDriverRequestsModule() {
+  if (!GetIt.I.isRegistered<AddRequestsUseCase>()) {
+    instance.registerFactory<AddRequestsUseCase>(
+        () => AddRequestsUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<ChangeRequestStatusUseCase>()) {
+    instance.registerFactory<ChangeRequestStatusUseCase>(
+        () => ChangeRequestStatusUseCase(instance()));
   }
 }

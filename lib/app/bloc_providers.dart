@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/presentation/business_owner_cars_and_drivers/bloc/bo_drivers_cars_bloc.dart';
+import 'package:taxi_for_you/presentation/driver_add_requests/bloc/driver_requests_bloc.dart';
 import 'package:taxi_for_you/presentation/edit_user_profile/bloc/edit_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/filter_trips/bloc/filter_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
@@ -37,6 +38,7 @@ blocProviders(BuildContext context) {
     BlocProvider.value(value: BoDriversCarsBloc()),
     BlocProvider.value(value: EditProfileBloc()),
     BlocProvider.value(value: FilterBloc()),
+    BlocProvider.value(value: DriverRequestsBloc()),
     ChangeNotifierProvider(create: (_) => MapProvider()),
   ];
 }

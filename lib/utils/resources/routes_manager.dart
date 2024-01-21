@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_screen.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/welcome_to_twsila_view.dart';
 import 'package:taxi_for_you/presentation/business_owner_add_driver/view/bo_add_driver_view.dart';
+import 'package:taxi_for_you/presentation/driver_add_requests/view/driver_add_requests_view.dart';
 import 'package:taxi_for_you/presentation/rate_passenger/view/rate_passenger_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/captain_registraion.dart';
 import 'package:taxi_for_you/presentation/custom_widgets_view.dart';
@@ -70,6 +71,7 @@ class Routes {
   static const String welcomeToTwsilaBO = "/welcomeToTwsilaBO";
   static const String boDriversAndCars = "/boDriversAndCars";
   static const String BOaddDriver = "/BOaddDriver";
+  static const String driverRequests = "/driverRequests";
 }
 
 class RouteGenerator {
@@ -187,6 +189,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => BOCarsAndDriversView());
       case Routes.BOaddDriver:
         return MaterialPageRoute(builder: (_) => BOAddDriverView());
+      case Routes.driverRequests:
+        initDriverRequestsModule();
+        return MaterialPageRoute(builder: (_) => DriverAddRequestsView());
       case Routes.locationTrackingPage:
         final args = settings.arguments as NavigationTrackingArguments;
         return MaterialPageRoute(

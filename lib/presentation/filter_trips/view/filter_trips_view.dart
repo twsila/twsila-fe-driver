@@ -84,8 +84,10 @@ class _FilterTripsViewState extends State<FilterTripsView> {
         tripTypeFiltration(),
         Visibility(
           visible:
-              driverBaseModel!.captainType == RegistrationConstants.captain &&
-                  (driverBaseModel! as Driver).serviceTypes!.length > 1,
+              (driverBaseModel!.captainType == RegistrationConstants.captain &&
+                      (driverBaseModel! as Driver).serviceTypes!.length > 1) ||
+                  driverBaseModel!.captainType ==
+                      RegistrationConstants.businessOwner,
           child: Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,11 +132,13 @@ class _FilterTripsViewState extends State<FilterTripsView> {
                     locationFilter: locationFilter ?? null,
                     currentLocation: currentLocationFilter ?? null,
                     isOfferedTrips: isOfferedTrip,
-                    boFilteredTrips: null,
-                    driverFilteredTrips:
+                    filteredService:
                         filteredServices != null && filteredServices!.isNotEmpty
                             ? filteredServices
-                            : null));
+                            : driverBaseModel!.captainType ==
+                                    RegistrationConstants.businessOwner
+                                ? FiltrationHelper().serviceTypesList.join(",")
+                                : null));
           },
         )
       ],

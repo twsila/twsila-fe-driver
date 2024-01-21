@@ -13,6 +13,7 @@ import 'package:taxi_for_you/presentation/service_registration/view/helpers/regi
 
 import '../../data/network/failure.dart';
 import '../../data/network/requests.dart';
+import '../model/add_request_model.dart';
 import '../model/country_lookup_model.dart';
 import '../model/general_response.dart';
 import '../model/generate_otp_model.dart';
@@ -115,4 +116,9 @@ abstract class Repository {
 
   Future<Either<Failure, List<PersonsVehicleTypeModel>>>
       getPersonsVehicleTypes();
+
+  Future<Either<Failure, List<AddRequestModel>>> getAddRequests(int driverId);
+
+  Future<Either<Failure, BaseResponse>> changeRequestStatus(
+      int acquisitionId, String driverAcquisitionDecision);
 }

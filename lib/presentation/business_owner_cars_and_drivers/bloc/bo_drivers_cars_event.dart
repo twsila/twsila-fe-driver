@@ -3,7 +3,11 @@ part of 'bo_drivers_cars_bloc.dart';
 @immutable
 abstract class BoDriversCarsEvent {}
 
-class GetDriversAndCars extends BoDriversCarsEvent {}
+class GetDriversAndCars extends BoDriversCarsEvent {
+  final bool forceRefresh;
+
+  GetDriversAndCars(this.forceRefresh);
+}
 
 class SearchDriversByMobile extends BoDriversCarsEvent {
   int mobileNumber;
@@ -17,10 +21,11 @@ class addDriverForBusinessOwner extends BoDriversCarsEvent {
 
   addDriverForBusinessOwner(this.businessOwnerId, this.driverId);
 }
+
 class assignDriverForTrip extends BoDriversCarsEvent {
   final int businessOwnerId;
   final int driverId;
   final int tripId;
 
-  assignDriverForTrip(this.businessOwnerId, this.driverId,this.tripId);
+  assignDriverForTrip(this.businessOwnerId, this.driverId, this.tripId);
 }

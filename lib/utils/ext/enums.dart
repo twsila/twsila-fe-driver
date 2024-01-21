@@ -28,7 +28,11 @@ enum NotificationType {
   TRIP_LAUNCHED,
   TRIP_FINISHED
 }
-
+enum DriverAcquisitionEnum {
+  ACCEPTED,
+  REJECTED,
+  PENDING
+}
 enum TripType {
   PERSON,
   CAR_AID,

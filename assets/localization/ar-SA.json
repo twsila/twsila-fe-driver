@@ -31,11 +31,12 @@
   "update_profile_done_successfully": "تم تحديث بياناتك بنجاح",
   "ok": "موافق",
   "upload_business_owner_photo": "اضافة صورة مالك الشركة",
-  "enter_first_name_hint": "Enter first name here",
+  "enter_first_name_hint": "ادخل الاسم الاول",
   "tax_number": "رقم السجل الضريبي",
   "national_id": "رقم الهوية الوطنية لمالك الشركة",
   "national_id_hint": "ادخل رقم الهوية هنا",
   "optional_email": "الاميل (اختياري)",
+  "add_requests_from_BO": "طلبات الاضافة",
   "upload_bo_id": "تحميل هوية مالك الشركة",
   "bo_image": "صورة هوية المالك",
   "terms_and_condition": "لقد قرأت و وافقت علي شروط و احكام تطبيق توصيلة",
@@ -476,6 +477,16 @@
   "add_driver_mobile_number": "ادخل رقم موبايل السائق",
   "sending_request_done": "تم ارسال الطلب",
   "assign_driver": "قم بتعيين سائق",
+  "no_internet_error": "مشكلة فى الاتصال بالانترنت",
+  "no_requests_found": "لا يوجد طلبات اضافة",
+  "request_accepted": "تم قبول طلب الاضافة",
+  "request_rejected": "تم رفض طلب الاضافة",
 
-  "no_internet_error": "مشكلة فى الاتصال بالانترنت"
+  "want": "يريد",
+  "businessOwner": "صاحب العمل",
+  "accept": "قبول",
+  "reject": "رفض",
+  "add_request": "طلب اضافة",
+  "has_sent": "قد ارسل",
+  "to_you": "اليك"
 }

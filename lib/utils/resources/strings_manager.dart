@@ -344,6 +344,11 @@ class AppStrings {
   static const tawsilaApplication = 'tawsila_app';
   static const save = 'save';
 
+  //driver bo requests
+  static const addRequestsFromBo = 'add_requests_from_BO';
+
+
+
   //service registration
 
   static const stepOne = 'step_one';
@@ -548,6 +553,9 @@ class AppStrings {
   //BO
   static const DriversAndCars = 'drivers_and_cars';
   static const noAddedDrivers = 'no_added_drivers';
+  static const noRequestsFound = 'no_requests_found';
+  static const requestAccepted = 'request_accepted';
+  static const requestRejected = 'request_rejected';
   static const noAddedDriversMessage = 'no_added_drivcers_message';
   static const importantNote = 'important_note';
   static const noAddedDriversimportantNote = 'no_added_driver_important_note';
@@ -557,4 +565,12 @@ class AppStrings {
   static const sendingRequestDone = 'sending_request_done';
 
   static const assignDriver = 'assign_driver';
+
+  static const want = 'want';
+  static const hasSent = 'has_sent';
+  static const businessOwner = 'business_owner';
+  static const addRequest = 'add_request';
+  static const accept = 'accept';
+  static const reject = 'reject';
+  static const toYou = 'to_you';
 }

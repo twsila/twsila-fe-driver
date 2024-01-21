@@ -171,6 +171,24 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   child: const Divider(),
                 ),
+                driver!.captainType == RegistrationConstants.captain
+                    ? Column(
+                        children: [
+                          MenuWidget(
+                            menuImage: ImageAssets.walletAndRevenueIc,
+                            menuLabel: AppStrings.addRequestsFromBo.tr(),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, Routes.driverRequests);
+                            },
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 16),
+                            child: const Divider(),
+                          )
+                        ],
+                      )
+                    : Container(),
                 MenuWidget(
                   menuImage: ImageAssets.walletAndRevenueIc,
                   menuLabel: AppStrings.WalletAndRevenue.tr(),

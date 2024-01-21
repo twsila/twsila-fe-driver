@@ -8,9 +8,10 @@ class BoDriversCarsInitial extends BoDriversCarsState {}
 class BoDriversCarsLoading extends BoDriversCarsState {}
 
 class BoDriversCarsSuccess extends BoDriversCarsState {
+  final forceRefresh;
   final List<RequestedDriversResponse> driversList;
 
-  BoDriversCarsSuccess(this.driversList);
+  BoDriversCarsSuccess(this.driversList,this.forceRefresh);
 }
 
 class SearchDriversSuccess extends BoDriversCarsState {

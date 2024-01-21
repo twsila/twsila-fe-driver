@@ -5,9 +5,10 @@ import '../../../utils/resources/values_manager.dart';
 
 class CustomCard extends StatelessWidget {
   Widget bodyWidget;
+  Color? backgroundColor;
   Function() onClick;
 
-  CustomCard({Key? key, required this.bodyWidget, required this.onClick})
+  CustomCard({Key? key, required this.bodyWidget,this.backgroundColor, required this.onClick})
       : super(key: key);
 
   @override
@@ -16,10 +17,10 @@ class CustomCard extends StatelessWidget {
       onTap: onClick,
       child: Card(
           elevation: AppSize.s1_5,
-          color: ColorManager.white,
+          color: backgroundColor ?? ColorManager.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppSize.s4),
-              side: BorderSide(color: ColorManager.white, width: AppSize.s1)),
+              side: BorderSide(color: backgroundColor?? ColorManager.white, width: AppSize.s1)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: bodyWidget,

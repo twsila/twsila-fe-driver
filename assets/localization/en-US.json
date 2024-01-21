@@ -14,6 +14,7 @@
   "continue_button": "Continue",
   "whats_your_number": "What's your number?",
   "navigate_to_tracking_page": "Open Navigation page",
+  "add_requests_from_BO": "Add Requests",
   "navigation": "Navigation",
   "lets_get_started": "Let's get started!",
   "good_afternoon": "Good Afternoon!",
@@ -475,6 +476,16 @@
   "add_driver_mobile_number": "Enter driver mobile",
   "sending_request_done": "Request sent successfully",
   "assign_driver": "Assign driver",
-
-  "no_internet_error": "Not connected to internet"
+  "no_internet_error": "Not connected to internet",
+  "no_requests_found": "No requests found",
+  "request_accepted": "Request accepted",
+  "request_rejected": "Request rejected",
+  "want": "want",
+  "businessOwner": "Business owner",
+  "accept": "Accept",
+  "reject": "Reject",
+  "addRequest": "add request",
+  "has_sent": "has sent",
+  "to_you": "to you",
+  "add_request": "add request"
 }

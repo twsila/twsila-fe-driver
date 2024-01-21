@@ -9,7 +9,7 @@ import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
-import '../../../domain/model/driver_model.dart';
+import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
 import '../../../utils/resources/values_manager.dart';
@@ -32,7 +32,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
 
   @override
   void initState() {
-    BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars());
+    BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars(false));
     super.initState();
   }
 
@@ -100,8 +100,9 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
         }
         if (state is BoDriversCarsSuccess) {
           driversList = state.driversList;
-          if (driversList.isEmpty) {
-            Navigator.pushNamed(context, Routes.BOaddDriver);
+          if (driversList.isEmpty && state.forceRefresh == false) {
+            Navigator.pushNamed(context, Routes.BOaddDriver).then((value) =>
+                BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars(true)));
           }
         }
 
@@ -110,13 +111,25 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
         }
       },
       builder: (context, state) {
-        return ListView.builder(
+        return driversList.isEmpty ?
+            Center(
+              child:   Text(
+                AppStrings.noAddedDrivers.tr(),
+                style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                    fontSize: FontSize.s16, color: ColorManager.error),
+              ),
+            ): ListView.builder(
             padding: const EdgeInsets.all(8),
             itemCount: driversList.length,
             itemBuilder: (context, i) {
+              bool isPending =
+                  driversList[i].driverAcquisitionEnum ==  DriverAcquisitionEnum.PENDING.name;
               return Container(
                   margin: EdgeInsets.all(AppMargin.m8),
                   child: CustomCard(
+                    backgroundColor: isPending
+                        ? ColorManager.disableColor
+                        : ColorManager.white,
                     onClick: () {},
                     bodyWidget: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,7 +145,9 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                   ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       fontSize: FontSize.s18,
-                                      color: ColorManager.secondaryColor),
+                                      color: isPending
+                                          ? ColorManager.disableCardTextColor
+                                          : ColorManager.secondaryColor),
                             ),
                             Text(
                               "${driversList[i].driver.firstName} ${driversList[i].driver.lastName}",
@@ -142,7 +157,9 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                   ?.copyWith(
                                       fontWeight: FontWeight.bold,
                                       fontSize: FontSize.s18,
-                                      color: ColorManager.secondaryColor),
+                                      color: isPending
+                                          ? ColorManager.disableCardTextColor
+                                          : ColorManager.secondaryColor),
                             ),
                             Text(
                               "${driversList[i].driver.mobile}",
@@ -152,7 +169,9 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                   ?.copyWith(
                                       fontWeight: FontWeight.normal,
                                       fontSize: FontSize.s16,
-                                      color: ColorManager.primaryPurple),
+                                      color: isPending
+                                          ? ColorManager.disableCardTextColor
+                                          : ColorManager.secondaryColor),
                             ),
                           ],
                         ),

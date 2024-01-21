@@ -106,6 +106,11 @@ abstract class RemoteDataSource {
   Future<BaseResponse> getPersonsVehicleTypes();
 
   Future<BaseResponse> getLookupByKey(String key, String lang);
+
+  Future<BaseResponse> getAddRequestsForDriver(int driverId);
+
+  Future<BaseResponse> changeRequestStatus(
+      int acquisitionId, String driverAcquisitionDecision);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -396,4 +401,17 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<BaseResponse> getLookupByKey(String key, String lang) async {
     return await _appServiceClient.getLookupByKey(key, lang);
   }
+
+  @override
+  Future<BaseResponse> getAddRequestsForDriver(int driverId) async {
+    return await _appServiceClient.getAddRequests(driverId);
+  }
+
+  @override
+  Future<BaseResponse> changeRequestStatus(
+      int acquisitionId, String driverAcquisitionDecision) async {
+    return await _appServiceClient.changeRequestStatus(acquisitionId, driverAcquisitionDecision);
+  }
+
+
 }
