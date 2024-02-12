@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 import '../../app/constants.dart';
@@ -28,11 +29,9 @@ enum NotificationType {
   TRIP_LAUNCHED,
   TRIP_FINISHED
 }
-enum DriverAcquisitionEnum {
-  ACCEPTED,
-  REJECTED,
-  PENDING
-}
+
+enum DriverAcquisitionEnum { ACCEPTED, REJECTED, PENDING }
+
 enum TripType {
   PERSON,
   CAR_AID,
@@ -140,13 +139,13 @@ String getTripStatusDiscs(String tripStatus) {
     case TripStatusConstants.PAYMENT:
       return AppStrings.payment_disc.tr();
     case TripStatusConstants.WAIT_FOR_TAKEOFF:
-      return AppStrings.wait_for_take_of_disc.tr();
+      return AppStrings.startTripNowAndMoveToPickupLocation.tr();
     case TripStatusConstants.TAKEOFF:
-      return AppStrings.take_off_disc.tr();
+      return AppStrings.tripStartedMoveNow.tr();
     case TripStatusConstants.EXECUTED:
-      return AppStrings.executed_disc.tr();
+      return AppStrings.youArrivedPickupLocation.tr();
     case TripStatusConstants.COMPLETED:
-      return AppStrings.completed_disc.tr();
+      return AppStrings.youArrivedDestinationLocation.tr();
     case TripStatusConstants.CANCELLED:
       return AppStrings.canceled_disc.tr();
     default:
@@ -179,6 +178,90 @@ String getTripStatusSubDis(String tripStatus) {
   }
 }
 
+String tripStepperTitles(
+    String tripStatus, String driverServiceType, String userType) {
+  if (userType == RegistrationConstants.captain &&
+      driverServiceType == "PERSONS") {
+    switch (tripStatus) {
+      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+        return '${AppStrings.stepper_driver_first_step_title.tr()}';
+      case TripStatusConstants.TAKEOFF:
+        return '${AppStrings.stepper_driver_second_step_title.tr()}';
+      case TripStatusConstants.EXECUTED:
+        return '${AppStrings.stepper_driver_third_step_title.tr()}';
+      case TripStatusConstants.COMPLETED:
+        return '${AppStrings.stepper_driver_forth_step_title.tr()}';
+    }
+  } else if (userType == RegistrationConstants.captain &&
+      driverServiceType != "PERSONS") {
+    switch (tripStatus) {
+      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+        return '${AppStrings.stepper_driver_first_step_title.tr()}';
+      case TripStatusConstants.TAKEOFF:
+        return '${AppStrings.stepper_driver_second_step_title.tr()}';
+      case TripStatusConstants.EXECUTED:
+        return '${AppStrings.stepper_driver_third_step_title.tr()}';
+      case TripStatusConstants.COMPLETED:
+        return '${AppStrings.stepper_driver_forth_step_title.tr()}';
+    }
+  } else if (userType == RegistrationConstants.businessOwner) {
+    switch (tripStatus) {
+      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+        return '${AppStrings.stepper_bo_first_step_title.tr()}';
+      case TripStatusConstants.TAKEOFF:
+        return '${AppStrings.stepper_bo_second_step_title.tr()}';
+      case TripStatusConstants.EXECUTED:
+        return '${AppStrings.stepper_bo_third_step_title.tr()}';
+      case TripStatusConstants.COMPLETED:
+        return '${AppStrings.stepper_bo_forth_step_title.tr()}';
+    }
+  }
+  return "";
+}
+
+String tripStepperDisc(
+    String tripStatus, String driverServiceType, String userType) {
+  if (userType == RegistrationConstants.captain &&
+      driverServiceType == "PERSONS") {
+    switch (tripStatus) {
+      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+        return '${AppStrings.stepper_driver_first_step_disc.tr()}';
+      case TripStatusConstants.TAKEOFF:
+        return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
+
+      case TripStatusConstants.EXECUTED:
+        return '${AppStrings.stepper_driver_third_step_disc.tr()}';
+      case TripStatusConstants.COMPLETED:
+        return '${AppStrings.stepper_driver_forth_step_disc.tr()}';
+    }
+  } else if (userType == RegistrationConstants.captain &&
+      driverServiceType != "PERSONS") {
+    switch (tripStatus) {
+      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+        return '${AppStrings.stepper_driver_goods_third_step_disc.tr()}';
+      case TripStatusConstants.TAKEOFF:
+        return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
+
+      case TripStatusConstants.EXECUTED:
+        return '${AppStrings.stepper_driver_goods_third_step_disc.tr()}';
+      case TripStatusConstants.COMPLETED:
+        return '${AppStrings.stepper_driver_goods_forth_step_disc.tr()}';
+    }
+  } else if (userType == RegistrationConstants.businessOwner) {
+    switch (tripStatus) {
+      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+        return '';
+      case TripStatusConstants.TAKEOFF:
+        return '';
+      case TripStatusConstants.EXECUTED:
+        return '${AppStrings.stepper_bo_third_step_disc.tr()}';
+      case TripStatusConstants.COMPLETED:
+        return '${AppStrings.stepper_bo_third_step_disc.tr()}';
+    }
+  }
+  return "";
+}
+
 Color getTripStatusDisColor(String tripStatus) {
   switch (tripStatus) {
     case TripStatusConstants.DRAFT:
@@ -192,9 +275,9 @@ Color getTripStatusDisColor(String tripStatus) {
     case TripStatusConstants.WAIT_FOR_TAKEOFF:
       return ColorManager.primary;
     case TripStatusConstants.TAKEOFF:
-      return ColorManager.primary;
+      return ColorManager.accentTextColor;
     case TripStatusConstants.EXECUTED:
-      return ColorManager.primary;
+      return ColorManager.accentTextColor;
     case TripStatusConstants.COMPLETED:
       return ColorManager.primary;
     case TripStatusConstants.CANCELLED:

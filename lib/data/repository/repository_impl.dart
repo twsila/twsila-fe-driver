@@ -619,7 +619,7 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<RequestedDriversResponse>>> getBODrivers(
+  Future<Either<Failure, List<Driver>>> getBODrivers(
       int businessOwnerId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
@@ -627,9 +627,9 @@ class RepositoryImpl implements Repository {
         final response = await _remoteDataSource.getBODrivers(businessOwnerId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          List<RequestedDriversResponse> driversList =
-              List<RequestedDriversResponse>.from(response.result!
-                  .map((x) => RequestedDriversResponse.fromJson(x)));
+          List<Driver> driversList =
+              List<Driver>.from(response.result!
+                  .map((x) => Driver.fromJson(x)));
           return Right(driversList);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
@@ -644,7 +644,32 @@ class RepositoryImpl implements Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+  @override
+  Future<Either<Failure, List<Driver>>> getBOPendingDrivers(
+      int businessOwnerId) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.getBOPendingDrivers(businessOwnerId);
 
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<Driver> driversList =
+          List<Driver>.from(response.result!
+              .map((x) => Driver.fromJson(x)));
+          return Right(driversList);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
   @override
   Future<Either<Failure, List<Driver>>> searchDriversByMobile(
       int mobileNumber) async {

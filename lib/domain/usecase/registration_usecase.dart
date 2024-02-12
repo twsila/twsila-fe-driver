@@ -18,35 +18,35 @@ class RegistrationUseCase
   Future<Either<Failure, RegistrationResponse>> execute(
       RegistrationUseCaseInput input) async {
     return await _repository.register(RegistrationRequest(
-      input.firstName,
-      input.lastName,
-      input.mobile,
-      input.email,
-      input.gender,
-      input.dateOfBirth,
-      input.driverServiceType,
-      input.vehicleTypeId,
-      input.carManufacturerTypeId,
-      input.carModelId,
-      input.carNotes,
-      input.countryCode,
-      null,
-      //car images can be null cause we use it in view only
-      input.plateNumber,
-      input.driverImages,
-      input.canTransportFurniture,
-      input.canTransportGoods,
-      input.canTransportFrozen,
-      input.hasWaterTank,
-      input.hasOtherTanks,
-      input.hasPacking,
-      input.hasLoading,
-      input.hasAssembly,
-      input.hasLifting,
-      input.isAcknowledged,
-      vehicleShapeId: input.vehicleShapeId,
-      serviceModelId: input.serviceModelId
-    ));
+        input.firstName,
+        input.lastName,
+        input.mobile,
+        input.email,
+        input.gender,
+        input.dateOfBirth,
+        input.driverServiceType,
+        input.vehicleTypeId,
+        input.carManufacturerTypeId,
+        input.carModelId,
+        input.tankType,
+        input.carNotes,
+        input.countryCode,
+        null,
+        //car images can be null cause we use it in view only
+        input.plateNumber,
+        input.driverImages,
+        input.canTransportFurniture,
+        input.canTransportGoods,
+        input.canTransportFrozen,
+        input.hasWaterTank,
+        input.hasOtherTanks,
+        input.hasPacking,
+        input.hasLoading,
+        input.hasAssembly,
+        input.hasLifting,
+        input.isAcknowledged,
+        vehicleShapeId: input.vehicleShapeId,
+        serviceModelId: input.serviceModelId));
   }
 }
 
@@ -61,6 +61,7 @@ class RegistrationUseCaseInput {
   String vehicleTypeId;
   String carManufacturerTypeId;
   String carModelId;
+  String? tankType;
   String carNotes;
   String countryCode;
   String plateNumber;
@@ -94,6 +95,7 @@ class RegistrationUseCaseInput {
       required this.vehicleTypeId,
       required this.carManufacturerTypeId,
       required this.carModelId,
+      this.tankType,
       required this.carNotes,
       required this.plateNumber,
       required this.driverImages,

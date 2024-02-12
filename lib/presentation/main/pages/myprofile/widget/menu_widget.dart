@@ -7,6 +7,7 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../../../../utils/resources/color_manager.dart';
 import '../../../../../utils/resources/langauge_manager.dart';
 import '../../../../../utils/resources/styles_manager.dart';
+import 'package:path/path.dart';
 
 class MenuWidget extends StatelessWidget {
   final AppPreferences appPreferences = instance();
@@ -28,7 +29,17 @@ class MenuWidget extends StatelessWidget {
         onTap: () => onPressed(),
         child: Row(
           children: [
-            SvgPicture.asset(menuImage),
+            extension(menuImage) == ".svg"
+                ? SvgPicture.asset(menuImage)
+                : Container(
+                    width: 40,
+                    height: 40,
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: ColorManager.forthAccentColor,
+                    ),
+                    child: Image.asset(menuImage)),
             const SizedBox(width: 16),
             Expanded(
               child: Row(

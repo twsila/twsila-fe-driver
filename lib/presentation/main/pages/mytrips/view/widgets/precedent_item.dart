@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/rate_passenger/view/rate_passenger_view.dart';
 import 'package:taxi_for_you/utils/ext/date_ext.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 import '../../../../../../domain/model/trip_details_model.dart';
 import '../../../../../../utils/ext/enums.dart';
@@ -32,6 +35,8 @@ class PrecedentItemView extends StatefulWidget {
 }
 
 class _PrecedentItemViewState extends State<PrecedentItemView> {
+  AppPreferences _appPreferences = instance<AppPreferences>();
+
   @override
   Widget build(BuildContext context) {
     return CustomCard(
@@ -200,28 +205,32 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
                       )
                     ],
                   )
-                : Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      CustomTextButton(
-                        text: AppStrings.ratePassenger.tr(),
-                        isWaitToEnable: false,
-                        onPressed: () {
-                          Navigator.pushNamed(context, Routes.ratePassenger,
-                              arguments: RatePassengerArguments(widget.trip));
-                        },
-                        margin: 2,
-                        backgroundColor: ColorManager.secondaryColor,
-                        textColor: ColorManager.white,
-                        icon: Icon(
-                          Icons.star_border_purple500_sharp,
-                          color: ColorManager.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                : _appPreferences.getCachedDriver()!.captainType ==
+                        RegistrationConstants.captain
+                    ? Column(
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          CustomTextButton(
+                            text: AppStrings.ratePassenger.tr(),
+                            isWaitToEnable: false,
+                            onPressed: () {
+                              Navigator.pushNamed(context, Routes.ratePassenger,
+                                  arguments:
+                                      RatePassengerArguments(widget.trip));
+                            },
+                            margin: 2,
+                            backgroundColor: ColorManager.secondaryColor,
+                            textColor: ColorManager.white,
+                            icon: Icon(
+                              Icons.star_border_purple500_sharp,
+                              color: ColorManager.white,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
           ],
         ),
       ),

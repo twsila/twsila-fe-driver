@@ -55,27 +55,30 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
     destination = destination;
   }
 
-  getCurrentLocation() async {
-    try {
-      currentLocation = await mapsRepo.getUserCurrentLocation();
-      currentLocationFilter = CurrentLocationFilter(
-              latitude: currentLocation!.latitude,
-              longitude: currentLocation!.longitude,
-              cityName: '');
-      currentCityName = await LocationHelper().getCityNameByCoordinates(
-          currentLocation!.latitude, currentLocation!.longitude);
-      currentLocationFilter!.cityName = currentCityName;
-    } catch (e) {
-      CustomDialog(context).showWaringDialog(
-          '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
-        Geolocator.openLocationSettings();
-      });
+  Future<void> getCurrentLocation() async {
+    if (mounted) {
+      try {
+        currentLocation = await mapsRepo.getUserCurrentLocation();
+      } catch (e) {
+        CustomDialog(context).showWaringDialog(
+            '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
+          Geolocator.openLocationSettings();
+        });
+      }
     }
   }
 
   @override
   void initState() {
-    getCurrentLocation();
+    getCurrentLocation().then((value) async {
+      currentLocationFilter = CurrentLocationFilter(
+          latitude: currentLocation!.latitude,
+          longitude: currentLocation!.longitude,
+          cityName: '');
+      currentCityName = await LocationHelper().getCityNameByCoordinates(
+          currentLocation!.latitude, currentLocation!.longitude);
+      currentLocationFilter!.cityName = currentCityName;
+    });
     super.initState();
   }
 
@@ -194,10 +197,12 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                 controller: _searchFromController,
                 focusNode: FocusNode(debugLabel: 'source_node'),
                 hintText: "${AppStrings.pleaseEnterCity.tr()}",
-                predictionCallback: (prediction) {
+                predictionCallback: (prediction) async {
                   if (prediction != null) {
-                    _searchFromController.text =
-                        LocationHelper().getCityName(prediction);
+                    _searchFromController.text = await LocationHelper()
+                        .getCityNameByCoordinates(
+                            double.tryParse(prediction.lat!)!,
+                            double.tryParse(prediction.lng!)!);
                     pPickup = prediction;
                     pickup = Destination(
                         latitude: double.parse(prediction.lat!),
@@ -221,10 +226,12 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                 controller: _searchToController,
                 focusNode: FocusNode(debugLabel: 'source_node'),
                 hintText: "${AppStrings.pleaseEnterCity.tr()}",
-                predictionCallback: (prediction) {
+                predictionCallback: (prediction) async {
                   if (prediction != null) {
-                    _searchToController.text =
-                        LocationHelper().getCityName(prediction);
+                    _searchToController.text = await LocationHelper()
+                        .getCityNameByCoordinates(
+                            double.tryParse(prediction.lat!)!,
+                            double.tryParse(prediction.lng!)!);
                     pDestination = prediction;
                     destination = Destination(
                         latitude: double.parse(prediction.lat!),

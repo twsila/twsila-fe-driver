@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
+import 'package:taxi_for_you/domain/model/lookupValueModel.dart';
 import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
@@ -50,6 +51,8 @@ class _ServiceRegistrationFirstStepViewState
 
   List<GoodsServiceTypeModel> goodsServiceTypesList = [];
   List<PersonsVehicleTypeModel> personsVehicleTypesList = [];
+  List<LookupValueModel> tankTypes = [];
+  LookupValueModel? selectedTankType;
 
   AdditionalServicesModel additionalServicesModel = AdditionalServicesModel();
 
@@ -61,6 +64,7 @@ class _ServiceRegistrationFirstStepViewState
 
   @override
   void initState() {
+    BlocProvider.of<ServiceRegistrationBloc>(context).add(GetTankTypes());
     if (widget.requestModel.serviceModelId != null &&
         widget.requestModel.serviceModelId == 0) {
       BlocProvider.of<ServiceRegistrationBloc>(context)
@@ -115,6 +119,9 @@ class _ServiceRegistrationFirstStepViewState
           _showPersonsData = false;
           this.goodsServiceTypesList = state.goodsServiceTypesList;
         }
+        if (state is TankTypesSuccess) {
+          this.tankTypes = state.tankValues;
+        }
         if (state is PersonsVehicleTypesSuccess) {
           _showPersonsData = true;
           this.personsVehicleTypesList = state.personsVehicleTypesList;
@@ -148,33 +155,21 @@ class _ServiceRegistrationFirstStepViewState
                 Text(
                   AppStrings.stepOne.tr(),
                   textAlign: TextAlign.start,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: ColorManager.headersTextColor),
                 ),
                 Text(
                   AppStrings.serviceData.tr(),
                   textAlign: TextAlign.start,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       fontSize: AppSize.s28,
                       color: ColorManager.headersTextColor),
                 ),
                 Text(
                   AppStrings.selectServiceType.tr(),
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.normal,
                       color: ColorManager.titlesTextColor),
                 ),
@@ -211,60 +206,68 @@ class _ServiceRegistrationFirstStepViewState
                 ),
                 _showPersonsData
                     ? PersonsVehicleTypesWidget(
-                    registrationRequest: widget.requestModel,
-                    lang: _appPrefs.getAppLanguage(),
-                    personsVehicleTypesList: this.personsVehicleTypesList,
-                    selectedPersonsVehicleTypeModel:
-                        (selectedPersonsVehicleTypeModel) {
-                      setState(() {
-                        this.selectedPersonVehicleType =
-                            selectedPersonsVehicleTypeModel;
-                        this.selectedGoodsServiceType = null;
-                        this.selectedNumberOfPassengers = null;
-                      });
-                    },
-                    selectedNumberOfPassengers:
-                        (selectedNumberOfPassengers) {
-                      setState(() {
-                        this.selectedNumberOfPassengers =
-                            selectedNumberOfPassengers;
-                        this.selectedVehicleShape = null;
-                      });
-                    })
-                    : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GoodsServiceTypesWidget(
-                        lang: _appPrefs.getAppLanguage(),
                         registrationRequest: widget.requestModel,
-                        goodsServiceTypesList: this.goodsServiceTypesList,
-                        selectedService: (selectedService) {
+                        lang: _appPrefs.getAppLanguage(),
+                        personsVehicleTypesList: this.personsVehicleTypesList,
+                        selectedPersonsVehicleTypeModel:
+                            (selectedPersonsVehicleTypeModel) {
                           setState(() {
-                            this.selectedGoodsServiceType =
-                                selectedService;
-                            this.selectedPersonVehicleType = null;
-                            this.selectedVehicleShape = null;
-                          });
-                        },
-                        selectedVehicleShape: (selectedVehicleShape) {
-                          setState(() {
-                            this.selectedVehicleShape = selectedVehicleShape;
+                            this.selectedPersonVehicleType =
+                                selectedPersonsVehicleTypeModel;
+                            this.selectedGoodsServiceType = null;
                             this.selectedNumberOfPassengers = null;
                           });
-                        }),
-                    SizedBox(
-                      height: AppSize.s10,
-                    ),
-                    Visibility(
-                      visible: this.selectedGoodsServiceType != null &&
-                          this.selectedGoodsServiceType!.serviceTypeParam
-                              .contains("GOODS, FURNITURE"),
-                      child: AdditionalServicesWidget(
-                          additionalServicesModel: additionalServicesModel,
-                          registrationRequest: widget.requestModel),
-                    )
-                  ],
-                ),
+                        },
+                        selectedNumberOfPassengers:
+                            (selectedNumberOfPassengers) {
+                          setState(() {
+                            this.selectedNumberOfPassengers =
+                                selectedNumberOfPassengers;
+                            this.selectedVehicleShape = null;
+                          });
+                        })
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GoodsServiceTypesWidget(
+                            onSelectTankType: (tankType){
+                              this.selectedTankType = tankType;
+                            },
+                              tankTypesList: tankTypes,
+                              lang: _appPrefs.getAppLanguage(),
+                              registrationRequest: widget.requestModel,
+                              goodsServiceTypesList: this.goodsServiceTypesList,
+                              selectedService: (selectedService) {
+                                setState(() {
+                                  this.selectedGoodsServiceType =
+                                      selectedService;
+                                  this.selectedPersonVehicleType = null;
+                                  this.selectedVehicleShape = null;
+                                });
+                              },
+                              selectedVehicleShape: (selectedVehicleShape) {
+                                setState(() {
+                                  this.selectedVehicleShape =
+                                      selectedVehicleShape;
+                                  this.selectedNumberOfPassengers = null;
+                                });
+                              }),
+                          SizedBox(
+                            height: AppSize.s10,
+                          ),
+                          Visibility(
+                            visible: this.selectedGoodsServiceType != null &&
+                                this
+                                    .selectedGoodsServiceType!
+                                    .serviceTypeParam
+                                    .contains("GOODS, FURNITURE"),
+                            child: AdditionalServicesWidget(
+                                additionalServicesModel:
+                                    additionalServicesModel,
+                                registrationRequest: widget.requestModel),
+                          )
+                        ],
+                      ),
                 CustomTextButton(
                   text: AppStrings.continueStr.tr(),
                   icon: Icon(
@@ -272,46 +275,52 @@ class _ServiceRegistrationFirstStepViewState
                     color: ColorManager.white,
                   ),
                   onPressed: ((this.selectedGoodsServiceType != null &&
-                      this
-                          .selectedGoodsServiceType!
-                          .vehicleShapes
-                          .isEmpty) ||
-                      this.selectedGoodsServiceType != null &&
-                          this.selectedVehicleShape != null) ||
-                      (this.selectedPersonVehicleType != null &&
-                          this.selectedNumberOfPassengers != null)
+                                  this
+                                      .selectedGoodsServiceType!
+                                      .vehicleShapes
+                                      .isEmpty) ||
+                              this.selectedGoodsServiceType != null &&
+                                  this.selectedVehicleShape != null) ||
+                          (this.selectedPersonVehicleType != null &&
+                              this.selectedNumberOfPassengers != null)
                       ? () {
-                    BlocProvider.of<ServiceRegistrationBloc>(context).add(
-                        SetFirstStepData(
-                            this.selectedGoodsServiceType != null
-                                ? this
-                                .selectedGoodsServiceType!
-                                .serviceTypeParam
-                                .toString()
-                                : this
-                                .selectedPersonVehicleType!
-                                .serviceType
-                                .toString(),
-                            this.selectedGoodsServiceType != null
-                                ? this
-                                .selectedGoodsServiceType!
-                                .id
-                                .toString()
-                                : this
-                                .selectedPersonVehicleType!
-                                .id
-                                .toString(),
-                            _showPersonsData
-                                ? this
-                                .selectedNumberOfPassengers!
-                                .id
-                                .toString()
-                                : this.selectedVehicleShape != null
-                                ? this.selectedVehicleShape!.id.toString()
-                                : "-1",
-                            widget.requestModel.serviceModelId!,
-                            additionalServicesModel));
-                  }
+                          BlocProvider.of<ServiceRegistrationBloc>(context).add(
+                              SetFirstStepData(
+                                  this.selectedGoodsServiceType != null
+                                      ? this
+                                          .selectedGoodsServiceType!
+                                          .serviceTypeParam
+                                          .toString()
+                                      : this
+                                          .selectedPersonVehicleType!
+                                          .serviceType
+                                          .toString(),
+                                  this.selectedGoodsServiceType != null
+                                      ? this
+                                          .selectedGoodsServiceType!
+                                          .id
+                                          .toString()
+                                      : this
+                                          .selectedPersonVehicleType!
+                                          .id
+                                          .toString(),
+                                  _showPersonsData
+                                      ? this
+                                          .selectedNumberOfPassengers!
+                                          .id
+                                          .toString()
+                                      : this.selectedVehicleShape != null
+                                          ? this
+                                              .selectedVehicleShape!
+                                              .id
+                                              .toString()
+                                          : "-1",
+                                  widget.requestModel.serviceModelId!,
+                                  additionalServicesModel,
+                                  this.selectedTankType != null
+                                      ? selectedTankType!.id.toString()
+                                      : null));
+                        }
                       : null,
                 )
               ],

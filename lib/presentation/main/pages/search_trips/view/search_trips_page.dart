@@ -57,17 +57,19 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   String currentCityName = '';
   CurrentLocationFilter? currentLocationFilter;
 
-  int currentSortingIndex = 0;
+  int currentSortingIndex = 1;
   List<TripDetailsModel> trips = [];
   DateFilter? dateFilter = null;
   int currentIndex = 0;
+  bool getLocationTry = true;
   List<SortingModel> sortingModelList = [];
   DriverBaseModel? driver;
 
-  getCurrentLocation() async {
-    try {
-      if (currentLocation == null) {
+  Future<void> getCurrentLocation() async {
+    if (mounted) {
+      try {
         currentLocation = await mapsRepo.getUserCurrentLocation();
+        getLocationTry = true;
         currentLocationFilter = CurrentLocationFilter(
             latitude: currentLocation!.latitude,
             longitude: currentLocation!.longitude,
@@ -75,12 +77,12 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         currentCityName = await LocationHelper().getCityNameByCoordinates(
             currentLocation!.latitude, currentLocation!.longitude);
         currentLocationFilter!.cityName = currentCityName;
+      } catch (e) {
+        CustomDialog(context).showWaringDialog(
+            '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
+          Geolocator.openLocationSettings();
+        });
       }
-    } catch (e) {
-      CustomDialog(context).showWaringDialog(
-          '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
-        Geolocator.openLocationSettings();
-      });
     }
   }
 
@@ -189,25 +191,29 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   @override
   void initState() {
     // BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
+    getCurrentLocation().then((value) {
+      BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
+          tripTypeId: sortingModelList[currentSortingIndex]
+              .tripModelType!
+              .name
+              .toString(),
+          sortCriterion: currentLocation != null
+              ? sortingModelList[1].id!.name.toString()
+              : sortingModelList[currentSortingIndex].id!.name.toString(),
+          currentLocation:
+              currentLocation != null ? currentLocationFilter : null,
+          serviceTypesSelectedByBusinessOwner:
+              driver!.captainType == RegistrationConstants.businessOwner
+                  ? FiltrationHelper().serviceTypesList.join(",")
+                  : null,
+          serviceTypesSelectedByDriver:
+              driver!.captainType == RegistrationConstants.captain
+                  ? (driver as Driver).serviceTypes!.join(',')
+                  : null));
+    });
     driver = _appPreferences.getCachedDriver();
     sortingModelList = SearchTripsBloc().getSortingList(driver!);
-    BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
-        tripTypeId: sortingModelList[currentSortingIndex]
-            .tripModelType!
-            .name
-            .toString(),
-        sortCriterion:
-            sortingModelList[currentSortingIndex].id!.name.toString(),
-        serviceTypesSelectedByBusinessOwner:
-            driver!.captainType == RegistrationConstants.businessOwner
-                ? FiltrationHelper().serviceTypesList.join(",")
-                : null,
-        serviceTypesSelectedByDriver:
-            driver!.captainType == RegistrationConstants.captain
-                ? (driver as Driver).serviceTypes!.join(',')
-                : null));
 
-    getCurrentLocation();
     super.initState();
   }
 
@@ -304,15 +310,6 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Row(
-                  //   children: [
-                  //     Expanded(
-                  //       child: Container(
-                  //           height: AppSize.s40,
-                  //           child: _TripsTitleListView(tripsTitles)),
-                  //     ),
-                  //   ],
-                  // ),
                   Expanded(
                     child: _loadingTripsList
                         ? Center(
@@ -407,20 +404,25 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
         if (trip.tripDetails.acceptedOffer != null)
           Navigator.pushNamed(context, Routes.tripExecution,
                   arguments: TripExecutionArguments(trip))
-              .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
-                  GetTripsTripModuleId(
+              .then((value) =>
+                  BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
                       tripTypeId: sortingModelList[currentSortingIndex]
                           .tripModelType!
                           .name
                           .toString(),
                       dateFilter: null,
-                      sortCriterion: sortingModelList[currentSortingIndex]
-                          .id!
-                          .name
-                          .toString(),
+                      sortCriterion:
+                          currentLocation != null && currentLocationFilter == 1
+                              ? sortingModelList[1].id!.name.toString()
+                              : sortingModelList[currentSortingIndex]
+                                  .id!
+                                  .name
+                                  .toString(),
+                      currentLocation: currentLocation != null
+                          ? currentLocationFilter
+                          : null,
                       serviceTypesSelectedByBusinessOwner:
-                          driver!.captainType ==
-                                  RegistrationConstants.businessOwner
+                          driver!.captainType == RegistrationConstants.businessOwner
                               ? FiltrationHelper().serviceTypesList.join(",")
                               : null,
                       serviceTypesSelectedByDriver:
@@ -437,13 +439,18 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                           .name
                           .toString(),
                       dateFilter: null,
-                      sortCriterion: sortingModelList[currentSortingIndex]
-                          .id!
-                          .name
-                          .toString(),
+                      sortCriterion:
+                          currentLocation != null && currentLocationFilter == 1
+                              ? sortingModelList[1].id!.name.toString()
+                              : sortingModelList[currentSortingIndex]
+                                  .id!
+                                  .name
+                                  .toString(),
+                      currentLocation: currentLocation != null
+                          ? currentLocationFilter
+                          : null,
                       serviceTypesSelectedByBusinessOwner:
-                          driver!.captainType ==
-                                  RegistrationConstants.businessOwner
+                          driver!.captainType == RegistrationConstants.businessOwner
                               ? FiltrationHelper().serviceTypesList.join(",")
                               : null,
                       serviceTypesSelectedByDriver:

@@ -18,6 +18,7 @@ class RegistrationRequest {
   String? carManufacturerTypeId;
   String? carModelId;
   String? carNotes;
+  String? tankType;
   String? plateNumber;
   String? vehicleShapeId;
   String? countryCode;
@@ -58,6 +59,7 @@ class RegistrationRequest {
       this.vehicleTypeId,
       this.carManufacturerTypeId,
       this.carModelId,
+      this.tankType,
       this.carNotes,
       this.countryCode,
       this.carImages,

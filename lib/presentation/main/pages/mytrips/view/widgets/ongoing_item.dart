@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/utils/ext/date_ext.dart';
 
+import '../../../../../../app/app_prefs.dart';
+import '../../../../../../app/di.dart';
+import '../../../../../../domain/model/driver_model.dart';
 import '../../../../../../domain/model/trip_details_model.dart';
 import '../../../../../../utils/ext/enums.dart';
 import '../../../../../../utils/resources/assets_manager.dart';
 import '../../../../../../utils/resources/color_manager.dart';
+import '../../../../../../utils/resources/constants_manager.dart';
 import '../../../../../../utils/resources/font_manager.dart';
 import '../../../../../../utils/resources/routes_manager.dart';
 import '../../../../../../utils/resources/strings_manager.dart';
@@ -30,6 +34,18 @@ class OngoingItemView extends StatefulWidget {
 }
 
 class _OngoingItemViewState extends State<OngoingItemView> {
+  String driverServiceType = "";
+  final AppPreferences _appPreferences = instance<AppPreferences>();
+
+  @override
+  void initState() {
+    driverServiceType = _appPreferences.getCachedDriver()!.captainType ==
+            RegistrationConstants.captain
+        ? (_appPreferences.getCachedDriver()! as Driver).serviceTypes!.first
+        : "";
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomCard(
@@ -123,26 +139,37 @@ class _OngoingItemViewState extends State<OngoingItemView> {
               height: AppSize.s4,
             ),
             Text(
-              getTripStatusDiscs(widget.trip.tripDetails.tripStatus.toString()),
+              tripStepperTitles(
+                  widget.trip.tripDetails.tripStatus.toString(),
+                  driverServiceType.isNotEmpty ? driverServiceType : "PERSONS",
+                  _appPreferences.getCachedDriver()!.captainType.toString()),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: getTripStatusDisColor(
                       widget.trip.tripDetails.tripStatus.toString()),
-                  fontSize: FontSize.s16,
+                  fontSize: FontSize.s14,
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: AppSize.s4,
             ),
             Visibility(
-              visible: getTripStatusSubDis(
-                      widget.trip.tripDetails.tripStatus.toString())
+              visible: tripStepperDisc(
+                      widget.trip.tripDetails.tripStatus.toString(),
+                      driverServiceType.isNotEmpty
+                          ? driverServiceType
+                          : "PERSONS",
+                      _appPreferences.getCachedDriver()!.captainType.toString())
                   .isNotEmpty,
               child: Text(
-                getTripStatusSubDis(
-                    widget.trip.tripDetails.tripStatus.toString()),
+                tripStepperDisc(
+                    widget.trip.tripDetails.tripStatus.toString(),
+                    driverServiceType.isNotEmpty
+                        ? driverServiceType
+                        : "PERSONS",
+                    _appPreferences.getCachedDriver()!.captainType.toString()),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: ColorManager.headersTextColor,
-                    fontSize: FontSize.s14,
+                    color: ColorManager.titlesTextColor,
+                    fontSize: FontSize.s12,
                     fontWeight: FontWeight.w500),
               ),
             ),

@@ -38,8 +38,8 @@ class FrozenExtraServices extends StatelessWidget {
                         AppStrings.crane.tr(),
                         textAlign: TextAlign.start,
                         style: getBoldStyle(
-                          color: ColorManager.primary,
-                          fontSize: 16,
+                          color: ColorManager.headersTextColor,
+                          fontSize: 14,
                         ),
                       ),
                     if (freezersModel.containsLoading)
@@ -47,8 +47,8 @@ class FrozenExtraServices extends StatelessWidget {
                         AppStrings.unloadAndLoad.tr(),
                         textAlign: TextAlign.start,
                         style: getBoldStyle(
-                          color: ColorManager.primary,
-                          fontSize: 16,
+                          color: ColorManager.headersTextColor,
+                          fontSize: 14,
                         ),
                       ),
                     if (freezersModel.containsPacking)
@@ -56,8 +56,8 @@ class FrozenExtraServices extends StatelessWidget {
                         AppStrings.wrapping.tr(),
                         textAlign: TextAlign.start,
                         style: getBoldStyle(
-                          color: ColorManager.primary,
-                          fontSize: 16,
+                          color: ColorManager.headersTextColor,
+                          fontSize: 14,
                         ),
                       ),
                   ],

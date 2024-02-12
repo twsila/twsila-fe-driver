@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/presentation/business_owner_cars_and_drivers/bloc/bo_drivers_cars_bloc.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
@@ -15,7 +18,9 @@ import '../../../utils/resources/strings_manager.dart';
 import '../../common/widgets/custom_text_button.dart';
 
 class AddDriverBottomSheetView extends StatefulWidget {
-  const AddDriverBottomSheetView();
+  List<String>? pendingDriversMobileNumbers;
+
+  AddDriverBottomSheetView({this.pendingDriversMobileNumbers});
 
   @override
   State<AddDriverBottomSheetView> createState() =>
@@ -28,6 +33,23 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
   List<Driver> driversList = [];
   Driver? selectedDriver;
   AppPreferences appPreferences = instance();
+  Timer? _debounce;
+
+  _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(
+        const Duration(milliseconds: Constants.onChangeDebounceMilliseconds),
+        () {
+      BlocProvider.of<BoDriversCarsBloc>(context)
+          .add(SearchDriversByMobile(int.parse(query)));
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -57,7 +79,10 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
         }
         if (state is SearchDriversSuccess) {
           this.driversList = state.drivers;
-          if (driversList.isEmpty) {}
+          if (widget.pendingDriversMobileNumbers != null) {
+            driversList.removeWhere((element) =>
+                widget.pendingDriversMobileNumbers!.contains(element.mobile));
+          }
         }
 
         if (state is AddDriversSuccess) {
@@ -115,8 +140,7 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
                   labelText: AppStrings.driverMobileNumber.tr(),
                   hintText: AppStrings.addDriverMobileNumber.tr(),
                   onChanged: (value) {
-                    BlocProvider.of<BoDriversCarsBloc>(context)
-                        .add(SearchDriversByMobile(int.parse(value)));
+                    _onSearchChanged(value);
                   },
                 ),
                 Expanded(

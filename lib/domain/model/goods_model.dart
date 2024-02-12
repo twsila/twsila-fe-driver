@@ -1,11 +1,12 @@
 import 'package:taxi_for_you/domain/model/transportation_base_model.dart';
 
 import '../../utils/helpers/double_prase.dart';
+import 'lookup_item.dart';
 
 class GoodsModel extends TransportationBaseModel {
-  String? packagingType;
-  String? materialType;
   double? payloadWeight;
+  LookupItem? materialType;
+  LookupItem? packingType;
   bool containsLoading = false;
   bool containsPacking = false;
   bool containsLift = false;
@@ -17,18 +18,11 @@ class GoodsModel extends TransportationBaseModel {
     if (json['payloadWeight'] != null) {
       payloadWeight = dynamicToDouble(json['payloadWeight']);
     }
-    if (json['packingDetails'] != null &&
-        json['packingDetails']['description'] != null) {
-      packagingType = json['packingDetails']['description'];
+    if (json['packingType'] != null) {
+      packingType = LookupItem.fromJson(json['packingType']);
     }
-
-    if (json['materialDetails'] != null &&
-        json['materialDetails']['description'] != null) {
-      materialType = json['materialDetails']['description'];
-    }
-    if (json['materialDetails'] != null &&
-        json['materialDetails']['description'] != null) {
-      materialType = json['materialDetails']['description'];
+    if (json['materialType'] != null) {
+      materialType = LookupItem.fromJson(json['materialType']);
     }
     containsLoading = json['containsLoading'] is String
         ? json['containsLoading'] == "true"
@@ -47,10 +41,30 @@ class GoodsModel extends TransportationBaseModel {
     if (payloadWeight != null) {
       data['payloadWeight'] = payloadWeight.toString();
     }
-    if (packagingType != null) {
-      data['packingDetails'] = packagingType.toString();
+    if (packingType != null) {
+      data['packingType'] = packingType!.id.toString();
     }
-    if (materialType != null) data['materialDetails'] = materialType.toString();
+    if (materialType != null) {
+      data['materialType'] = materialType!.id.toString();
+    }
+    data['containsLoading'] = containsLoading.toString();
+    data['containsPacking'] = containsPacking.toString();
+    data['containsLift'] = containsLift.toString();
+    return data;
+  }
+
+  Map<String, dynamic> toGoodsCopyJson() {
+    Map<String, dynamic> data = <String, dynamic>{};
+    data = toJSON();
+    if (payloadWeight != null) {
+      data['payloadWeight'] = payloadWeight.toString();
+    }
+    if (packingType != null) {
+      data['packingType'] = packingType!.toJson();
+    }
+    if (materialType != null) {
+      data['materialType'] = materialType!.toJson();
+    }
     data['containsLoading'] = containsLoading.toString();
     data['containsPacking'] = containsPacking.toString();
     data['containsLift'] = containsLift.toString();
@@ -58,24 +72,6 @@ class GoodsModel extends TransportationBaseModel {
   }
 
   GoodsModel copyWith(GoodsModel goodsModel) {
-    return GoodsModel.fromJson(goodsModel.toGoodsJson());
-  }
-}
-
-class DropdownModel {
-  int id;
-  String description;
-
-  DropdownModel({required this.id, required this.description});
-
-  factory DropdownModel.fromJson(Map<String, dynamic> json) {
-    return DropdownModel(id: json['id'], description: json['description']);
-  }
-
-  Map<String, dynamic> toGoodsJson() {
-    Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id.toString();
-    data['description'] = description;
-    return data;
+    return GoodsModel.fromJson(goodsModel.toGoodsCopyJson());
   }
 }

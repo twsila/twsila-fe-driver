@@ -9,6 +9,7 @@ import 'package:taxi_for_you/domain/usecase/add_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_requests_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_accept_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_assign_driver_to_trip_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/bo_get_pending_drivers_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_suggest_new_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/change_request_status.dart';
@@ -142,6 +143,10 @@ initRegistrationServiceModule() {
   if (!GetIt.I.isRegistered<RegistrationBOUseCase>()) {
     instance.registerFactory<RegistrationBOUseCase>(
         () => RegistrationBOUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<LookupByKeyUseCase>()) {
+    instance.registerFactory<LookupByKeyUseCase>(
+            () => LookupByKeyUseCase(instance()));
   }
 }
 
@@ -284,6 +289,10 @@ initBODriversCarsModule() {
   if (!GetIt.I.isRegistered<BoAssignDriverToTripUseCase>()) {
     instance.registerFactory<BoAssignDriverToTripUseCase>(
         () => BoAssignDriverToTripUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<BOGetPendingDriversUseCase>()) {
+    instance.registerFactory<BOGetPendingDriversUseCase>(
+        () => BOGetPendingDriversUseCase(instance()));
   }
 }
 

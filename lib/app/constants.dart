@@ -11,6 +11,7 @@ class Constants {
   static const String token = "";
   static const int zero = 0;
   static const int apiTimeOut = 60000;
+  static const int onChangeDebounceMilliseconds = 800;
   static const String GOOGLE_API_KEY_ANDROID =
       "AIzaSyAemSFn6fVufROQDewj0BjzuOKVw_Bxi8M";
   static const String GOOGLE_API_KEY_IOS =
@@ -87,6 +88,7 @@ class TripTypeConstants {
 }
 class LookupKeys {
   static const String serviceType = "ServiceType";
+  static const String tankType = "TankType";
 }
 
 class TripStatusConstants {

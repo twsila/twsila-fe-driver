@@ -43,11 +43,12 @@ class Driver extends DriverBaseModel {
   bool hasLifting;
   String plateNumber;
   String? driverStatus;
-  BusinessOwnerModel? businessOwnerModel;
+  int? businessOwnerId;
   List<DriverImage> images;
   double rating;
   bool acknowledged;
   bool isChecked;
+  bool? isPending;
 
   Driver(
       {required id,
@@ -80,7 +81,8 @@ class Driver extends DriverBaseModel {
       required accessToken,
       required refreshToken,
       required userDevice,
-      this.businessOwnerModel,
+      this.businessOwnerId,
+      this.isPending = false,
       required tokenExpirationTime,
       this.isChecked = false}) {
     this.id = id;
@@ -117,9 +119,7 @@ class Driver extends DriverBaseModel {
         carManufacturerType:
             DriverCarManufacturer.fromJson(json["carManufacturerType"]),
         carModel: DriverCarModel.fromJson(json["carModel"]),
-        businessOwnerModel: json["businessOwner"] != null
-            ? BusinessOwnerModel.fromJsonDirect(json["businessOwner"])
-            : null,
+        businessOwnerId: json["businessOwnerId"],
         canTransportFurniture: json["canTransportFurniture"],
         canTransportGoods: json["canTransportGoods"],
         canTransportFrozen: json["canTransportFrozen"],
@@ -164,7 +164,7 @@ class Driver extends DriverBaseModel {
         "captainType": RegistrationConstants.captain,
         "hasAssembly": hasAssembly,
         "hasLifting": hasLifting,
-        "businessOwner": businessOwnerModel,
+        "businessOwner": businessOwnerId,
         "plateNumber": plateNumber,
         "images": List<dynamic>.from(images.map((x) => x.toJson())),
         "rating": rating,

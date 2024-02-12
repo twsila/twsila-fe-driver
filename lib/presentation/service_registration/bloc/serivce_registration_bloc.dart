@@ -8,6 +8,7 @@ import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
 import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/goods_service_types_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/lookup_by_key_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/persons_vehicle_types_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/registration_usecase.dart';
@@ -18,6 +19,7 @@ import 'package:taxi_for_you/presentation/service_registration/view/widgets/serv
 import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
+import '../../../domain/model/lookupValueModel.dart';
 import '../../../domain/model/service_type_model.dart';
 import '../../../domain/model/car_brand_models_model.dart';
 import '../../../domain/usecase/registration_services_usecase.dart';
@@ -45,6 +47,7 @@ class ServiceRegistrationBloc
   ServiceRegistrationBloc() : super(ServiceRegistrationInitial()) {
     on<GetServiceTypes>(_getServicesTypes);
     on<GetGoodsServiceTypes>(_getGoodsServiceTypes);
+    on<GetTankTypes>(_getTankTypes);
     on<GetPersonsVehicleTypes>(_getPersonsVehicleTypes);
     on<GetCarBrandAndModel>(_getCarBrandsAndModels);
     on<NavigateToUploadDocument>(_setDocumentData);
@@ -58,8 +61,6 @@ class ServiceRegistrationBloc
     on<RegisterCaptainWithService>(_registerCaptainWithService);
     on<RegisterBOWithService>(_registerBOWithService);
   }
-
-
 
   FutureOr<void> _addCaptainData(
       addCaptainData event, Emitter<ServiceRegistrationState> emit) async {
@@ -102,6 +103,29 @@ class ServiceRegistrationBloc
       // navigate to main screen
 
       emit(ServicesTypesSuccess(serviceTypeList));
+      // isUserLoggedInSuccessfullyStreamController.add(true);
+    });
+  }
+
+  FutureOr<void> _getTankTypes(
+      GetTankTypes event, Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    LookupByKeyUseCase lookupByKeyUseCase = instance<LookupByKeyUseCase>();
+    (await lookupByKeyUseCase
+                   .execute(LookupByKeyUseCaseInput(LookupKeys.tankType, "en")))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(ServicesTypesFail(failure.message))
+                }, (lookupValues) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      // navigate to main screen
+
+      emit(TankTypesSuccess(lookupValues));
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
   }
@@ -184,6 +208,7 @@ class ServiceRegistrationBloc
             vehicleTypeId: registrationRequest.vehicleTypeId!,
             carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
             carModelId: registrationRequest.carModelId!,
+            tankType: registrationRequest.tankType,
             carNotes: registrationRequest.carNotes!,
             canTransportFurniture: registrationRequest.canTransportFurniture,
             canTransportGoods: registrationRequest.canTransportGoods,
@@ -375,6 +400,7 @@ class ServiceRegistrationBloc
     registrationRequest.serviceModelId = event.serviceModelId;
     registrationRequest.serviceTypeParam = event.serviceTypeParam;
     registrationRequest.vehicleTypeId = event.vehicleTypeId;
+    registrationRequest.tankType = event.tankType;
     registrationRequest.canTransportFurniture =
         event.additionalServicesModel.canTransportFurniture;
     registrationRequest.canTransportGoods =

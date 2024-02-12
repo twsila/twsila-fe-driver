@@ -92,7 +92,8 @@ class AppStrings {
   static const String inviteYourFriends = "invite_your_friends";
   static const String logout = "logout";
   static const String exitApp = "exit_app";
-  static const String areYouSureYouWantToExitFromApp = "are_you_sure_you_want_to_exit_app";
+  static const String areYouSureYouWantToExitFromApp =
+      "are_you_sure_you_want_to_exit_app";
   static const String exit = "exit";
   static const String phoneVerification = "phone_verification";
   static const String enterOtpHint = "enter_otp_hint";
@@ -347,8 +348,6 @@ class AppStrings {
   //driver bo requests
   static const addRequestsFromBo = 'add_requests_from_BO';
 
-
-
   //service registration
 
   static const stepOne = 'step_one';
@@ -356,6 +355,7 @@ class AppStrings {
   static const serviceData = 'service_data';
   static const selectServiceType = 'select_service_type';
   static const selectSubServiceType = 'select_subservice_type';
+  static const tankType = 'tank_type';
   static const selectServiceVehicleType = 'select_service_vehicle_type';
   static const numberOfPassengers = 'number_of_passenger';
   static const vehicleShape = 'vehicle_shape';
@@ -389,6 +389,39 @@ class AppStrings {
       'thank_your_reg_with_twsila_message';
   static const backToMainScreen = 'back_to_main_screen';
   static const mainScreen = 'main_screen';
+
+  //trip status - disc
+  static const stepper_driver_first_step_title =
+      'stepper_driver_first_step_title';
+  static const stepper_driver_second_step_title =
+      'stepper_driver_second_step_title';
+  static const stepper_driver_third_step_title =
+      'stepper_driver_third_step_title';
+  static const stepper_driver_forth_step_title =
+      'stepper_driver_forth_step_title';
+
+
+  static const stepper_driver_first_step_disc =
+      'stepper_driver_first_step_disc';
+  static const stepper_driver_second_step_disc =
+      'stepper_driver_second_step_disc';
+  static const stepper_driver_third_step_disc =
+      'stepper_driver_third_step_disc';
+  static const stepper_driver_forth_step_disc =
+      'stepper_driver_forth_step_disc';
+
+  static const stepper_driver_goods_third_step_disc =
+      'stepper_driver_goods_third_step_disc';
+  static const stepper_driver_goods_forth_step_disc =
+      'stepper_driver_goods_forth_step_disc';
+
+  static const stepper_bo_third_step_disc = 'stepper_bo_third_step_disc';
+  static const stepper_bo_forth_step_disc = 'stepper_bo_forth_step_disc';
+
+  static const stepper_bo_first_step_title = 'stepper_bo_first_step_title';
+  static const stepper_bo_second_step_title = 'stepper_bo_second_step_title';
+  static const stepper_bo_third_step_title = 'stepper_bo_third_step_title';
+  static const stepper_bo_forth_step_title = 'stepper_bo_forth_step_title';
 
   //main
   static const myProfile = 'my_profile';

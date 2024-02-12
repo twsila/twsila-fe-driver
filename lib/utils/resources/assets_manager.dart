@@ -32,6 +32,8 @@ class ImageAssets {
   static const String verifyOtpGraphic = "$imagePath/verify_otp_grp.png";
   static const String splashSVGIcon = "$imagePath/splash_icon.svg";
   static const String filterIcon = "$imagePath/filter_icon.png";
+  static const String addRequestsIcon = "$imagePath/add_requesrs_icon.png";
+  static const String carsAndDriversIcon = "$imagePath/cars_drivers_icon.png";
   static const String welcomeToTawselaGraphic =
       "$imagePath/welcome_to_tawsela_graphic.png";
   static const String ratePassengerGraphic =

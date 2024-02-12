@@ -86,6 +86,7 @@ abstract class AppServiceClient {
       @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
+      @Part(name: "tankType") String? tankType,
       @Part(name: "canTransportFurniture") bool canTransportFurniture,
       @Part(name: "canTransportGoods") bool canTransportGoods,
       @Part(name: "canTransportFrozen") bool canTransportFrozen,
@@ -135,9 +136,12 @@ abstract class AppServiceClient {
 
   @POST("{endpoint}")
   Future<BaseResponse> getMyTripsByModuleId(
-      @Path() String endpoint,
-      @Field("tripModelType") String tripModelType,
-      @Field("userId") int userId);
+    @Path() String endpoint,
+    @Field("tripModelType") String tripModelType,
+    @Field("userId") int userId,
+    @Field("serviceTypesSelectedByBusinessOwner")
+    String? serviceTypesSelectedByBusinessOwner,
+  );
 
   @POST("/drivers/offers/add")
   Future<GeneralResponse> addOffer(
@@ -223,8 +227,13 @@ abstract class AppServiceClient {
     @Part(name: "email") String email,
   );
 
-  @POST("/driver-acquisition/get-requested-drivers")
+  @POST("/driver-acquisition/get-my-drivers")
   Future<BaseResponse> getBODrivers(
+    @Field("businessOwnerId") int businessOwnerId,
+  );
+
+  @POST("/driver-acquisition/get-pending-drivers")
+  Future<BaseResponse> getBOPendingDrivers(
     @Field("businessOwnerId") int businessOwnerId,
   );
 

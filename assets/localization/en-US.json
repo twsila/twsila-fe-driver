@@ -19,6 +19,7 @@
   "lets_get_started": "Let's get started!",
   "good_afternoon": "Good Afternoon!",
   "good_morning": "Good Morning!",
+  "tank_type": "Tank Type",
   "good_evening": "Good Evening!",
   "login_button": "Login",
   "owner_first_name": "Company owner first name",
@@ -487,5 +488,27 @@
   "addRequest": "add request",
   "has_sent": "has sent",
   "to_you": "to you",
-  "add_request": "add request"
+  "add_request": "add request",
+  "shipped_types": "Shipped Types",
+  "materials_tobe_shipped": "Materials to be Shipped",
+  "stepper_driver_first_step_title": "Start trip not and move to pickup location",
+  "stepper_driver_second_step_title": "Trip started, move now",
+  "stepper_driver_third_step_title": "You have been arrived to pickup location",
+  "stepper_driver_forth_step_title": "You have been arrived to destination location",
+
+  "stepper_driver_first_step_disc": "",
+  "stepper_driver_second_step_disc": "",
+  "stepper_driver_third_step_disc": "please go with passenger to destination location",
+  "stepper_driver_forth_step_disc": "you have been arrived with passenger successfully, please complete the trip",
+
+  "stepper_driver_goods_third_step_disc": "please load the stuff, go to destination location",
+  "stepper_driver_goods_forth_step_disc": "please Unpacking stuff, complete the trip",
+
+
+  "stepper_bo_first_step_title": "Driver will start the trip and go to pickup location",
+  "stepper_bo_second_step_title": "Driver has started the trip and moving now",
+  "stepper_bo_third_step_title": "Driver has been arrived pickup location",
+  "stepper_bo_forth_step_title": "Driver has been arrived destination location",
+  "stepper_bo_third_step_disc": "under processing, going to destination location",
+  "stepper_bo_forth_step_disc": "finishing the trip in progress"
 }

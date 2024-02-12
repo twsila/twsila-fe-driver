@@ -13,12 +13,14 @@ import 'package:taxi_for_you/presentation/trip_execution/helper/location_helper.
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
+import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
 import '../../../app/di.dart';
+import '../../../domain/model/driver_model.dart';
 import '../../../domain/model/trip_details_model.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/font_manager.dart';
@@ -52,6 +54,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
   late double distanceBetweenCurrentAndSource;
   LocationModel? currentLocation;
   bool isUserArrivedSource = false;
+  String driverServiceType = "";
   TripStatusStepModel tripStatusStepModel =
       TripStatusStepModel(0, TripStatus.WAIT_FOR_TAKEOFF.name);
 
@@ -98,6 +101,10 @@ class _TripExecutionViewState extends State<TripExecutionView> {
 
   @override
   void initState() {
+    driverServiceType = _appPreferences.getCachedDriver()!.captainType ==
+            RegistrationConstants.captain
+        ? (_appPreferences.getCachedDriver()! as Driver).serviceTypes!.first
+        : "";
     BlocProvider.of<TripExecutionBloc>(context)
         .add(getTripStatusForStepper(tripDetailsModel: widget.tripModel));
     _timer = Timer.periodic(
@@ -272,7 +279,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             detailsItem(
                 ImageAssets.tripDetailsVisaIcon,
                 AppStrings.withBudget.tr(),
-                "${widget.tripModel.tripDetails.clientOffer} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}}"),
+                "${widget.tripModel.tripDetails.clientOffer} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}"),
             detailsItem(
                 widget.tripModel.tripDetails.date != null
                     ? ImageAssets.scheduledTripIc
@@ -433,7 +440,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     : tripStatusStepModel.stepIndex == 0,
                 continueIconWidget: Image.asset(ImageAssets.driveIc),
                 title: Text(
-                  AppStrings.startTripNowAndMoveToPickupLocation.tr(),
+                  tripStepperTitles(
+                      TripStatus.WAIT_FOR_TAKEOFF.name,
+                      driverServiceType.isNotEmpty
+                          ? driverServiceType
+                          : "PERSONS",
+                      _appPreferences
+                          .getCachedDriver()!
+                          .captainType
+                          .toString()),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: widget.tripModel.tripDetails.date != null
                           ? ColorManager.formHintTextColor
@@ -442,9 +457,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       fontSize: FontSize.s14),
                 ),
                 content: Container(),
-                continueButtonLabel: widget.tripModel.tripDetails.date != null
-                    ? ''
-                    : AppStrings.movedToClient.tr(),
+                continueButtonLabel:
+                    widget.tripModel.tripDetails.date != null ||
+                            _appPreferences.getCachedDriver()!.captainType ==
+                                RegistrationConstants.businessOwner
+                        ? ''
+                        : AppStrings.movedToClient.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
@@ -452,7 +470,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     : tripStatusStepModel.stepIndex == 1,
                 continueIconWidget: Image.asset(ImageAssets.navigationIc),
                 title: Text(
-                  AppStrings.tripStartedMoveNow.tr(),
+                  tripStepperTitles(
+                      TripStatus.TAKEOFF.name,
+                      driverServiceType.isNotEmpty
+                          ? driverServiceType
+                          : "PERSONS",
+                      _appPreferences
+                          .getCachedDriver()!
+                          .captainType
+                          .toString()),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: widget.tripModel.tripDetails.date != null
                           ? ColorManager.formHintTextColor
@@ -464,7 +490,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     ? Container()
                     : Container(
                         child: Text(
-                          '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}',
+                          tripStepperDisc(
+                              TripStatus.TAKEOFF.name,
+                              driverServiceType.isNotEmpty
+                                  ? driverServiceType
+                                  : "PERSONS",
+                              _appPreferences
+                                  .getCachedDriver()!
+                                  .captainType
+                                  .toString()),
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -474,9 +508,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                                   fontSize: FontSize.s12),
                         ),
                       ),
-                continueButtonLabel: widget.tripModel.tripDetails.date != null
-                    ? ''
-                    : AppStrings.navigateToTrackingPage.tr(),
+                continueButtonLabel:
+                    widget.tripModel.tripDetails.date != null ||
+                            _appPreferences.getCachedDriver()!.captainType ==
+                                RegistrationConstants.businessOwner
+                        ? ''
+                        : AppStrings.navigateToTrackingPage.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
@@ -484,7 +521,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     : tripStatusStepModel.stepIndex == 2,
                 continueIconWidget: Image.asset(ImageAssets.driveIc),
                 title: Text(
-                  AppStrings.youArrivedPickupLocation.tr(),
+                  tripStepperTitles(
+                      TripStatus.EXECUTED.name,
+                      driverServiceType.isNotEmpty
+                          ? driverServiceType
+                          : "PERSONS",
+                      _appPreferences
+                          .getCachedDriver()!
+                          .captainType
+                          .toString()),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: widget.tripModel.tripDetails.date != null
                           ? ColorManager.formHintTextColor
@@ -496,7 +541,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     ? Container()
                     : Container(
                         child: Text(
-                          '${AppStrings.pleaseShipGoodsAndMoveToDestinationLocation.tr()}',
+                          tripStepperDisc(
+                              TripStatus.EXECUTED.name,
+                              driverServiceType.isNotEmpty
+                                  ? driverServiceType
+                                  : "PERSONS",
+                              _appPreferences
+                                  .getCachedDriver()!
+                                  .captainType
+                                  .toString()),
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -506,9 +559,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                                   fontSize: FontSize.s12),
                         ),
                       ),
-                continueButtonLabel: widget.tripModel.tripDetails.date != null
-                    ? ''
-                    : AppStrings.tripStartedMoveNow.tr(),
+                continueButtonLabel:
+                    widget.tripModel.tripDetails.date != null ||
+                            _appPreferences.getCachedDriver()!.captainType ==
+                                RegistrationConstants.businessOwner
+                        ? ''
+                        : AppStrings.tripStartedMoveNow.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
@@ -517,7 +573,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 continueIconWidget: Image.asset(ImageAssets.tripFinishIc),
                 continueButtonBGColor: ColorManager.secondaryColor,
                 title: Text(
-                  AppStrings.youArrivedDestinationLocation.tr(),
+                  tripStepperTitles(
+                      TripStatus.COMPLETED.name,
+                      driverServiceType.isNotEmpty
+                          ? driverServiceType
+                          : "PERSONS",
+                      _appPreferences
+                          .getCachedDriver()!
+                          .captainType
+                          .toString()),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: widget.tripModel.tripDetails.date != null
                           ? ColorManager.formHintTextColor
@@ -529,7 +593,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     ? Container()
                     : Container(
                         child: Text(
-                          '${AppStrings.pleaseLeaveGoodsAndCloseTheTrip.tr()}',
+                          tripStepperDisc(
+                              TripStatus.COMPLETED.name,
+                              driverServiceType.isNotEmpty
+                                  ? driverServiceType
+                                  : "PERSONS",
+                              _appPreferences
+                                  .getCachedDriver()!
+                                  .captainType
+                                  .toString()),
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -539,9 +611,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                                   fontSize: FontSize.s12),
                         ),
                       ),
-                continueButtonLabel: widget.tripModel.tripDetails.date != null
-                    ? ''
-                    : AppStrings.complete.tr(),
+                continueButtonLabel:
+                    widget.tripModel.tripDetails.date != null ||
+                            _appPreferences.getCachedDriver()!.captainType ==
+                                RegistrationConstants.businessOwner
+                        ? ''
+                        : AppStrings.complete.tr(),
                 cancelButtonLabel: ''),
           ],
         ),

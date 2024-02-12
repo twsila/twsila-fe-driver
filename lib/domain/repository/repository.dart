@@ -53,6 +53,7 @@ abstract class Repository {
 
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
 
+
   Future<Either<Failure, List<TripDetailsModel>>> getTrips(
       String endPoint,
       String tripTypeModuleId,
@@ -95,7 +96,7 @@ abstract class Repository {
   Future<Either<Failure, List<LookupValueModel>>> getLookupByKey(
       String key, String lang);
 
-  Future<Either<Failure, List<RequestedDriversResponse>>> getBODrivers(
+  Future<Either<Failure, List<Driver>>> getBODrivers(
       int businessOwnerId);
 
   Future<Either<Failure, List<Driver>>> searchDriversByMobile(int mobileNumber);
@@ -121,4 +122,7 @@ abstract class Repository {
 
   Future<Either<Failure, BaseResponse>> changeRequestStatus(
       int acquisitionId, String driverAcquisitionDecision);
+
+  Future<Either<Failure, List<Driver>>> getBOPendingDrivers(
+      int businessOwnerId);
 }

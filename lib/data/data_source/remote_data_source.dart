@@ -9,9 +9,11 @@ import 'package:taxi_for_you/domain/model/verify_otp_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
+import '../../app/constants.dart';
 import '../../domain/model/general_response.dart';
 import '../../domain/model/lookups_model.dart';
 import '../../domain/model/registration_services_response.dart';
+import '../../presentation/filter_trips/view/helpers/filtration_helper.dart';
 import '../network/app_api.dart';
 import '../network/requests.dart';
 import '../response/responses.dart';
@@ -111,6 +113,8 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> changeRequestStatus(
       int acquisitionId, String driverAcquisitionDecision);
+
+  Future<BaseResponse> getBOPendingDrivers(int businessOwnerId);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -203,6 +207,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         // registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
         registrationRequest.carModelId!,
+        registrationRequest.tankType,
         registrationRequest.canTransportFurniture!,
         registrationRequest.canTransportGoods!,
         registrationRequest.canTransportFrozen!,
@@ -262,7 +267,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   Future<BaseResponse> myTripsByModuleId(
       String endPoint, String tripTypeModuleId, int userId) async {
     return await _appServiceClient.getMyTripsByModuleId(
-        endPoint, tripTypeModuleId, userId);
+        endPoint,
+        tripTypeModuleId,
+        userId,
+        endPoint == EndPoints.BusinessOwnerMyTrips
+            ? FiltrationHelper().serviceTypesList.join(",")
+            : null);
   }
 
   @override
@@ -410,8 +420,12 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> changeRequestStatus(
       int acquisitionId, String driverAcquisitionDecision) async {
-    return await _appServiceClient.changeRequestStatus(acquisitionId, driverAcquisitionDecision);
+    return await _appServiceClient.changeRequestStatus(
+        acquisitionId, driverAcquisitionDecision);
   }
 
-
+  @override
+  Future<BaseResponse> getBOPendingDrivers(int businessOwnerId) async {
+    return await _appServiceClient.getBOPendingDrivers(businessOwnerId);
+  }
 }

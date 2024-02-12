@@ -11,6 +11,12 @@ class ServiceRegistrationSuccess extends ServiceRegistrationState {}
 
 class ServiceBORegistrationSuccess extends ServiceRegistrationState {}
 
+class TankTypesSuccess extends ServiceRegistrationState {
+  List<LookupValueModel> tankValues;
+
+  TankTypesSuccess(this.tankValues);
+}
+
 class CaptainDataIsValid extends ServiceRegistrationState {}
 
 class CaptainDataIsNotValid extends ServiceRegistrationState {}

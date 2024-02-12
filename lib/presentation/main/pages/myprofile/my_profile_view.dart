@@ -154,7 +154,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   child: const Divider(),
                 ),
                 MenuWidget(
-                  menuImage: ImageAssets.MyServicesIc,
+                  menuImage:
+                      driver!.captainType == RegistrationConstants.captain
+                          ? ImageAssets.MyServicesIc
+                          : ImageAssets.carsAndDriversIcon,
                   menuLabel:
                       driver!.captainType == RegistrationConstants.captain
                           ? AppStrings.myServices.tr()
@@ -171,11 +174,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   child: const Divider(),
                 ),
-                driver!.captainType == RegistrationConstants.captain
+                driver!.captainType == RegistrationConstants.captain && (driver as Driver).businessOwnerId == null
                     ? Column(
                         children: [
                           MenuWidget(
-                            menuImage: ImageAssets.walletAndRevenueIc,
+                            menuImage: ImageAssets.addRequestsIcon,
                             menuLabel: AppStrings.addRequestsFromBo.tr(),
                             onPressed: () {
                               Navigator.pushNamed(
@@ -217,7 +220,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   child: const Divider(),
                 ),
                 MenuWidget(
-                  menuImage: ImageAssets.getHelpIc,
+                  menuImage: ImageAssets.languageIc,
                   menuLabel: AppStrings.language.tr(),
                   onPressed: () {
                     _showBottomSheet();

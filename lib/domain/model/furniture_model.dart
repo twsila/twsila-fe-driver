@@ -42,6 +42,8 @@ class FurnitureModel extends TransportationBaseModel {
     return data;
   }
 
+
+
   FurnitureModel copyWith(FurnitureModel furnitureModel) {
     return FurnitureModel.fromJson(furnitureModel.toFurnitureJson());
   }

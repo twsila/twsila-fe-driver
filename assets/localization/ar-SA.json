@@ -14,6 +14,7 @@
   "whats_your_number": "ما هو رقمك؟",
   "navigate_to_tracking_page": "الذهاب الى الخرائط",
   "navigation": "التوجيه",
+  "tank_type": "نوع التانك",
   "lets_get_started": "هيا لنبدأ!",
   "good_afternoon": "مساء الخير!",
   "good_morning": "صباح الخير!",
@@ -428,6 +429,8 @@
   "trip_has_been_completed": "تم إنهاء الرحلة",
   "please_rate_passenger": "يرجي تقييم العميل",
   "trip": "رحلة",
+  "shipped_types": "نوع الشحن",
+  "materials_tobe_shipped": "المواد المراد شحنها",
   "water_tank_size": "الحجم التانكي",
   "trip_date": "معاد الرحلة",
   "client_notes": "ملاحظات العميل",
@@ -481,12 +484,31 @@
   "no_requests_found": "لا يوجد طلبات اضافة",
   "request_accepted": "تم قبول طلب الاضافة",
   "request_rejected": "تم رفض طلب الاضافة",
-
   "want": "يريد",
   "businessOwner": "صاحب العمل",
   "accept": "قبول",
   "reject": "رفض",
   "add_request": "طلب اضافة",
   "has_sent": "قد ارسل",
-  "to_you": "اليك"
+  "to_you": "اليك",
+  "stepper_driver_first_step_title": "ابدأ الرحلة الآن ثم تحرك الي نقطة الالتقاط",
+  "stepper_driver_second_step_title": "بدأت الرحلة, تحرك الآن",
+  "stepper_driver_third_step_title": "لقد وصلت الي نقطة الالتقاط",
+  "stepper_driver_forth_step_title": "لقد وصلت الي نقطة التوصيل",
+
+  "stepper_driver_first_step_disc": "",
+  "stepper_driver_second_step_disc": "",
+  "stepper_driver_third_step_disc": "برجاء الذهاب بالراكب لنقطة التوصيل",
+  "stepper_driver_forth_step_disc": "لقد وصلت بالراكب بنجاح برجاء إنهاء الرحلة",
+
+  "stepper_driver_goods_third_step_disc": "برجاء تحميل الاغراض و الانطلاق الى نقطة التوصيل",
+  "stepper_driver_goods_forth_step_disc": "برجاء تفريغ الاغراض و انهاء الرحلة",
+
+
+  "stepper_bo_first_step_title": "سوف يبدأ السائق الرحلة و ينطلق الى نقطة التوصيل",
+  "stepper_bo_second_step_title": "لقد بدأ السائق الرحلة و يتحرك الان",
+  "stepper_bo_third_step_title": "لقد وصل السائق الى نقطة الالتقاط",
+  "stepper_bo_forth_step_title": "لقد وصل السائق الى نقطة التوصيل",
+  "stepper_bo_third_step_disc": "جارى التجهييز و الاتجاه الى نقطة التوصيل",
+  "stepper_bo_forth_step_disc": "جارى اجراءات انهاء الرحلة"
 }

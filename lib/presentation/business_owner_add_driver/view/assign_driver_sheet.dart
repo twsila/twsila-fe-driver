@@ -20,10 +20,13 @@ import '../../common/widgets/custom_text_button.dart';
 
 class AssignDriverBottomSheetView extends StatefulWidget {
   int tripId;
+  String tripType;
   final Function(Driver? driver) onAssignDriver;
 
   AssignDriverBottomSheetView(
-      {required this.tripId, required this.onAssignDriver});
+      {required this.tripId,
+      required this.onAssignDriver,
+      required this.tripType});
 
   @override
   State<AssignDriverBottomSheetView> createState() =>
@@ -32,9 +35,8 @@ class AssignDriverBottomSheetView extends StatefulWidget {
 
 class _AssignDriverBottomSheetViewState
     extends State<AssignDriverBottomSheetView> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
-  List<RequestedDriversResponse> driversList = [];
+  List<Driver> driversList = [];
   Driver? selectedDriver;
   AppPreferences appPreferences = instance();
 
@@ -67,6 +69,8 @@ class _AssignDriverBottomSheetViewState
         }
         if (state is BoDriversCarsSuccess) {
           driversList = state.driversList;
+          driversList.removeWhere((element) =>
+              !element.serviceTypes!.contains(widget.tripType) || element.isPending!);
         }
 
         if (state is AssignDriversSuccess) {
@@ -113,9 +117,7 @@ class _AssignDriverBottomSheetViewState
                                 padding: const EdgeInsets.all(8),
                                 itemCount: driversList.length,
                                 itemBuilder: (context, i) {
-                                  bool isPending =
-                                      driversList[i].driverAcquisitionEnum ==
-                                          DriverAcquisitionEnum.PENDING.name;
+                                  bool isPending =false;
                                   return CustomCard(
                                     backgroundColor: isPending
                                         ? ColorManager.disableColor
@@ -123,7 +125,7 @@ class _AssignDriverBottomSheetViewState
                                     onClick: () {
                                       if (isPending == false) {
                                         widget.onAssignDriver(
-                                            driversList[i].driver);
+                                            driversList[i]);
                                         Navigator.pop(context);
                                       }
                                     },
@@ -137,7 +139,7 @@ class _AssignDriverBottomSheetViewState
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "${driversList[i].driver.carModel.carManufacturerId.carManufacturer} / ${driversList[i].driver.carModel.modelName}",
+                                                "${driversList[i].carModel.carManufacturerId.carManufacturer} / ${driversList[i].carModel.modelName}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .displayLarge
@@ -152,7 +154,7 @@ class _AssignDriverBottomSheetViewState
                                                                 .secondaryColor),
                                               ),
                                               Text(
-                                                "${driversList[i].driver.firstName} ${driversList[i].driver.lastName}",
+                                                "${driversList[i].firstName} ${driversList[i].lastName}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .displayLarge
@@ -167,7 +169,7 @@ class _AssignDriverBottomSheetViewState
                                                                 .secondaryColor),
                                               ),
                                               Text(
-                                                "${driversList[i].driver.mobile}",
+                                                "${driversList[i].mobile}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .displayLarge
@@ -195,7 +197,6 @@ class _AssignDriverBottomSheetViewState
                                             height: AppSize.s120,
                                             width: AppSize.s90,
                                             child: driversList[i]
-                                                        .driver
                                                         .images[0]
                                                         .imageUrl ==
                                                     null
@@ -208,7 +209,6 @@ class _AssignDriverBottomSheetViewState
                                                     placeholder: ImageAssets
                                                         .newAppBarLogo,
                                                     image: driversList[i]
-                                                        .driver
                                                         .images[0]
                                                         .imageUrl!),
                                           )

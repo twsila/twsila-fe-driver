@@ -9,6 +9,7 @@ import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
+import '../../../domain/model/driver_model.dart';
 import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/routes_manager.dart';
@@ -28,7 +29,9 @@ class BOCarsAndDriversView extends StatefulWidget {
 class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
-  List<RequestedDriversResponse> driversList = [];
+  List<Driver> driversList = [];
+  List<String> driversMobileNumbers = [];
+
 
   @override
   void initState() {
@@ -57,7 +60,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return AddDriverBottomSheetView();
+          return AddDriverBottomSheetView(pendingDriversMobileNumbers: driversMobileNumbers);
         });
   }
 
@@ -99,10 +102,14 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
           stopLoading();
         }
         if (state is BoDriversCarsSuccess) {
-          driversList = state.driversList;
+          driversList.addAll(state.driversList);
+          driversList.forEach((element) {
+            driversMobileNumbers.add(element.mobile!);
+          });
           if (driversList.isEmpty && state.forceRefresh == false) {
             Navigator.pushNamed(context, Routes.BOaddDriver).then((value) =>
-                BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars(true)));
+                BlocProvider.of<BoDriversCarsBloc>(context)
+                    .add(GetDriversAndCars(true)));
           }
         }
 
@@ -111,94 +118,96 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
         }
       },
       builder: (context, state) {
-        return driversList.isEmpty ?
-            Center(
-              child:   Text(
-                AppStrings.noAddedDrivers.tr(),
-                style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                    fontSize: FontSize.s16, color: ColorManager.error),
-              ),
-            ): ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: driversList.length,
-            itemBuilder: (context, i) {
-              bool isPending =
-                  driversList[i].driverAcquisitionEnum ==  DriverAcquisitionEnum.PENDING.name;
-              return Container(
-                  margin: EdgeInsets.all(AppMargin.m8),
-                  child: CustomCard(
-                    backgroundColor: isPending
-                        ? ColorManager.disableColor
-                        : ColorManager.white,
-                    onClick: () {},
-                    bodyWidget: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+        return driversList.isEmpty
+            ? Center(
+                child: Text(
+                  AppStrings.noAddedDrivers.tr(),
+                  style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                      fontSize: FontSize.s16, color: ColorManager.error),
+                ),
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: driversList.length,
+                itemBuilder: (context, i) {
+                  bool isPending = false;
+                  return Container(
+                      margin: EdgeInsets.all(AppMargin.m8),
+                      child: CustomCard(
+                        backgroundColor: driversList[i].isPending!
+                            ? ColorManager.disableColor
+                            : ColorManager.white,
+                        onClick: () {},
+                        bodyWidget: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "${driversList[i].driver.carModel.carManufacturerId.carManufacturer} / ${driversList[i].driver.carModel.modelName}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: FontSize.s18,
-                                      color: isPending
-                                          ? ColorManager.disableCardTextColor
-                                          : ColorManager.secondaryColor),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${driversList[i].carModel.carManufacturerId.carManufacturer} / ${driversList[i].carModel.modelName}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: FontSize.s18,
+                                          color: driversList[i].isPending!
+                                              ? ColorManager
+                                                  .disableCardTextColor
+                                              : ColorManager.secondaryColor),
+                                ),
+                                Text(
+                                  "${driversList[i].firstName} ${driversList[i].lastName}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: FontSize.s18,
+                                          color: driversList[i].isPending!
+                                              ? ColorManager
+                                                  .disableCardTextColor
+                                              : ColorManager.secondaryColor),
+                                ),
+                                Text(
+                                  "${driversList[i].mobile}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayLarge
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: FontSize.s16,
+                                          color: driversList[i].isPending!
+                                              ? ColorManager
+                                                  .disableCardTextColor
+                                              : ColorManager.secondaryColor),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "${driversList[i].driver.firstName} ${driversList[i].driver.lastName}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: FontSize.s18,
-                                      color: isPending
-                                          ? ColorManager.disableCardTextColor
-                                          : ColorManager.secondaryColor),
-                            ),
-                            Text(
-                              "${driversList[i].driver.mobile}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: FontSize.s16,
-                                      color: isPending
-                                          ? ColorManager.disableCardTextColor
-                                          : ColorManager.secondaryColor),
-                            ),
+                            Container(
+                              padding: EdgeInsets.all(AppPadding.p8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                      color: ColorManager.lightGrey)),
+                              height: AppSize.s120,
+                              width: AppSize.s90,
+                              child: driversList[i].images != null &&
+                                      driversList[i].images.length > 1 &&
+                                      driversList[i].images[1].imageUrl != null
+                                  ? CustomNetworkImageWidget(
+                                      imageUrl:
+                                          driversList[i].images[1].imageUrl!)
+                                  : Image.asset(
+                                      ImageAssets.newAppBarLogo,
+                                      color: ColorManager.splashBGColor,
+                                    ),
+                            )
                           ],
                         ),
-                        Container(
-                          padding: EdgeInsets.all(AppPadding.p8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border:
-                                  Border.all(color: ColorManager.lightGrey)),
-                          height: AppSize.s120,
-                          width: AppSize.s90,
-                          child: driversList[i].driver.images != null &&
-                                  driversList[i].driver.images.length > 1 &&
-                                  driversList[i].driver.images[1].imageUrl !=
-                                      null
-                              ? CustomNetworkImageWidget(
-                                  imageUrl:
-                                      driversList[i].driver.images[1].imageUrl!)
-                              : Image.asset(
-                                  ImageAssets.newAppBarLogo,
-                                  color: ColorManager.splashBGColor,
-                                ),
-                        )
-                      ],
-                    ),
-                  ));
-            });
+                      ));
+                });
       },
     );
   }

@@ -28,13 +28,13 @@ class GoodsDetailsWidget extends StatelessWidget {
             Expanded(
               child: itemWidget(
                 AppStrings.materialTypes.tr(),
-                goodsModel.materialType ?? '',
+                goodsModel.materialType?.value ?? '',
               ),
             ),
             Expanded(
               child: itemWidget(
                 AppStrings.selectPackagingTypes.tr(),
-                goodsModel.packagingType ?? '',
+                goodsModel.packingType?.value ?? '',
               ),
             ),
           ],

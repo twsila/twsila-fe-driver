@@ -26,7 +26,7 @@ class LocationHelper {
     Response response = await dio.get(
         "https://maps.googleapis.com/maps/api/distancematrix/json?units="
         "imperial&origins=${currentLocation.latitude},${currentLocation.longitude}&destinations=${destinationLocation.latitude}%2C,${currentLocation.longitude}&key=${Platform.isIOS ? Constants.GOOGLE_API_KEY_IOS : Constants.GOOGLE_API_KEY_ANDROID}");
-    print(response.data);
+    print("estimated time : ${response.data}");
   }
 
   String getCityName(Prediction prediction) {

@@ -147,12 +147,12 @@ class _MapWidgetState extends State<MapWidget> {
             long1: currentLocation!.longitude,
             lat2: widget.tripModel.tripDetails.destinationLocation.latitude!,
             long2: widget.tripModel.tripDetails.destinationLocation.longitude!);
-    // LocationHelper().getArrivalTimeFromCurrentToLocation(
-    //     currentLocation: currentLocation!,
-    //     destinationLocation: LocationModel(
-    //         locationName: '',
-    //         latitude: widget.tripModel.tripDetails.pickupLocation.latitude!,
-    //         longitude: widget.tripModel.tripDetails.pickupLocation.longitude!));
+    LocationHelper().getArrivalTimeFromCurrentToLocation(
+        currentLocation: currentLocation!,
+        destinationLocation: LocationModel(
+            locationName: '',
+            latitude: widget.tripModel.tripDetails.pickupLocation.latitude!,
+            longitude: widget.tripModel.tripDetails.pickupLocation.longitude!));
 
     if (distanceBetweenCurrentAndSource <= 100) isUserArrivedSource = true;
     if (distanceBetweenCurrentAndDestination <= 100)

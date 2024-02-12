@@ -88,7 +88,7 @@ class _DriverAddRequestsViewState extends State<DriverAddRequestsView> {
       return requests.isEmpty
           ? Center(
               child: Text(
-              AppStrings.noAddedDrivers.tr(),
+              AppStrings.noRequestsFound.tr(),
               style: Theme.of(context).textTheme.displayLarge?.copyWith(
                   fontWeight: FontWeight.normal,
                   fontSize: FontSize.s16,

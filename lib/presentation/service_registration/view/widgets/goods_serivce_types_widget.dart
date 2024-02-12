@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:taxi_for_you/domain/model/lookupValueModel.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/widgets/tank_types_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/vehicle_shape_widget.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/ext/screen_size_ext.dart';
@@ -19,14 +23,18 @@ class GoodsServiceTypesWidget extends StatefulWidget {
   final String lang;
   final RegistrationRequest registrationRequest;
   final List<GoodsServiceTypeModel> goodsServiceTypesList;
+  final List<LookupValueModel> tankTypesList;
   final Function(GoodsServiceTypeModel selectedService) selectedService;
+  final Function(LookupValueModel? selectedTankType) onSelectTankType;
   final Function(VehicleShape vehicleShape) selectedVehicleShape;
 
   GoodsServiceTypesWidget(
       {required this.lang,
       required this.registrationRequest,
+      required this.tankTypesList,
       required this.goodsServiceTypesList,
       required this.selectedService,
+      required this.onSelectTankType,
       required this.selectedVehicleShape});
 
   @override
@@ -109,13 +117,9 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
               (index) => GestureDetector(
                     onTap: () {
                       current = index;
-                      if (widget
-                              .goodsServiceTypesList[index].serviceTypeParam ==
-                          "OTHER_TANK") {
-                        ToastHandler(context).showToast(
-                            widget
-                                .goodsServiceTypesList[index].serviceTypeParam,
-                            Toast.LENGTH_SHORT);
+                      if (selectedGoodsServiceTypeModel != null &&
+                          selectedGoodsServiceTypeModel!.id != 4) {//OTHER TANK SERVICE ID
+                        widget.onSelectTankType(null);
                       }
                       setState(() {
                         widget.selectedService(
@@ -171,6 +175,16 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
                     ),
                   )),
         ),
+        Visibility(
+            visible: selectedGoodsServiceTypeModel != null &&
+                selectedGoodsServiceTypeModel!.id == 4 &&
+                widget.tankTypesList.isNotEmpty,
+            child: TankTypesWidget(
+              tankTypesList: widget.tankTypesList,
+              onSelectTankType: (tankType) {
+                widget.onSelectTankType(tankType);
+              },
+            )),
         VehicleShapeWidget(
             lang: widget.lang,
             preselectedVehicle: this.vehicleShape,

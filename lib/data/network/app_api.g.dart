@@ -337,6 +337,7 @@ class _AppServiceClient implements AppServiceClient {
     serviceTypeParam,
     carManufacturerTypeId,
     carModelId,
+    tankType,
     canTransportFurniture,
     canTransportGoods,
     canTransportFrozen,
@@ -354,6 +355,7 @@ class _AppServiceClient implements AppServiceClient {
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry(
@@ -392,6 +394,12 @@ class _AppServiceClient implements AppServiceClient {
       'carModel.id',
       carModelId,
     ));
+    if (tankType != null) {
+      _data.fields.add(MapEntry(
+        'tankType',
+        tankType,
+      ));
+    }
     _data.fields.add(MapEntry(
       'canTransportFurniture',
       canTransportFurniture.toString(),
@@ -618,14 +626,19 @@ class _AppServiceClient implements AppServiceClient {
     endpoint,
     tripModelType,
     userId,
+    serviceTypesSelectedByBusinessOwner,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = {
       'tripModelType': tripModelType,
       'userId': userId,
+      'serviceTypesSelectedByBusinessOwner':
+          serviceTypesSelectedByBusinessOwner,
     };
+    _data.removeWhere((k, v) => v == null);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
@@ -1073,7 +1086,30 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/driver-acquisition/get-requested-drivers',
+              '/driver-acquisition/get-my-drivers',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> getBOPendingDrivers(businessOwnerId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'businessOwnerId': businessOwnerId};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/driver-acquisition/get-pending-drivers',
               queryParameters: queryParameters,
               data: _data,
             )

@@ -81,6 +81,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
         builder: (context) {
           return AssignDriverBottomSheetView(
             tripId: widget.tripModel.tripDetails.tripId!,
+            tripType: widget.tripModel.tripDetails.tripType!,
             onAssignDriver: (assignedDriver) {
               setState(() {
                 if (assignedDriver != null) {

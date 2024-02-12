@@ -20,7 +20,9 @@ class CisternsDetailsWidget extends StatelessWidget {
       children: [
         ItemWidget(
           title: AppStrings.cisternsType.tr(),
-          text: cisternsModel.cisternsType ?? "-",
+          text: cisternsModel.cisternsType != null
+              ? cisternsModel.cisternsType!.value
+              : "-",
         ),
       ],
     );
