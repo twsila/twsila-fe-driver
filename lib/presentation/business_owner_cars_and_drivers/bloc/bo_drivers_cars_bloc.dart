@@ -23,6 +23,8 @@ class BoDriversCarsBloc extends Bloc<BoDriversCarsEvent, BoDriversCarsState> {
 
   BoDriversCarsBloc() : super(BoDriversCarsInitial()) {
     on<GetDriversAndCars>(_getDriversAndCars);
+    on<GetActiveDriversAndCars>(_getActiveDriversAndCars);
+    on<GetPendingDriversAndCars>(_getPendingDriversAndCars);
     on<SearchDriversByMobile>(_searchDriversByMobile);
     on<addDriverForBusinessOwner>(_addDriverForBusinessOwner);
     on<assignDriverForTrip>(_assignDriverForTrip);
@@ -71,6 +73,56 @@ class BoDriversCarsBloc extends Bloc<BoDriversCarsEvent, BoDriversCarsState> {
         element.isPending = true;
       });
       emit(BoDriversCarsSuccess(driversList, event.forceRefresh));
+    });
+  }
+
+  FutureOr<void> _getActiveDriversAndCars(
+      GetActiveDriversAndCars event, Emitter<BoDriversCarsState> emit) async {
+    emit(BoDriversCarsLoading());
+    BusinessOwnerDriversUseCase businessOwnerDriversUseCase =
+        instance<BusinessOwnerDriversUseCase>();
+    (await businessOwnerDriversUseCase.execute(
+      BusinessOwnerDriversUseCaseInput(
+          appPreferences.getCachedDriver()?.id ?? 0),
+    ))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(BoDriversCarsFail(
+                      failure.message, failure.code.toString()))
+                }, (driversList) async {
+      // right -> data (success)
+      // content
+      // emit success state
+
+      emit(BoActiveDriversAndCars(driversList, event.forceRefresh));
+    });
+  }  FutureOr<void> _getPendingDriversAndCars(
+      GetPendingDriversAndCars event, Emitter<BoDriversCarsState> emit) async {
+    emit(BoDriversCarsLoading());
+    BOGetPendingDriversUseCase boGetPendingDriversUseCase =
+        instance<BOGetPendingDriversUseCase>();
+    (await boGetPendingDriversUseCase.execute(
+      BOGetPendingDriversUseCaseInput(
+          appPreferences.getCachedDriver()?.id ?? 0),
+    ))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(BoDriversCarsFail(
+                      failure.message, failure.code.toString()))
+                }, (driversList) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      driversList.forEach((element) {
+        element.isPending = true;
+      });
+      emit(BoPendingDriversAndCars(driversList, event.forceRefresh));
     });
   }
 

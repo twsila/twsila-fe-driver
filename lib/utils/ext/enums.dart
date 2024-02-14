@@ -238,7 +238,7 @@ String tripStepperDisc(
       driverServiceType != "PERSONS") {
     switch (tripStatus) {
       case TripStatusConstants.WAIT_FOR_TAKEOFF:
-        return '${AppStrings.stepper_driver_goods_third_step_disc.tr()}';
+        return '';
       case TripStatusConstants.TAKEOFF:
         return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
 

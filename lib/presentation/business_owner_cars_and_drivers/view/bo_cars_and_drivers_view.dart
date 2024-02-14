@@ -29,13 +29,17 @@ class BOCarsAndDriversView extends StatefulWidget {
 class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
+  bool pushed = false;
+  bool activeDriversDone = false;
+  bool pendingDriversDone = false;
   List<Driver> driversList = [];
+  List<Driver> pendingDriversList = [];
   List<String> driversMobileNumbers = [];
-
 
   @override
   void initState() {
-    BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars(false));
+    BlocProvider.of<BoDriversCarsBloc>(context).add(GetActiveDriversAndCars(false));
+    BlocProvider.of<BoDriversCarsBloc>(context).add(GetPendingDriversAndCars(false));
     super.initState();
   }
 
@@ -60,7 +64,8 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
         isScrollControlled: true,
         context: context,
         builder: (context) {
-          return AddDriverBottomSheetView(pendingDriversMobileNumbers: driversMobileNumbers);
+          return AddDriverBottomSheetView(
+              pendingDriversMobileNumbers: driversMobileNumbers);
         });
   }
 
@@ -101,16 +106,15 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
         } else {
           stopLoading();
         }
-        if (state is BoDriversCarsSuccess) {
-          driversList.addAll(state.driversList);
-          driversList.forEach((element) {
-            driversMobileNumbers.add(element.mobile!);
-          });
-          if (driversList.isEmpty && state.forceRefresh == false) {
-            Navigator.pushNamed(context, Routes.BOaddDriver).then((value) =>
-                BlocProvider.of<BoDriversCarsBloc>(context)
-                    .add(GetDriversAndCars(true)));
-          }
+        if (state is BoActiveDriversAndCars) {
+          driversList = state.driversList;
+          activeDriversDone = true;
+          handlePushToAddDrivers();
+        }
+        if (state is BoPendingDriversAndCars) {
+          pendingDriversList = state.driversList;
+          pendingDriversDone = true;
+          handlePushToAddDrivers();
         }
 
         if (state is BoDriversCarsFail) {
@@ -210,5 +214,23 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                 });
       },
     );
+  }
+
+  void handlePushToAddDrivers() {
+    if (activeDriversDone && pendingDriversDone) {
+      if (driversList.isEmpty && pendingDriversList.isEmpty) {
+        if (pushed == false) {
+          Navigator.pushNamed(context, Routes.BOaddDriver).then((value) =>
+              BlocProvider.of<BoDriversCarsBloc>(context)
+                  .add(GetDriversAndCars(true)));
+          pushed = true;
+        }
+      } else {
+        driversList.addAll(pendingDriversList);
+        driversList.forEach((element) {
+          driversMobileNumbers.add(element.mobile!);
+        });
+      }
+    }
   }
 }

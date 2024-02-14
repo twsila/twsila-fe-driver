@@ -220,6 +220,10 @@ initTripDetailsModule() {
     instance.registerFactory<BoAssignDriverToTripUseCase>(
         () => BoAssignDriverToTripUseCase(instance()));
   }
+  if (!GetIt.I.isRegistered<BOGetPendingDriversUseCase>()) {
+    instance.registerFactory<BOGetPendingDriversUseCase>(
+            () => BOGetPendingDriversUseCase(instance()));
+  }
 }
 
 initMyTripsModule() {

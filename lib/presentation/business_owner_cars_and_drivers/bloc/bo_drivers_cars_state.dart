@@ -11,7 +11,21 @@ class BoDriversCarsSuccess extends BoDriversCarsState {
   final forceRefresh;
   final List<Driver> driversList;
 
-  BoDriversCarsSuccess(this.driversList,this.forceRefresh);
+  BoDriversCarsSuccess(this.driversList, this.forceRefresh);
+}
+
+class BoActiveDriversAndCars extends BoDriversCarsState {
+  final forceRefresh;
+  final List<Driver> driversList;
+
+  BoActiveDriversAndCars(this.driversList, this.forceRefresh);
+}
+
+class BoPendingDriversAndCars extends BoDriversCarsState {
+  final forceRefresh;
+  final List<Driver> driversList;
+
+  BoPendingDriversAndCars(this.driversList, this.forceRefresh);
 }
 
 class SearchDriversSuccess extends BoDriversCarsState {
@@ -19,6 +33,7 @@ class SearchDriversSuccess extends BoDriversCarsState {
 
   SearchDriversSuccess(this.drivers);
 }
+
 class getAllDriversSuccess extends BoDriversCarsState {
   final List<Driver> drivers;
 

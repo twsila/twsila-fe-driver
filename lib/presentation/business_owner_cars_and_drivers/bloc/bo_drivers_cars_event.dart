@@ -9,6 +9,18 @@ class GetDriversAndCars extends BoDriversCarsEvent {
   GetDriversAndCars(this.forceRefresh);
 }
 
+class GetActiveDriversAndCars extends BoDriversCarsEvent {
+  final bool forceRefresh;
+
+  GetActiveDriversAndCars(this.forceRefresh);
+}
+
+class GetPendingDriversAndCars extends BoDriversCarsEvent {
+  final bool forceRefresh;
+
+  GetPendingDriversAndCars(this.forceRefresh);
+}
+
 class SearchDriversByMobile extends BoDriversCarsEvent {
   int mobileNumber;
 

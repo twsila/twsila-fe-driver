@@ -42,7 +42,10 @@ class _AssignDriverBottomSheetViewState
 
   @override
   void initState() {
-    BlocProvider.of<BoDriversCarsBloc>(context).add(GetDriversAndCars(false));
+    BlocProvider.of<BoDriversCarsBloc>(context)
+        .add(GetActiveDriversAndCars(false));
+    BlocProvider.of<BoDriversCarsBloc>(context)
+        .add(GetPendingDriversAndCars(false));
     super.initState();
   }
 
@@ -70,7 +73,19 @@ class _AssignDriverBottomSheetViewState
         if (state is BoDriversCarsSuccess) {
           driversList = state.driversList;
           driversList.removeWhere((element) =>
-              !element.serviceTypes!.contains(widget.tripType) || element.isPending!);
+              !element.serviceTypes!.contains(widget.tripType) ||
+              element.isPending!);
+        }
+
+        if (state is BoActiveDriversAndCars) {
+          driversList = state.driversList;
+          driversList.removeWhere((element) =>
+              !element.serviceTypes!.contains(widget.tripType) ||
+              element.isPending!);
+        }
+
+        if (state is BoPendingDriversAndCars) {
+          driversList.addAll(state.driversList);
         }
 
         if (state is AssignDriversSuccess) {
@@ -117,15 +132,14 @@ class _AssignDriverBottomSheetViewState
                                 padding: const EdgeInsets.all(8),
                                 itemCount: driversList.length,
                                 itemBuilder: (context, i) {
-                                  bool isPending =false;
+                                  bool isPending = false;
                                   return CustomCard(
-                                    backgroundColor: isPending
+                                    backgroundColor: driversList[i].isPending!
                                         ? ColorManager.disableColor
                                         : ColorManager.white,
                                     onClick: () {
                                       if (isPending == false) {
-                                        widget.onAssignDriver(
-                                            driversList[i]);
+                                        widget.onAssignDriver(driversList[i]);
                                         Navigator.pop(context);
                                       }
                                     },
@@ -147,7 +161,7 @@ class _AssignDriverBottomSheetViewState
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: FontSize.s18,
-                                                        color: isPending
+                                                        color: driversList[i].isPending!
                                                             ? ColorManager
                                                                 .disableCardTextColor
                                                             : ColorManager
@@ -162,7 +176,7 @@ class _AssignDriverBottomSheetViewState
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: FontSize.s18,
-                                                        color: isPending
+                                                        color: driversList[i].isPending!
                                                             ? ColorManager
                                                                 .disableCardTextColor
                                                             : ColorManager
@@ -177,7 +191,7 @@ class _AssignDriverBottomSheetViewState
                                                         fontWeight:
                                                             FontWeight.normal,
                                                         fontSize: FontSize.s16,
-                                                        color: isPending
+                                                        color:  driversList[i].isPending!
                                                             ? ColorManager
                                                                 .disableCardTextColor
                                                             : ColorManager
