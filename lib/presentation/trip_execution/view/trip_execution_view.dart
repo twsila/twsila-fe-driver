@@ -444,7 +444,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       TripStatus.WAIT_FOR_TAKEOFF.name,
                       driverServiceType.isNotEmpty
                           ? driverServiceType
-                          : "PERSONS",
+                          : TripTypeConstants.personsType,
                       _appPreferences
                           .getCachedDriver()!
                           .captainType
@@ -474,7 +474,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       TripStatus.TAKEOFF.name,
                       driverServiceType.isNotEmpty
                           ? driverServiceType
-                          : "PERSONS",
+                          : TripTypeConstants.personsType,
                       _appPreferences
                           .getCachedDriver()!
                           .captainType
@@ -494,7 +494,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                               TripStatus.TAKEOFF.name,
                               driverServiceType.isNotEmpty
                                   ? driverServiceType
-                                  : "PERSONS",
+                                  : TripTypeConstants.personsType,
                               _appPreferences
                                   .getCachedDriver()!
                                   .captainType
@@ -525,7 +525,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       TripStatus.EXECUTED.name,
                       driverServiceType.isNotEmpty
                           ? driverServiceType
-                          : "PERSONS",
+                            : TripTypeConstants.personsType,
                       _appPreferences
                           .getCachedDriver()!
                           .captainType
@@ -545,7 +545,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                               TripStatus.EXECUTED.name,
                               driverServiceType.isNotEmpty
                                   ? driverServiceType
-                                  : "PERSONS",
+                                  : TripTypeConstants.personsType,
                               _appPreferences
                                   .getCachedDriver()!
                                   .captainType
@@ -577,7 +577,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                       TripStatus.COMPLETED.name,
                       driverServiceType.isNotEmpty
                           ? driverServiceType
-                          : "PERSONS",
+                          : TripTypeConstants.personsType,
                       _appPreferences
                           .getCachedDriver()!
                           .captainType
@@ -597,7 +597,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                               TripStatus.COMPLETED.name,
                               driverServiceType.isNotEmpty
                                   ? driverServiceType
-                                  : "PERSONS",
+                                  : TripTypeConstants.personsType,
                               _appPreferences
                                   .getCachedDriver()!
                                   .captainType
@@ -612,11 +612,11 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                         ),
                       ),
                 continueButtonLabel:
-                    widget.tripModel.tripDetails.date != null ||
+                  widget.tripModel.tripDetails.tripStatus != TripStatus.COMPLETED.name ?  widget.tripModel.tripDetails.date != null ||
                             _appPreferences.getCachedDriver()!.captainType ==
                                 RegistrationConstants.businessOwner
                         ? ''
-                        : AppStrings.complete.tr(),
+                        : AppStrings.complete.tr() : '',
                 cancelButtonLabel: ''),
           ],
         ),

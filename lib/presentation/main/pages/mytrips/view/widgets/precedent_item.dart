@@ -40,14 +40,7 @@ class _PrecedentItemViewState extends State<PrecedentItemView> {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      onClick: () {
-        Navigator.pushNamed(context, Routes.tripExecution,
-                arguments: TripExecutionArguments(widget.trip))
-            .then((value) => BlocProvider.of<MyTripsBloc>(context)
-                .add(GetTripsTripModuleId(widget.currentTripModelId)));
-        // Navigator.pushNamed(context, Routes.tripDetails,
-        //     arguments: TripDetailsArguments(tripModel: trip));
-      },
+      onClick: () {},
       bodyWidget: Container(
         margin: EdgeInsets.all(AppMargin.m8),
         padding: EdgeInsets.only(

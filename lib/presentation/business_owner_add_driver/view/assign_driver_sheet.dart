@@ -132,13 +132,12 @@ class _AssignDriverBottomSheetViewState
                                 padding: const EdgeInsets.all(8),
                                 itemCount: driversList.length,
                                 itemBuilder: (context, i) {
-                                  bool isPending = false;
                                   return CustomCard(
                                     backgroundColor: driversList[i].isPending!
                                         ? ColorManager.disableColor
                                         : ColorManager.white,
                                     onClick: () {
-                                      if (isPending == false) {
+                                      if (!driversList[i].isPending!) {
                                         widget.onAssignDriver(driversList[i]);
                                         Navigator.pop(context);
                                       }

@@ -56,7 +56,7 @@ String getIconName(String tripType) {
       return ImageAssets.tripSwarekIc;
     case TripTypeConstants.drinkWaterType:
       return ImageAssets.tripWaterTankIc;
-    case TripTypeConstants.personType:
+    case TripTypeConstants.personsType:
       return ImageAssets.tripPersonsIc;
     default:
       return ImageAssets.tripGoodsIc;
@@ -65,7 +65,7 @@ String getIconName(String tripType) {
 
 String getTitle(String tripType) {
   switch (tripType) {
-    case TripTypeConstants.personType:
+    case TripTypeConstants.personsType:
       return AppStrings.request.tr() +
           ' ' +
           AppStrings.personsTransportation.tr();
@@ -92,7 +92,7 @@ String getTitle(String tripType) {
 
 String getServiceTypeName(String tripType) {
   switch (tripType) {
-    case TripTypeConstants.personType:
+    case TripTypeConstants.personsType:
       return AppStrings.request.tr() +
           ' ' +
           AppStrings.personsTransportation.tr();

@@ -30,7 +30,7 @@ class TripDetailsModel {
       details = WaterModel.fromJson(json);
     } else if (tripType == TripTypeConstants.otherTankType) {
       details = CisternsModel.fromJson(json);
-    } else if (tripType == TripTypeConstants.personType) {
+    } else if (tripType == TripTypeConstants.personsType) {
       details = PersonsModel.fromJson(json);
     }
 

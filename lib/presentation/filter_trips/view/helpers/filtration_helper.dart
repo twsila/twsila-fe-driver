@@ -8,6 +8,6 @@ class FiltrationHelper{
     TripTypeConstants.furnitureType,
     TripTypeConstants.goodsType,
     TripTypeConstants.otherTankType,
-    TripTypeConstants.personType,
+    TripTypeConstants.personsType,
   ];
 }

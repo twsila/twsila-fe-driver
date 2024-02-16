@@ -84,7 +84,7 @@ class TripTypeConstants {
   static const String furnitureType = "FURNITURE";
   static const String goodsType = "GOODS";
   static const String otherTankType = "OTHER_TANK";
-  static const String personType = "PERSONS";
+  static const String personsType = "PERSONS";
 }
 class LookupKeys {
   static const String serviceType = "ServiceType";
