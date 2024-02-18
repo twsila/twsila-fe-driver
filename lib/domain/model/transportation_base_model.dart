@@ -45,9 +45,9 @@ class TransportationBaseModel {
     completionDate = json['completionDate'];
     passengerRating = json['passengerRating'];
     driverRating = json['driverRating'];
-    images = json['images'] != null
+    images = json['tripImages'] != null
         ? List<ImageModel>.from(
-            json['images'].map((x) => ImageModel.fromJson(x)))
+            json['tripImages'].map((x) => ImageModel.fromJson(x)))
         : null;
     clientOffer =
         json["clientOffer"] != null ? json["clientOffer"]?.toDouble() : null;
@@ -84,7 +84,7 @@ class TransportationBaseModel {
     if (passengerRating != null) data['passengerRating'] = notes;
     if (driverRating != null) data['driverRating'] = notes;
     if (passenger != null) data['passenger'] = notes;
-    if (images != null) data['images'] = images;
+    if (images != null) data['tripImages'] = images;
     if (countryCode != null) data['countryCode'] = countryCode;
     if (clientOffer != null) data['clientOffer'] = clientOffer;
     if (paymentValue != null) data['clientOffer'] = paymentValue.toString();

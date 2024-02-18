@@ -19,6 +19,7 @@ import '../../../../domain/model/persons_model.dart';
 import '../../../../domain/model/transportation_base_model.dart';
 import '../../../../domain/model/water_model.dart';
 import '../../../../utils/resources/color_manager.dart';
+import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 import '../../../../utils/resources/styles_manager.dart';
 
@@ -44,7 +45,8 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
           height: AppSize.s14,
         ),
         Visibility(
-            visible: widget.transportationBaseModel.images != null,
+            visible: widget.transportationBaseModel.images != null &&
+                widget.transportationBaseModel.images!.isNotEmpty,
             child: tripImages(widget.transportationBaseModel.images ?? [])),
         SizedBox(
           height: AppSize.s14,
@@ -104,14 +106,24 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
 
   Widget tripImages(List<ImageModel> imageUrls) {
     return imageUrls.isNotEmpty
-        ? Center(
-            child: Wrap(
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.spaceBetween,
-              runSpacing: 5,
-              children: List.generate(imageUrls.length,
-                  (index) => TripImageItem(imageUrls[index].url)),
-            ),
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.tripImages.tr(),
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontSize: FontSize.s18,
+                    fontWeight: FontWeight.w700,
+                    color: ColorManager.titlesTextColor),
+              ),
+              Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.spaceBetween,
+                runSpacing: 5,
+                children: List.generate(imageUrls.length,
+                    (index) => TripImageItem(imageUrls[index].url)),
+              ),
+            ],
           )
         : Container();
   }
@@ -119,13 +131,25 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
   Widget imageUrlWithHandle(String url) {
     try {
       return SizedBox(
-          height: 100,
-          width: 100,
+          height: 110,
+          width: 110,
           child: Image.network(
             url,
-            height: 70.0,
-            width: 70.0,
+            height: 100.0,
+            width: 100.0,
             fit: BoxFit.cover,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                  child: CircularProgressIndicator(
+                color: ColorManager.primary,
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ));
+            },
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {
               return Image.asset(
@@ -135,8 +159,10 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
             },
           ));
     } catch (e) {
-      return Image.asset(ImageAssets.newAppBarLogo,
-        color: ColorManager.splashBGColor,);
+      return Image.asset(
+        ImageAssets.newAppBarLogo,
+        color: ColorManager.splashBGColor,
+      );
     }
   }
 
