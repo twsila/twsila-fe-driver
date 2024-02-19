@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:full_screen_image/full_screen_image.dart';
 import 'package:taxi_for_you/domain/model/furniture_model.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/more_details_widget/widgets/cisterns_details_widget.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/more_details_widget/widgets/frozen_details_widget.dart';
@@ -131,33 +132,42 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
   Widget imageUrlWithHandle(String url) {
     try {
       return SizedBox(
-          height: 110,
-          width: 110,
-          child: Image.network(
-            url,
-            height: 100.0,
-            width: 100.0,
-            fit: BoxFit.cover,
-            loadingBuilder: (BuildContext context, Widget child,
-                ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                  child: CircularProgressIndicator(
-                color: ColorManager.primary,
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ));
-            },
-            errorBuilder: (BuildContext context, Object exception,
-                StackTrace? stackTrace) {
-              return Image.asset(
-                ImageAssets.newAppBarLogo,
-                color: ColorManager.splashBGColor,
-              );
-            },
-          ));
+        height: 110,
+        width: 110,
+        child: FullScreenWidget(
+          disposeLevel: DisposeLevel.Medium,
+          child: Hero(
+            tag: "customTag",
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.network(
+                  url,
+                  height: 100.0,
+                  width: 100.0,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: ColorManager.primary,
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ));
+                  },
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return Image.asset(
+                      ImageAssets.newAppBarLogo,
+                      color: ColorManager.splashBGColor,
+                    );
+                  },
+                )),
+          ),
+        ),
+      );
     } catch (e) {
       return Image.asset(
         ImageAssets.newAppBarLogo,
