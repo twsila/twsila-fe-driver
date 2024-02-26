@@ -85,6 +85,10 @@ class AppStrings {
   static const stores = "stores";
   static const String details = "details";
   static const String tripImages = "tripImages";
+  static const String photo_limits_warning = "photo_limits_warning";
+  static const String photos_lower = "photos_lower";
+  static const String photo_limits_error = "photo_limits_error";
+  static const String error_while_adding_images = "error_while_adding_images";
   static const String about = "about";
   static const String storeDetails = "store_details";
   static const String changeLanguage = "change_language";

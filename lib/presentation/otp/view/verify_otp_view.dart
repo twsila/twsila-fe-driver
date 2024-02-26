@@ -227,8 +227,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                         autoFocus: false,
                         onCodeSubmitted: (code) {
                           BlocProvider.of<VerifyOtpBloc>(context).add(
-                              VerifyOtpBEEvent(
-                                  widget.mobileNumberForApi, code,this.generatedOtp));
+                              VerifyOtpBEEvent(widget.mobileNumberForApi, code,
+                                  this.generatedOtp));
                         },
                         controller: otpController,
                         onCodeChanged: (otpChangedValue) {},

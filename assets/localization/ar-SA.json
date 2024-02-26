@@ -19,6 +19,9 @@
   "good_afternoon": "مساء الخير!",
   "good_morning": "صباح الخير!",
   "good_evening": "مساء الخير!",
+  "photo_limits_warning": "برجاء اختيار الصور بحد اقصى",
+  "photos_lower": "صور",
+  "photo_limits_error": "لقد تجاوزت عدد الصور المسموح به",
   "tripImages": "صور الرحلة",
   "login_button": "تسجيل الدخول",
   "otp_sent": "تم ارسال كود التحقق",
@@ -300,6 +303,7 @@
   "want_to_add_and_manage_multiple_cars": "اريد اضافة و ادارة عدة سيارات",
   "welcome_into": "اهلا بك في",
   "tawsela": "توصيلة",
+  "error_while_adding_images": "حدث خطأ اثناء اضافة الصور",
   "enter_phone_to_continue": "أدخل رقم هاتفك للأستمرار",
   "continue": "متابعه",
   "saudi_country_code": "٩٦٦+",
@@ -496,16 +500,12 @@
   "stepper_driver_second_step_title": "بدأت الرحلة, تحرك الآن",
   "stepper_driver_third_step_title": "لقد وصلت الي نقطة الالتقاط",
   "stepper_driver_forth_step_title": "لقد وصلت الي نقطة التوصيل",
-
   "stepper_driver_first_step_disc": "",
   "stepper_driver_second_step_disc": "",
   "stepper_driver_third_step_disc": "برجاء الذهاب بالراكب لنقطة التوصيل",
   "stepper_driver_forth_step_disc": "لقد وصلت بالراكب بنجاح برجاء إنهاء الرحلة",
-
   "stepper_driver_goods_third_step_disc": "برجاء تحميل الاغراض و الانطلاق الى نقطة التوصيل",
   "stepper_driver_goods_forth_step_disc": "برجاء تفريغ الاغراض و انهاء الرحلة",
-
-
   "stepper_bo_first_step_title": "سوف يبدأ السائق الرحلة و ينطلق الى نقطة التوصيل",
   "stepper_bo_second_step_title": "لقد بدأ السائق الرحلة و يتحرك الان",
   "stepper_bo_third_step_title": "لقد وصل السائق الى نقطة الالتقاط",

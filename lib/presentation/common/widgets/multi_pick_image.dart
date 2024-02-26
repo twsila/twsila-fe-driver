@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
@@ -10,6 +11,7 @@ import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/styles_manager.dart';
 import '../../../app/constants.dart';
+import '../../../utils/dialogs/toast_handler.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../state_renderer/dialogs.dart';
@@ -69,37 +71,53 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                   InkWell(
                     onTap: () async {
                       try {
+                        if (widget.registrationRequest != null &&
+                            widget.registrationRequest!.carImages != null &&
+                            widget.registrationRequest!.carImages!.isNotEmpty &&
+                            widget.registrationRequest!.carImages!.length >=
+                                Constants.MAXIMUM_MULTI_PIC_IMAGES) {
+                          setState(() {
+                            imagefiles.clear();
+                            widget.registrationRequest!.carImages!.clear();
+                          });
+                        }
                         FocusManager.instance.primaryFocus?.unfocus();
                         var pickedfiles = await imgpicker.pickMultiImage();
+                        if (pickedfiles.length > 4) {
+                          ToastHandler(context).showToast(
+                              AppStrings.photo_limits_error.tr(),
+                              Toast.LENGTH_LONG);
+                        } else {
+                          await Future.forEach<XFile>(pickedfiles,
+                              (element) async {
+                            String filePath = element.path;
+                            final lastIndex =
+                                filePath.lastIndexOf(RegExp(r'.jp'));
+                            final splitted = filePath.substring(0, (lastIndex));
+                            final outPath =
+                                "${splitted}_out${filePath.substring(lastIndex)}";
 
-                        await Future.forEach<XFile>(pickedfiles,
-                            (element) async {
-                          String filePath = element.path;
-                          final lastIndex =
-                              filePath.lastIndexOf(RegExp(r'.jp'));
-                          final splitted = filePath.substring(0, (lastIndex));
-                          final outPath =
-                              "${splitted}_out${filePath.substring(lastIndex)}";
+                            var result =
+                                await FlutterImageCompress.compressAndGetFile(
+                              filePath,
+                              outPath,
+                              quality: Constants.IMAGE_QUALITY_COMPRESS,
+                            );
 
-                          var result =
-                              await FlutterImageCompress.compressAndGetFile(
-                            filePath,
-                            outPath,
-                            quality: Constants.IMAGE_QUALITY_COMPRESS,
-                          );
+                            if (result == null) return;
+                            imagefiles.add(result);
+                          });
 
-                          if (result == null) return;
-                          imagefiles.add(result);
-                        });
-
-                        widget.onPickedImages(imagefiles);
-                        if (widget.registrationRequest != null) {
-                          widget.registrationRequest!.carImages = imagefiles;
+                          widget.onPickedImages(imagefiles);
+                          if (widget.registrationRequest != null) {
+                            widget.registrationRequest!.carImages = imagefiles;
+                          }
+                          setState(() {});
                         }
-                        setState(() {});
                       } catch (e) {
-                        ShowDialogHelper.showErrorMessage(
-                            e.toString(), context);
+                        ToastHandler(context).showToast(
+                            AppStrings.error_while_adding_images.tr(),
+                            Toast.LENGTH_LONG);
                       }
                       Navigator.pop(context);
                     },
@@ -113,6 +131,16 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                   InkWell(
                     onTap: () async {
                       try {
+                        if (widget.registrationRequest != null &&
+                            widget.registrationRequest!.carImages != null &&
+                            widget.registrationRequest!.carImages!.isNotEmpty &&
+                            widget.registrationRequest!.carImages!.length >=
+                                Constants.MAXIMUM_MULTI_PIC_IMAGES) {
+                          setState(() {
+                            imagefiles.clear();
+                            widget.registrationRequest!.carImages!.clear();
+                          });
+                        }
                         var pickedfile = await imgpicker.pickImage(
                             source: ImageSource.camera);
 
@@ -130,9 +158,7 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                           outPath,
                           quality: Constants.IMAGE_QUALITY_COMPRESS,
                         );
-
                         if (result == null) return;
-
                         imagefiles.add(result);
                         widget.onPickedImages(imagefiles);
                         setState(() {});
@@ -141,8 +167,9 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                         }
                         setState(() {});
                       } catch (e) {
-                        ShowDialogHelper.showErrorMessage(
-                            e.toString(), context);
+                        ToastHandler(context).showToast(
+                            AppStrings.error_while_adding_images.tr(),
+                            Toast.LENGTH_LONG);
                       }
                       Navigator.pop(context);
                     },
@@ -165,11 +192,19 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
+            "* ${AppStrings.photo_limits_warning.tr()} ${Constants.MAXIMUM_MULTI_PIC_IMAGES} ${AppStrings.photos_lower.tr()}",
+            style: getRegularStyle(
+                color: ColorManager.warningTextColor, fontSize: FontSize.s12),
+          ),
+          Text(
             widget.titleText,
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
                 ?.copyWith(color: ColorManager.titlesTextColor),
+          ),
+          SizedBox(
+            height: 10,
           ),
           imagefiles.isNotEmpty
               ? Wrap(
@@ -189,17 +224,15 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                           child: InkWell(
                             onTap: () {
                               setState(() {
-                                imagefiles
-                                    .removeAt(imagefiles.indexOf(imageone));
+                                imagefiles.remove(imageone);
                                 if (widget.registrationRequest != null &&
                                     widget.registrationRequest!.carImages !=
                                         null &&
                                     widget.registrationRequest!.carImages!
                                         .isNotEmpty) {
                                   widget.registrationRequest!.carImages!
-                                      .removeAt(widget
-                                          .registrationRequest!.carImages!
-                                          .indexOf(imageone));
+                                      .removeWhere(
+                                          (element) => element == imageone);
                                 }
                               });
                             },

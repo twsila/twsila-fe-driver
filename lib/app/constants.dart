@@ -13,9 +13,9 @@ class Constants {
   static const int apiTimeOut = 60000;
   static const int onChangeDebounceMilliseconds = 800;
   static const String GOOGLE_API_KEY_ANDROID =
-      "AIzaSyAemSFn6fVufROQDewj0BjzuOKVw_Bxi8M";
+      "AIzaSyDudVHh73YAVrXD1CgiJPtIbFbquCmavlA";
   static const String GOOGLE_API_KEY_IOS =
-      "AIzaSyDB2c1bJWwqm-XSTIopQZovNnRPfXnyd8s";
+      "AIzaSyD8KjkW8eLaDD3qeZIiPPDxqfdK8olftWs";
   static const String UPLOAD_DOCUMENTS_TYPE = "upload_documents_type";
 
   static const int IMAGE_QUALITY_COMPRESS = 25;
@@ -26,6 +26,7 @@ class Constants {
   static const String dateFormatterString = "dd/MM/yyyy hh:mm:ss";
 
   static const int refreshCurrentLocationSeconds = 2;
+  static const int MAXIMUM_MULTI_PIC_IMAGES = 4;
 
   static const int otpCountTime = 30;
   static const int otpSize = 6;
