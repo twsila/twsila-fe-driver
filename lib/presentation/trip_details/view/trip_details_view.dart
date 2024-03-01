@@ -142,7 +142,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 ),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
-                  if (value.isNotEmpty) {
+                  if (value.isNotEmpty && double.parse(value) != 0.0) {
                     _enableSendOffer = true;
                     _driverOffer = double.parse(value);
                   } else {
