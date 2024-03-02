@@ -3,6 +3,8 @@ class AppStrings {
   static const skip = "skip";
   static const en = 'en';
   static const ar = 'ar';
+  static const tryAgain = 'try_again';
+  static const location_required = 'location_required';
   static const gender = "gender";
   static const username = "username_hint";
   static const password = "password_hint";
@@ -17,6 +19,9 @@ class AppStrings {
   static const updateProfileDoneSuccessfully =
       "update_profile_done_successfully";
   static const goodmorning = "good_morning";
+  static const locationServiceIsDisabled = "locationServiceIsDisabled";
+  static const locationPermissionIsDenied = "locationPermissionIsDenied";
+  static const locationPermissionIsPermanentlyDenied = "locationPermissionIsPermanentlyDenied";
   static const tripDate = "trip_date";
   static const goodsType = "goods_type";
   static const vehicleType = "vehicle_type";
@@ -499,6 +504,7 @@ class AppStrings {
   static const request = 'request';
   static const acceptRequestWith = 'accept_request_with';
   static const sendAnotherPrice = 'send_another_price';
+  static const sendNewPrice = 'send_new_price';
   static const back = 'back';
   static const sendOfferWithPrice = 'send_offer_with_price';
   static const ryalSuadi = 'ryal_suadi';

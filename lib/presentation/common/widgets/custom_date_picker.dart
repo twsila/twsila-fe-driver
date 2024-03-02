@@ -18,6 +18,8 @@ class CustomDatePickerWidget extends StatefulWidget {
   final String dateFormatterString;
   final Locale? locale;
   DateTime? initialDate;
+  DateTime? firstDate;
+  DateTime? lastDate;
 
   CustomDatePickerWidget(
       {Key? key,
@@ -27,6 +29,8 @@ class CustomDatePickerWidget extends StatefulWidget {
       this.dateFormatterString = 'dd MMM, yyyy',
       this.locale,
       this.labelText,
+      this.firstDate,
+      this.lastDate,
       this.initialDate})
       : super(key: key);
 
@@ -107,10 +111,14 @@ class _CustomDatePickerWidgetState extends State<CustomDatePickerWidget> {
                               initialDate: widget.initialDate != null
                                   ? widget.initialDate!
                                   : DateTime.now(),
-                              firstDate: widget.initialDate != null
-                                  ? widget.initialDate!
-                                  : DateTime.now(),
-                              lastDate: DateTime(2050),
+                              firstDate: widget.firstDate != null
+                                  ? widget.firstDate!
+                                  : widget.initialDate != null
+                                      ? widget.initialDate!
+                                      : DateTime.now(),
+                              lastDate: widget.lastDate != null
+                                  ? widget.lastDate!
+                                  : DateTime(2050),
                               currentDate: DateTime.now(),
                               initialEntryMode: DatePickerEntryMode.calendar,
                               initialDatePickerMode: DatePickerMode.day,

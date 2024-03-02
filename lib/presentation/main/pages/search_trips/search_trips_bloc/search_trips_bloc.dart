@@ -95,7 +95,9 @@ class SearchTripsBloc extends Bloc<SearchTripsEvent, SearchTripsState> {
             event.tripTypeId,
             _appPreferences.getCachedDriver()?.id ?? -1,
             event.dateFilter?.toJson() ?? null,
-            event.locationFilter?.toJson() ?? null,
+            event.locationFilter != null
+                ? event.locationFilter!.toJson()
+                : null,
             event.currentLocation?.toJson() ?? null,
             event.sortCriterion,
             event.serviceTypesSelectedByBusinessOwner,

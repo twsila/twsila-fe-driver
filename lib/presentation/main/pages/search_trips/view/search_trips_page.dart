@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:taxi_for_you/domain/model/current_location_model.dart';
@@ -34,13 +37,14 @@ import '../../../../common/widgets/page_builder.dart';
 import '../../../../filter_trips/view/helpers/filtration_helper.dart';
 import '../../../../google_maps/model/location_model.dart';
 import '../../../../google_maps/model/maps_repo.dart';
+import '../../../../location_bloc/location_bloc.dart';
 import '../../../../trip_execution/helper/location_helper.dart';
 
 List<String> tripsTitles = [];
 List<String> englishTripTitles = [];
 
 class SearchTripsPage extends StatefulWidget {
-  const SearchTripsPage({Key? key}) : super(key: key);
+  SearchTripsPage() : super();
 
   @override
   _SearchTripsPageState createState() => _SearchTripsPageState();
@@ -61,30 +65,8 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   List<TripDetailsModel> trips = [];
   DateFilter? dateFilter = null;
   int currentIndex = 0;
-  bool getLocationTry = true;
   List<SortingModel> sortingModelList = [];
   DriverBaseModel? driver;
-
-  Future<void> getCurrentLocation() async {
-    if (mounted) {
-      try {
-        currentLocation = await mapsRepo.getUserCurrentLocation();
-        getLocationTry = true;
-        currentLocationFilter = CurrentLocationFilter(
-            latitude: currentLocation!.latitude,
-            longitude: currentLocation!.longitude,
-            cityName: '');
-        currentCityName = await LocationHelper().getCityNameByCoordinates(
-            currentLocation!.latitude, currentLocation!.longitude);
-        currentLocationFilter!.cityName = currentCityName;
-      } catch (e) {
-        CustomDialog(context).showWaringDialog(
-            '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
-          Geolocator.openLocationSettings();
-        });
-      }
-    }
-  }
 
   void _showBottomSheet() {
     showModalBottomSheet(
@@ -191,26 +173,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   @override
   void initState() {
     // BlocProvider.of<SearchTripsBloc>(context).add(getLookups());
-    getCurrentLocation().then((value) {
-      BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
-          tripTypeId: sortingModelList[currentSortingIndex]
-              .tripModelType!
-              .name
-              .toString(),
-          sortCriterion: currentLocation != null
-              ? sortingModelList[1].id!.name.toString()
-              : sortingModelList[currentSortingIndex].id!.name.toString(),
-          currentLocation:
-              currentLocation != null ? currentLocationFilter : null,
-          serviceTypesSelectedByBusinessOwner:
-              driver!.captainType == RegistrationConstants.businessOwner
-                  ? FiltrationHelper().serviceTypesList.join(",")
-                  : null,
-          serviceTypesSelectedByDriver:
-              driver!.captainType == RegistrationConstants.captain
-                  ? (driver as Driver).serviceTypes!.join(',')
-                  : null));
-    });
+    BlocProvider.of<LocationBloc>(context).add(getCurrentLocation());
     driver = _appPreferences.getCachedDriver();
     sortingModelList = SearchTripsBloc().getSortingList(driver!);
 
@@ -270,89 +233,152 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return BlocConsumer<SearchTripsBloc, SearchTripsState>(
-      listener: (context, state) {
-        if (state is SearchTripsLoading) {
+    return BlocConsumer<LocationBloc, LocationState>(
+      listener: (context, state) async {
+        if (state is LoginLoadingState) {
           _loadingTripsList = true;
         } else {
           _loadingTripsList = false;
         }
-        if (state is GetLookupsSuccessState) {
-          englishTripTitles.addAll(state.englishTripTitles);
-          tripsTitles.clear();
-          if (_appPreferences.getAppLanguage() ==
-              LanguageType.ARABIC.getValue()) {
-            tripsTitles.addAll(state.arabicTripTitles);
-          } else {
-            tripsTitles.addAll(state.englishTripTitles);
-          }
-          BlocProvider.of<SearchTripsBloc>(context).add(
-              GetTripsTripModuleId(tripTypeId: TripModelType.ALL_TRIPS.name));
+
+        if (state is CurrentLocationSuccessState) {
+          currentLocation = state.currentLocation;
+          currentLocationFilter = CurrentLocationFilter(
+              latitude: currentLocation!.latitude,
+              longitude: currentLocation!.longitude,
+              cityName: '');
+          currentLocationFilter!.cityName = currentLocation!.cityName!;
+          BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
+              tripTypeId: sortingModelList[currentSortingIndex]
+                  .tripModelType!
+                  .name
+                  .toString(),
+              sortCriterion: sortingModelList[1].id!.name.toString(),
+              currentLocation: currentLocationFilter,
+              serviceTypesSelectedByBusinessOwner:
+                  driver!.captainType == RegistrationConstants.businessOwner
+                      ? FiltrationHelper().serviceTypesList.join(",")
+                      : null,
+              serviceTypesSelectedByDriver:
+                  driver!.captainType == RegistrationConstants.captain
+                      ? (driver as Driver).serviceTypes!.join(',')
+                      : null));
         }
 
-        if (state is SearchTripsSuccess) {
-          trips = state.trips;
-        }
-        if (state is SearchTripsFailure) {
-          CustomDialog(context)
-              .showErrorDialog('', '', "${state.code} ${state.message}");
+        if (state is CurrentLocationFailState) {
+          CustomDialog(context).showCupertinoDialog(
+              AppStrings.location_required.tr(),
+              state.message,
+              AppStrings.tryAgain.tr(),
+              AppStrings.cancel.tr(),
+              ColorManager.accentTextColor, () {
+            if (state.locationPermission == LocationPermission.deniedForever) {
+              Geolocator.openLocationSettings();
+            } else {
+              BlocProvider.of<LocationBloc>(context).add(getCurrentLocation());
+            }
+            Navigator.pop(context);
+          }, () {
+            if (Platform.isAndroid) {
+              SystemNavigator.pop();
+            } else if (Platform.isIOS) {
+              exit(0);
+            }
+          });
         }
       },
       builder: (context, state) {
-        return WillPopScope(
-          onWillPop: () async {
-            getCurrentLocation();
-            return false;
+        return RefreshIndicator(
+          onRefresh: () async {
+            BlocProvider.of<LocationBloc>(context).add(getCurrentLocation());
           },
-          child: Stack(alignment: Alignment.center, children: [
-            Container(
-              margin: EdgeInsets.symmetric(vertical: AppSize.s8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: _loadingTripsList
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: ColorManager.purpleMainTextColor,
-                            ),
-                          )
-                        : trips.length == 0
-                            ? Center(
-                                child: Text(
-                                  AppStrings.noTripsAvailable.tr(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.copyWith(color: ColorManager.error),
-                                ),
-                              )
-                            : Container(child: _TripsListView(trips)),
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-                bottom: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomTextButton(
-                    onPressed: () {
-                      _showBottomSheet();
-                    },
-                    width: AppSize.s130,
-                    height: AppSize.s40,
-                    fontSize: FontSize.s12,
-                    backgroundColor: ColorManager.secondaryColor,
-                    isWaitToEnable: false,
-                    icon: Image.asset(
-                      ImageAssets.sortingIcon,
-                      width: 20,
+          child: BlocConsumer<SearchTripsBloc, SearchTripsState>(
+            listener: (context, state) {
+              if (state is SearchTripsLoading) {
+                _loadingTripsList = true;
+              } else {
+                _loadingTripsList = false;
+              }
+              if (state is GetLookupsSuccessState) {
+                englishTripTitles.addAll(state.englishTripTitles);
+                tripsTitles.clear();
+                if (_appPreferences.getAppLanguage() ==
+                    LanguageType.ARABIC.getValue()) {
+                  tripsTitles.addAll(state.arabicTripTitles);
+                } else {
+                  tripsTitles.addAll(state.englishTripTitles);
+                }
+                BlocProvider.of<SearchTripsBloc>(context).add(
+                    GetTripsTripModuleId(
+                        tripTypeId: TripModelType.ALL_TRIPS.name));
+              }
+
+              if (state is SearchTripsSuccess) {
+                trips = state.trips;
+              }
+              if (state is SearchTripsFailure) {
+                CustomDialog(context)
+                    .showErrorDialog('', '', "${state.code} ${state.message}");
+              }
+            },
+            builder: (context, state) {
+              return WillPopScope(
+                onWillPop: () async {
+                  return false;
+                },
+                child: Stack(alignment: Alignment.center, children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: AppSize.s8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: _loadingTripsList
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: ColorManager.purpleMainTextColor,
+                                  ),
+                                )
+                              : trips.length == 0
+                                  ? Center(
+                                      child: Text(
+                                        AppStrings.noTripsAvailable.tr(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                                color: ColorManager.error),
+                                      ),
+                                    )
+                                  : Container(child: _TripsListView(trips)),
+                        )
+                      ],
                     ),
-                    text: AppStrings.sortBy.tr(),
                   ),
-                ))
-          ]),
+                  Positioned(
+                      bottom: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomTextButton(
+                          onPressed: () {
+                            _showBottomSheet();
+                          },
+                          width: AppSize.s130,
+                          height: AppSize.s40,
+                          fontSize: FontSize.s12,
+                          backgroundColor: ColorManager.secondaryColor,
+                          isWaitToEnable: false,
+                          icon: Image.asset(
+                            ImageAssets.sortingIcon,
+                            width: 20,
+                          ),
+                          text: AppStrings.sortBy.tr(),
+                        ),
+                      ))
+                ]),
+              );
+            },
+          ),
         );
       },
     );

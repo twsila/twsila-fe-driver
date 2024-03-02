@@ -6,6 +6,7 @@ import 'package:taxi_for_you/presentation/business_owner_cars_and_drivers/bloc/b
 import 'package:taxi_for_you/presentation/driver_add_requests/bloc/driver_requests_bloc.dart';
 import 'package:taxi_for_you/presentation/edit_user_profile/bloc/edit_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/filter_trips/bloc/filter_bloc.dart';
+import 'package:taxi_for_you/presentation/location_bloc/location_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
 import 'package:taxi_for_you/presentation/rate_passenger/bloc/rate_passenger_bloc.dart';
@@ -25,6 +26,7 @@ import '../utils/location/map_provider.dart';
 blocProviders(BuildContext context) {
   return [
     BlocProvider.value(value: MapsBloc(MapsRepo())),
+    BlocProvider.value(value: LocationBloc()),
     BlocProvider.value(value: LoginBloc()),
     BlocProvider.value(value: VerifyOtpBloc()),
     BlocProvider.value(value: ServiceRegistrationBloc()),

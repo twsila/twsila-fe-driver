@@ -4,8 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:im_stepper/stepper.dart';
-import 'package:taxi_for_you/domain/model/trip_model.dart';
 import 'package:taxi_for_you/domain/model/trip_status_step_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_stepper.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';

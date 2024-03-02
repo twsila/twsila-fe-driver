@@ -15,7 +15,7 @@ import '../../../common/widgets/custom_bottom_sheet.dart';
 import '../../../common/widgets/custom_text_button.dart';
 
 class FromToDateWidget extends StatefulWidget {
-  final Function(String fromDate, String toDate, bool todayDate) onSelectDate;
+  final Function(String? fromDate, String? toDate, bool todayDate) onSelectDate;
 
   FromToDateWidget({required this.onSelectDate});
 
@@ -86,7 +86,15 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                           borderRadius: BorderRadius.circular(8)),
                       child: Center(
                         child: Text(
-                          '${AppStrings.from.tr()} ${selectedFromDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')} - ${AppStrings.to.tr()} ${selectedToDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')}',
+                          selectedFromDate != null && selectedToDate != null
+                              ? '${AppStrings.from.tr()} ${selectedFromDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')} - ${AppStrings.to.tr()} ${selectedToDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')}'
+                              : selectedFromDate != null &&
+                                      selectedToDate == null
+                                  ? '${AppStrings.from.tr()} ${selectedFromDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')}'
+                                  : selectedFromDate == null &&
+                                          selectedToDate != null
+                                      ? ' ${AppStrings.to.tr()} ${selectedToDate?.getTimeStampFromDate(pattern: 'dd MMM yyyy')}'
+                                      : "",
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium
@@ -123,7 +131,9 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
               isDimmed: todayDate,
               pickTime: false,
               labelText: AppStrings.from.tr(),
-              initialDate: DateTime(2023),
+              lastDate: DateTime(DateTime.now().year + 5),
+              firstDate: DateTime(DateTime.now().year - 5),
+              initialDate: DateTime.now(),
             ),
             CustomDatePickerWidget(
               locale: ENGLISH_LOCAL,
@@ -134,7 +144,9 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
               isDimmed: todayDate,
               pickTime: false,
               labelText: AppStrings.to.tr(),
-              initialDate: DateTime(2023),
+              lastDate: DateTime(DateTime.now().year + 5),
+              firstDate: DateTime(DateTime.now().year - 5),
+              initialDate: DateTime.now(),
             ),
             Row(
               children: [
@@ -180,12 +192,10 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
               backgroundColor: ColorManager.secondaryColor,
               textColor: ColorManager.white,
               onPressed: () {
-                if (selectedFromDate != null &&
-                    selectedFromDate!.isNotEmpty &&
-                    selectedToDate != null &&
-                    selectedToDate!.isNotEmpty) {
+                if (selectedFromDate != null && selectedFromDate!.isNotEmpty ||
+                    selectedToDate != null && selectedToDate!.isNotEmpty) {
                   widget.onSelectDate(
-                      selectedFromDate!, selectedToDate!, todayDate);
+                      selectedFromDate, selectedToDate, todayDate);
                   Navigator.pop(context);
                 } else {
                   ToastHandler(context).showToast(

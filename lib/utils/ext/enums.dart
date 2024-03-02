@@ -8,6 +8,8 @@ import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 import '../../app/constants.dart';
 import '../../domain/model/trip_model.dart';
+import '../../presentation/google_maps/model/location_model.dart';
+import '../../presentation/trip_execution/helper/location_helper.dart';
 
 enum AcceptanceType { PROPOSED, ACCEPTED, EXPIRED }
 
@@ -228,7 +230,6 @@ String tripStepperDisc(
         return '${AppStrings.stepper_driver_first_step_disc.tr()}';
       case TripStatusConstants.TAKEOFF:
         return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
-
       case TripStatusConstants.EXECUTED:
         return '${AppStrings.stepper_driver_third_step_disc.tr()}';
       case TripStatusConstants.COMPLETED:
@@ -241,7 +242,6 @@ String tripStepperDisc(
         return '';
       case TripStatusConstants.TAKEOFF:
         return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
-
       case TripStatusConstants.EXECUTED:
         return '${AppStrings.stepper_driver_goods_third_step_disc.tr()}';
       case TripStatusConstants.COMPLETED:

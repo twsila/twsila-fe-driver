@@ -80,41 +80,47 @@ class _MyTripsPageState extends State<MyTripsPage> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return BlocConsumer<MyTripsBloc, MyTripsState>(
-      listener: (context, state) {
-        if (state is MyTripsLoading) {
-          _loadingTripsList = true;
-        } else {
-          _loadingTripsList = false;
-        }
-
-        if (state is MyTripsSuccess) {
-          trips = state.trips;
-        }
+    return RefreshIndicator(
+      onRefresh: () async {
+        BlocProvider.of<MyTripsBloc>(context)
+            .add(GetTripsTripModuleId(items[current].tripModelTypeId));
       },
-      builder: (context, state) {
-        return Container(
-          margin: EdgeInsets.all(AppSize.s12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: AppSize.s20,
-              ),
-              _headerText(),
-              SizedBox(
-                height: AppSize.s20,
-              ),
+      child: BlocConsumer<MyTripsBloc, MyTripsState>(
+        listener: (context, state) {
+          if (state is MyTripsLoading) {
+            _loadingTripsList = true;
+          } else {
+            _loadingTripsList = false;
+          }
 
-              /// CUSTOM TABBAR
-              _MyTripsTitlesTabsBar(),
+          if (state is MyTripsSuccess) {
+            trips = state.trips;
+          }
+        },
+        builder: (context, state) {
+          return Container(
+            margin: EdgeInsets.all(AppSize.s12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: AppSize.s20,
+                ),
+                _headerText(),
+                SizedBox(
+                  height: AppSize.s20,
+                ),
 
-              /// MAIN BODY
-              _tripsListView(),
-            ],
-          ),
-        );
-      },
+                /// CUSTOM TABBAR
+                _MyTripsTitlesTabsBar(),
+
+                /// MAIN BODY
+                _tripsListView(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -207,12 +213,10 @@ class _MyTripsPageState extends State<MyTripsPage> {
           margin: const EdgeInsets.all(5),
           width: AppSize.s100,
           decoration: BoxDecoration(
-              color:
-                  current == index ? Colors.white : ColorManager.purpleFade,
+              color: current == index ? Colors.white : ColorManager.purpleFade,
               borderRadius: BorderRadius.circular(2),
               border: Border.all(
-                  color:
-                      current == index ? Colors.white : Colors.transparent,
+                  color: current == index ? Colors.white : Colors.transparent,
                   width: 2)),
           child: Center(
             child: Text(

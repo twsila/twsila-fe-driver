@@ -120,7 +120,7 @@ class RouteGenerator {
         initMyTripsModule();
         initLoopkupsModule();
         initTripsModule();
-        return MaterialPageRoute(builder: (_) => const MainView());
+        return MaterialPageRoute(builder: (_) =>  MainView());
       case Routes.verifyOtpRoute:
         final args = settings.arguments as VerifyArguments;
         initVerifyOtpModule();

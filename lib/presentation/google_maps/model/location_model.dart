@@ -2,7 +2,7 @@ class LocationModel {
   final String locationName;
   final double latitude;
   final double longitude;
-  final String? cityName;
+   String? cityName;
 
   LocationModel(
       {required this.locationName,

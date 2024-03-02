@@ -298,23 +298,32 @@ class _TripDetailsViewState extends State<TripDetailsView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _handleAssignedDriverDetails(assignedDriverToTrip!),
-          CustomTextButton(
-            text:
-                "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
-            onPressed: () {
-              BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                  _appPreferences.getCachedDriver()!.id!,
-                  widget.tripModel.tripDetails.tripId!,
-                  _appPreferences.getCachedDriver()!.captainType.toString(),
-                  driverId: assignedDriverToTrip!.id));
-            },
+          Visibility(
+            visible: widget.tripModel.tripDetails.clientOffer != null &&
+                (widget.tripModel.tripDetails.clientOffer != 0.0 ||
+                    widget.tripModel.tripDetails.clientOffer != 0),
+            child: CustomTextButton(
+              text:
+                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
+              onPressed: () {
+                BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                    _appPreferences.getCachedDriver()!.id!,
+                    widget.tripModel.tripDetails.tripId!,
+                    _appPreferences.getCachedDriver()!.captainType.toString(),
+                    driverId: assignedDriverToTrip!.id));
+              },
+            ),
           ),
           CustomTextButton(
             isWaitToEnable: false,
             backgroundColor: ColorManager.white,
             textColor: ColorManager.headersTextColor,
             borderColor: ColorManager.purpleMainTextColor,
-            text: AppStrings.sendAnotherPrice.tr(),
+            text: widget.tripModel.tripDetails.clientOffer != null &&
+                    (widget.tripModel.tripDetails.clientOffer != 0.0 ||
+                        widget.tripModel.tripDetails.clientOffer != 0)
+                ? AppStrings.sendAnotherPrice.tr()
+                : AppStrings.sendNewPrice.tr(),
             onPressed: () {
               _showAnotherOfferBottomSheet();
             },
@@ -418,7 +427,11 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                     backgroundColor: ColorManager.white,
                     textColor: ColorManager.headersTextColor,
                     borderColor: ColorManager.purpleMainTextColor,
-                    text: AppStrings.sendAnotherPrice.tr(),
+                    text: widget.tripModel.tripDetails.clientOffer != null &&
+                            (widget.tripModel.tripDetails.clientOffer != 0.0 ||
+                                widget.tripModel.tripDetails.clientOffer != 0)
+                        ? AppStrings.sendAnotherPrice.tr()
+                        : AppStrings.sendNewPrice.tr(),
                     onPressed: () {
                       _showAnotherOfferBottomSheet();
                     },
@@ -438,25 +451,34 @@ class _TripDetailsViewState extends State<TripDetailsView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomTextButton(
-                  text:
-                      "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
-                  onPressed: () {
-                    BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                        _appPreferences.getCachedDriver()!.id!,
-                        widget.tripModel.tripDetails.tripId!,
-                        _appPreferences
-                            .getCachedDriver()!
-                            .captainType
-                            .toString()));
-                  },
+                Visibility(
+                  visible: widget.tripModel.tripDetails.clientOffer != null &&
+                      (widget.tripModel.tripDetails.clientOffer != 0.0 ||
+                          widget.tripModel.tripDetails.clientOffer != 0),
+                  child: CustomTextButton(
+                    text:
+                        "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
+                    onPressed: () {
+                      BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                          _appPreferences.getCachedDriver()!.id!,
+                          widget.tripModel.tripDetails.tripId!,
+                          _appPreferences
+                              .getCachedDriver()!
+                              .captainType
+                              .toString()));
+                    },
+                  ),
                 ),
                 CustomTextButton(
                   isWaitToEnable: false,
                   backgroundColor: ColorManager.white,
                   textColor: ColorManager.headersTextColor,
                   borderColor: ColorManager.purpleMainTextColor,
-                  text: AppStrings.sendAnotherPrice.tr(),
+                  text: widget.tripModel.tripDetails.clientOffer != null &&
+                          (widget.tripModel.tripDetails.clientOffer != 0.0 ||
+                              widget.tripModel.tripDetails.clientOffer != 0)
+                      ? AppStrings.sendAnotherPrice.tr()
+                      : AppStrings.sendNewPrice.tr(),
                   onPressed: () {
                     _showAnotherOfferBottomSheet();
                   },
@@ -485,9 +507,14 @@ class _TripDetailsViewState extends State<TripDetailsView> {
         SizedBox(
           height: AppSize.s8,
         ),
-        _IconTextDataWidget(
-            "${AppStrings.withBudget.tr()} ${widget.tripModel.tripDetails.clientOffer.toString()}",
-            ImageAssets.tripDetailsVisaIcon),
+        Visibility(
+          visible: widget.tripModel.tripDetails.clientOffer != null &&
+              (widget.tripModel.tripDetails.clientOffer != 0.0 ||
+                  widget.tripModel.tripDetails.clientOffer != 0),
+          child: _IconTextDataWidget(
+              "${AppStrings.withBudget.tr()} ${widget.tripModel.tripDetails.clientOffer.toString()}",
+              ImageAssets.tripDetailsVisaIcon),
+        ),
         SizedBox(
           height: AppSize.s8,
         ),

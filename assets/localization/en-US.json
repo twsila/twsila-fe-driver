@@ -22,6 +22,11 @@
   "lets_get_started": "Let's get started!",
   "error_while_adding_images": "error occurred while adding image",
   "good_afternoon": "Good Afternoon!",
+  "try_again": "Try again",
+  "location_required": "Location Required",
+  "locationServiceIsDisabled": "Location services are disabled, please activate it to continue",
+  "locationPermissionIsDenied": "Location permissions are denied, please activate it to continue",
+  "locationPermissionIsPermanentlyDenied": "Location permissions are permanently denied, we cannot request permissions.",
   "tripImages": "Trip Images",
   "good_morning": "Good Morning!",
   "tank_type": "Tank Type",
@@ -430,6 +435,7 @@
   "request": "Request",
   "accept_request_with": "Accept offer with",
   "send_another_price": "Send another price",
+  "send_new_price": "Send new price",
   "back": "Back",
   "send_offer_with_price": "Send Offer With Price",
   "ryal_suadi": "SAR",
@@ -500,16 +506,12 @@
   "stepper_driver_second_step_title": "Trip started, move now",
   "stepper_driver_third_step_title": "You have been arrived to pickup location",
   "stepper_driver_forth_step_title": "You have been arrived to destination location",
-
   "stepper_driver_first_step_disc": "",
   "stepper_driver_second_step_disc": "",
   "stepper_driver_third_step_disc": "please go with passenger to destination location",
   "stepper_driver_forth_step_disc": "you have been arrived with passenger successfully, please complete the trip",
-
   "stepper_driver_goods_third_step_disc": "please load the stuff, go to destination location",
   "stepper_driver_goods_forth_step_disc": "please Unpacking stuff, complete the trip",
-
-
   "stepper_bo_first_step_title": "Driver will start the trip and go to pickup location",
   "stepper_bo_second_step_title": "Driver has started the trip and moving now",
   "stepper_bo_third_step_title": "Driver has been arrived pickup location",

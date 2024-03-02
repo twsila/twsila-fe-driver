@@ -6,7 +6,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 
+import '../../../app/app_prefs.dart';
 import '../../../app/constants.dart';
+import '../../../app/di.dart';
+import '../../../domain/model/destance_matrix_model.dart';
 
 class LocationHelper {
   double distanceBetweenTwoLocationInMeters(
@@ -22,11 +25,14 @@ class LocationHelper {
   Future<void> getArrivalTimeFromCurrentToLocation(
       {required LocationModel currentLocation,
       required LocationModel destinationLocation}) async {
+    final AppPreferences _appPrefs = instance<AppPreferences>();
     Dio dio = new Dio();
-    Response response = await dio.get(
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units="
-        "imperial&origins=${currentLocation.latitude},${currentLocation.longitude}&destinations=${destinationLocation.latitude}%2C,${currentLocation.longitude}&key=${Platform.isIOS ? Constants.GOOGLE_API_KEY_IOS : Constants.GOOGLE_API_KEY_ANDROID}");
-    print("estimated time : ${response.data}");
+    var matrixUrl =
+        'https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destinationLocation.latitude},${destinationLocation.longitude}&language=${_appPrefs.getAppLanguage()}&origins=${currentLocation.latitude},${currentLocation.longitude}&key=${Platform.isIOS ? Constants.GOOGLE_API_KEY_IOS : Constants.GOOGLE_API_KEY_ANDROID}';
+    var response = await dio.get(matrixUrl);
+    print(response.runtimeType);
+    DistanceMatrix matrix = DistanceMatrix.fromJson(response.data);
+    print("estimated time : ${matrix.elements?[0].duration!.text}" ?? "-");
   }
 
   String getCityName(Prediction prediction) {

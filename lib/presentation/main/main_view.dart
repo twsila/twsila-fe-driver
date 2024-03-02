@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_view.dart';
 import 'package:taxi_for_you/presentation/main/pages/mytrips/view/mytrips_page.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/view/search_trips_page.dart';
@@ -18,14 +17,13 @@ import '../../utils/resources/assets_manager.dart';
 import '../../utils/resources/color_manager.dart';
 import '../../utils/resources/strings_manager.dart';
 import '../../utils/resources/values_manager.dart';
-import '../common/state_renderer/dialogs.dart';
-import '../common/widgets/custom_text_button.dart';
 import '../google_maps/bloc/maps_bloc.dart';
 import '../google_maps/bloc/maps_events.dart';
 import '../google_maps/bloc/maps_state.dart';
+import '../google_maps/model/location_model.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({Key? key}) : super(key: key);
+  MainView() : super();
 
   @override
   _MainViewState createState() => _MainViewState();
@@ -37,6 +35,7 @@ class _MainViewState extends State<MainView> {
     MyTripsPage(),
     MyProfilePage(),
   ];
+
   List<String> titles = [
     AppStrings.myProfile.tr(),
     AppStrings.myTrips.tr(),
@@ -46,18 +45,14 @@ class _MainViewState extends State<MainView> {
   var _title = AppStrings.home.tr();
   var _currentIndex = 0;
 
-
   @override
   void initState() {
-    getCurrentLocation();
     super.initState();
   }
 
   getCurrentLocation() async {
     BlocProvider.of<MapsBloc>(context, listen: false).add(GetCurrentLocation());
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -138,4 +133,10 @@ class _MainViewState extends State<MainView> {
       _title = titles[index];
     });
   }
+}
+
+class MainViewArguments {
+  LocationModel currentLocation;
+
+  MainViewArguments(this.currentLocation);
 }

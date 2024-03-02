@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_places_flutter/model/prediction.dart';
@@ -20,10 +21,11 @@ import '../../../../utils/resources/values_manager.dart';
 import '../../../common/widgets/custom_text_button.dart';
 import '../../../google_maps/model/location_model.dart';
 import '../../../google_maps/view/google_places_field.dart';
+import '../../../location_bloc/location_bloc.dart';
 import '../../../trip_execution/helper/location_helper.dart';
 
 class CityFilterWidget extends StatefulWidget {
-  final Function(Destination pickup, Destination destination,
+  final Function(Destination? pickup, Destination? destination,
       CurrentLocationFilter currentLocation) onSelectLocationFilter;
 
   CityFilterWidget({required this.onSelectLocationFilter});
@@ -35,6 +37,8 @@ class CityFilterWidget extends StatefulWidget {
 class _CityFilterWidgetState extends State<CityFilterWidget> {
   bool isCitySelected = false;
   bool isCurrentCitySelected = false;
+  bool _loadingLocation = true;
+  bool _loadingSubmit = false;
 
   Prediction? pPickup;
   Prediction? pDestination;
@@ -44,8 +48,6 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
   CurrentLocationFilter? currentLocationFilter;
 
   LocationModel? currentLocation;
-  MapsRepo mapsRepo = MapsRepo();
-  String currentCityName = '';
 
   final TextEditingController _searchFromController = TextEditingController();
   final TextEditingController _searchToController = TextEditingController();
@@ -55,103 +57,139 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
     destination = destination;
   }
 
-  Future<void> getCurrentLocation() async {
-    if (mounted) {
-      try {
-        currentLocation = await mapsRepo.getUserCurrentLocation();
-      } catch (e) {
-        CustomDialog(context).showWaringDialog(
-            '', '', AppStrings.needLocationPermission.tr(), onBtnPressed: () {
-          Geolocator.openLocationSettings();
-        });
-      }
-    }
-  }
-
   @override
   void initState() {
-    getCurrentLocation().then((value) async {
-      currentLocationFilter = CurrentLocationFilter(
-          latitude: currentLocation!.latitude,
-          longitude: currentLocation!.longitude,
-          cityName: '');
-      currentCityName = await LocationHelper().getCityNameByCoordinates(
-          currentLocation!.latitude, currentLocation!.longitude);
-      currentLocationFilter!.cityName = currentCityName;
-    });
+    BlocProvider.of<LocationBloc>(context).add(getCurrentLocation());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(AppPadding.p12),
-      child: isCitySelected
-          ? GestureDetector(
-              onTap: () {
-                _showSelectCitiesDialog();
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.city.tr(),
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: ColorManager.titlesTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: FontSize.s18),
-                  ),
-                  SizedBox(
-                    height: AppSize.s6,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(AppPadding.p12),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: ColorManager.grey),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Center(
-                      child: Text(
-                        '${AppStrings.from.tr()} ${pickup!.cityName} - '
-                        '${AppStrings.to.tr()} ${destination!.cityName}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(
-                                color: ColorManager.titlesTextColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: FontSize.s16),
+    return BlocConsumer<LocationBloc, LocationState>(
+      listener: (context, state) async {
+        if (state is LoginLoadingState) {
+          _loadingLocation = true;
+        } else {
+          _loadingLocation = false;
+        }
+        if (state is CurrentLocationSuccessState) {
+          currentLocation = state.currentLocation;
+          currentLocationFilter = CurrentLocationFilter(
+              latitude: state.currentLocation.latitude,
+              longitude: state.currentLocation.longitude,
+              cityName: state.currentLocation.cityName!);
+        }
+
+        if (state is CurrentLocationFailState) {
+          CustomDialog(context).showCupertinoDialog(
+              AppStrings.location_required.tr(),
+              state.message,
+              AppStrings.tryAgain.tr(),
+              AppStrings.cancel.tr(),
+              ColorManager.accentTextColor, () {
+            if (state.locationPermission == LocationPermission.deniedForever) {
+              Geolocator.openLocationSettings();
+            } else {
+              BlocProvider.of<LocationBloc>(context).add(getCurrentLocation());
+            }
+            Navigator.pop(context);
+          }, () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          });
+        }
+      },
+      builder: (context, state) {
+        return _loadingLocation == false
+            ? Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(AppPadding.p12),
+                child: isCitySelected
+                    ? GestureDetector(
+                        onTap: () {
+                          _showSelectCitiesDialog();
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppStrings.city.tr(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: ColorManager.titlesTextColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: FontSize.s18),
+                            ),
+                            SizedBox(
+                              height: AppSize.s6,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(AppPadding.p12),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: ColorManager.grey),
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Center(
+                                child: Text(
+                                  pickup != null && destination != null
+                                      ? '${AppStrings.from.tr()} ${pickup!.cityName} - '
+                                          '${AppStrings.to.tr()} ${destination!.cityName}'
+                                      : pickup == null && destination != null
+                                          ? '${AppStrings.to.tr()} ${destination!.cityName}'
+                                          : pickup != null &&
+                                                  destination == null
+                                              ? '${AppStrings.from.tr()} ${pickup!.cityName}'
+                                              : "",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                          color: ColorManager.titlesTextColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: FontSize.s16),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppStrings.city.tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    color: ColorManager.titlesTextColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FontSize.s16),
+                          ),
+                          Center(
+                            child: CustomTextButton(
+                              onPressed: () {
+                                _showSelectCitiesDialog();
+                              },
+                              text: AppStrings.selectFromHereHint.tr(),
+                              isWaitToEnable: false,
+                              backgroundColor: ColorManager.secondaryColor,
+                              fontSize: FontSize.s10,
+                              width: 250,
+                              height: 40,
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppStrings.city.tr(),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: ColorManager.titlesTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: FontSize.s16),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: CircularProgressIndicator(
+                  color: ColorManager.primary,
                 ),
-                Center(
-                  child: CustomTextButton(
-                    onPressed: () {
-                      _showSelectCitiesDialog();
-                    },
-                    text: AppStrings.selectFromHereHint.tr(),
-                    isWaitToEnable: false,
-                    backgroundColor: ColorManager.secondaryColor,
-                    fontSize: FontSize.s10,
-                    width: 250,
-                    height: 40,
-                  ),
-                )
-              ],
-            ),
+              );
+      },
     );
   }
 
@@ -163,7 +201,7 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
           content: StatefulBuilder(
             // You need this, notice the parameters below:
             builder: (BuildContext context, StateSetter setState) {
-              getCurrentLocation();
+              BlocProvider.of<LocationBloc>(context).add(getCurrentLocation());
               return _dialogContentWidget(setState);
             },
           ),
@@ -199,6 +237,9 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                 hintText: "${AppStrings.pleaseEnterCity.tr()}",
                 predictionCallback: (prediction) async {
                   if (prediction != null) {
+                    setState(() {
+                      _loadingLocation == true;
+                    });
                     _searchFromController.text = await LocationHelper()
                         .getCityNameByCoordinates(
                             double.tryParse(prediction.lat!)!,
@@ -208,6 +249,9 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                         latitude: double.parse(prediction.lat!),
                         longitude: double.parse(prediction.lng!),
                         cityName: _searchFromController.text);
+                    setState(() {
+                      _loadingLocation == false;
+                    });
                   } else {}
                 },
               ),
@@ -228,6 +272,9 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                 hintText: "${AppStrings.pleaseEnterCity.tr()}",
                 predictionCallback: (prediction) async {
                   if (prediction != null) {
+                    setState(() {
+                      _loadingLocation == true;
+                    });
                     _searchToController.text = await LocationHelper()
                         .getCityNameByCoordinates(
                             double.tryParse(prediction.lat!)!,
@@ -237,6 +284,9 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                         latitude: double.parse(prediction.lat!),
                         longitude: double.parse(prediction.lng!),
                         cityName: _searchToController.text);
+                    setState(() {
+                      _loadingLocation == false;
+                    });
                   } else {}
                 },
               ),
@@ -261,13 +311,14 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                             pickup = Destination(
                                 latitude: currentLocation!.latitude,
                                 longitude: currentLocation!.longitude,
-                                cityName: currentCityName);
+                                cityName: currentLocation!.cityName!);
                             destination = Destination(
                                 latitude: currentLocation!.latitude,
                                 longitude: currentLocation!.longitude,
-                                cityName: currentCityName);
+                                cityName: currentLocation!.cityName!);
                           } else {
-                            getCurrentLocation();
+                            BlocProvider.of<LocationBloc>(context)
+                                .add(getCurrentLocation());
                           }
                         } else if (_searchFromController.text.isNotEmpty &&
                             _searchToController.text.isNotEmpty &&
@@ -295,23 +346,27 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                 ],
               ),
               CustomTextButton(
-                text: AppStrings.confirm.tr(),
+                text: _loadingSubmit
+                    ? AppStrings.loading.tr()
+                    : AppStrings.confirm.tr(),
                 isWaitToEnable: false,
                 backgroundColor: ColorManager.secondaryColor,
                 textColor: ColorManager.white,
-                onPressed: () {
-                  if (pickup != null &&
-                      destination != null &&
-                      currentLocationFilter != null) {
-                    widget.onSelectLocationFilter(
-                        pickup!, destination!, currentLocationFilter!);
-                    isCitySelected = true;
-                    Navigator.pop(context);
-                  } else {
-                    ToastHandler(context)
-                        .showToast(AppStrings.pleaseEnterCity.tr(), null);
-                  }
-                },
+                onPressed: _loadingSubmit
+                    ? null
+                    : () {
+                        if (pickup != null ||
+                            destination != null &&
+                                currentLocationFilter != null) {
+                          widget.onSelectLocationFilter(
+                              pickup, destination, currentLocationFilter!);
+                          isCitySelected = true;
+                          Navigator.pop(context);
+                        } else {
+                          ToastHandler(context)
+                              .showToast(AppStrings.pleaseEnterCity.tr(), null);
+                        }
+                      },
               ),
               CustomTextButton(
                 text: AppStrings.back.tr(),

@@ -142,9 +142,7 @@ class CustomDialog {
       barrierColor: Colors.black.withOpacity(0.5),
       transitionDuration: Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) {
-        return Center(child: Material(child: Container(
-
-            child: bodyWidget)));
+        return Center(child: Material(child: Container(child: bodyWidget)));
       },
       transitionBuilder: (_, anim, __, child) {
         Tween<Offset> tween;
