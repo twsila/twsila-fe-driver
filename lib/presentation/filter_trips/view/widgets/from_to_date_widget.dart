@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_date_picker.dart';
@@ -203,11 +204,13 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                 }
               },
             ),
-            CustomTextButton(
-              text: AppStrings.back.tr(),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            Expanded(
+              child: CustomTextButton(
+                text: AppStrings.back.tr(),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             )
           ],
         ),

@@ -60,7 +60,7 @@ class _FilterTripsViewState extends State<FilterTripsView> {
           body: _build(context),
           scaffoldKey: _key,
           allowBackButtonInAppBar: true,
-          appBarTitle: "عرض الرحلات",
+          appBarTitle: AppStrings.displayTrips.tr(),
           centerTitle: true),
     );
   }

@@ -413,6 +413,8 @@
   "no_trips_available": "لا توجد رحلات متاحة الان",
   "request_details": "تفاصيل الطلب",
   "from": "من",
+  "displayTrips": "عرض الرحلات",
+  "enter_required_price": "ادخل السعر المطلوب",
   "location_disabled": "خدمات الموقع معطلة.",
   "location_denied": "خدمات الموقع معطلة",
   "location_denied_long": "أذونات الموقع مرفوضة بشكل دائم ، ولا يمكننا طلب أذونات.",

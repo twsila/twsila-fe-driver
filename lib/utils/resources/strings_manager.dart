@@ -15,6 +15,8 @@ class AppStrings {
   static const letsGetStarted = "lets_get_started";
   static const goodAfternoon = "good_afternoon";
   static const complete = "complete";
+  static const displayTrips = "displayTrips";
+  static const enterRequiredPrice = "enter_required_price";
   static const needLocationPermission = "need_location_permission";
   static const updateProfileDoneSuccessfully =
       "update_profile_done_successfully";

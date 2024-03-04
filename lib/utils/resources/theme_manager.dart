@@ -13,6 +13,10 @@ ThemeData getApplicationTheme() {
     primaryColorDark: ColorManager.darkPrimary,
     disabledColor: ColorManager.grey1,
     splashColor: ColorManager.lightPrimary,
+    dialogBackgroundColor: ColorManager.white,
+    dialogTheme: DialogTheme(
+      backgroundColor: ColorManager.white,
+    ),
     // ripple effect color
     // cardview theme
     cardTheme: CardTheme(
@@ -39,7 +43,7 @@ ThemeData getApplicationTheme() {
         style: ElevatedButton.styleFrom(
             textStyle: getRegularStyle(
                 color: ColorManager.white, fontSize: FontSize.s17),
-            primary: ColorManager.primary,
+            backgroundColor: ColorManager.primary,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSize.s12)))),
 

@@ -570,8 +570,7 @@ class _CustomStepperState extends State<CustomStepper>
               child: TextButton(
                 onPressed: widget.onStepCancel,
                 style: TextButton.styleFrom(
-                  primary: cancelColor,
-                  padding: buttonPadding,
+                  foregroundColor: cancelColor, padding: buttonPadding,
                   shape: buttonShape,
                 ),
                 child: Text((widget.steps[index].cancelButtonLabel != null)

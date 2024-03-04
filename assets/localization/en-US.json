@@ -23,6 +23,8 @@
   "error_while_adding_images": "error occurred while adding image",
   "good_afternoon": "Good Afternoon!",
   "try_again": "Try again",
+  "displayTrips": "Display trips",
+  "enter_required_price": "Enter the required price",
   "location_required": "Location Required",
   "locationServiceIsDisabled": "Location services are disabled, please activate it to continue",
   "locationPermissionIsDenied": "Location permissions are denied, please activate it to continue",

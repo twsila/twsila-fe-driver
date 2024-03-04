@@ -323,7 +323,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                     (widget.tripModel.tripDetails.clientOffer != 0.0 ||
                         widget.tripModel.tripDetails.clientOffer != 0)
                 ? AppStrings.sendAnotherPrice.tr()
-                : AppStrings.sendNewPrice.tr(),
+                : AppStrings.enterRequiredPrice.tr(),
             onPressed: () {
               _showAnotherOfferBottomSheet();
             },
@@ -431,7 +431,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                             (widget.tripModel.tripDetails.clientOffer != 0.0 ||
                                 widget.tripModel.tripDetails.clientOffer != 0)
                         ? AppStrings.sendAnotherPrice.tr()
-                        : AppStrings.sendNewPrice.tr(),
+                        : AppStrings.enterRequiredPrice.tr(),
                     onPressed: () {
                       _showAnotherOfferBottomSheet();
                     },
@@ -478,7 +478,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                           (widget.tripModel.tripDetails.clientOffer != 0.0 ||
                               widget.tripModel.tripDetails.clientOffer != 0)
                       ? AppStrings.sendAnotherPrice.tr()
-                      : AppStrings.sendNewPrice.tr(),
+                      : AppStrings.enterRequiredPrice.tr(),
                   onPressed: () {
                     _showAnotherOfferBottomSheet();
                   },

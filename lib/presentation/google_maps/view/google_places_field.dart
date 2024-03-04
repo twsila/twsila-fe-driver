@@ -47,7 +47,7 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
         onFocusChange: (hasFocus) {
           if (hasFocus) {
             setState(() {
-              fillColor = Colors.white;
+              // fillColor = Colors.white;
               shadow = [
                 const BoxShadow(
                   color: Colors.black26,
@@ -59,7 +59,7 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
             });
           } else {
             setState(() {
-              fillColor = Colors.white70;
+              // fillColor = Colors.white70;
               shadow = null;
             });
           }
@@ -97,7 +97,7 @@ class _GoogleMapsPlacesFieldState extends State<GoogleMapsPlacesField> {
               hintText: widget.hintText ?? "Search your location..",
               hintStyle: getRegularStyle(
                   color: ColorManager.grey, fontSize: FontSize.s14),
-              fillColor: fillColor,
+              // fillColor: fillColor,
               filled: true,
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),

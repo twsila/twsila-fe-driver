@@ -18,7 +18,7 @@ T? tryCast<T>({dynamic obj}) {
   }
 }
 
-List<T> tryCastList<T>({dynamic obj}) {
+List<Object?> tryCastList<T>({dynamic obj}) {
   if (obj == null) {
     return [];
   }
