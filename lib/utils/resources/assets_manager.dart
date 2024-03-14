@@ -18,6 +18,7 @@ class ImageAssets {
   static const String contactUsIc = "$imagePath/contact_us_ic.svg";
   static const String splashIc = "$imagePath/twsila_splash_logo_hd.png";
   static const String car = "$imagePath/car.png";
+  static const String vipIcon = "$imagePath/vip_icon.png";
   static const String inviteFriendsIc = "$imagePath/invite_friends_ic.svg";
   static const String logoutIc = "$imagePath/logout_ic.svg";
   static const String newAppBarLogo = "$imagePath/new_app_bar_logo.png";
@@ -34,6 +35,7 @@ class ImageAssets {
   static const String filterIcon = "$imagePath/filter_icon.png";
   static const String addRequestsIcon = "$imagePath/add_requesrs_icon.png";
   static const String carsAndDriversIcon = "$imagePath/cars_drivers_icon.png";
+  static const String successRegisterSubscriptionBenefits = "$imagePath/success_registered_payment.png";
   static const String welcomeToTawselaGraphic =
       "$imagePath/welcome_to_tawsela_graphic.png";
   static const String ratePassengerGraphic =

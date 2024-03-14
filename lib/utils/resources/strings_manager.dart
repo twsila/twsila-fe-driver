@@ -17,15 +17,21 @@ class AppStrings {
   static const complete = "complete";
   static const displayTrips = "displayTrips";
   static const enterRequiredPrice = "enter_required_price";
+  static const later = "later";
   static const needLocationPermission = "need_location_permission";
   static const updateProfileDoneSuccessfully =
       "update_profile_done_successfully";
   static const goodmorning = "good_morning";
   static const locationServiceIsDisabled = "locationServiceIsDisabled";
   static const locationPermissionIsDenied = "locationPermissionIsDenied";
-  static const locationPermissionIsPermanentlyDenied = "locationPermissionIsPermanentlyDenied";
+  static const locationPermissionIsPermanentlyDenied =
+      "locationPermissionIsPermanentlyDenied";
   static const tripDate = "trip_date";
   static const goodsType = "goods_type";
+  static const payBusinessOwnerFeesMessage = "payBusinessOwnerFeesMessage";
+  static const subscriptionBenefits = "subscriptionBenefits";
+  static const viewSubscriptionBenefits = "viewSubscriptionBenefits";
+  static const subscribeAndGoToPay = "subscribeAndGoToPay";
   static const vehicleType = "vehicle_type";
   static const numOfPassengers = "number_of_passengers";
   static const waterTankSize = "water_tank_size";
@@ -317,6 +323,7 @@ class AppStrings {
   static const welcomeInto = "welcome_into";
   static const twsela = "tawsela";
   static const twselaCaptian = "tawsela_captian";
+  static const enterCreditCardData = "enterCreditCardData";
   static const enterPhoneNumberToContinue = "enter_phone_to_continue";
   static const continueStr = "continue";
   static const saudiCountryCode = "saudi_country_code";
@@ -412,7 +419,6 @@ class AppStrings {
   static const stepper_driver_forth_step_title =
       'stepper_driver_forth_step_title';
 
-
   static const stepper_driver_first_step_disc =
       'stepper_driver_first_step_disc';
   static const stepper_driver_second_step_disc =
@@ -437,6 +443,8 @@ class AppStrings {
 
   //main
   static const myProfile = 'my_profile';
+  static const yourAccountRegisteredSuccessfully =
+      'yourAccountRegisteredSuccessfully';
   static const myTrips = 'my_trips';
   static const searchTrips = 'search_trips';
 
@@ -619,4 +627,9 @@ class AppStrings {
   static const accept = 'accept';
   static const reject = 'reject';
   static const toYou = 'to_you';
+
+  //payments
+
+  static const paidSuccessfully = 'paidSuccessfully';
+  static const failureInPayment = 'failureInPayment';
 }

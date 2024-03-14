@@ -2,14 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:moyasar/moyasar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/edit_user_profile/view/edit_profile_view.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/widget/menu_widget.dart';
+import 'package:taxi_for_you/presentation/payment/view/payment_screen.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
+import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
@@ -94,6 +99,24 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ));
   }
 
+  void _showPaymentBottomSheet() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+        ),
+        elevation: 10,
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (ctx) => Container(
+              child: Container(
+                height: MediaQuery.of(context).size.height / 1.15,
+                child: PaymentScreen(),
+              ),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -142,12 +165,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  AppStrings.myProfile.tr(),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: ColorManager.headersTextColor,
-                      fontSize: FontSize.s28),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 18),
+                  child: Text(
+                    AppStrings.myProfile.tr(),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: ColorManager.headersTextColor,
+                        fontSize: FontSize.s28),
+                  ),
                 ),
+                _successSubscriptionAndPayWidgetBO(),
                 _profileDataHeader(),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 4),
@@ -174,7 +201,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   child: const Divider(),
                 ),
-                driver!.captainType == RegistrationConstants.captain && (driver as Driver).businessOwnerId == null
+                driver!.captainType == RegistrationConstants.captain &&
+                        (driver as Driver).businessOwnerId == null
                     ? Column(
                         children: [
                           MenuWidget(
@@ -258,6 +286,71 @@ class _MyProfilePageState extends State<MyProfilePage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _successSubscriptionAndPayWidgetBO() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+      margin: EdgeInsets.only(top: 5, bottom: 10),
+      decoration: BoxDecoration(color: ColorManager.highlightBackgroundColor),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: ColorManager.primary,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                AppStrings.yourAccountRegisteredSuccessfully.tr(),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: ColorManager.primary,
+                    fontSize: FontSize.s16),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            "${AppStrings.payBusinessOwnerFeesMessage.tr()}: 200 ${getCurrency("SA")}",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: ColorManager.secondaryColor,
+                fontSize: FontSize.s16),
+          ),
+          CustomTextButton(
+            text: AppStrings.viewSubscriptionBenefits.tr(),
+            isWaitToEnable: false,
+            borderColor: ColorManager.black,
+            backgroundColor: ColorManager.highlightBackgroundColor,
+            textColor: ColorManager.black,
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.boSubscriptionBenefits);
+            },
+          ),
+          CustomTextButton(
+            text: AppStrings.subscribeAndGoToPay.tr(),
+            isWaitToEnable: false,
+            icon: Image.asset(
+              ImageAssets.tripDetailsVisaIcon,
+              color: ColorManager.white,
+              width: 16,
+            ),
+            onPressed: () {
+              // Navigator.pushNamed(context, Routes.paymentScreen);
+              _showPaymentBottomSheet();
+            },
+          )
+        ],
+      ),
     );
   }
 

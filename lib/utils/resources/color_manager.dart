@@ -33,6 +33,7 @@ class ColorManager {
   static const Color hintTextColor = const Color(0xff9393BB);
   static const Color titlesTextColor = const Color(0xff363778);
   static const Color accentTextColor = const Color(0xffFF862E);
+  static const Color highlightBackgroundColor = const Color(0xffEFEFFE);
   static const Color supportTextColor = const Color(0xffFDB808);
   static const Color warningTextColor = const Color(0xffFF0B1B);
   static const Color purpleMainTextColor = const Color(0xff7577CD);

@@ -97,6 +97,7 @@ dependencies:
   double_back_to_close_app: ^1.2.0
   custom_radio_grouped_button: ^2.2.1
   full_screen_image: ^2.0.0
+  moyasar: ^2.0.2
 
 dev_dependencies:
   flutter_test:
