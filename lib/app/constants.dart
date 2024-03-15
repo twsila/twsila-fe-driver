@@ -39,6 +39,11 @@ class Constants {
         AppStrings.egypt)
   ];
 }
+class PaymentConstants {
+
+  static const String TESTING_KEY = "pk_test_VzZuYND1H3pFgVYv9TLFwrK1mFuLGtELzAEjCQe3";
+  static const String PRODUCTION_KEY = "";
+}
 
 class UserTypeConstants {
   static const String DRIVER = "DRIVER";

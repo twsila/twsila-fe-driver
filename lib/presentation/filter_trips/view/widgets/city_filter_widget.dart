@@ -370,13 +370,11 @@ class _CityFilterWidgetState extends State<CityFilterWidget> {
                         }
                       },
               ),
-              Expanded(
-                child: CustomTextButton(
-                  text: AppStrings.back.tr(),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+              CustomTextButton(
+                text: AppStrings.back.tr(),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               )
             ],
           ),

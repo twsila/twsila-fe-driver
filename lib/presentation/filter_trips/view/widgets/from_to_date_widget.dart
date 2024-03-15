@@ -204,13 +204,11 @@ class _FromToDateWidgetState extends State<FromToDateWidget> {
                 }
               },
             ),
-            Expanded(
-              child: CustomTextButton(
-                text: AppStrings.back.tr(),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
+            CustomTextButton(
+              text: AppStrings.back.tr(),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             )
           ],
         ),

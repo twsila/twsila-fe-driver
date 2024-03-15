@@ -14,6 +14,7 @@ ThemeData getApplicationTheme() {
     disabledColor: ColorManager.grey1,
     splashColor: ColorManager.lightPrimary,
     dialogBackgroundColor: ColorManager.white,
+    bottomSheetTheme: BottomSheetThemeData(surfaceTintColor: Colors.white),
     dialogTheme: DialogTheme(
       backgroundColor: ColorManager.white,
     ),

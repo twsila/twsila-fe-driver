@@ -3,11 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moyasar/moyasar.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
+import '../../../app/app_prefs.dart';
+import '../../../app/constants.dart';
+import '../../../app/di.dart';
 import '../../../utils/dialogs/custom_dialog.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
+import '../../../utils/resources/langauge_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/page_builder.dart';
@@ -20,20 +25,20 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  late PaymentConfig paymentConfig;
+  final AppPreferences appPreferences = instance();
+  PaymentConfig paymentConfig = PaymentConfig(
+      publishableApiKey: PaymentConstants.TESTING_KEY,
+      amount: 200 * 100,
+      currency: 'EGP',
+      //TODO Need to set regarding to logged in countryCode (missing from Response)
+      description: 'order #1324',
+      metadata: {'size': '250g'});
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
 
   @override
   void initState() {
-    paymentConfig = PaymentConfig(
-      publishableApiKey: 'pk_test_VzZuYND1H3pFgVYv9TLFwrK1mFuLGtELzAEjCQe3',
-      amount: 25758,
-      // SAR 257.58
-      description: 'order #1324',
-      metadata: {'size': '250g'},
-      creditCard: CreditCardConfig(saveCard: false, manual: false),
-    );
+    paymentConfig.creditCard = CreditCardConfig(saveCard: false, manual: false);
     super.initState();
   }
 
@@ -41,30 +46,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
     if (result is PaymentResponse) {
       switch (result.status) {
         case PaymentStatus.paid:
-          CustomDialog(context)
-              .showSuccessDialog('', '', AppStrings.paidSuccessfully.tr());
+          CustomDialog(context).showSuccessDialog(
+              '', '', AppStrings.paymentSuccess.tr(), onBtnPressed: () {
+            Navigator.pop(context);
+          });
           break;
         case PaymentStatus.failed:
-          CustomDialog(context)
-              .showErrorDialog('', '', AppStrings.failureInPayment.tr());
-          break;
-        case PaymentStatus.authorized:
-          // handle authorized.
+          CustomDialog(context).showErrorDialog(
+              '',
+              '',
+              AppStrings.paymentFailed.tr() +
+                  result.source.message.toString().tr(), onBtnPressed: () {
+            Navigator.pop(context);
+          });
           break;
         default:
+          break;
       }
-      return;
     }
-
-    // handle failures.
-    if (result is ApiError) {}
-    if (result is AuthError) {}
-    if (result is ValidationError) {}
-    if (result is PaymentCanceledError) {}
-    // if (result is UnprocessableTokenError) {}
-    // if (result is TimeoutError) {}
-    // if (result is NetworkError) {}
-    // if (result is UnspecifiedError) {}
   }
 
   @override
@@ -82,49 +81,40 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return Container(
-      decoration: new BoxDecoration(
-          color: Colors.white,
-          borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(25.0),
-              topRight: const Radius.circular(25.0))),
-      padding: EdgeInsets.symmetric(
-          horizontal: AppPadding.p12, vertical: AppPadding.p12),
-      margin: EdgeInsets.only(top: AppMargin.m28),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppStrings.enterCreditCardData.tr(),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: ColorManager.headersTextColor,
-                    fontSize: FontSize.s18),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.close,
-                  color: ColorManager.black,
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: AppSize.s16,
-          ),
-          Expanded(
-            child: CreditCard(
-              config: paymentConfig,
-              onPaymentResult: onPaymentResult,
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              AppStrings.enterCreditCardData.tr(),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: ColorManager.headersTextColor, fontSize: FontSize.s18),
             ),
-          )
-        ],
-      ),
-    );
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.close,
+                color: ColorManager.black,
+              ),
+            )
+          ],
+        ),
+        SizedBox(
+          height: AppSize.s16,
+        ),
+        CreditCard(
+          config: paymentConfig,
+          onPaymentResult: onPaymentResult,
+          locale:
+              appPreferences.getAppLanguage() == LanguageType.ENGLISH.getValue()
+                  ? const Localization.en()
+                  : const Localization.ar(),
+        ),
+      ],
+    ));
   }
 }

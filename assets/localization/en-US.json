@@ -513,7 +513,7 @@
   "add_request": "add request",
   "shipped_types": "Shipped Types",
   "materials_tobe_shipped": "Materials to be Shipped",
-  "stepper_driver_first_step_title": "Start trip not and move to pickup location",
+  "stepper_driver_first_step_title": "Start trip now and move to pickup location",
   "stepper_driver_second_step_title": "Trip started, move now",
   "stepper_driver_third_step_title": "You have been arrived to pickup location",
   "stepper_driver_forth_step_title": "You have been arrived to destination location",
@@ -528,5 +528,12 @@
   "stepper_bo_third_step_title": "Driver has been arrived pickup location",
   "stepper_bo_forth_step_title": "Driver has been arrived destination location",
   "stepper_bo_third_step_disc": "under processing, going to destination location",
-  "stepper_bo_forth_step_disc": "finishing the trip in progress"
+  "stepper_bo_forth_step_disc": "finishing the trip in progress",
+  "payment_success": "Payment done successfully",
+  "payment_failed": "Payment Failed, ",
+  "INSUFFICIENT_FUNDS": "Insufficient fund",
+  "UNSPECIFIED_FAILURE": "Unspecified failure",
+  "DECLINED_INVALID_PIN": "invalid pin",
+  "3-D Secure transaction attempt failed (Not Enrolled)": "3-D Secure transaction attempt failed (Not Enrolled)",
+  "DECLINED": "Card decliend"
 }

@@ -628,8 +628,7 @@ class AppStrings {
   static const reject = 'reject';
   static const toYou = 'to_you';
 
-  //payments
-
-  static const paidSuccessfully = 'paidSuccessfully';
-  static const failureInPayment = 'failureInPayment';
+  //Payment
+  static const paymentSuccess = "payment_success";
+  static const paymentFailed = "payment_failed";
 }

@@ -101,20 +101,19 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   void _showPaymentBottomSheet() {
     showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25), topRight: Radius.circular(25)),
-        ),
-        elevation: 10,
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (ctx) => Container(
-              child: Container(
-                height: MediaQuery.of(context).size.height / 1.15,
-                child: PaymentScreen(),
-              ),
-            ));
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+      ),
+      elevation: 10,
+      context: context,
+      isScrollControlled: true,
+      builder: (ctx) => Container(
+        margin: const EdgeInsets.all(16),
+        height: MediaQuery.of(context).size.height / 1.2,
+        child: PaymentScreen(),
+      ),
+    );
   }
 
   @override
@@ -174,7 +173,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         fontSize: FontSize.s28),
                   ),
                 ),
-                _successSubscriptionAndPayWidgetBO(),
+                _appPreferences.getCachedDriver()!.captainType ==
+                        RegistrationConstants.businessOwner
+                    ? _successSubscriptionAndPayWidgetBO()
+                    : Container(),
                 _profileDataHeader(),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 4),

@@ -528,5 +528,12 @@
   "stepper_bo_third_step_title": "لقد وصل السائق الى نقطة الالتقاط",
   "stepper_bo_forth_step_title": "لقد وصل السائق الى نقطة التوصيل",
   "stepper_bo_third_step_disc": "جارى التجهييز و الاتجاه الى نقطة التوصيل",
-  "stepper_bo_forth_step_disc": "جارى اجراءات انهاء الرحلة"
+  "stepper_bo_forth_step_disc": "جارى اجراءات انهاء الرحلة",
+  "payment_success": "تم الدفع بنجاح",
+  "payment_failed": "خطأ فالدفع, ",
+  "INSUFFICIENT_FUNDS": "رصيد غير كاف",
+  "UNSPECIFIED_FAILURE": "فشل غير محدد",
+  "DECLINED_INVALID_PIN": "رمز غير صحيح",
+  "3-D Secure transaction attempt failed (Not Enrolled)": "فشلت محاولة المعاملة الآمنة ثلاثية الأبعاد (غير مسجل)",
+  "DECLINED": "بطاقة مرفوضة"
 }
