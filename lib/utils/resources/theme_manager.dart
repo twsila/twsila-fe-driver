@@ -16,12 +16,14 @@ ThemeData getApplicationTheme() {
     dialogBackgroundColor: ColorManager.white,
     bottomSheetTheme: BottomSheetThemeData(surfaceTintColor: Colors.white),
     dialogTheme: DialogTheme(
+      surfaceTintColor: Colors.white,
       backgroundColor: ColorManager.white,
     ),
     // ripple effect color
     // cardview theme
     cardTheme: CardTheme(
         color: ColorManager.white,
+        surfaceTintColor: ColorManager.white,
         shadowColor: ColorManager.grey,
         elevation: AppSize.s4),
     // app bar theme
