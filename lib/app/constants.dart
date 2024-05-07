@@ -42,7 +42,7 @@ class Constants {
 class PaymentConstants {
 
   static const String TESTING_KEY = "pk_test_VzZuYND1H3pFgVYv9TLFwrK1mFuLGtELzAEjCQe3";
-  static const String PRODUCTION_KEY = "";
+  static const String PRODUCTION_KEY = "sk_live_Ecy2VbCxLsULrzGjD1roctVCHKeW4d91mDwTzFSP";
 }
 
 class UserTypeConstants {

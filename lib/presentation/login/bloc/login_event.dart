@@ -5,12 +5,14 @@ abstract class LoginEvent {}
 
 class MakeLoginEvent extends LoginEvent {
   final String login;
-  MakeLoginEvent(this.login);
+  final String countryCode;
+  MakeLoginEvent(this.login,this.countryCode);
 }
 
 class MakeLoginBOEvent extends LoginEvent {
+  final String countryCode;
   final String login;
-  MakeLoginBOEvent(this.login);
+  MakeLoginBOEvent(this.login,this.countryCode);
 }
 
 class CheckInputIsValidEvent extends LoginEvent {

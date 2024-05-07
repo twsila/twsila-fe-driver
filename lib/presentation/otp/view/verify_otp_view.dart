@@ -28,11 +28,13 @@ import '../../common/widgets/page_builder.dart';
 class VerifyOtpView extends StatefulWidget {
   final String mobileNumberForApi;
   final String mobileNumberForDisplay;
+  final String countryCode;
   final String registerAs;
 
   VerifyOtpView({
     required this.mobileNumberForApi,
     required this.mobileNumberForDisplay,
+    required this.countryCode,
     required this.registerAs,
   });
 
@@ -61,11 +63,13 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     //   BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
     //     /*'1234567890'*/
     //     widget.mobileNumberForApi,
+    //     widget.countryCode
     //   ));
     // } else {
     //   BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
     //     /*'1234567890'*/
     //     widget.mobileNumberForApi,
+    //       widget.countryCode
     //   ));
     // }
     super.initState();
@@ -139,7 +143,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                     RegistrationConstants.businessOwner) {
                   Navigator.pushNamed(context, Routes.boRegistration,
                       arguments:
-                          BoRegistrationArguments(widget.mobileNumberForApi));
+                          BoRegistrationArguments(widget.mobileNumberForApi,widget.countryCode));
                 } else {
                   CustomDialog(context).showErrorDialog('', '', state.message);
                 }
@@ -173,10 +177,12 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                 if (widget.registerAs == RegistrationConstants.captain) {
                   BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
                     widget.mobileNumberForApi,
+                    widget.countryCode
                   ));
                 } else {
                   BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
                     widget.mobileNumberForApi,
+                    widget.countryCode,
                   ));
                 }
               }
@@ -297,8 +303,9 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
 class VerifyArguments {
   String mobileNumberForApi;
   String mobileNumberForDisplay;
+  String countryCode;
   String registerAs;
 
   VerifyArguments(
-      this.mobileNumberForApi, this.mobileNumberForDisplay, this.registerAs);
+      this.mobileNumberForApi, this.mobileNumberForDisplay,this.countryCode, this.registerAs);
 }

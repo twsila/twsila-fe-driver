@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:moyasar/moyasar.dart';
-import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../app/app_prefs.dart';
@@ -27,11 +26,10 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final AppPreferences appPreferences = instance();
   PaymentConfig paymentConfig = PaymentConfig(
-      publishableApiKey: PaymentConstants.TESTING_KEY,
+      publishableApiKey: PaymentConstants.PRODUCTION_KEY,
       amount: 200 * 100,
-      currency: 'EGP',
-      //TODO Need to set regarding to logged in countryCode (missing from Response)
       description: 'order #1324',
+      currency: "EGP",
       metadata: {'size': '250g'});
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
@@ -39,6 +37,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     paymentConfig.creditCard = CreditCardConfig(saveCard: false, manual: false);
+    // paymentConfig.currency ="EGP";
     super.initState();
   }
 

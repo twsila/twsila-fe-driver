@@ -25,8 +25,9 @@ import '../../../../utils/resources/strings_manager.dart';
 
 class RegisterBusinessOwnerScreen extends StatefulWidget {
   final String mobileNumber;
+  final String countryCode;
 
-  RegisterBusinessOwnerScreen({Key? key, required this.mobileNumber})
+  RegisterBusinessOwnerScreen({Key? key, required this.mobileNumber,required this.countryCode})
       : super(key: key);
 
   @override
@@ -101,6 +102,7 @@ class _RegisterBusinessOwnerScreenState
                   BlocProvider.of<LoginBloc>(context).add(
                     MakeLoginBOEvent(
                       businessOwnerViewModel.mobileNumberController.text,
+                        widget.countryCode,
                     ),
                   );
                 }
@@ -244,6 +246,7 @@ class _RegisterBusinessOwnerScreenState
 
 class BoRegistrationArguments {
   String mobileNumber;
+  String countryCode;
 
-  BoRegistrationArguments(this.mobileNumber);
+  BoRegistrationArguments(this.mobileNumber,this.countryCode);
 }

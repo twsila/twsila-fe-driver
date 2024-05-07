@@ -132,6 +132,7 @@ class RouteGenerator {
             builder: (_) => VerifyOtpView(
                   mobileNumberForApi: args.mobileNumberForApi,
                   mobileNumberForDisplay: args.mobileNumberForDisplay,
+              countryCode: args.countryCode,
                   registerAs: args.registerAs,
                 ));
       case Routes.tripDetails:
@@ -184,7 +185,7 @@ class RouteGenerator {
         final args = settings.arguments as BoRegistrationArguments;
         return MaterialPageRoute(
             builder: (_) => RegisterBusinessOwnerScreen(
-                  mobileNumber: args.mobileNumber,
+                  mobileNumber: args.mobileNumber,countryCode: args.countryCode,
                 ));
       case Routes.welcomeToTwsilaBO:
         return MaterialPageRoute(builder: (_) => WelcomeToTwsilaView());

@@ -45,7 +45,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // content
       // emit success state
       // navigate to main screen
-      print(driverModel);
+      setCountryCodeToCache(event.countryCode);
       emit(LoginSuccessState(driver: driverModel));
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
@@ -73,7 +73,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // content
       // emit success state
       // navigate to main screen
-
+      setCountryCodeToCache(event.countryCode);
       emit(LoginSuccessState(driver: driverModel));
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
@@ -109,5 +109,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
 
     return userDevice;
+  }
+
+  void setCountryCodeToCache(String countryCode) async{
+    appPreferences.setUserSelectedCountry(countryCode);
   }
 }

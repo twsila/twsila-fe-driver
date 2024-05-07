@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/domain/model/trip_details_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
+import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/resources/assets_manager.dart';
 import '../../../../utils/resources/color_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
 import '../../../../utils/resources/values_manager.dart';
+import '../../../common/widgets/custom_expected_time_to_arrive_widget.dart';
 import '../../../common/widgets/custom_text_button.dart';
 import '../../../trip_details/widgets/dotted_seperator.dart';
 
@@ -120,6 +122,17 @@ class _BottomInfoWidgetState extends State<BottomInfoWidget> {
                             textAlign: TextAlign.center,
                           ),
                         ),
+                        // ExpectedTimeToArriveWidget(
+                        //   destinationLocationToEstimateFromCurrentLocation:
+                        //       LocationModel(
+                        //     latitude: widget.tripModel.tripDetails
+                        //         .destinationLocation.latitude!,
+                        //     longitude: widget.tripModel.tripDetails
+                        //         .destinationLocation.longitude!,
+                        //     locationName: widget.tripModel.tripDetails
+                        //         .destinationLocation.locationName!,
+                        //   ),
+                        // ),
                         Text(
                           "الوقت المتوقع 5 دقيقة",
                           overflow: TextOverflow.clip,
@@ -145,7 +158,8 @@ class _BottomInfoWidgetState extends State<BottomInfoWidget> {
             onPressed: () {
               launchUrl(Uri(
                   scheme: 'tel',
-                  path: '${widget.tripModel.tripDetails.passenger!.mobile.toString()}'));
+                  path:
+                      '${widget.tripModel.tripDetails.passenger!.mobile.toString()}'));
             },
             icon: Icon(
               Icons.call,

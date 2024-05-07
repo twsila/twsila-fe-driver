@@ -59,7 +59,7 @@ dependencies:
   flutter_geocoder: ^0.2.2-nullsafety
   google_maps_flutter: ^2.2.8
   google_places_flutter: ^2.0.5
-  flutter_polyline_points: ^1.0.0
+  flutter_polyline_points: ^2.0.0
   geolocator: ^9.0.2
   fluttertoast: ^8.2.2
   intl_phone_field: ^3.1.0
@@ -97,7 +97,7 @@ dependencies:
   double_back_to_close_app: ^1.2.0
   custom_radio_grouped_button: ^2.2.1
   full_screen_image: ^2.0.0
-  moyasar: ^2.0.2
+  moyasar: ^2.0.9
 
 dev_dependencies:
   flutter_test:

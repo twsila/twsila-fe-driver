@@ -23,8 +23,7 @@ extension LoginResponseMapper on LoginResponse? {
           this?.tokenExpirationTime.orEmpty() ?? Constants.empty,
       id: this?.driver!.id.orZero() ?? Constants.zero,
       serviceTypes: this?.driver!.serviceTypes ?? [],
-      registrationStatus:
-          this?.driver!.registrationStatus.orEmpty() ?? Constants.empty,
+      registrationStatus: this!.driver!.registrationStatus,
       vehicleType: this!.driver!.vehicleType ?? null,
       carManufacturerType: this!.driver!.carManufacturerType,
       carModel: this!.driver!.carModel,

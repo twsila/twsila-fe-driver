@@ -28,7 +28,7 @@ abstract class DriverBaseModel {
 class Driver extends DriverBaseModel {
   String dateOfBirth;
   List<String>? serviceTypes;
-  String registrationStatus;
+  RegistrationStatus registrationStatus;
   DriverVehicleType? vehicleType;
   DriverCarManufacturer carManufacturerType;
   DriverCarModel carModel;
@@ -111,7 +111,7 @@ class Driver extends DriverBaseModel {
         serviceTypes: json["serviceTypes"] != null
             ? List<String>.from(json["serviceTypes"]).toList()
             : [],
-        registrationStatus: json["registrationStatus"] ?? "",
+        registrationStatus: RegistrationStatus.fromJson(json["registrationStatus"]),
         vehicleType: json["vehicleType"] != null
             ? DriverVehicleType.fromJson(json["vehicleType"])
             : null,
@@ -176,6 +176,30 @@ class Driver extends DriverBaseModel {
       };
 }
 
+class RegistrationStatus {
+  int id;
+  String value;
+  String valueAr;
+
+  RegistrationStatus({
+    required this.id,
+    required this.value,
+    required this.valueAr,
+  });
+
+  factory RegistrationStatus.fromJson(Map<String, dynamic> json) =>
+      RegistrationStatus(
+        id: json["id"],
+        value: json["value"],
+        valueAr: json["valueAr"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "value": value,
+        "valueAr": valueAr,
+      };
+}
 class DriverCarManufacturer {
   int id;
   String carManufacturer;
