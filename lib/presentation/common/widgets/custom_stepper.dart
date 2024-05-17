@@ -591,20 +591,20 @@ class _CustomStepperState extends State<CustomStepper>
     assert(widget.steps[index].state != null);
     switch (widget.steps[index].state) {
       case StepState.indexed:
-        return textTheme.bodyText1!.copyWith(
+        return textTheme.bodyMedium!.copyWith(
           color: widget.steps[index].isActive
               ? ColorManager.primary
               : ColorManager.grey1,
         );
       case StepState.editing:
       case StepState.complete:
-        return textTheme.bodyText1!;
+        return textTheme.bodyMedium!;
       case StepState.disabled:
-        return textTheme.bodyText1!.copyWith(
+        return textTheme.bodyMedium!.copyWith(
           color: _isDark() ? _kDisabledDark : _kDisabledLight,
         );
       case StepState.error:
-        return textTheme.bodyText1!.copyWith(
+        return textTheme.bodyMedium!.copyWith(
           color: _isDark() ? _kErrorDark : _kErrorLight,
         );
     }
@@ -619,13 +619,13 @@ class _CustomStepperState extends State<CustomStepper>
       case StepState.indexed:
       case StepState.editing:
       case StepState.complete:
-        return textTheme.caption!;
+        return textTheme.bodyMedium!;
       case StepState.disabled:
-        return textTheme.caption!.copyWith(
+        return textTheme.bodyMedium!.copyWith(
           color: _isDark() ? _kDisabledDark : _kDisabledLight,
         );
       case StepState.error:
-        return textTheme.caption!.copyWith(
+        return textTheme.bodyMedium!.copyWith(
           color: _isDark() ? _kErrorDark : _kErrorLight,
         );
     }

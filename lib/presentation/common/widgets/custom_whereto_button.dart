@@ -27,7 +27,7 @@ class CustomWhereToButton extends StatelessWidget {
             children: [
               Text(
                 'Where To?',
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: Theme.of(context).textTheme.headlineLarge!.copyWith(
                       color: ColorManager.primary,
                       fontSize: 14,
                     ),

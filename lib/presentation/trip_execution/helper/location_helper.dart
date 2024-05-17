@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location_geocoder/location_geocoder.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 
@@ -12,6 +12,10 @@ import '../../../app/di.dart';
 import '../../../domain/model/destance_matrix_model.dart';
 
 class LocationHelper {
+  final LocatitonGeocoder geocoder = LocatitonGeocoder(Platform.isIOS
+      ? Constants.GOOGLE_API_KEY_IOS
+      : Constants.GOOGLE_API_KEY_ANDROID);
+
   double distanceBetweenTwoLocationInMeters(
       {required double lat1,
       required double long1,
@@ -42,9 +46,8 @@ class LocationHelper {
   }
 
   Future<String> getCityNameByCoordinates(double lat, double long) async {
-    var address = await Geocoder.local
-        .findAddressesFromCoordinates(Coordinates(lat, long));
-    String? cityName = address.first.locality;
-    return cityName ?? "defaultCity";
+    final coordinates = Coordinates(lat, long);
+    var address = await geocoder.findAddressesFromCoordinates(coordinates);
+    return address[0].locality ?? address[0].adminArea ?? '';
   }
 }

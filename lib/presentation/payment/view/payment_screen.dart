@@ -29,7 +29,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       publishableApiKey: PaymentConstants.PRODUCTION_KEY,
       amount: 200 * 100,
       description: 'order #1324',
-      currency: "EGP",
       metadata: {'size': '250g'});
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
@@ -37,7 +36,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     paymentConfig.creditCard = CreditCardConfig(saveCard: false, manual: false);
-    // paymentConfig.currency ="EGP";
     super.initState();
   }
 
@@ -108,6 +106,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         CreditCard(
           config: paymentConfig,
           onPaymentResult: onPaymentResult,
+
           locale:
               appPreferences.getAppLanguage() == LanguageType.ENGLISH.getValue()
                   ? const Localization.en()

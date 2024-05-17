@@ -1,4 +1,3 @@
-import 'package:flutter_geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../presentation/google_maps/model/location_model.dart';

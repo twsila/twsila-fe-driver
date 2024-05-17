@@ -41,8 +41,8 @@ class Constants {
 }
 class PaymentConstants {
 
-  static const String TESTING_KEY = "pk_test_VzZuYND1H3pFgVYv9TLFwrK1mFuLGtELzAEjCQe3";
-  static const String PRODUCTION_KEY = "sk_live_Ecy2VbCxLsULrzGjD1roctVCHKeW4d91mDwTzFSP";
+  static const String TESTING_KEY = "pk_test_DhoknjKhJ1WgngxDP315TgCYBP3DvBtQA3LZc9Up";
+  static const String PRODUCTION_KEY = "pk_live_JLF3TS9GDjhLAUkW1bmrzpmLA2X1WZ7EW3tBKJLD";
 }
 
 class UserTypeConstants {
