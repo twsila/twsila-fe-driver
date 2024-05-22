@@ -356,6 +356,8 @@ class AppStrings {
   static const userName = 'user_name';
   static const enterUserNameHere = 'user_name_hint';
   static const email = 'email';
+  static const nationalIdNumber = 'nationalIdNumber';
+  static const nationalIdNumberHint = 'nationalIdNumberHint';
   static const enterEmailHere = 'email_hint';
   static const type = 'type';
   static const male = 'male';

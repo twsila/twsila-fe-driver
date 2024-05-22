@@ -43,6 +43,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   String? email;
   String? gender;
   String? birthDate;
+  String? nationalIdNumber;
   Function()? continueFunction;
   ImagePicker imgpicker = ImagePicker();
 
@@ -100,7 +101,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           if (validate) {
             BlocProvider.of<ServiceRegistrationBloc>(context).add(
                 SetCaptainData(captainPhoto!, widget.mobileNumber, firstName!,
-                    lastName!, email ?? "", gender!, birthDate!));
+                    lastName!, email ?? "", gender!, birthDate!,nationalIdNumber!));
           }
         };
       }
@@ -321,6 +322,17 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           ),
         ),
         CustomDateOfBirth(),
+        CustomTextInputField(
+          labelText: AppStrings.nationalIdNumber.tr(),
+          showLabelText: true,
+          hintText: AppStrings.nationalIdNumberHint.tr(),
+          validateEmptyString: true,
+          keyboardType: TextInputType.number,
+          onChanged: (value) {
+            nationalIdNumber = value;
+            validateInputsToContinue();
+          },
+        ),
         Padding(
           padding: const EdgeInsets.all(AppPadding.p12),
           child: Row(
@@ -495,6 +507,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
         email: email,
         gender: gender,
         birthDate: birthDate,
+        nationalIdNumber: nationalIdNumber,
         agreeWithTerms: agreeWithTerms));
   }
 }

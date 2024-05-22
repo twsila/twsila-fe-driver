@@ -64,12 +64,19 @@ abstract class AppServiceClient {
       @Part(name: "email") String email,
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
+      @Part(name: "nationalId") String nationalId,
       @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "vehicleType.id") String vehicleTypeId,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
       @Part(name: "plateNumber") String plateNumber,
       @Part(name: "isAcknowledged") bool isAcknowledged,
+      @Part(name: "vehicleDocExpiryDate") String vehicleDocExpiryDate,
+      @Part(name: "vehicleOwnerNatIdExpiryDate")
+      String vehicleOwnerNatIdExpiryDate,
+      @Part(name: "vehicleDriverNatIdExpiryDate")
+      String vehicleDriverNatIdExpiryDate,
+      @Part(name: "licenseExpiryDate") String licenseExpiryDate,
       @Part(name: "numberOfPassengers") String numberOfPassengers,
       @Part(name: "driverImages") List<File> driverImages,
       @Part(name: "countryCode") String countryCode);
@@ -83,6 +90,7 @@ abstract class AppServiceClient {
       @Part(name: "email") String email,
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
+      @Part(name: "nationalId") String nationalId,
       @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
@@ -98,6 +106,12 @@ abstract class AppServiceClient {
       @Part(name: "hasLifting") bool hasLifting,
       @Part(name: "plateNumber") String plateNumber,
       @Part(name: "isAcknowledged") bool isAcknowledged,
+      @Part(name: "vehicleDocExpiryDate") String vehicleDocExpiryDate,
+      @Part(name: "vehicleOwnerNatIdExpiryDate")
+      String vehicleOwnerNatIdExpiryDate,
+      @Part(name: "vehicleDriverNatIdExpiryDate")
+      String vehicleDriverNatIdExpiryDate,
+      @Part(name: "licenseExpiryDate") String licenseExpiryDate,
       @Part(name: "vehicleShape.id") String vehicleShapeId,
       @Part(name: "driverImages") List<File> driverImages,
       @Part(name: "countryCode") String countryCode);

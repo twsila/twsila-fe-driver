@@ -57,11 +57,11 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
 
 UserDeviceResponse _$UserDeviceResponseFromJson(Map<String, dynamic> json) =>
     UserDeviceResponse(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['registrationId'] as String?,
       json['deviceOs'] as String?,
       json['appVersion'] as String?,
-      json['userId'] as int?,
+      (json['userId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$UserDeviceResponseToJson(UserDeviceResponse instance) =>
@@ -77,7 +77,7 @@ CustomerResponse _$CustomerResponseFromJson(Map<String, dynamic> json) =>
     CustomerResponse(
       json['id'] as String?,
       json['name'] as String?,
-      json['numOfNotifications'] as int?,
+      (json['numOfNotifications'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CustomerResponseToJson(CustomerResponse instance) =>
@@ -153,7 +153,7 @@ Map<String, dynamic> _$ForgotPasswordResponseToJson(
 
 ServiceResponse _$ServiceResponseFromJson(Map<String, dynamic> json) =>
     ServiceResponse(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['title'] as String?,
       json['image'] as String?,
     );
@@ -167,7 +167,7 @@ Map<String, dynamic> _$ServiceResponseToJson(ServiceResponse instance) =>
 
 BannersResponse _$BannersResponseFromJson(Map<String, dynamic> json) =>
     BannersResponse(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['title'] as String?,
       json['image'] as String?,
       json['link'] as String?,
@@ -183,7 +183,7 @@ Map<String, dynamic> _$BannersResponseToJson(BannersResponse instance) =>
 
 StoreResponse _$StoreResponseFromJson(Map<String, dynamic> json) =>
     StoreResponse(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['title'] as String?,
       json['image'] as String?,
     );
@@ -239,7 +239,7 @@ Map<String, dynamic> _$HomeResponseToJson(HomeResponse instance) =>
 StoreDetailsResponse _$StoreDetailsResponseFromJson(
         Map<String, dynamic> json) =>
     StoreDetailsResponse(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['title'] as String?,
       json['image'] as String?,
       json['details'] as String?,

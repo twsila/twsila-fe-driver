@@ -40,6 +40,7 @@ class addCaptainData extends ServiceRegistrationEvent {
   String? email;
   String? gender;
   String? birthDate;
+  String? nationalIdNumber;
   bool? agreeWithTerms;
 
   addCaptainData(
@@ -49,6 +50,7 @@ class addCaptainData extends ServiceRegistrationEvent {
       this.email,
       this.gender,
       this.birthDate,
+      this.nationalIdNumber,
       this.agreeWithTerms});
 }
 
@@ -110,9 +112,10 @@ class SetCaptainData extends ServiceRegistrationEvent {
   String? email;
   String gender;
   String birthDate;
+  String nationalIdNumber;
 
   SetCaptainData(this.captainPhoto, this.mobileNumber, this.firstName,
-      this.lastName, this.email, this.gender, this.birthDate);
+      this.lastName, this.email, this.gender, this.birthDate,this.nationalIdNumber);
 }
 
 class SetFirstStepData extends ServiceRegistrationEvent {

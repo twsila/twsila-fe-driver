@@ -75,6 +75,8 @@ class ServiceRegistrationBloc
         event.gender != null &&
         event.gender!.isNotEmpty &&
         event.birthDate != null &&
+        event.nationalIdNumber != null &&
+        event.nationalIdNumber!.isNotEmpty &&
         event.agreeWithTerms != null &&
         event.agreeWithTerms != false) {
       emit(CaptainDataIsValid());
@@ -204,6 +206,7 @@ class ServiceRegistrationBloc
             email: registrationRequest.email!,
             gender: registrationRequest.gender!,
             dateOfBirth: registrationRequest.dateOfBirth!,
+            nationalIdNumber: registrationRequest.nationalIdNumber!,
             driverServiceType: registrationRequest.serviceTypeParam!,
             vehicleTypeId: registrationRequest.vehicleTypeId!,
             carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
@@ -224,6 +227,10 @@ class ServiceRegistrationBloc
             plateNumber: registrationRequest.plateNumber!,
             driverImages: registrationRequest.driverImages!,
             isAcknowledged: registrationRequest.isAcknowledged ?? true,
+            vehicleDocExpiryDate: registrationRequest.vehicleDocExpiryDate!,
+            vehicleOwnerNatIdExpiryDate: registrationRequest.vehicleOwnerNatIdExpiryDate!,
+            vehicleDriverNatIdExpiryDate: registrationRequest.vehicleDriverNatIdExpiryDate!,
+            licenseExpiryDate: registrationRequest.licenseExpiryDate!,
             serviceModelId: registrationRequest.serviceModelId,
             countryCode: appPreferences.getUserSelectedCountry().toString())))
         .fold(
@@ -392,6 +399,7 @@ class ServiceRegistrationBloc
     registrationRequest.gender = event.gender;
     registrationRequest.email = event.email;
     registrationRequest.dateOfBirth = event.birthDate;
+    registrationRequest.nationalIdNumber = event.nationalIdNumber;
     emit(captainDataAddedState(registrationRequest));
   }
 
@@ -428,6 +436,12 @@ class ServiceRegistrationBloc
       event.carDriverLicensePhotos,
       event.carOwnerIdPhotos
     ];
+
+
+    registrationRequest.vehicleDocExpiryDate = event.carDocumentPhotos.expireDate;
+    registrationRequest.vehicleOwnerNatIdExpiryDate = event.carOwnerIdPhotos.expireDate;
+    registrationRequest.vehicleDriverNatIdExpiryDate = event.carDriverIdPhotos.expireDate;
+    registrationRequest.licenseExpiryDate = event.carDriverLicensePhotos.expireDate;
 
     List<File> driverImages = await prepareDocumentsPhotosList(documents);
 

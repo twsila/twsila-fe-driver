@@ -16,6 +16,8 @@
   "navigate_to_tracking_page": "Open Navigation page",
   "add_requests_from_BO": "Add Requests",
   "navigation": "Navigation",
+  "nationalIdNumber": "National id number",
+  "nationalIdNumberHint": "Enter national id here",
   "photo_limits_warning": "Please select photos with maximum",
   "photos_lower": "photos",
   "photo_limits_error": "you are exceeds the max number of photos",

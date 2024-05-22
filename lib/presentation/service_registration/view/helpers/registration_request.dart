@@ -13,6 +13,7 @@ class RegistrationRequest {
   String? email;
   String? gender;
   String? dateOfBirth;
+  String? nationalIdNumber;
   String? serviceTypeParam;
   String? vehicleTypeId;
   String? carManufacturerTypeId;
@@ -40,6 +41,12 @@ class RegistrationRequest {
   DocumentData? carOwnerNationalIdPhotosData;
   DocumentData? carDriverNationalIdPhotosData;
 
+  String? vehicleDocExpiryDate;
+  String? vehicleOwnerNatIdExpiryDate;
+  String? vehicleDriverNatIdExpiryDate;
+  String? licenseExpiryDate;
+
+
   AdditionalServicesModel? additionalServicesModel;
 
   bool? isAcknowledged;
@@ -55,6 +62,7 @@ class RegistrationRequest {
       this.email,
       this.gender,
       this.dateOfBirth,
+      this.nationalIdNumber,
       this.serviceTypeParam,
       this.vehicleTypeId,
       this.carManufacturerTypeId,
@@ -75,6 +83,10 @@ class RegistrationRequest {
       this.hasAssembly,
       this.hasLifting,
       this.isAcknowledged,
+      this.vehicleDocExpiryDate,
+      this.vehicleOwnerNatIdExpiryDate,
+      this.vehicleDriverNatIdExpiryDate,
+      this.licenseExpiryDate,
       {this.carDocumentPhotosData,
       this.carDriverLicensePhotosData,
       this.carDriverNationalIdPhotosData,

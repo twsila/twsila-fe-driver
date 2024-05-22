@@ -24,6 +24,7 @@ class RegistrationUseCase
         input.email,
         input.gender,
         input.dateOfBirth,
+        input.nationalIdNumber,
         input.driverServiceType,
         input.vehicleTypeId,
         input.carManufacturerTypeId,
@@ -45,6 +46,10 @@ class RegistrationUseCase
         input.hasAssembly,
         input.hasLifting,
         input.isAcknowledged,
+        input.vehicleDocExpiryDate,
+        input.vehicleOwnerNatIdExpiryDate,
+        input.vehicleDriverNatIdExpiryDate,
+        input.licenseExpiryDate,
         vehicleShapeId: input.vehicleShapeId,
         serviceModelId: input.serviceModelId));
   }
@@ -57,6 +62,7 @@ class RegistrationUseCaseInput {
   String? email;
   String gender;
   String dateOfBirth;
+  String nationalIdNumber;
   String driverServiceType;
   String vehicleTypeId;
   String carManufacturerTypeId;
@@ -65,6 +71,10 @@ class RegistrationUseCaseInput {
   String carNotes;
   String countryCode;
   String plateNumber;
+  String vehicleDocExpiryDate;
+  String vehicleOwnerNatIdExpiryDate;
+  String vehicleDriverNatIdExpiryDate;
+  String licenseExpiryDate;
   List<File> driverImages;
 
   String? vehicleShapeId;
@@ -91,6 +101,7 @@ class RegistrationUseCaseInput {
       this.email,
       required this.gender,
       required this.dateOfBirth,
+      required this.nationalIdNumber,
       required this.driverServiceType,
       required this.vehicleTypeId,
       required this.carManufacturerTypeId,
@@ -99,6 +110,10 @@ class RegistrationUseCaseInput {
       required this.carNotes,
       required this.plateNumber,
       required this.driverImages,
+      required this.vehicleDocExpiryDate,
+      required this.vehicleOwnerNatIdExpiryDate,
+      required this.vehicleDriverNatIdExpiryDate,
+      required this.licenseExpiryDate,
       this.numberOfPassengersId,
       this.vehicleShapeId,
       required this.countryCode,

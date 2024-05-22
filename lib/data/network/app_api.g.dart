@@ -232,12 +232,17 @@ class _AppServiceClient implements AppServiceClient {
     email,
     gender,
     dateOfBirth,
+    nationalId,
     serviceTypeParam,
     vehicleTypeId,
     carManufacturerTypeId,
     carModelId,
     plateNumber,
     isAcknowledged,
+    vehicleDocExpiryDate,
+    vehicleOwnerNatIdExpiryDate,
+    vehicleDriverNatIdExpiryDate,
+    licenseExpiryDate,
     numberOfPassengers,
     driverImages,
     countryCode,
@@ -271,6 +276,10 @@ class _AppServiceClient implements AppServiceClient {
       dateOfBirth,
     ));
     _data.fields.add(MapEntry(
+      'nationalId',
+      nationalId,
+    ));
+    _data.fields.add(MapEntry(
       'serviceTypes',
       serviceTypeParam,
     ));
@@ -293,6 +302,22 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'isAcknowledged',
       isAcknowledged.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleDocExpiryDate',
+      vehicleDocExpiryDate,
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleOwnerNatIdExpiryDate',
+      vehicleOwnerNatIdExpiryDate,
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleDriverNatIdExpiryDate',
+      vehicleDriverNatIdExpiryDate,
+    ));
+    _data.fields.add(MapEntry(
+      'licenseExpiryDate',
+      licenseExpiryDate,
     ));
     _data.fields.add(MapEntry(
       'numberOfPassengers',
@@ -334,6 +359,7 @@ class _AppServiceClient implements AppServiceClient {
     email,
     gender,
     dateOfBirth,
+    nationalId,
     serviceTypeParam,
     carManufacturerTypeId,
     carModelId,
@@ -349,6 +375,10 @@ class _AppServiceClient implements AppServiceClient {
     hasLifting,
     plateNumber,
     isAcknowledged,
+    vehicleDocExpiryDate,
+    vehicleOwnerNatIdExpiryDate,
+    vehicleDriverNatIdExpiryDate,
+    licenseExpiryDate,
     vehicleShapeId,
     driverImages,
     countryCode,
@@ -381,6 +411,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'dateOfBirth',
       dateOfBirth,
+    ));
+    _data.fields.add(MapEntry(
+      'nationalId',
+      nationalId,
     ));
     _data.fields.add(MapEntry(
       'serviceTypes',
@@ -443,6 +477,22 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'isAcknowledged',
       isAcknowledged.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleDocExpiryDate',
+      vehicleDocExpiryDate,
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleOwnerNatIdExpiryDate',
+      vehicleOwnerNatIdExpiryDate,
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleDriverNatIdExpiryDate',
+      vehicleDriverNatIdExpiryDate,
+    ));
+    _data.fields.add(MapEntry(
+      'licenseExpiryDate',
+      licenseExpiryDate,
     ));
     _data.fields.add(MapEntry(
       'vehicleShape.id',
