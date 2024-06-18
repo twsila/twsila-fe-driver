@@ -537,5 +537,14 @@
   "UNSPECIFIED_FAILURE": "فشل غير محدد",
   "DECLINED_INVALID_PIN": "رمز غير صحيح",
   "3-D Secure transaction attempt failed (Not Enrolled)": "فشلت محاولة المعاملة الآمنة ثلاثية الأبعاد (غير مسجل)",
-  "DECLINED": "بطاقة مرفوضة"
+  "DECLINED": "بطاقة مرفوضة",
+  "boCommercialRegistrationDocument": "صور السجل التجارى للشركة",
+  "boNationalId": "صور هوية مالك الشركة",
+
+  "boNationalIdFrontImage": "الصورة الامامية للهوية",
+  "boNationalIdBackImage": "الصورة الخلفية للهوية",
+  "boCommercialRegistrationDocumentFrontImage": "الصورة الاولى للسجل التجارى",
+  "boCommercialRegistrationDocumentBackImage": "الصورة الثانية للسجل التجارى",
+  "boNationalIdExpireDate": "تاريخ انتهاء الهوية",
+  "boCommercialRegistrationDocumentExpireDate": "تاريخ انتهاء السجل التجارى"
 }

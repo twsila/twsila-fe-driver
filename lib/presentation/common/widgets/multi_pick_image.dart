@@ -18,6 +18,7 @@ import '../state_renderer/dialogs.dart';
 
 class MutliPickImageWidget extends StatefulWidget {
   final Function(List<XFile>? images) onPickedImages;
+  final Function(XFile images)? onRemovedImage;
   RegistrationRequest? registrationRequest;
   List<XFile>? selectedBeforeImages;
   final String titleText;
@@ -30,6 +31,7 @@ class MutliPickImageWidget extends StatefulWidget {
   MutliPickImageWidget(this.onPickedImages, this.titleText, this.btnText,
       this.btnIcon, this.btnBackgroundColor, this.registrationRequest,
       {this.addMultiplePhotos = true,
+      this.onRemovedImage,
       this.fontSize,
       this.selectedBeforeImages});
 
@@ -224,6 +226,9 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                           child: InkWell(
                             onTap: () {
                               setState(() {
+                                widget.onRemovedImage != null
+                                    ? widget.onRemovedImage!(imageone)
+                                    : null;
                                 imagefiles.remove(imageone);
                                 if (widget.registrationRequest != null &&
                                     widget.registrationRequest!.carImages !=

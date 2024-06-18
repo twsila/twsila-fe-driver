@@ -22,6 +22,8 @@ class Constants {
   static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
   static const String BUSINESS_OWNER_PHOTO_IMAGE_STRING =
       'business_owner_photo.jpg';
+  static const String BUSINESS_OWNER_PHOTO_DOCUMENT_SUBSTRING =
+      'business_owner_document_photo_';
 
   static const String dateFormatterString = "dd/MM/yyyy hh:mm:ss";
 

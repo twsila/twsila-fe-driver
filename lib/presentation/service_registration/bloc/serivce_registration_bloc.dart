@@ -114,7 +114,7 @@ class ServiceRegistrationBloc
     emit(ServiceRegistrationLoading());
     LookupByKeyUseCase lookupByKeyUseCase = instance<LookupByKeyUseCase>();
     (await lookupByKeyUseCase
-                   .execute(LookupByKeyUseCaseInput(LookupKeys.tankType, "en")))
+            .execute(LookupByKeyUseCaseInput(LookupKeys.tankType, "en")))
         .fold(
             (failure) => {
                   // left -> failure
@@ -228,8 +228,10 @@ class ServiceRegistrationBloc
             driverImages: registrationRequest.driverImages!,
             isAcknowledged: registrationRequest.isAcknowledged ?? true,
             vehicleDocExpiryDate: registrationRequest.vehicleDocExpiryDate!,
-            vehicleOwnerNatIdExpiryDate: registrationRequest.vehicleOwnerNatIdExpiryDate!,
-            vehicleDriverNatIdExpiryDate: registrationRequest.vehicleDriverNatIdExpiryDate!,
+            vehicleOwnerNatIdExpiryDate:
+                registrationRequest.vehicleOwnerNatIdExpiryDate!,
+            vehicleDriverNatIdExpiryDate:
+                registrationRequest.vehicleDriverNatIdExpiryDate!,
             licenseExpiryDate: registrationRequest.licenseExpiryDate!,
             serviceModelId: registrationRequest.serviceModelId,
             countryCode: appPreferences.getUserSelectedCountry().toString())))
@@ -254,10 +256,14 @@ class ServiceRegistrationBloc
       Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
 
-    File captainPhoto = await changeFileNameOnly(
+    File boPhoto = await changeFileNameOnly(
         event.businessOwnerModel.profileImage!,
         Constants.BUSINESS_OWNER_PHOTO_IMAGE_STRING);
-    event.businessOwnerModel.images!.add(captainPhoto);
+    List<File> documentPhotos =
+        await prepareBoDocumentList(event.businessOwnerModel.images!);
+    event.businessOwnerModel.images!.clear();
+    event.businessOwnerModel.images!.add(boPhoto);
+    event.businessOwnerModel.images!.addAll(documentPhotos);
 
     RegistrationBOUseCase registrationBOUseCase =
         instance<RegistrationBOUseCase>();
@@ -269,6 +275,21 @@ class ServiceRegistrationBloc
         emit(ServiceBORegistrationSuccess());
       },
     );
+  }
+
+  Future<List<File>> prepareBoDocumentList(List<File> boDocumentList) async {
+    List<File> carPhotos = [];
+    int counter = 1;
+    await Future.forEach(boDocumentList, (File documentPhoto) async {
+      File imageFile = await changeFileNameOnlyForBo(
+          documentPhoto,
+          Constants.BUSINESS_OWNER_PHOTO_DOCUMENT_SUBSTRING +
+              counter.toString() +
+              '.jpg');
+      counter++;
+      carPhotos.add(imageFile);
+    });
+    return carPhotos;
   }
 
   FutureOr<void> _setDocumentData(NavigateToUploadDocument event,
@@ -437,11 +458,14 @@ class ServiceRegistrationBloc
       event.carOwnerIdPhotos
     ];
 
-
-    registrationRequest.vehicleDocExpiryDate = event.carDocumentPhotos.expireDate;
-    registrationRequest.vehicleOwnerNatIdExpiryDate = event.carOwnerIdPhotos.expireDate;
-    registrationRequest.vehicleDriverNatIdExpiryDate = event.carDriverIdPhotos.expireDate;
-    registrationRequest.licenseExpiryDate = event.carDriverLicensePhotos.expireDate;
+    registrationRequest.vehicleDocExpiryDate =
+        event.carDocumentPhotos.expireDate;
+    registrationRequest.vehicleOwnerNatIdExpiryDate =
+        event.carOwnerIdPhotos.expireDate;
+    registrationRequest.vehicleDriverNatIdExpiryDate =
+        event.carDriverIdPhotos.expireDate;
+    registrationRequest.licenseExpiryDate =
+        event.carDriverLicensePhotos.expireDate;
 
     List<File> driverImages = await prepareDocumentsPhotosList(documents);
 
@@ -457,6 +481,13 @@ class ServiceRegistrationBloc
   }
 
   Future<File> changeFileNameOnly(XFile image, String newFileName) {
+    File file = File(image.path);
+    var path = image.path;
+    var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
+    var newPath = path.substring(0, lastSeparator + 1) + newFileName;
+    return file.copy(newPath);
+  }
+  Future<File> changeFileNameOnlyForBo(File image, String newFileName) {
     File file = File(image.path);
     var path = image.path;
     var lastSeparator = path.lastIndexOf(Platform.pathSeparator);

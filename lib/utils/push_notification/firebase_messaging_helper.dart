@@ -1,15 +1,33 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
 
+import '../resources/global_key.dart';
+import '../resources/strings_manager.dart';
+
 class FirebaseMessagingHelper extends ChangeNotifier {
   static final _fbm = FirebaseMessaging.instance;
   static ValueNotifier<int> notificationCounter = ValueNotifier(0);
   static final AppPreferences appPreferences = instance<AppPreferences>();
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text(AppStrings.cancel.tr()),
+    onPressed: () {
+      Navigator.pop(NavigationService.navigatorKey.currentState!.context);
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text(AppStrings.ok.tr()),
+    onPressed: () {
+      Navigator.pop(NavigationService.navigatorKey.currentState!.context);
+    },
+  );
 
   Future<void> configure(BuildContext context) async {
     _fbm.requestPermission(
@@ -42,6 +60,25 @@ class FirebaseMessagingHelper extends ChangeNotifier {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       dynamic notification = message.data;
       notificationCounter.value += 1;
+
+      print(message);
+      if (message.notification != null) {
+        showDialog(
+            context: NavigationService.navigatorKey.currentState!.context,
+            builder: (_) => AlertDialog(
+                  title: Text(message.notification!.title ?? ""),
+                  content: Text(message.notification!.body ?? ""),
+                  actions: [continueButton],
+                ));
+      } else if (message.data["title"] != null && message.data["title"] != "") {
+        showDialog(
+            context: NavigationService.navigatorKey.currentState!.context,
+            builder: (_) => AlertDialog(
+                  title: Text(message.notification!.title ?? ""),
+                  content: Text(message.notification!.body ?? ""),
+                  actions: [continueButton],
+                ));
+      }
       return;
     });
 

@@ -620,6 +620,21 @@ class AppStrings {
   static const addDriverMobileNumber = 'add_driver_mobile_number';
   static const sendingRequestDone = 'sending_request_done';
 
+  static const boNationalId = 'boNationalId';
+  static const boCommercialRegistrationDocument= 'boCommercialRegistrationDocument';
+
+  static const boNationalIdFrontImage = 'boNationalIdFrontImage';
+  static const boNationalIdBackImage = 'boNationalIdBackImage';
+  static const boCommercialRegistrationDocumentFrontImage =
+      'boCommercialRegistrationDocumentFrontImage';
+  static const boCommercialRegistrationDocumentBackImage =
+      'boCommercialRegistrationDocumentBackImage';
+
+  static const boNationalIdExpireDate =
+      'boNationalIdExpireDate';
+  static const boCommercialRegistrationDocumentExpireDate =
+      'boCommercialRegistrationDocumentExpireDate';
+
   static const assignDriver = 'assign_driver';
 
   static const want = 'want';

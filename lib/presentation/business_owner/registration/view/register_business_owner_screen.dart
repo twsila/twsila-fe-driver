@@ -21,13 +21,17 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
 import '../../../../utils/resources/assets_manager.dart';
 import '../../../../utils/resources/color_manager.dart';
+import '../../../../utils/resources/font_manager.dart';
 import '../../../../utils/resources/strings_manager.dart';
+import '../../../../utils/resources/styles_manager.dart';
+import '../../../common/widgets/custom_text_button.dart';
 
 class RegisterBusinessOwnerScreen extends StatefulWidget {
   final String mobileNumber;
   final String countryCode;
 
-  RegisterBusinessOwnerScreen({Key? key, required this.mobileNumber,required this.countryCode})
+  RegisterBusinessOwnerScreen(
+      {Key? key, required this.mobileNumber, required this.countryCode})
       : super(key: key);
 
   @override
@@ -102,7 +106,7 @@ class _RegisterBusinessOwnerScreenState
                   BlocProvider.of<LoginBloc>(context).add(
                     MakeLoginBOEvent(
                       businessOwnerViewModel.mobileNumberController.text,
-                        widget.countryCode,
+                      widget.countryCode,
                     ),
                   );
                 }
@@ -141,6 +145,7 @@ class _RegisterBusinessOwnerScreenState
       ],
     );
   }
+
 
   Widget _uploadBOPhoto() {
     return GestureDetector(
@@ -248,5 +253,5 @@ class BoRegistrationArguments {
   String mobileNumber;
   String countryCode;
 
-  BoRegistrationArguments(this.mobileNumber,this.countryCode);
+  BoRegistrationArguments(this.mobileNumber, this.countryCode);
 }

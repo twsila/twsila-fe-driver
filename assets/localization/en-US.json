@@ -537,5 +537,13 @@
   "UNSPECIFIED_FAILURE": "Unspecified failure",
   "DECLINED_INVALID_PIN": "invalid pin",
   "3-D Secure transaction attempt failed (Not Enrolled)": "3-D Secure transaction attempt failed (Not Enrolled)",
-  "DECLINED": "Card decliend"
+  "DECLINED": "Card decliend",
+  "boCommercialRegistrationDocument": "Commercial registration images",
+  "boNationalId": "business owner Id images",
+  "boNationalIdFrontImage": "National id front image",
+  "boNationalIdBackImage": "National id back image",
+  "boCommercialRegistrationDocumentFrontImage": "Commercial registration first image",
+  "boCommercialRegistrationDocumentBackImage": "Commercial registration second image",
+  "boNationalIdExpireDate": "National Id Expire date",
+  "boCommercialRegistrationDocumentExpireDate": "Commercial registration expire date"
 }

@@ -10,6 +10,9 @@ enum Documents {
   driverLicense,
   driverId,
   ownerId,
+  //Business owner
+  boNationalId,
+  boCommercialRegistrationDocument
 }
 
 enum DocumentType {
@@ -21,6 +24,11 @@ enum DocumentType {
   driverIdBack,
   ownerIdFront,
   ownerIdBack,
+  //Business owner
+  boNationalIdFront,
+  boNationalIdBack,
+  boCommercialRegistrationDocumentFront,
+  boCommercialRegistrationDocumentBack
 }
 
 extension DocumentTypePhotoTitles on DocumentType {
@@ -44,6 +52,14 @@ extension DocumentTypePhotoTitles on DocumentType {
         return AppStrings.carOwnerIdentityCardFrontImage.tr();
       case DocumentType.ownerIdBack:
         return AppStrings.carOwnerIdentityCardBackImage.tr();
+      case DocumentType.boNationalIdFront:
+        return AppStrings.boNationalIdFrontImage.tr();
+      case DocumentType.boNationalIdBack:
+        return AppStrings.boNationalIdBackImage.tr();
+      case DocumentType.boCommercialRegistrationDocumentFront:
+        return AppStrings.boCommercialRegistrationDocumentFrontImage.tr();
+      case DocumentType.boCommercialRegistrationDocumentBack:
+        return AppStrings.boCommercialRegistrationDocumentBackImage.tr();
       default:
         return 'title not found';
     }
@@ -63,12 +79,15 @@ extension DocumentExpirationDateTitles on DocumentType {
         return AppStrings.carDriverIdentityCardExpireDate.tr();
       case DocumentType.ownerIdFront:
         return AppStrings.carOwnerIdentityCardExpireDate.tr();
+      case DocumentType.boNationalIdFront:
+        return AppStrings.boNationalIdExpireDate.tr();
+      case DocumentType.boCommercialRegistrationDocumentFront:
+        return AppStrings.boCommercialRegistrationDocumentExpireDate.tr();
       default:
         return 'title not found';
     }
   }
 }
-
 
 class DocumentObject {
   XFile? front;

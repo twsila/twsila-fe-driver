@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/helpers/documents_helper.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
 class BusinessOwnerModel extends DriverBaseModel {
@@ -12,6 +14,8 @@ class BusinessOwnerModel extends DriverBaseModel {
   List<DriverImage>? imagesFromApi;
   UserDevice? userDevice;
   XFile? profileImage;
+  DocumentData? boNationalIdDocument;
+  DocumentData? boCommercialRegistrationDocument;
 
   BusinessOwnerModel({
     id,
@@ -28,6 +32,8 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.imagesFromApi,
     this.commercialNumber,
     this.userDevice,
+    this.boNationalIdDocument,
+    this.boCommercialRegistrationDocument,
   }) {
     this.id = id;
     this.firstName = firstName;

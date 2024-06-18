@@ -6,13 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_viewmodel.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/widgets/gender_widget.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/widgets/terms_conditions.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/view/widgets/upload_bo_document.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_input_field.dart';
 import 'package:taxi_for_you/presentation/common/widgets/multi_pick_image.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/helpers/documents_helper.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
+
+import '../../../../../utils/resources/font_manager.dart';
+import '../../../../../utils/resources/styles_manager.dart';
+import '../../../../service_registration/view/widgets/uploadDocumentWidget.dart';
 
 class RegistartionBOInputFields extends StatefulWidget {
   final RegisterBusinessOwnerViewModel viewModel;
@@ -162,17 +169,51 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
               },
             ),
           ),
-          MutliPickImageWidget((images) {
-            if (images == null) return;
-            widget.viewModel.businessOwnerModel.images =
-                images.map<File>((xfile) => File(xfile.path)).toList();
-            checkValidations();
-          },
-              AppStrings.uploadBOid.tr(),
-              AppStrings.boImage.tr(),
-              Icon(Icons.person, color: Colors.white),
-              ColorManager.headersTextColor,
-              null),
+          // UploadDocumentWidget(
+          //     AppStrings.boNationalId.tr(), AppStrings.addPhotos.tr(),
+          //     () async {
+          //   DocumentData boNationalIdDocument = await Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (BuildContext context) => UploadBoDocumentView(
+          //                 Document: Documents.boNationalId,
+          //               )));
+          //
+          //   widget.viewModel.businessOwnerModel.boNationalIdDocument =
+          //       boNationalIdDocument;
+          // }),
+          // UploadDocumentWidget(AppStrings.boCommercialRegistrationDocument.tr(),
+          //     AppStrings.addPhotos.tr(), () async {
+          //   DocumentData boCommercialRegistrationDocument =
+          //       await Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (BuildContext context) => UploadBoDocumentView(
+          //                     Document:
+          //                         Documents.boCommercialRegistrationDocument,
+          //                   )));
+          //   widget.viewModel.businessOwnerModel
+          //           .boCommercialRegistrationDocument =
+          //       boCommercialRegistrationDocument;
+          // }),
+          MutliPickImageWidget(
+            (images) {
+              if (images == null) return;
+              widget.viewModel.businessOwnerModel.images =
+                  images.map<File>((xfile) => File(xfile.path)).toList();
+              checkValidations();
+            },
+            AppStrings.uploadBOid.tr(),
+            AppStrings.boImage.tr(),
+            Icon(Icons.person, color: Colors.white),
+            ColorManager.headersTextColor,
+            null,
+            onRemovedImage: (removedImage) {
+              widget.viewModel.businessOwnerModel.images!
+                  .removeWhere((element) => element.path == removedImage.path);
+              checkValidations();
+            },
+          ),
           TermsAndConditionsWidget(onChecked: (check) {
             widget.viewModel.termsAndCondition = check;
             checkValidations();
@@ -195,6 +236,32 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
               text: AppStrings.save.tr(),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget UploadDocumentWidget(
+      String title, String buttonText, Function() onTap) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(8, 5, 8, 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: getRegularStyle(
+                color: ColorManager.titlesTextColor, fontSize: FontSize.s14),
+          ),
+          CustomTextButton(
+            text: buttonText,
+            width: AppSize.s140,
+            height: AppSize.s50,
+            isWaitToEnable: false,
+            fontSize: FontSize.s10,
+            backgroundColor: ColorManager.secondaryColor,
+            onPressed: onTap,
+          )
         ],
       ),
     );
