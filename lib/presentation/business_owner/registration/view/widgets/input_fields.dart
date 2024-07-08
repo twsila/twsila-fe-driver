@@ -13,6 +13,7 @@ import 'package:taxi_for_you/presentation/common/widgets/multi_pick_image.dart';
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/documents_helper.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
+import 'package:taxi_for_you/utils/ext/date_ext.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
@@ -33,11 +34,17 @@ class RegistartionBOInputFields extends StatefulWidget {
 }
 
 class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
+  String? nationalIdExpiryDate;
+
   checkValidations() {
     setState(() {
       widget.viewModel.isValid =
           widget.viewModel.formKey.currentState != null &&
               widget.viewModel.formKey.currentState!.validate() &&
+              widget.viewModel.businessOwnerModel.nationalIdExpiryDate !=
+                  null &&
+              widget.viewModel.businessOwnerModel.nationalIdExpiryDate!
+                  .isNotEmpty &&
               widget.viewModel.termsAndCondition != false &&
               widget.viewModel.businessOwnerModel.images != null &&
               widget.viewModel.businessOwnerModel.images!.isNotEmpty &&
@@ -146,6 +153,17 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
               checkValidations();
             },
           ),
+          const SizedBox(height: 16),
+          Container(
+            child: Text(
+              AppStrings.nationalIdExpiryDate.tr(),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: ColorManager.headersTextColor),
+            ),
+          ),
+          CustomNationalIdExpiryDateWidget(),
           const SizedBox(height: 16),
           CustomTextInputField(
             margin: EdgeInsets.zero,
@@ -263,6 +281,58 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             onPressed: onTap,
           )
         ],
+      ),
+    );
+  }
+
+  Future<void> _selectNationalIdExpiryDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(3000, 1));
+    if (picked != null) {
+      setState(() {
+        nationalIdExpiryDate = picked.millisecondsSinceEpoch.toString();
+        widget.viewModel.businessOwnerModel.nationalIdExpiryDate = nationalIdExpiryDate;
+        checkValidations();
+      });
+    }
+  }
+
+  Widget CustomNationalIdExpiryDateWidget() {
+    return GestureDetector(
+      onTap: () {
+        _selectNationalIdExpiryDate(context);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: AppPadding.p12),
+        height: AppSize.s46,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: ColorManager.borderColor)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p2),
+              child: Text(
+                nationalIdExpiryDate != null
+                    ? nationalIdExpiryDate!
+                        .getTimeStampFromDate(pattern: 'dd MMM yyyy')
+                    : AppStrings.nationalIdExpiryDateHint.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: nationalIdExpiryDate != null
+                        ? ColorManager.headersTextColor
+                        : ColorManager.hintTextColor),
+              ),
+            ),
+            Icon(
+              Icons.calendar_today,
+              color: ColorManager.primary,
+            ),
+          ],
+        ),
       ),
     );
   }

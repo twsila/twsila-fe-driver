@@ -50,6 +50,16 @@ class Driver extends DriverBaseModel {
   bool isChecked;
   bool? isPending;
 
+  String? nationalId;
+  String? nationalIdExpiryDate;
+  String? vehicleDocExpiryDate;
+  String? vehicleDriverNatIdExpiryDate;
+  String? vehicleOwnerNatIdExpiryDate;
+  String? licenseExpiryDate;
+  bool? proceedFirstTimeApproval;
+  bool? disabled;
+  bool? deleted;
+
   Driver(
       {required id,
       required firstName,
@@ -81,6 +91,15 @@ class Driver extends DriverBaseModel {
       required accessToken,
       required refreshToken,
       required userDevice,
+      this.nationalId,
+      this.nationalIdExpiryDate,
+      this.vehicleDocExpiryDate,
+      this.vehicleDriverNatIdExpiryDate,
+      this.vehicleOwnerNatIdExpiryDate,
+      this.licenseExpiryDate,
+      this.proceedFirstTimeApproval,
+      this.disabled,
+      this.deleted,
       this.businessOwnerId,
       this.isPending = false,
       required tokenExpirationTime,
@@ -111,7 +130,8 @@ class Driver extends DriverBaseModel {
         serviceTypes: json["serviceTypes"] != null
             ? List<String>.from(json["serviceTypes"]).toList()
             : [],
-        registrationStatus: RegistrationStatus.fromJson(json["registrationStatus"]),
+        registrationStatus:
+            RegistrationStatus.fromJson(json["registrationStatus"]),
         vehicleType: json["vehicleType"] != null
             ? DriverVehicleType.fromJson(json["vehicleType"])
             : null,
@@ -120,6 +140,16 @@ class Driver extends DriverBaseModel {
             DriverCarManufacturer.fromJson(json["carManufacturerType"]),
         carModel: DriverCarModel.fromJson(json["carModel"]),
         businessOwnerId: json["businessOwnerId"],
+        nationalId: json["nationalId"],
+        nationalIdExpiryDate: json["nationalIdExpiryDate"],
+        vehicleDocExpiryDate: json["vehicleDocExpiryDate"],
+        vehicleDriverNatIdExpiryDate: json["vehicleDriverNatIdExpiryDate"],
+        vehicleOwnerNatIdExpiryDate: json["vehicleOwnerNatIdExpiryDate"],
+        licenseExpiryDate: json["licenseExpiryDate"],
+        proceedFirstTimeApproval: json["proceedFirstTimeApproval"],
+        deleted: json["deleted"],
+        disabled: json["disabled"],
+        isPending: json["isPending"],
         canTransportFurniture: json["canTransportFurniture"],
         canTransportGoods: json["canTransportGoods"],
         canTransportFrozen: json["canTransportFrozen"],
@@ -149,6 +179,18 @@ class Driver extends DriverBaseModel {
         "driverStatus": driverStatus,
         "gender": gender,
         "dateOfBirth": dateOfBirth,
+
+        "isPending": isPending,
+        "nationalId": nationalId,
+        "nationalIdExpiryDate": nationalIdExpiryDate,
+        "vehicleDocExpiryDate": vehicleDocExpiryDate,
+        "vehicleDriverNatIdExpiryDate": vehicleDriverNatIdExpiryDate,
+        "vehicleOwnerNatIdExpiryDate": vehicleOwnerNatIdExpiryDate,
+        "licenseExpiryDate": licenseExpiryDate,
+        "proceedFirstTimeApproval": proceedFirstTimeApproval,
+        "disabled": disabled,
+        "deleted": deleted,
+
         "serviceTypes": serviceTypes,
         "registrationStatus": registrationStatus,
         "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,
@@ -200,6 +242,7 @@ class RegistrationStatus {
         "valueAr": valueAr,
       };
 }
+
 class DriverCarManufacturer {
   int id;
   String carManufacturer;

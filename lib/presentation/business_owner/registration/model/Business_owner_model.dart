@@ -9,6 +9,7 @@ class BusinessOwnerModel extends DriverBaseModel {
   String? entityName;
   String? taxNumber;
   String? nationalId;
+  String? nationalIdExpiryDate;
   String? commercialNumber;
   List<File>? images;
   List<DriverImage>? imagesFromApi;
@@ -29,6 +30,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.taxNumber,
     this.entityName,
     this.nationalId,
+    this.nationalIdExpiryDate,
     this.imagesFromApi,
     this.commercialNumber,
     this.userDevice,
@@ -57,6 +59,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     gender = json['gender'];
     taxNumber = json['taxNumber'];
     nationalId = json['nationalId'];
+    nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
@@ -75,6 +78,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     gender = json['gender'];
     taxNumber = json['taxNumber'];
     nationalId = json['nationalId'];
+    nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
@@ -93,6 +97,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     gender = json['gender'];
     taxNumber = json['taxNumber'];
     nationalId = json['nationalId'];
+    nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
     accessToken = json["accessToken"];
     refreshToken = json["refreshToken"];
@@ -114,6 +119,7 @@ class BusinessOwnerModel extends DriverBaseModel {
     data['gender'] = gender;
     data['taxNumber'] = taxNumber;
     data['nationalId'] = nationalId;
+    data['nationalIdExpiryDate'] = nationalIdExpiryDate;
     data['accessToken'] = accessToken;
     data['refreshToken'] = refreshToken;
     data['images'] = imagesFromApi;

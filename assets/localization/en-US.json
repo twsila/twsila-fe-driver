@@ -538,6 +538,8 @@
   "DECLINED_INVALID_PIN": "invalid pin",
   "3-D Secure transaction attempt failed (Not Enrolled)": "3-D Secure transaction attempt failed (Not Enrolled)",
   "DECLINED": "Card decliend",
+  "nationalIdExpiryDate": "National id expiry date",
+  "nationalIdExpiryDateHint": "Please enter national id expiry date",
   "boCommercialRegistrationDocument": "Commercial registration images",
   "boNationalId": "business owner Id images",
   "boNationalIdFrontImage": "National id front image",

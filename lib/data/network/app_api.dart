@@ -65,6 +65,7 @@ abstract class AppServiceClient {
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
       @Part(name: "nationalId") String nationalId,
+      @Part(name: "nationalIdExpiryDate") String nationalIdExpiryDate,
       @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "vehicleType.id") String vehicleTypeId,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
@@ -91,6 +92,7 @@ abstract class AppServiceClient {
       @Part(name: "gender") String gender,
       @Part(name: "dateOfBirth") String dateOfBirth,
       @Part(name: "nationalId") String nationalId,
+      @Part(name: "nationalIdExpiryDate") String nationalIdExpiryDate,
       @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
@@ -127,6 +129,7 @@ abstract class AppServiceClient {
     @Part(name: "entityName") String entityName,
     @Part(name: "taxNumber") String taxNumber,
     @Part(name: "nationalId") String nationalId,
+    @Part(name: "nationalIdExpiryDate") String nationalIdExpiryDate,
     @Part(name: "commercialNumber") String commercialNumber,
     @Part(name: "businessEntityImages") List<File> images,
   );

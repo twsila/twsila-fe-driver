@@ -14,6 +14,7 @@ class RegistrationRequest {
   String? gender;
   String? dateOfBirth;
   String? nationalIdNumber;
+  String? nationalIdExpiryDate;
   String? serviceTypeParam;
   String? vehicleTypeId;
   String? carManufacturerTypeId;
@@ -63,6 +64,7 @@ class RegistrationRequest {
       this.gender,
       this.dateOfBirth,
       this.nationalIdNumber,
+      this.nationalIdExpiryDate,
       this.serviceTypeParam,
       this.vehicleTypeId,
       this.carManufacturerTypeId,

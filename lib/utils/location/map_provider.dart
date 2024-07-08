@@ -116,13 +116,15 @@ class MapProvider with ChangeNotifier {
         destinationLocation == null) return;
     resetPolyPoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      Platform.isIOS
-          ? Constants.GOOGLE_API_KEY_IOS
-          : Constants.GOOGLE_API_KEY_ANDROID,
-      PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
-      travelMode: TravelMode.driving,
-    );
+        googleApiKey: Platform.isIOS
+            ? Constants.GOOGLE_API_KEY_IOS
+            : Constants.GOOGLE_API_KEY_ANDROID,
+        request: PolylineRequest(
+            origin:
+                PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+            destination: PointLatLng(
+                destinationLocation.latitude, destinationLocation.longitude),
+            mode: TravelMode.driving));
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));

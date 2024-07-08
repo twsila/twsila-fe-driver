@@ -58,14 +58,13 @@ class FirebaseMessagingHelper extends ChangeNotifier {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      dynamic notification = message.data;
       notificationCounter.value += 1;
-
       print(message);
       if (message.notification != null) {
         showDialog(
             context: NavigationService.navigatorKey.currentState!.context,
-            builder: (_) => AlertDialog(
+            builder: (_) =>
+                AlertDialog(
                   title: Text(message.notification!.title ?? ""),
                   content: Text(message.notification!.body ?? ""),
                   actions: [continueButton],
@@ -73,9 +72,10 @@ class FirebaseMessagingHelper extends ChangeNotifier {
       } else if (message.data["title"] != null && message.data["title"] != "") {
         showDialog(
             context: NavigationService.navigatorKey.currentState!.context,
-            builder: (_) => AlertDialog(
-                  title: Text(message.notification!.title ?? ""),
-                  content: Text(message.notification!.body ?? ""),
+            builder: (_) =>
+                AlertDialog(
+                  title: Text(message.data["title"] ?? ""),
+                  content: Text(message.data["body"] ?? ""),
                   actions: [continueButton],
                 ));
       }
@@ -85,6 +85,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       await navigateToNotifications(message);
     });
+
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await setFcmToken();
   }
@@ -112,7 +113,6 @@ class FirebaseMessagingHelper extends ChangeNotifier {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
+  print(message);
   FirebaseMessagingHelper.notificationCounter.value += 1;
 }

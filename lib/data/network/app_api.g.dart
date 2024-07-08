@@ -233,6 +233,7 @@ class _AppServiceClient implements AppServiceClient {
     gender,
     dateOfBirth,
     nationalId,
+    nationalIdExpiryDate,
     serviceTypeParam,
     vehicleTypeId,
     carManufacturerTypeId,
@@ -278,6 +279,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'nationalId',
       nationalId,
+    ));
+    _data.fields.add(MapEntry(
+      'nationalIdExpiryDate',
+      nationalIdExpiryDate,
     ));
     _data.fields.add(MapEntry(
       'serviceTypes',
@@ -360,6 +365,7 @@ class _AppServiceClient implements AppServiceClient {
     gender,
     dateOfBirth,
     nationalId,
+    nationalIdExpiryDate,
     serviceTypeParam,
     carManufacturerTypeId,
     carModelId,
@@ -415,6 +421,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'nationalId',
       nationalId,
+    ));
+    _data.fields.add(MapEntry(
+      'nationalIdExpiryDate',
+      nationalIdExpiryDate,
     ));
     _data.fields.add(MapEntry(
       'serviceTypes',
@@ -536,6 +546,7 @@ class _AppServiceClient implements AppServiceClient {
     entityName,
     taxNumber,
     nationalId,
+    nationalIdExpiryDate,
     commercialNumber,
     images,
   ) async {
@@ -574,6 +585,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'nationalId',
       nationalId,
+    ));
+    _data.fields.add(MapEntry(
+      'nationalIdExpiryDate',
+      nationalIdExpiryDate,
     ));
     _data.fields.add(MapEntry(
       'commercialNumber',

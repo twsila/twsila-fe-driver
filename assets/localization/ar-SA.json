@@ -541,6 +541,9 @@
   "boCommercialRegistrationDocument": "صور السجل التجارى للشركة",
   "boNationalId": "صور هوية مالك الشركة",
 
+  "nationalIdExpiryDate": "تاريخ انتهاء الهوية",
+  "nationalIdExpiryDateHint": "ادخل تاريخ انتهاء الهوية",
+
   "boNationalIdFrontImage": "الصورة الامامية للهوية",
   "boNationalIdBackImage": "الصورة الخلفية للهوية",
   "boCommercialRegistrationDocumentFrontImage": "الصورة الاولى للسجل التجارى",

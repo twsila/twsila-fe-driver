@@ -13,9 +13,9 @@ import 'package:taxi_for_you/presentation/service_registration/view/pages/serivc
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_applyed_success_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
+import 'package:taxi_for_you/presentation/update_driver_profile/view/update_driver_profile_view.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/presentation/otp/view/verify_otp_view.dart';
-import '../../app/constants.dart';
 import '../../app/di.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -68,6 +68,7 @@ class Routes {
   static const String locationTrackingPage = "/locationTrackingPage";
   static const String ratePassenger = "/ratePassenger";
   static const String editProfile = "/editProfile";
+  static const String updateDriverProfile = "/updateDriverProfile";
   static const String boRegistration = "/boRegistration";
   static const String filterTrips = "/filterTrips";
   static const String welcomeToTwsilaBO = "/welcomeToTwsilaBO";
@@ -170,6 +171,13 @@ class RouteGenerator {
         final args = settings.arguments as EditProfileArguments;
         return MaterialPageRoute(
             builder: (_) => EditProfileView(
+                  driver: args.driver,
+                ));
+        case Routes.updateDriverProfile:
+        initUpdateProfileModule();
+        final args = settings.arguments as UpdateDriverProfileArguments;
+        return MaterialPageRoute(
+            builder: (_) => UpdateDriverProfileView(
                   driver: args.driver,
                 ));
       case Routes.filterTrips:

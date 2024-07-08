@@ -25,6 +25,7 @@ class RegistrationUseCase
         input.gender,
         input.dateOfBirth,
         input.nationalIdNumber,
+        input.nationalIdExpiryDate,
         input.driverServiceType,
         input.vehicleTypeId,
         input.carManufacturerTypeId,
@@ -63,6 +64,7 @@ class RegistrationUseCaseInput {
   String gender;
   String dateOfBirth;
   String nationalIdNumber;
+  String nationalIdExpiryDate;
   String driverServiceType;
   String vehicleTypeId;
   String carManufacturerTypeId;
@@ -102,6 +104,7 @@ class RegistrationUseCaseInput {
       required this.gender,
       required this.dateOfBirth,
       required this.nationalIdNumber,
+      required this.nationalIdExpiryDate,
       required this.driverServiceType,
       required this.vehicleTypeId,
       required this.carManufacturerTypeId,

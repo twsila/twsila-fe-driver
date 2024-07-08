@@ -112,12 +112,13 @@ class _MapWidgetState extends State<MapWidget> {
     }
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        Platform.isIOS
+        googleApiKey: Platform.isIOS
             ? Constants.GOOGLE_API_KEY_IOS
-            : Constants.GOOGLE_API_KEY_ANDROID, // Your Google Map Key
-        source,
-        destination,
-        travelMode: TravelMode.driving);
+            : Constants.GOOGLE_API_KEY_ANDROID,
+        request: PolylineRequest(
+            origin: source,
+            destination: destination,
+            mode: TravelMode.driving));
 
     polylineCoordinates.clear();
     if (result.points.isNotEmpty) {
@@ -131,7 +132,6 @@ class _MapWidgetState extends State<MapWidget> {
 
     print(widget.tripModel);
   }
-
 
   void getCurrentLocation() async {
     currentLocation = await mapsRepo.getUserCurrentLocation();

@@ -44,6 +44,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
   String? gender;
   String? birthDate;
   String? nationalIdNumber;
+  String? nationalIdExpiryDate;
   Function()? continueFunction;
   ImagePicker imgpicker = ImagePicker();
 
@@ -100,8 +101,16 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
           bool validate = _formKey.currentState!.validate();
           if (validate) {
             BlocProvider.of<ServiceRegistrationBloc>(context).add(
-                SetCaptainData(captainPhoto!, widget.mobileNumber, firstName!,
-                    lastName!, email ?? "", gender!, birthDate!,nationalIdNumber!));
+                SetCaptainData(
+                    captainPhoto!,
+                    widget.mobileNumber,
+                    firstName!,
+                    lastName!,
+                    email ?? "",
+                    gender!,
+                    birthDate!,
+                    nationalIdNumber!,
+                    nationalIdExpiryDate!));
           }
         };
       }
@@ -333,6 +342,17 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
             validateInputsToContinue();
           },
         ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: AppMargin.m12),
+          child: Text(
+            AppStrings.nationalIdExpiryDate.tr(),
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(color: ColorManager.headersTextColor),
+          ),
+        ),
+        CustomNationalIdExpiryDateWidget(),
         Padding(
           padding: const EdgeInsets.all(AppPadding.p12),
           child: Row(
@@ -467,9 +487,49 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppPadding.p2),
               child: Text(
-                birthDate != null ? birthDate!.getTimeStampFromDate(pattern: 'dd MMM yyyy') : AppStrings.birtDateHint.tr(),
+                birthDate != null
+                    ? birthDate!.getTimeStampFromDate(pattern: 'dd MMM yyyy')
+                    : AppStrings.birtDateHint.tr(),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: birthDate != null
+                        ? ColorManager.headersTextColor
+                        : ColorManager.hintTextColor),
+              ),
+            ),
+            Icon(
+              Icons.calendar_today,
+              color: ColorManager.primary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget CustomNationalIdExpiryDateWidget() {
+    return GestureDetector(
+      onTap: () {
+        _selectNationalIdExpiryDate(context);
+      },
+      child: Container(
+        margin: EdgeInsets.all(AppMargin.m12),
+        padding: EdgeInsets.symmetric(horizontal: AppPadding.p12),
+        height: AppSize.s46,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: ColorManager.borderColor)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p2),
+              child: Text(
+                nationalIdExpiryDate != null
+                    ? nationalIdExpiryDate!
+                        .getTimeStampFromDate(pattern: 'dd MMM yyyy')
+                    : AppStrings.nationalIdExpiryDateHint.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: nationalIdExpiryDate != null
                         ? ColorManager.headersTextColor
                         : ColorManager.hintTextColor),
               ),
@@ -498,6 +558,20 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
       });
     }
   }
+  Future<void> _selectNationalIdExpiryDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate:  DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(3000, 1));
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+        nationalIdExpiryDate = selectedDate.millisecondsSinceEpoch.toString();
+        validateInputsToContinue();
+      });
+    }
+  }
 
   void validateInputsToContinue() {
     BlocProvider.of<ServiceRegistrationBloc>(context).add(addCaptainData(
@@ -508,6 +582,7 @@ class _CaptainRegistrationViewState extends State<CaptainRegistrationView> {
         gender: gender,
         birthDate: birthDate,
         nationalIdNumber: nationalIdNumber,
+        nationalIdExpiryDate: nationalIdExpiryDate,
         agreeWithTerms: agreeWithTerms));
   }
 }

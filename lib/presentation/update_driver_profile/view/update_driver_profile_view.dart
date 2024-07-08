@@ -22,21 +22,23 @@ import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_input_field.dart';
 import '../../common/widgets/page_builder.dart';
 
-class EditProfileView extends StatefulWidget {
+class UpdateDriverProfileView extends StatefulWidget {
   final DriverBaseModel driver;
 
-  EditProfileView({required this.driver});
+  UpdateDriverProfileView({required this.driver});
 
   @override
-  State<EditProfileView> createState() => _EditProfileViewState();
+  State<UpdateDriverProfileView> createState() =>
+      _UpdateDriverProfileViewState();
 }
 
-class _EditProfileViewState extends State<EditProfileView> {
+class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
   bool _displayLoadingIndicator = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   AppPreferences _appPreferences = instance<AppPreferences>();
   String currentProfilePhoto = '';
+  Driver? driver;
 
   String? captainImagePath;
   ImagePicker imgPicker = ImagePicker();
@@ -45,12 +47,31 @@ class _EditProfileViewState extends State<EditProfileView> {
   TextEditingController _mobileNumberController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
 
+  TextEditingController _nationalIdController = TextEditingController();
+  TextEditingController _plateNumberController = TextEditingController();
+
+  String? dateOfBirth;
+
+  List<String>? carImagesUrls;
+  List<String>? carDocumentImagesUrls;
+  List<String>? driverNationalIdImagesUrls;
+  List<String>? driverLicenseImagesUrls;
+  List<String>? ownerNationalIdImagesUrls;
+
+  String? carDocumentExpiryDate;
+  String? driverNationalIdExpiryDate;
+  String? driverLicenseExpiryDate;
+  String? ownerNationalIdExpiryDate;
+
   @override
   initState() {
-    _firstNameController.text = widget.driver.firstName ?? '';
-    _lastNameController.text = widget.driver.lastName ?? '';
-    _mobileNumberController.text = widget.driver.mobile ?? '';
-    _emailController.text = widget.driver.email ?? '';
+    driver = widget.driver as Driver;
+    _firstNameController.text = driver!.firstName ?? '';
+    _lastNameController.text = driver!.lastName ?? '';
+    _mobileNumberController.text = driver!.mobile ?? '';
+    _emailController.text = driver!.email ?? '';
+    _nationalIdController.text = driver!.nationalId ?? '';
+    _plateNumberController.text = driver!.plateNumber ?? '';
     super.initState();
   }
 
@@ -148,6 +169,24 @@ class _EditProfileViewState extends State<EditProfileView> {
                   hintText: AppStrings.enterEmailHere.tr(),
                   onChanged: (value) {},
                 ),
+                CustomTextInputField(
+                  enabled: driver!.proceedFirstTimeApproval!,
+                  labelText: AppStrings.nationalIdNumber.tr(),
+                  showLabelText: true,
+                  controller: _nationalIdController,
+                  validateEmptyString: true,
+                  hintText: AppStrings.nationalIDHint.tr(),
+                  onChanged: (value) {},
+                ),
+                CustomTextInputField(
+                  enabled: driver!.proceedFirstTimeApproval!,
+                  labelText: AppStrings.plateNumber.tr(),
+                  showLabelText: true,
+                  controller: _plateNumberController,
+                  validateEmptyString: true,
+                  hintText: AppStrings.plateNumber.tr(),
+                  onChanged: (value) {},
+                ),
                 SizedBox(
                   height: AppSize.s50,
                 ),
@@ -179,7 +218,6 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Widget _profilePhotoHeader() {
-
     return FutureBuilder<String>(
         future: getProfilePicPath(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -195,12 +233,12 @@ class _EditProfileViewState extends State<EditProfileView> {
                       height: AppSize.s60,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(50.0),
-                          child:
-                          captainImagePath != null && captainImagePath!.isNotEmpty
+                          child: captainImagePath != null &&
+                                  captainImagePath!.isNotEmpty
                               ? Image.file(File(captainImagePath!))
                               : CustomNetworkImageWidget(
-                            imageUrl: snapshot.data.toString(),
-                          ))),
+                                  imageUrl: snapshot.data.toString(),
+                                ))),
                   SizedBox(
                     width: AppSize.s16,
                   ),
@@ -215,10 +253,13 @@ class _EditProfileViewState extends State<EditProfileView> {
                           children: [
                             Text(
                               AppStrings.changeCaptainPhoto.tr(),
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorManager.primary,
-                                  fontSize: FontSize.s14),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorManager.primary,
+                                      fontSize: FontSize.s14),
                             ),
                           ],
                         ),
@@ -232,7 +273,6 @@ class _EditProfileViewState extends State<EditProfileView> {
             return CircularProgressIndicator();
           }
         });
-
   }
 
   openImages() async {
@@ -300,8 +340,8 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 }
 
-class EditProfileArguments {
+class UpdateDriverProfileArguments {
   DriverBaseModel driver;
 
-  EditProfileArguments(this.driver);
+  UpdateDriverProfileArguments(this.driver);
 }

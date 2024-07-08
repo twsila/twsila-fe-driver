@@ -13,6 +13,7 @@ import 'package:taxi_for_you/presentation/edit_user_profile/view/edit_profile_vi
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/widget/menu_widget.dart';
 import 'package:taxi_for_you/presentation/payment/view/payment_screen.dart';
+import 'package:taxi_for_you/presentation/update_driver_profile/view/update_driver_profile_view.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
@@ -403,8 +404,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, Routes.editProfile,
-                            arguments: EditProfileArguments(driver!));
+                        driver != null &&
+                                driver!.captainType ==
+                                    RegistrationConstants.captain
+                            ? Navigator.pushNamed(
+                                context, Routes.updateDriverProfile,
+                                arguments:
+                                    UpdateDriverProfileArguments(driver!))
+                            : Navigator.pushNamed(context, Routes.editProfile,
+                                arguments: EditProfileArguments(driver!));
                       },
                       child: Row(
                         children: [

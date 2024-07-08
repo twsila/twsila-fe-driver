@@ -77,6 +77,8 @@ class ServiceRegistrationBloc
         event.birthDate != null &&
         event.nationalIdNumber != null &&
         event.nationalIdNumber!.isNotEmpty &&
+        event.nationalIdExpiryDate != null &&
+        event.nationalIdExpiryDate!.isNotEmpty &&
         event.agreeWithTerms != null &&
         event.agreeWithTerms != false) {
       emit(CaptainDataIsValid());
@@ -207,6 +209,7 @@ class ServiceRegistrationBloc
             gender: registrationRequest.gender!,
             dateOfBirth: registrationRequest.dateOfBirth!,
             nationalIdNumber: registrationRequest.nationalIdNumber!,
+            nationalIdExpiryDate: registrationRequest.nationalIdExpiryDate!,
             driverServiceType: registrationRequest.serviceTypeParam!,
             vehicleTypeId: registrationRequest.vehicleTypeId!,
             carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
@@ -421,6 +424,7 @@ class ServiceRegistrationBloc
     registrationRequest.email = event.email;
     registrationRequest.dateOfBirth = event.birthDate;
     registrationRequest.nationalIdNumber = event.nationalIdNumber;
+    registrationRequest.nationalIdExpiryDate = event.nationalIdExpiryDate;
     emit(captainDataAddedState(registrationRequest));
   }
 
@@ -487,6 +491,7 @@ class ServiceRegistrationBloc
     var newPath = path.substring(0, lastSeparator + 1) + newFileName;
     return file.copy(newPath);
   }
+
   Future<File> changeFileNameOnlyForBo(File image, String newFileName) {
     File file = File(image.path);
     var path = image.path;

@@ -183,6 +183,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.gender!,
         registrationRequest.dateOfBirth!,
         registrationRequest.nationalIdNumber!,
+        registrationRequest.nationalIdExpiryDate!,
         registrationRequest.serviceTypeParam!,
         registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
@@ -209,6 +210,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.gender!,
         registrationRequest.dateOfBirth!,
         registrationRequest.nationalIdNumber!,
+        registrationRequest.nationalIdExpiryDate!,
         registrationRequest.serviceTypeParam!,
         // registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
@@ -246,6 +248,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         businessOwnerModel.entityName!,
         businessOwnerModel.taxNumber!,
         businessOwnerModel.nationalId!,
+        businessOwnerModel.nationalIdExpiryDate!,
         businessOwnerModel.commercialNumber!,
         businessOwnerModel.images!);
   }

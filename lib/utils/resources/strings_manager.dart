@@ -168,6 +168,8 @@ class AppStrings {
   static const registerGoodsTrips = 'register_goods_trips';
   static const birtDate = 'birth_date';
   static const birtDateHint = 'birth_date_hint';
+  static const nationalIdExpiryDate = 'nationalIdExpiryDate';
+  static const nationalIdExpiryDateHint = 'nationalIdExpiryDateHint';
 
   static const carType = 'car_type';
   static const largeVehicleOpened = 'large_vehicle_opened';
