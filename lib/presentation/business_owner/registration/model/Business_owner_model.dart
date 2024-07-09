@@ -9,6 +9,8 @@ class BusinessOwnerModel extends DriverBaseModel {
   String? entityName;
   String? taxNumber;
   String? nationalId;
+  String? dateOfBirth;
+  String? commercialRegisterExpiryDate;
   String? nationalIdExpiryDate;
   String? commercialNumber;
   List<File>? images;
@@ -29,6 +31,8 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.profileImage,
     this.taxNumber,
     this.entityName,
+    this.dateOfBirth,
+    this.commercialRegisterExpiryDate,
     this.nationalId,
     this.nationalIdExpiryDate,
     this.imagesFromApi,
@@ -58,13 +62,17 @@ class BusinessOwnerModel extends DriverBaseModel {
     email = json['email'];
     gender = json['gender'];
     taxNumber = json['taxNumber'];
+    dateOfBirth = json['dateOfBirth'];
+    commercialRegisterExpiryDate = json['commercialRegisterExpiryDate'];
     nationalId = json['nationalId'];
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['commercialNumber'];
-    userDevice = json["userDevice"] != null ? UserDevice.fromJson(json["userDevice"]) : null;
+    userDevice = json["userDevice"] != null
+        ? UserDevice.fromJson(json["userDevice"])
+        : null;
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
   }
@@ -76,6 +84,8 @@ class BusinessOwnerModel extends DriverBaseModel {
     mobile = json['mobile'];
     email = json['email'];
     gender = json['gender'];
+    dateOfBirth = json['dateOfBirth'];
+    commercialRegisterExpiryDate = json['commercialRegisterExpiryDate'];
     taxNumber = json['taxNumber'];
     nationalId = json['nationalId'];
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
@@ -83,7 +93,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['commercialNumber'];
-    userDevice = json["userDevice"] != null ? UserDevice.fromJson(json["userDevice"]) : null;
+    userDevice = json["userDevice"] != null
+        ? UserDevice.fromJson(json["userDevice"])
+        : null;
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
   }
@@ -95,6 +107,8 @@ class BusinessOwnerModel extends DriverBaseModel {
     mobile = json['mobile'];
     email = json['email'];
     gender = json['gender'];
+    dateOfBirth = json['dateOfBirth'];
+    commercialRegisterExpiryDate = json['commercialRegisterExpiryDate'];
     taxNumber = json['taxNumber'];
     nationalId = json['nationalId'];
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
@@ -117,6 +131,8 @@ class BusinessOwnerModel extends DriverBaseModel {
     data['email'] = email;
     data['mobile'] = mobile;
     data['gender'] = gender;
+    data['dateOfBirth'] = dateOfBirth;
+    data['commercialRegisterExpiryDate'] = commercialRegisterExpiryDate;
     data['taxNumber'] = taxNumber;
     data['nationalId'] = nationalId;
     data['nationalIdExpiryDate'] = nationalIdExpiryDate;

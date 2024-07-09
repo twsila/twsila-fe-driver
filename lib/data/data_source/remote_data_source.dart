@@ -245,11 +245,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         businessOwnerModel.mobile!,
         businessOwnerModel.email!,
         businessOwnerModel.gender!,
+        businessOwnerModel.dateOfBirth!,
         businessOwnerModel.entityName!,
         businessOwnerModel.taxNumber!,
         businessOwnerModel.nationalId!,
         businessOwnerModel.nationalIdExpiryDate!,
         businessOwnerModel.commercialNumber!,
+        businessOwnerModel.commercialRegisterExpiryDate!,
         businessOwnerModel.images!);
   }
 

@@ -170,6 +170,8 @@ class AppStrings {
   static const birtDateHint = 'birth_date_hint';
   static const nationalIdExpiryDate = 'nationalIdExpiryDate';
   static const nationalIdExpiryDateHint = 'nationalIdExpiryDateHint';
+  static const commercialExpiryDate = 'commercialExpiryDate';
+  static const commercialExpiryDateHint = 'commercialExpiryDateHit';
 
   static const carType = 'car_type';
   static const largeVehicleOpened = 'large_vehicle_opened';

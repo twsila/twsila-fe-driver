@@ -547,5 +547,7 @@
   "boCommercialRegistrationDocumentFrontImage": "Commercial registration first image",
   "boCommercialRegistrationDocumentBackImage": "Commercial registration second image",
   "boNationalIdExpireDate": "National Id Expire date",
-  "boCommercialRegistrationDocumentExpireDate": "Commercial registration expire date"
+  "boCommercialRegistrationDocumentExpireDate": "Commercial registration expire date",
+  "commercialExpiryDate": "Commercial registration expire date",
+  "commercialExpiryDateHit": "Please enter commercial registration expire date"
 }

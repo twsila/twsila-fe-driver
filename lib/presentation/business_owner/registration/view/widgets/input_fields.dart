@@ -35,20 +35,30 @@ class RegistartionBOInputFields extends StatefulWidget {
 
 class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
   String? nationalIdExpiryDate;
+  String? dateOfBirth;
+  String? commercialRegisterExpiryDate;
+
+  DateTime selectedBirthDate = DateTime(2005, 1);
 
   checkValidations() {
     setState(() {
-      widget.viewModel.isValid =
-          widget.viewModel.formKey.currentState != null &&
-              widget.viewModel.formKey.currentState!.validate() &&
-              widget.viewModel.businessOwnerModel.nationalIdExpiryDate !=
-                  null &&
-              widget.viewModel.businessOwnerModel.nationalIdExpiryDate!
-                  .isNotEmpty &&
-              widget.viewModel.termsAndCondition != false &&
-              widget.viewModel.businessOwnerModel.images != null &&
-              widget.viewModel.businessOwnerModel.images!.isNotEmpty &&
-              widget.viewModel.businessOwnerModel.profileImage != null;
+      widget.viewModel.isValid = widget
+                  .viewModel.formKey.currentState !=
+              null &&
+          widget.viewModel.formKey.currentState!.validate() &&
+          widget.viewModel.businessOwnerModel.nationalIdExpiryDate != null &&
+          widget
+              .viewModel.businessOwnerModel.nationalIdExpiryDate!.isNotEmpty &&
+          widget.viewModel.businessOwnerModel.dateOfBirth != null &&
+          widget.viewModel.businessOwnerModel.dateOfBirth!.isNotEmpty &&
+          widget.viewModel.businessOwnerModel.commercialRegisterExpiryDate !=
+              null &&
+          widget.viewModel.businessOwnerModel.commercialRegisterExpiryDate!
+              .isNotEmpty &&
+          widget.viewModel.termsAndCondition != false &&
+          widget.viewModel.businessOwnerModel.images != null &&
+          widget.viewModel.businessOwnerModel.images!.isNotEmpty &&
+          widget.viewModel.businessOwnerModel.profileImage != null;
     });
   }
 
@@ -101,6 +111,17 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
             },
           ),
           const SizedBox(height: 16),
+          Container(
+            child: Text(
+              AppStrings.birtDate.tr(),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: ColorManager.headersTextColor),
+            ),
+          ),
+          CustomDateOfBirthWidget(),
+          const SizedBox(height: 16),
           CustomTextInputField(
             margin: EdgeInsets.zero,
             validateEmptyString: true,
@@ -127,6 +148,17 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
               checkValidations();
             },
           ),
+          const SizedBox(height: 16),
+          Container(
+            child: Text(
+              AppStrings.commercialExpiryDate.tr(),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: ColorManager.headersTextColor),
+            ),
+          ),
+          CustomCommercialExpiryDateWidget(),
           const SizedBox(height: 16),
           CustomTextInputField(
             margin: EdgeInsets.zero,
@@ -187,33 +219,6 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
               },
             ),
           ),
-          // UploadDocumentWidget(
-          //     AppStrings.boNationalId.tr(), AppStrings.addPhotos.tr(),
-          //     () async {
-          //   DocumentData boNationalIdDocument = await Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (BuildContext context) => UploadBoDocumentView(
-          //                 Document: Documents.boNationalId,
-          //               )));
-          //
-          //   widget.viewModel.businessOwnerModel.boNationalIdDocument =
-          //       boNationalIdDocument;
-          // }),
-          // UploadDocumentWidget(AppStrings.boCommercialRegistrationDocument.tr(),
-          //     AppStrings.addPhotos.tr(), () async {
-          //   DocumentData boCommercialRegistrationDocument =
-          //       await Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //               builder: (BuildContext context) => UploadBoDocumentView(
-          //                     Document:
-          //                         Documents.boCommercialRegistrationDocument,
-          //                   )));
-          //   widget.viewModel.businessOwnerModel
-          //           .boCommercialRegistrationDocument =
-          //       boCommercialRegistrationDocument;
-          // }),
           MutliPickImageWidget(
             (images) {
               if (images == null) return;
@@ -294,7 +299,8 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
     if (picked != null) {
       setState(() {
         nationalIdExpiryDate = picked.millisecondsSinceEpoch.toString();
-        widget.viewModel.businessOwnerModel.nationalIdExpiryDate = nationalIdExpiryDate;
+        widget.viewModel.businessOwnerModel.nationalIdExpiryDate =
+            nationalIdExpiryDate;
         checkValidations();
       });
     }
@@ -321,6 +327,110 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
                     ? nationalIdExpiryDate!
                         .getTimeStampFromDate(pattern: 'dd MMM yyyy')
                     : AppStrings.nationalIdExpiryDateHint.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: nationalIdExpiryDate != null
+                        ? ColorManager.headersTextColor
+                        : ColorManager.hintTextColor),
+              ),
+            ),
+            Icon(
+              Icons.calendar_today,
+              color: ColorManager.primary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _selectDateOfBirth(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedBirthDate,
+        firstDate: DateTime(1940, 8),
+        lastDate: DateTime(2005, 1));
+    if (picked != null) {
+      setState(() {
+        dateOfBirth = picked.millisecondsSinceEpoch.toString();
+        widget.viewModel.businessOwnerModel.dateOfBirth = dateOfBirth;
+        checkValidations();
+      });
+    }
+  }
+
+  Widget CustomDateOfBirthWidget() {
+    return GestureDetector(
+      onTap: () {
+        _selectDateOfBirth(context);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: AppPadding.p12),
+        height: AppSize.s46,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: ColorManager.borderColor)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p2),
+              child: Text(
+                dateOfBirth != null
+                    ? dateOfBirth!.getTimeStampFromDate(pattern: 'dd MMM yyyy')
+                    : AppStrings.birtDateHint.tr(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: dateOfBirth != null
+                        ? ColorManager.headersTextColor
+                        : ColorManager.hintTextColor),
+              ),
+            ),
+            Icon(
+              Icons.calendar_today,
+              color: ColorManager.primary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _selectCommercialExpiry(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(3000, 1));
+    if (picked != null) {
+      setState(() {
+        commercialRegisterExpiryDate = picked.millisecondsSinceEpoch.toString();
+        widget.viewModel.businessOwnerModel.commercialRegisterExpiryDate =
+            commercialRegisterExpiryDate;
+        checkValidations();
+      });
+    }
+  }
+
+  Widget CustomCommercialExpiryDateWidget() {
+    return GestureDetector(
+      onTap: () {
+        _selectCommercialExpiry(context);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: AppPadding.p12),
+        height: AppSize.s46,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            border: Border.all(color: ColorManager.borderColor)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p2),
+              child: Text(
+                commercialRegisterExpiryDate != null
+                    ? commercialRegisterExpiryDate!
+                        .getTimeStampFromDate(pattern: 'dd MMM yyyy')
+                    : AppStrings.commercialExpiryDateHint.tr(),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: nationalIdExpiryDate != null
                         ? ColorManager.headersTextColor

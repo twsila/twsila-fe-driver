@@ -543,11 +543,13 @@ class _AppServiceClient implements AppServiceClient {
     mobile,
     email,
     gender,
+    dateOfBirth,
     entityName,
     taxNumber,
     nationalId,
     nationalIdExpiryDate,
     commercialNumber,
+    commercialRegisterExpiryDate,
     images,
   ) async {
     const _extra = <String, dynamic>{};
@@ -575,6 +577,10 @@ class _AppServiceClient implements AppServiceClient {
       gender,
     ));
     _data.fields.add(MapEntry(
+      'dateOfBirth',
+      dateOfBirth,
+    ));
+    _data.fields.add(MapEntry(
       'entityName',
       entityName,
     ));
@@ -593,6 +599,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'commercialNumber',
       commercialNumber,
+    ));
+    _data.fields.add(MapEntry(
+      'commercialRegisterExpiryDate',
+      commercialRegisterExpiryDate,
     ));
     _data.files.addAll(images.map((i) => MapEntry(
         'businessEntityImages',

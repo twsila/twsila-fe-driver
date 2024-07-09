@@ -126,11 +126,13 @@ abstract class AppServiceClient {
     @Part(name: "mobile") String mobile,
     @Part(name: "email") String email,
     @Part(name: "gender") String gender,
+    @Part(name: "dateOfBirth") String dateOfBirth,//
     @Part(name: "entityName") String entityName,
     @Part(name: "taxNumber") String taxNumber,
     @Part(name: "nationalId") String nationalId,
     @Part(name: "nationalIdExpiryDate") String nationalIdExpiryDate,
     @Part(name: "commercialNumber") String commercialNumber,
+    @Part(name: "commercialRegisterExpiryDate") String commercialRegisterExpiryDate,//
     @Part(name: "businessEntityImages") List<File> images,
   );
 
