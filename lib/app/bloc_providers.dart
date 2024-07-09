@@ -13,6 +13,7 @@ import 'package:taxi_for_you/presentation/rate_passenger/bloc/rate_passenger_blo
 import 'package:taxi_for_you/presentation/service_registration/bloc/serivce_registration_bloc.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/serivce_registration_first_step_view.dart';
 import 'package:taxi_for_you/presentation/trip_execution/bloc/trip_execution_bloc.dart';
+import 'package:taxi_for_you/presentation/update_driver_profile/bloc/update_driver_bloc.dart';
 
 import '../presentation/google_maps/bloc/maps_bloc.dart';
 import '../presentation/google_maps/model/maps_repo.dart';
@@ -41,6 +42,7 @@ blocProviders(BuildContext context) {
     BlocProvider.value(value: EditProfileBloc()),
     BlocProvider.value(value: FilterBloc()),
     BlocProvider.value(value: DriverRequestsBloc()),
+    BlocProvider.value(value: UpdateDriverBloc()),
     ChangeNotifierProvider(create: (_) => MapProvider()),
   ];
 }

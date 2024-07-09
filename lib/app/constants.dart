@@ -19,7 +19,9 @@ class Constants {
   static const String UPLOAD_DOCUMENTS_TYPE = "upload_documents_type";
 
   static const int IMAGE_QUALITY_COMPRESS = 25;
+
   static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
+
   static const String BUSINESS_OWNER_PHOTO_IMAGE_STRING =
       'business_owner_photo.jpg';
   static const String BUSINESS_OWNER_PHOTO_DOCUMENT_SUBSTRING =
@@ -40,6 +42,21 @@ class Constants {
     CountryCodes(ImageAssets.egyptFlag, AppStrings.egyptCountryCode, 'EG',
         AppStrings.egypt)
   ];
+}
+
+class DriverImagesConstants{
+
+  static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
+  static const String DRIVER_CAR_PHOTOS_IMAGE_STRING = 'driver-car-photo-.jpg';
+  static const String CAR_DOCUMENT_FRONT_IMAGE_STRING = 'Documents.carDocument-front.jpg';
+  static const String CAR_DOCUMENT_BACK_IMAGE_STRING = 'Documents.carDocument-back.jpg';
+  static const String DRIVER_NATIONAL_ID_FRONT_IMAGE_STRING = 'Documents.driverId-front.jpg';
+  static const String DRIVER_NATIONAL_ID_BACK_IMAGE_STRING = 'Documents.driverId-back.jpg';
+  static const String DRIVER_LICENSE_FRONT_IMAGE_STRING = 'Documents.driverLicense-front.jpg';
+  static const String DRIVER_LICENSE_BACK_IMAGE_STRING = 'Documents.driverLicense-back.jpg';
+  static const String OWNER_NATIONAL_ID_FRONT_IMAGE_STRING = 'Documents.ownerId-front.jpg';
+  static const String OWNER_NATIONAL_ID_BACK_IMAGE_STRING = 'Documents.ownerId-back.jpg';
+
 }
 class PaymentConstants {
 

@@ -21,6 +21,7 @@ import '../../../common/widgets/custom_scaffold.dart';
 import '../../../common/widgets/page_builder.dart';
 
 class CaptainRegistrationView extends StatefulWidget {
+
   String mobileNumber;
 
   CaptainRegistrationView({Key? key, required this.mobileNumber})

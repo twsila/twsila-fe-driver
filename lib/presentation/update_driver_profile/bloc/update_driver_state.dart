@@ -4,3 +4,24 @@ part of 'update_driver_bloc.dart';
 abstract class UpdateDriverState {}
 
 class UpdateDriverInitial extends UpdateDriverState {}
+
+class UpdateDriverLoading extends UpdateDriverState {}
+
+class driverOptimizedImagesSuccessState extends UpdateDriverState {
+  List<String> carImageUrls;
+  List<String> carDocumentsImageUrls;
+  List<String> driverLicenseImageUrls;
+  List<String> driverNationalIdImageUrls;
+  List<String> ownerNationalIdImageUrls;
+
+  driverOptimizedImagesSuccessState(
+      this.carImageUrls,
+      this.carDocumentsImageUrls,
+      this.driverLicenseImageUrls,
+      this.driverNationalIdImageUrls,
+      this.ownerNationalIdImageUrls);
+}
+
+class UpdateDriverSuccess extends UpdateDriverState {}
+
+class UpdateDriverFail extends UpdateDriverState {}

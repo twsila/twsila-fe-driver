@@ -21,6 +21,7 @@ import '../../common/state_renderer/dialogs.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_input_field.dart';
 import '../../common/widgets/page_builder.dart';
+import '../bloc/update_driver_bloc.dart';
 
 class UpdateDriverProfileView extends StatefulWidget {
   final DriverBaseModel driver;
@@ -72,6 +73,8 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
     _emailController.text = driver!.email ?? '';
     _nationalIdController.text = driver!.nationalId ?? '';
     _plateNumberController.text = driver!.plateNumber ?? '';
+    BlocProvider.of<UpdateDriverBloc>(context)
+        .add(splitAndOrganizeImagesList(driverImagesList: driver!.images));
     super.initState();
   }
 
@@ -107,22 +110,30 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
   }
 
   Widget _getContentWidget(BuildContext context) {
-    return BlocConsumer<EditProfileBloc, EditProfileState>(
+    return BlocConsumer<UpdateDriverBloc, UpdateDriverState>(
       listener: (context, state) {
-        if (state is EditProfileLoading) {
+        if (state is UpdateDriverLoading) {
           startLoading();
         } else {
           stopLoading();
         }
-        if (state is EditProfileSuccess) {
+        if (state is driverOptimizedImagesSuccessState) {
+          carImagesUrls = state.carImageUrls;
+          carDocumentImagesUrls = state.carDocumentsImageUrls;
+          driverNationalIdImagesUrls = state.driverNationalIdImageUrls;
+          driverLicenseImagesUrls = state.driverLicenseImageUrls;
+          ownerNationalIdImagesUrls = state.ownerNationalIdImageUrls;
+        }
+
+        if (state is UpdateDriverSuccess) {
           CustomDialog(context).showSuccessDialog(
               '', '', AppStrings.updateProfileDoneSuccessfully.tr(),
               onBtnPressed: () {
             Navigator.pushReplacementNamed(context, Routes.mainRoute);
           });
         }
-        if (state is EditProfileError) {
-          CustomDialog(context).showErrorDialog('', '', state.message);
+        if (state is UpdateDriverFail) {
+          CustomDialog(context).showErrorDialog('', '', '');
         }
       },
       builder: (context, state) {
