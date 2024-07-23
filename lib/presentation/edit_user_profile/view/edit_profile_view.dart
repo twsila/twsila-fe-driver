@@ -158,15 +158,15 @@ class _EditProfileViewState extends State<EditProfileView> {
                     FocusScope.of(context).unfocus();
                     if (_formKey.currentState != null &&
                         _formKey.currentState!.validate()) {
-                      BlocProvider.of<EditProfileBloc>(context).add(
-                          EditProfileDataEvent(
-                              _firstNameController.text,
-                              _lastNameController.text,
-                              _emailController.text,
-                              captainImagePath != null &&
-                                      captainImagePath!.isNotEmpty
-                                  ? File(captainImagePath!)
-                                  : null));
+                      // BlocProvider.of<EditProfileBloc>(context).add(
+                          // EditProfileDataEvent(
+                          //     _firstNameController.text,
+                          //     _lastNameController.text,
+                          //     _emailController.text,
+                          //     captainImagePath != null &&
+                          //             captainImagePath!.isNotEmpty
+                          //         ? File(captainImagePath!)
+                          //         : null));
                     }
                   },
                 )

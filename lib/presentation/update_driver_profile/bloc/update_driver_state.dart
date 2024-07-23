@@ -24,4 +24,9 @@ class driverOptimizedImagesSuccessState extends UpdateDriverState {
 
 class UpdateDriverSuccess extends UpdateDriverState {}
 
-class UpdateDriverFail extends UpdateDriverState {}
+class UpdateDriverFail extends UpdateDriverState {
+  final String message;
+  final String errorCode;
+
+  UpdateDriverFail(this.message, this.errorCode);
+}

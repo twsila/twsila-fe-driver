@@ -22,6 +22,7 @@ import '../presentation/main/pages/mytrips/bloc/my_trips_bloc.dart';
 import '../presentation/my_serivces/bloc/my_services_bloc.dart';
 import '../presentation/otp/bloc/verify_otp_bloc.dart';
 import '../presentation/trip_details/bloc/trip_details_bloc.dart';
+import '../presentation/update_bo_profile/bloc/update_bo_bloc.dart';
 import '../utils/location/map_provider.dart';
 
 blocProviders(BuildContext context) {
@@ -43,6 +44,7 @@ blocProviders(BuildContext context) {
     BlocProvider.value(value: FilterBloc()),
     BlocProvider.value(value: DriverRequestsBloc()),
     BlocProvider.value(value: UpdateDriverBloc()),
+    BlocProvider.value(value: UpdateBoBloc()),
     ChangeNotifierProvider(create: (_) => MapProvider()),
   ];
 }

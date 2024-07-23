@@ -542,6 +542,13 @@
   "nationalIdExpiryDateHint": "Please enter national id expiry date",
   "boCommercialRegistrationDocument": "Commercial registration images",
   "boNationalId": "business owner Id images",
+  "updateData": "Update data",
+  "expiryDate": "Expiry date",
+  "frontImage": "Front image",
+  "backImage": "Back image",
+  "uploadPhoto": "Upload image",
+  "uploadPhotos": "Upload images",
+  "cannotUpdateDataForNow": "Can't update data for now",
   "boNationalIdFrontImage": "National id front image",
   "boNationalIdBackImage": "National id back image",
   "boCommercialRegistrationDocumentFrontImage": "Commercial registration first image",
@@ -549,5 +556,7 @@
   "boNationalIdExpireDate": "National Id Expire date",
   "boCommercialRegistrationDocumentExpireDate": "Commercial registration expire date",
   "commercialExpiryDate": "Commercial registration expire date",
-  "commercialExpiryDateHit": "Please enter commercial registration expire date"
+  "commercialExpiryDateHit": "Please enter commercial registration expire date",
+  "car_photos": "Car photos",
+  "no_images": "No images uploaded"
 }

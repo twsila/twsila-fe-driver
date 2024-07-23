@@ -13,6 +13,7 @@ import 'package:taxi_for_you/presentation/service_registration/view/pages/serivc
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_applyed_success_view.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/pages/service_registration_second_step.dart';
 import 'package:taxi_for_you/presentation/trip_details/view/trip_details_view.dart';
+import 'package:taxi_for_you/presentation/update_bo_profile/view/update_bo_profile_view.dart';
 import 'package:taxi_for_you/presentation/update_driver_profile/view/update_driver_profile_view.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/presentation/otp/view/verify_otp_view.dart';
@@ -69,6 +70,7 @@ class Routes {
   static const String ratePassenger = "/ratePassenger";
   static const String editProfile = "/editProfile";
   static const String updateDriverProfile = "/updateDriverProfile";
+  static const String updateBoProfile = "/updateBoProfile";
   static const String boRegistration = "/boRegistration";
   static const String filterTrips = "/filterTrips";
   static const String welcomeToTwsilaBO = "/welcomeToTwsilaBO";
@@ -133,7 +135,7 @@ class RouteGenerator {
             builder: (_) => VerifyOtpView(
                   mobileNumberForApi: args.mobileNumberForApi,
                   mobileNumberForDisplay: args.mobileNumberForDisplay,
-              countryCode: args.countryCode,
+                  countryCode: args.countryCode,
                   registerAs: args.registerAs,
                 ));
       case Routes.tripDetails:
@@ -167,18 +169,24 @@ class RouteGenerator {
       case Routes.selectRegistrationType:
         return MaterialPageRoute(builder: (_) => const RegistrationTypesView());
       case Routes.editProfile:
-        initUpdateProfileModule();
         final args = settings.arguments as EditProfileArguments;
         return MaterialPageRoute(
             builder: (_) => EditProfileView(
                   driver: args.driver,
                 ));
-        case Routes.updateDriverProfile:
-        initUpdateProfileModule();
+      case Routes.updateDriverProfile:
+        initUpdateDriverProfileModule();
         final args = settings.arguments as UpdateDriverProfileArguments;
         return MaterialPageRoute(
             builder: (_) => UpdateDriverProfileView(
                   driver: args.driver,
+                ));
+        case Routes.updateBoProfile:
+        initUpdateBoProfileModule();
+        final args = settings.arguments as UpdateBoProfileArguments;
+        return MaterialPageRoute(
+            builder: (_) => UpdateBoProfileView(
+                  boUser: args.businessOwnerModel,
                 ));
       case Routes.filterTrips:
         // final args = settings.arguments as EditProfileArguments;
@@ -193,7 +201,8 @@ class RouteGenerator {
         final args = settings.arguments as BoRegistrationArguments;
         return MaterialPageRoute(
             builder: (_) => RegisterBusinessOwnerScreen(
-                  mobileNumber: args.mobileNumber,countryCode: args.countryCode,
+                  mobileNumber: args.mobileNumber,
+                  countryCode: args.countryCode,
                 ));
       case Routes.welcomeToTwsilaBO:
         return MaterialPageRoute(builder: (_) => WelcomeToTwsilaView());
@@ -208,7 +217,8 @@ class RouteGenerator {
       case Routes.paymentScreen:
         return MaterialPageRoute(builder: (_) => const PaymentScreen());
       case Routes.boSubscriptionBenefits:
-        return MaterialPageRoute(builder: (_) => const BoSubscriptionBenefits());
+        return MaterialPageRoute(
+            builder: (_) => const BoSubscriptionBenefits());
       case Routes.locationTrackingPage:
         final args = settings.arguments as NavigationTrackingArguments;
         return MaterialPageRoute(

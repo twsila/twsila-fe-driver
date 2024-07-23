@@ -952,85 +952,99 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<BaseResponse> updateProfile(
+  Future<BaseResponse> updateDriverProfile(
     driverId,
     firstName,
     lastName,
     email,
-    profilePhoto,
+    nationalId,
+    nationalIdExpiryDate,
+    plateNumber,
+    vehicleDocExpiryDate,
+    vehicleOwnerNatIdExpiryDate,
+    vehicleDriverNatIdExpiryDate,
+    licenseExpiryDate,
+    driverImages,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry(
-      'userId',
-      driverId.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'firstName',
-      firstName,
-    ));
-    _data.fields.add(MapEntry(
-      'lastName',
-      lastName,
-    ));
-    _data.fields.add(MapEntry(
-      'email',
-      email,
-    ));
-    _data.files.add(MapEntry(
-      'profilePhoto',
-      MultipartFile.fromFileSync(
-        profilePhoto.path,
-        filename: profilePhoto.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
-            .compose(
-              _dio.options,
-              '/drivers/update-profile',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> updateProfileWithoutPhoto(
-    driverId,
-    firstName,
-    lastName,
-    email,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'userId',
-      driverId.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'firstName',
-      firstName,
-    ));
-    _data.fields.add(MapEntry(
-      'lastName',
-      lastName,
-    ));
-    _data.fields.add(MapEntry(
-      'email',
-      email,
-    ));
+    if (driverId != null) {
+      _data.fields.add(MapEntry(
+        'id',
+        driverId.toString(),
+      ));
+    }
+    if (firstName != null) {
+      _data.fields.add(MapEntry(
+        'firstName',
+        firstName,
+      ));
+    }
+    if (lastName != null) {
+      _data.fields.add(MapEntry(
+        'lastName',
+        lastName,
+      ));
+    }
+    if (email != null) {
+      _data.fields.add(MapEntry(
+        'email',
+        email,
+      ));
+    }
+    if (nationalId != null) {
+      _data.fields.add(MapEntry(
+        'nationalId',
+        nationalId,
+      ));
+    }
+    if (nationalIdExpiryDate != null) {
+      _data.fields.add(MapEntry(
+        'nationalIdExpiryDate',
+        nationalIdExpiryDate,
+      ));
+    }
+    if (plateNumber != null) {
+      _data.fields.add(MapEntry(
+        'plateNumber',
+        plateNumber,
+      ));
+    }
+    if (vehicleDocExpiryDate != null) {
+      _data.fields.add(MapEntry(
+        'vehicleDocExpiryDate',
+        vehicleDocExpiryDate,
+      ));
+    }
+    if (vehicleOwnerNatIdExpiryDate != null) {
+      _data.fields.add(MapEntry(
+        'vehicleOwnerNatIdExpiryDate',
+        vehicleOwnerNatIdExpiryDate,
+      ));
+    }
+    if (vehicleDriverNatIdExpiryDate != null) {
+      _data.fields.add(MapEntry(
+        'vehicleDriverNatIdExpiryDate',
+        vehicleDriverNatIdExpiryDate,
+      ));
+    }
+    if (licenseExpiryDate != null) {
+      _data.fields.add(MapEntry(
+        'licenseExpiryDate',
+        licenseExpiryDate,
+      ));
+    }
+    if (driverImages != null) {
+      _data.files.addAll(driverImages.map((i) => MapEntry(
+          'driverImages',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+          ))));
+    }
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',
@@ -1051,84 +1065,91 @@ class _AppServiceClient implements AppServiceClient {
 
   @override
   Future<BaseResponse> updateBOProfile(
-    driverId,
+    boId,
     firstName,
     lastName,
+    entityName,
     email,
-    profilePhoto,
+    taxNumber,
+    commercialNumber,
+    nationalId,
+    nationalIdExpiryDate,
+    commercialRegisterExpiryDate,
+    businessEntityImages,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
-    _data.fields.add(MapEntry(
-      'userId',
-      driverId.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'firstName',
-      firstName,
-    ));
-    _data.fields.add(MapEntry(
-      'lastName',
-      lastName,
-    ));
-    _data.fields.add(MapEntry(
-      'email',
-      email,
-    ));
-    _data.files.add(MapEntry(
-      'profilePhoto',
-      MultipartFile.fromFileSync(
-        profilePhoto.path,
-        filename: profilePhoto.path.split(Platform.pathSeparator).last,
-      ),
-    ));
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
-            .compose(
-              _dio.options,
-              '/bo/update-profile',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = BaseResponse.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<BaseResponse> updateBOProfileWithoutPhoto(
-    driverId,
-    firstName,
-    lastName,
-    email,
-  ) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'userId',
-      driverId.toString(),
-    ));
-    _data.fields.add(MapEntry(
-      'firstName',
-      firstName,
-    ));
-    _data.fields.add(MapEntry(
-      'lastName',
-      lastName,
-    ));
-    _data.fields.add(MapEntry(
-      'email',
-      email,
-    ));
+    if (boId != null) {
+      _data.fields.add(MapEntry(
+        'id',
+        boId.toString(),
+      ));
+    }
+    if (firstName != null) {
+      _data.fields.add(MapEntry(
+        'firstName',
+        firstName,
+      ));
+    }
+    if (lastName != null) {
+      _data.fields.add(MapEntry(
+        'lastName',
+        lastName,
+      ));
+    }
+    if (entityName != null) {
+      _data.fields.add(MapEntry(
+        'entityName',
+        entityName,
+      ));
+    }
+    if (email != null) {
+      _data.fields.add(MapEntry(
+        'email',
+        email,
+      ));
+    }
+    if (taxNumber != null) {
+      _data.fields.add(MapEntry(
+        'taxNumber',
+        taxNumber,
+      ));
+    }
+    if (commercialNumber != null) {
+      _data.fields.add(MapEntry(
+        'commercialNumber',
+        commercialNumber,
+      ));
+    }
+    if (nationalId != null) {
+      _data.fields.add(MapEntry(
+        'nationalId',
+        nationalId,
+      ));
+    }
+    if (nationalIdExpiryDate != null) {
+      _data.fields.add(MapEntry(
+        'nationalIdExpiryDate',
+        nationalIdExpiryDate,
+      ));
+    }
+    if (commercialRegisterExpiryDate != null) {
+      _data.fields.add(MapEntry(
+        'commercialRegisterExpiryDate',
+        commercialRegisterExpiryDate,
+      ));
+    }
+    if (businessEntityImages != null) {
+      _data.files.addAll(businessEntityImages.map((i) => MapEntry(
+          'businessEntityImages',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+          ))));
+    }
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'POST',

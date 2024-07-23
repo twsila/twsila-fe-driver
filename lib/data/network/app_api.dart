@@ -126,13 +126,15 @@ abstract class AppServiceClient {
     @Part(name: "mobile") String mobile,
     @Part(name: "email") String email,
     @Part(name: "gender") String gender,
-    @Part(name: "dateOfBirth") String dateOfBirth,//
+    @Part(name: "dateOfBirth") String dateOfBirth, //
     @Part(name: "entityName") String entityName,
     @Part(name: "taxNumber") String taxNumber,
     @Part(name: "nationalId") String nationalId,
     @Part(name: "nationalIdExpiryDate") String nationalIdExpiryDate,
     @Part(name: "commercialNumber") String commercialNumber,
-    @Part(name: "commercialRegisterExpiryDate") String commercialRegisterExpiryDate,//
+    @Part(name: "commercialRegisterExpiryDate")
+    String commercialRegisterExpiryDate,
+    //
     @Part(name: "businessEntityImages") List<File> images,
   );
 
@@ -210,40 +212,40 @@ abstract class AppServiceClient {
 
   @POST("/drivers/update-profile")
   @MultiPart()
-  Future<BaseResponse> updateProfile(
-    @Part(name: "userId") int driverId,
-    @Part(name: "firstName") String firstName,
-    @Part(name: "lastName") String lastName,
-    @Part(name: "email") String email,
-    @Part(name: "profilePhoto") File profilePhoto,
+  Future<BaseResponse> updateDriverProfile(
+    @Part(name: "id") int? driverId,
+    @Part(name: "firstName") String? firstName,
+    @Part(name: "lastName") String? lastName,
+    @Part(name: "email") String? email,
+    @Part(name: "nationalId") String? nationalId,
+    @Part(name: "nationalIdExpiryDate") String? nationalIdExpiryDate,
+    @Part(name: "plateNumber") String? plateNumber,
+    @Part(name: "vehicleDocExpiryDate") String? vehicleDocExpiryDate,
+    @Part(name: "vehicleOwnerNatIdExpiryDate")
+    String? vehicleOwnerNatIdExpiryDate,
+    @Part(name: "vehicleDriverNatIdExpiryDate")
+    String? vehicleDriverNatIdExpiryDate,
+    @Part(name: "licenseExpiryDate") String? licenseExpiryDate,
+    @Part(name: "driverImages") List<File>? driverImages,
   );
 
-  @POST("/drivers/update-profile")
-  @MultiPart()
-  Future<BaseResponse> updateProfileWithoutPhoto(
-    @Part(name: "userId") int driverId,
-    @Part(name: "firstName") String firstName,
-    @Part(name: "lastName") String lastName,
-    @Part(name: "email") String email,
-  );
+
 
   @POST("/bo/update-profile")
   @MultiPart()
   Future<BaseResponse> updateBOProfile(
-    @Part(name: "userId") int driverId,
-    @Part(name: "firstName") String firstName,
-    @Part(name: "lastName") String lastName,
-    @Part(name: "email") String email,
-    @Part(name: "profilePhoto") File profilePhoto,
-  );
-
-  @POST("/bo/update-profile")
-  @MultiPart()
-  Future<BaseResponse> updateBOProfileWithoutPhoto(
-    @Part(name: "userId") int driverId,
-    @Part(name: "firstName") String firstName,
-    @Part(name: "lastName") String lastName,
-    @Part(name: "email") String email,
+    @Part(name: "id") int? boId,
+    @Part(name: "firstName") String? firstName,
+    @Part(name: "lastName") String? lastName,
+    @Part(name: "entityName") String? entityName,
+    @Part(name: "email") String? email,
+    @Part(name: "taxNumber") String? taxNumber,
+    @Part(name: "commercialNumber") String? commercialNumber,
+    @Part(name: "nationalId") String? nationalId,
+    @Part(name: "nationalIdExpiryDate") String? nationalIdExpiryDate,
+    @Part(name: "commercialRegisterExpiryDate")
+    String? commercialRegisterExpiryDate,
+    @Part(name: "businessEntityImages") List<File>? businessEntityImages,
   );
 
   @POST("/driver-acquisition/get-my-drivers")

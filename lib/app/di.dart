@@ -26,7 +26,7 @@ import 'package:taxi_for_you/domain/usecase/search_driver_mobile_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/service_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/trip_summary_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/trips_usecase.dart';
-import 'package:taxi_for_you/domain/usecase/update_profile_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/update_driver_profile_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
 
 import '../data/data_source/local_data_source.dart';
@@ -42,6 +42,7 @@ import '../domain/usecase/goods_service_types_usecase.dart';
 import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/mytrips_usecase.dart';
 import '../domain/usecase/persons_vehicle_types_usecase.dart';
+import '../domain/usecase/update_bo_profile_request.dart';
 import '../presentation/login/view/login_viewmodel.dart';
 import 'app_prefs.dart';
 
@@ -146,7 +147,7 @@ initRegistrationServiceModule() {
   }
   if (!GetIt.I.isRegistered<LookupByKeyUseCase>()) {
     instance.registerFactory<LookupByKeyUseCase>(
-            () => LookupByKeyUseCase(instance()));
+        () => LookupByKeyUseCase(instance()));
   }
 }
 
@@ -222,7 +223,7 @@ initTripDetailsModule() {
   }
   if (!GetIt.I.isRegistered<BOGetPendingDriversUseCase>()) {
     instance.registerFactory<BOGetPendingDriversUseCase>(
-            () => BOGetPendingDriversUseCase(instance()));
+        () => BOGetPendingDriversUseCase(instance()));
   }
 }
 
@@ -342,14 +343,16 @@ initBoSuggestNewOfferModule() {
   }
 }
 
-initUpdateProfileModule() {
-  if (!GetIt.I.isRegistered<UpdateProfileUseCase>()) {
-    instance.registerFactory<UpdateProfileUseCase>(
-        () => UpdateProfileUseCase(instance()));
+initUpdateDriverProfileModule() {
+  if (!GetIt.I.isRegistered<UpdateDriverProfileUseCase>()) {
+    instance.registerFactory<UpdateDriverProfileUseCase>(
+        () => UpdateDriverProfileUseCase(instance()));
   }
-  if (!GetIt.I.isRegistered<UpdateBOProfileUseCase>()) {
-    instance.registerFactory<UpdateBOProfileUseCase>(
-        () => UpdateBOProfileUseCase(instance()));
+}
+initUpdateBoProfileModule() {
+  if (!GetIt.I.isRegistered<UpdateBoProfileUseCase>()) {
+    instance.registerFactory<UpdateBoProfileUseCase>(
+        () => UpdateBoProfileUseCase(instance()));
   }
 }
 

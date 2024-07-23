@@ -40,9 +40,11 @@ class AppPreferences {
       return LanguageType.ENGLISH.getValue();
     }
   }
+
   bool isEnglish() {
     return getAppLanguage() == LanguageType.ENGLISH.getValue();
   }
+
   Future<void> changeAppLanguage() async {
     String currentLang = getAppLanguage();
 
@@ -75,9 +77,11 @@ class AppPreferences {
     return true;
   }
 
-  Future<String> userProfilePicture(DriverBaseModel driverBaseModel) async {
+  Future<String> userProfilePicture(DriverBaseModel driverBaseModel,
+      {String? userType}) async {
     String? imageUrl;
-    if (driverBaseModel.captainType == RegistrationConstants.captain) {
+    if (driverBaseModel.captainType == RegistrationConstants.captain ||
+        userType == RegistrationConstants.captain) {
       if ((driverBaseModel as Driver).images.isNotEmpty) {
         driverBaseModel.images.forEach((element) {
           if (element.imageName == Constants.DRIVER_PHOTO_IMAGE_STRING) {
@@ -89,7 +93,8 @@ class AppPreferences {
         imageUrl = driverBaseModel.images[0].imageUrl ?? '';
       }
     } else {
-      if (driverBaseModel.captainType == RegistrationConstants.businessOwner) {
+      if (driverBaseModel.captainType == RegistrationConstants.businessOwner ||
+          userType == RegistrationConstants.businessOwner) {
         if ((driverBaseModel as BusinessOwnerModel).imagesFromApi != null &&
             driverBaseModel.imagesFromApi!.isNotEmpty) {
           driverBaseModel.imagesFromApi!.forEach((element) {
@@ -166,9 +171,7 @@ class AppPreferences {
           ];
   }
 
-  setCurrentCountryCode(String countryCode){
-
-  }
+  setCurrentCountryCode(String countryCode) {}
 
   DriverBaseModel? getCachedDriver() {
     Map<String, dynamic> driverMap = {};

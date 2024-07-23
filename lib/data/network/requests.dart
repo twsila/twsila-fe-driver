@@ -4,7 +4,7 @@ class LoginRequest {
   String login;
   Map<String, dynamic> mobileUserDeviceDTO;
 
-  LoginRequest(this.login,  this.mobileUserDeviceDTO);
+  LoginRequest(this.login, this.mobileUserDeviceDTO);
 }
 
 class RegisterRequest {
@@ -41,7 +41,7 @@ class VerifyOTPRequest {
   String mobileNumber;
   String generatedOtp;
 
-  VerifyOTPRequest(this.otp, this.mobileNumber,this.generatedOtp);
+  VerifyOTPRequest(this.otp, this.mobileNumber, this.generatedOtp);
 }
 
 class LogoutRequest {
@@ -50,15 +50,60 @@ class LogoutRequest {
   LogoutRequest(this.refreshToken);
 }
 
-class UpdateProfileRequest {
+class UpdateDriverProfileRequest {
   int driverId;
   String firstName;
   String lastName;
   String email;
-  File? profilePhoto;
+  String nationalId;
+  String nationalIdExpiryDate;
+  String plateNumber;
+  String vehicleDocExpiryDate;
+  String vehicleOwnerNatIdExpiryDate;
+  String vehicleDriverNatIdExpiryDate;
+  String licenseExpiryDate;
+  List<File>? driverImages;
 
-  UpdateProfileRequest(this.driverId, this.firstName, this.lastName, this.email,
-      this.profilePhoto);
+  UpdateDriverProfileRequest(
+      {required this.driverId,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.nationalId,
+      required this.nationalIdExpiryDate,
+      required this.plateNumber,
+      required this.vehicleDocExpiryDate,
+      required this.vehicleOwnerNatIdExpiryDate,
+      required this.vehicleDriverNatIdExpiryDate,
+      required this.licenseExpiryDate,
+      required this.driverImages});
+}
+
+class UpdateBoProfileRequest {
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? entityName;
+  String? email;
+  String? taxNumber;
+  String? commercialNumber;
+  String? nationalId;
+  List<File>? businessEntityImages;
+  String? nationalIdExpiryDate;
+  String? commercialRegisterExpiryDate;
+
+  UpdateBoProfileRequest(
+      this.id,
+      this.firstName,
+      this.lastName,
+      this.entityName,
+      this.email,
+      this.taxNumber,
+      this.commercialNumber,
+      this.nationalId,
+      this.businessEntityImages,
+      this.nationalIdExpiryDate,
+      this.commercialRegisterExpiryDate);
 }
 
 class AcceptOfferRequest {

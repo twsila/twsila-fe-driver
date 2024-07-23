@@ -5,19 +5,25 @@ class AppStrings {
   static const ar = 'ar';
   static const tryAgain = 'try_again';
   static const location_required = 'location_required';
+  static const expiryDate = 'expiryDate';
   static const gender = "gender";
   static const username = "username_hint";
   static const password = "password_hint";
   static const usernameError = "username_error";
   static const passwordError = "password_error";
   static const continueBtn = "continue_button";
+  static const updateData = "updateData";
+  static const cannotUpdateDataForNow = "cannotUpdateDataForNow";
   static const whatsYourNumber = "whats_your_number";
   static const letsGetStarted = "lets_get_started";
   static const goodAfternoon = "good_afternoon";
+  static const uploadPhoto = "uploadPhoto";
+  static const uploadPhotos = "uploadPhotos";
   static const complete = "complete";
   static const displayTrips = "displayTrips";
   static const enterRequiredPrice = "enter_required_price";
   static const later = "later";
+  static const carPhotos = "car_photos";
   static const needLocationPermission = "need_location_permission";
   static const updateProfileDoneSuccessfully =
       "update_profile_done_successfully";
@@ -28,6 +34,8 @@ class AppStrings {
       "locationPermissionIsPermanentlyDenied";
   static const tripDate = "trip_date";
   static const goodsType = "goods_type";
+  static const frontImage = "frontImage";
+  static const backImage = "backImage";
   static const payBusinessOwnerFeesMessage = "payBusinessOwnerFeesMessage";
   static const subscriptionBenefits = "subscriptionBenefits";
   static const viewSubscriptionBenefits = "viewSubscriptionBenefits";
@@ -155,6 +163,7 @@ class AppStrings {
   static const privateNotes = "private_notes";
   static const pickedImages = "picked_images";
   static const nothing = "nothing";
+  static const no_images = "no_images";
   static const gallery = "gallery";
   static const camera = "camera";
   static const sourceHint = 'source_hint';

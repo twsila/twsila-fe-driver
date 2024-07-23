@@ -69,16 +69,11 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> ratePassenger(int driverId, int tripId, double rate);
 
-  Future<BaseResponse> updateProfile(UpdateProfileRequest updateProfileRequest);
-
-  Future<BaseResponse> updateProfileWithoutPhoto(
-      UpdateProfileRequest updateProfileRequest);
+  Future<BaseResponse> updateDriverProfile(
+      UpdateDriverProfileRequest updateProfileRequest);
 
   Future<BaseResponse> updateBOProfile(
-      UpdateProfileRequest updateProfileRequest);
-
-  Future<BaseResponse> updateBOProfileWithoutPhoto(
-      UpdateProfileRequest updateProfileRequest);
+      UpdateBoProfileRequest updateBoProfileRequest);
 
   Future<BaseResponse> getBODrivers(int businessOwnerId);
 
@@ -324,46 +319,38 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> updateProfile(
-      UpdateProfileRequest updateProfileRequest) async {
-    return await _appServiceClient.updateProfile(
-        updateProfileRequest.driverId,
-        updateProfileRequest.firstName,
-        updateProfileRequest.lastName,
-        updateProfileRequest.email,
-        updateProfileRequest.profilePhoto!);
-  }
-
-  @override
-  Future<BaseResponse> updateProfileWithoutPhoto(
-      UpdateProfileRequest updateProfileRequest) async {
-    return await _appServiceClient.updateProfileWithoutPhoto(
-      updateProfileRequest.driverId,
-      updateProfileRequest.firstName,
-      updateProfileRequest.lastName,
-      updateProfileRequest.email,
-    );
+  Future<BaseResponse> updateDriverProfile(
+      UpdateDriverProfileRequest updateDriverProfileRequest) async {
+    return await _appServiceClient.updateDriverProfile(
+        updateDriverProfileRequest.driverId,
+        updateDriverProfileRequest.firstName,
+        updateDriverProfileRequest.lastName,
+        updateDriverProfileRequest.email,
+        updateDriverProfileRequest.nationalId,
+        updateDriverProfileRequest.nationalIdExpiryDate,
+        updateDriverProfileRequest.plateNumber,
+        updateDriverProfileRequest.vehicleDocExpiryDate,
+        updateDriverProfileRequest.vehicleOwnerNatIdExpiryDate,
+        updateDriverProfileRequest.vehicleDriverNatIdExpiryDate,
+        updateDriverProfileRequest.licenseExpiryDate,
+        updateDriverProfileRequest.driverImages);
   }
 
   @override
   Future<BaseResponse> updateBOProfile(
-      UpdateProfileRequest updateProfileRequest) async {
+      UpdateBoProfileRequest updateBoProfileRequest) async {
     return await _appServiceClient.updateBOProfile(
-        updateProfileRequest.driverId,
-        updateProfileRequest.firstName,
-        updateProfileRequest.lastName,
-        updateProfileRequest.email,
-        updateProfileRequest.profilePhoto!);
-  }
-
-  @override
-  Future<BaseResponse> updateBOProfileWithoutPhoto(
-      UpdateProfileRequest updateProfileRequest) async {
-    return await _appServiceClient.updateBOProfileWithoutPhoto(
-        updateProfileRequest.driverId,
-        updateProfileRequest.firstName,
-        updateProfileRequest.lastName,
-        updateProfileRequest.email);
+        updateBoProfileRequest.id,
+        updateBoProfileRequest.firstName,
+        updateBoProfileRequest.lastName,
+        updateBoProfileRequest.entityName,
+        updateBoProfileRequest.email,
+        updateBoProfileRequest.taxNumber,
+        updateBoProfileRequest.commercialNumber,
+        updateBoProfileRequest.nationalId,
+        updateBoProfileRequest.nationalIdExpiryDate,
+        updateBoProfileRequest.commercialRegisterExpiryDate,
+        updateBoProfileRequest.businessEntityImages);
   }
 
   @override

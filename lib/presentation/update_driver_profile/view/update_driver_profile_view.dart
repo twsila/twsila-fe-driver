@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
-import 'package:taxi_for_you/presentation/edit_user_profile/bloc/edit_profile_bloc.dart';
+import 'package:taxi_for_you/presentation/update_driver_profile/view/widgets/list_documents_images.dart';
 import 'package:taxi_for_you/utils/dialogs/custom_dialog.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
@@ -22,6 +23,12 @@ import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_input_field.dart';
 import '../../common/widgets/page_builder.dart';
 import '../bloc/update_driver_bloc.dart';
+
+//values to listen to the bool
+//firstname,lastname,birthdate,nationalId,gender,
+
+//if isDisabled = true , can access and view my profile screen only,make as much to be dynamic
+//if isBlocked = true, error user cannot use the app for now
 
 class UpdateDriverProfileView extends StatefulWidget {
   final DriverBaseModel driver;
@@ -53,11 +60,19 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
 
   String? dateOfBirth;
 
-  List<String>? carImagesUrls;
-  List<String>? carDocumentImagesUrls;
-  List<String>? driverNationalIdImagesUrls;
-  List<String>? driverLicenseImagesUrls;
-  List<String>? ownerNationalIdImagesUrls;
+  bool enableUpdate = false;
+
+  bool loadCarImagesFromFile = false;
+  bool carDocumentImagesUrlsFromFile = false;
+  bool driverNationalIdFromFile = false;
+  bool driverLicenseFromFile = false;
+  bool ownerNationalIdFromFile = false;
+
+  List<String> carImagesUrls = [];
+  List<String> carDocumentImagesUrls = [];
+  List<String> driverNationalIdImagesUrls = [];
+  List<String> driverLicenseImagesUrls = [];
+  List<String> ownerNationalIdImagesUrls = [];
 
   String? carDocumentExpiryDate;
   String? driverNationalIdExpiryDate;
@@ -73,6 +88,10 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
     _emailController.text = driver!.email ?? '';
     _nationalIdController.text = driver!.nationalId ?? '';
     _plateNumberController.text = driver!.plateNumber ?? '';
+    carDocumentExpiryDate = driver!.vehicleDocExpiryDate ?? '';
+    driverLicenseExpiryDate = driver!.vehicleDriverNatIdExpiryDate ?? '';
+    driverNationalIdExpiryDate = driver!.vehicleDriverNatIdExpiryDate ?? '';
+    ownerNationalIdExpiryDate = driver!.vehicleOwnerNatIdExpiryDate ?? '';
     BlocProvider.of<UpdateDriverBloc>(context)
         .add(splitAndOrganizeImagesList(driverImagesList: driver!.images));
     super.initState();
@@ -153,7 +172,13 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                   controller: _firstNameController,
                   hintText: AppStrings.enterFirstNameHere.tr(),
                   validateEmptyString: true,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (value != driver!.firstName) {
+                      setState(() {
+                        enableUpdate = true;
+                      });
+                    }
+                  },
                 ),
                 CustomTextInputField(
                   labelText: AppStrings.lastName.tr(),
@@ -161,7 +186,13 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                   controller: _lastNameController,
                   hintText: AppStrings.enterLastNameHere.tr(),
                   validateEmptyString: true,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (value != driver!.lastName) {
+                      setState(() {
+                        enableUpdate = true;
+                      });
+                    }
+                  },
                 ),
                 CustomTextInputField(
                   labelText: AppStrings.jawalNumber.tr(),
@@ -169,7 +200,13 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                   enabled: false,
                   controller: _mobileNumberController,
                   hintText: '',
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (value != driver!.mobile) {
+                      setState(() {
+                        enableUpdate = true;
+                      });
+                    }
+                  },
                 ),
                 CustomTextInputField(
                   labelText: AppStrings.email.tr(),
@@ -178,7 +215,13 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                   validateEmail: true,
                   validateEmptyString: true,
                   hintText: AppStrings.enterEmailHere.tr(),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (value != driver!.email) {
+                      setState(() {
+                        enableUpdate = true;
+                      });
+                    }
+                  },
                 ),
                 CustomTextInputField(
                   enabled: driver!.proceedFirstTimeApproval!,
@@ -187,7 +230,13 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                   controller: _nationalIdController,
                   validateEmptyString: true,
                   hintText: AppStrings.nationalIDHint.tr(),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (value != driver!.nationalId) {
+                      setState(() {
+                        enableUpdate = true;
+                      });
+                    }
+                  },
                 ),
                 CustomTextInputField(
                   enabled: driver!.proceedFirstTimeApproval!,
@@ -196,29 +245,189 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                   controller: _plateNumberController,
                   validateEmptyString: true,
                   hintText: AppStrings.plateNumber.tr(),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (value != driver!.plateNumber) {
+                      setState(() {
+                        enableUpdate = true;
+                      });
+                    }
+                  },
+                ),
+                ListAndUpdateDocumentsImages(
+                  enableUpdateDocuments: driver!.proceedFirstTimeApproval!,
+                  title: AppStrings.carPhotos.tr(),
+                  imagesUrl: carImagesUrls ?? [],
+                  uploadMultipleImagesModel: true,
+                  loadFromFiles: loadCarImagesFromFile,
+                  onDataUpdated:
+                      (imagesList, frontImage, backImage, expiryDate) {
+                    if (imagesList != null && imagesList.isNotEmpty) {
+                      carImagesUrls = [];
+                      imagesList.forEach((_element) {
+                        carImagesUrls!.add(_element.path);
+                      });
+                      setState(() {
+                        enableUpdate = true;
+                        loadCarImagesFromFile = true;
+                      });
+                    }
+                  },
+                ),
+                ListAndUpdateDocumentsImages(
+                  enableUpdateDocuments: driver!.proceedFirstTimeApproval!,
+                  title: AppStrings.carDocumentsInfo.tr(),
+                  imagesUrl: carDocumentImagesUrls ?? [],
+                  expiryDate: carDocumentExpiryDate,
+                  uploadMultipleImagesModel: false,
+                  loadFromFiles: carDocumentImagesUrlsFromFile,
+                  onDataUpdated:
+                      (imagesList, frontImage, backImage, expiryDate) {
+                    if (frontImage != null &&
+                        frontImage.path.isNotEmpty &&
+                        backImage != null &&
+                        backImage.path.isNotEmpty &&
+                        expiryDate != null &&
+                        expiryDate.isNotEmpty) {
+                      carDocumentImagesUrls = [];
+                      carDocumentImagesUrls.add(frontImage.path);
+                      carDocumentImagesUrls.add(backImage.path);
+                      carDocumentExpiryDate = expiryDate;
+                      setState(() {
+                        enableUpdate = true;
+                        carDocumentImagesUrlsFromFile = true;
+                      });
+                    }
+                  },
+                ),
+                ListAndUpdateDocumentsImages(
+                  enableUpdateDocuments: driver!.proceedFirstTimeApproval!,
+                  title: AppStrings.carDriverLicenseInfo.tr(),
+                  imagesUrl: driverLicenseImagesUrls ?? [],
+                  expiryDate: driverLicenseExpiryDate,
+                  uploadMultipleImagesModel: false,
+                  loadFromFiles: driverLicenseFromFile,
+                  onDataUpdated:
+                      (imagesList, frontImage, backImage, expiryDate) {
+                    if (frontImage != null &&
+                        frontImage.path.isNotEmpty &&
+                        backImage != null &&
+                        backImage.path.isNotEmpty &&
+                        expiryDate != null &&
+                        expiryDate.isNotEmpty) {
+                      driverLicenseImagesUrls = [];
+                      driverLicenseImagesUrls.add(frontImage.path);
+                      driverLicenseImagesUrls.add(backImage.path);
+                      driverLicenseExpiryDate = expiryDate;
+                      setState(() {
+                        enableUpdate = true;
+                        driverLicenseFromFile = true;
+                      });
+                    }
+                  },
+                ),
+                ListAndUpdateDocumentsImages(
+                  enableUpdateDocuments: driver!.proceedFirstTimeApproval!,
+                  title: AppStrings.carDriverIdentityInfo.tr(),
+                  imagesUrl: driverNationalIdImagesUrls ?? [],
+                  expiryDate: driverNationalIdExpiryDate,
+                  uploadMultipleImagesModel: false,
+                  loadFromFiles: driverNationalIdFromFile,
+                  onDataUpdated:
+                      (imagesList, frontImage, backImage, expiryDate) {
+                    if (frontImage != null &&
+                        frontImage.path.isNotEmpty &&
+                        backImage != null &&
+                        backImage.path.isNotEmpty &&
+                        expiryDate != null &&
+                        expiryDate.isNotEmpty) {
+                      driverNationalIdImagesUrls = [];
+                      driverNationalIdImagesUrls.add(frontImage.path);
+                      driverNationalIdImagesUrls.add(backImage.path);
+                      driverNationalIdExpiryDate = expiryDate;
+                      setState(() {
+                        enableUpdate = true;
+                        driverNationalIdFromFile = true;
+                      });
+                    }
+                  },
+                ),
+                ListAndUpdateDocumentsImages(
+                  enableUpdateDocuments: driver!.proceedFirstTimeApproval!,
+                  title: AppStrings.carOwnerIdentityInfo.tr(),
+                  imagesUrl: ownerNationalIdImagesUrls ?? [],
+                  expiryDate: ownerNationalIdExpiryDate,
+                  uploadMultipleImagesModel: false,
+                  loadFromFiles: ownerNationalIdFromFile,
+                  onDataUpdated:
+                      (imagesList, frontImage, backImage, expiryDate) {
+                    if (frontImage != null &&
+                        frontImage.path.isNotEmpty &&
+                        backImage != null &&
+                        backImage.path.isNotEmpty &&
+                        expiryDate != null &&
+                        expiryDate.isNotEmpty) {
+                      ownerNationalIdImagesUrls = [];
+
+                      ownerNationalIdImagesUrls.add(frontImage.path);
+                      ownerNationalIdImagesUrls.add(backImage.path);
+
+                      ownerNationalIdExpiryDate = expiryDate;
+                      setState(() {
+                        enableUpdate = true;
+                        ownerNationalIdFromFile = true;
+                      });
+                    }
+                  },
                 ),
                 SizedBox(
                   height: AppSize.s50,
                 ),
                 CustomTextButton(
                   text: AppStrings.save.tr(),
-                  isWaitToEnable: false,
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    if (_formKey.currentState != null &&
-                        _formKey.currentState!.validate()) {
-                      BlocProvider.of<EditProfileBloc>(context).add(
-                          EditProfileDataEvent(
-                              _firstNameController.text,
-                              _lastNameController.text,
-                              _emailController.text,
-                              captainImagePath != null &&
-                                      captainImagePath!.isNotEmpty
-                                  ? File(captainImagePath!)
-                                  : null));
-                    }
-                  },
+                  isWaitToEnable: true,
+                  onPressed: enableUpdate
+                      ? () {
+                          FocusScope.of(context).unfocus();
+                          if (_formKey.currentState != null &&
+                              _formKey.currentState!.validate()) {
+                            BlocProvider.of<UpdateDriverBloc>(context).add(
+                                EditDriverProfileDataEvent(
+                                    firstName: _firstNameController.text,
+                                    lastName: _lastNameController.text,
+                                    email: _emailController.text,
+                                    nationalIdNumber: _nationalIdController
+                                        .text,
+                                    plateNumber: _plateNumberController.text,
+                                    carImagesFromFile: loadCarImagesFromFile
+                                        ? carImagesUrls
+                                        : null,
+                                    carDocumentsImagesFromFile:
+                                        carDocumentImagesUrlsFromFile
+                                            ? carDocumentImagesUrls
+                                            : null,
+                                    driverLicenseImagesFromFile:
+                                        driverLicenseFromFile
+                                            ? driverLicenseImagesUrls
+                                            : null,
+                                    driverNationalIdImagesFromFile:
+                                        driverNationalIdFromFile
+                                            ? driverNationalIdImagesUrls
+                                            : null,
+                                    ownerNationalIdImagesFromFile:
+                                        ownerNationalIdFromFile
+                                            ? ownerNationalIdImagesUrls
+                                            : null,
+                                    carDocumentExpiryDate:
+                                        carDocumentExpiryDate!,
+                                    driverLicenseExpiryDate:
+                                        driverLicenseExpiryDate!,
+                                    driverNationalIdExpiryDate:
+                                        driverNationalIdExpiryDate!,
+                                    ownerNationalIdExpiryDate:
+                                        ownerNationalIdExpiryDate!));
+                          }
+                        }
+                      : null,
                 )
               ],
             ),
@@ -309,7 +518,9 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                         var pickedFile = await imgPicker.pickImage(
                             source: ImageSource.gallery);
                         captainImagePath = pickedFile?.path ?? "";
-                        setState(() {});
+                        setState(() {
+                          enableUpdate = true;
+                        });
                       } catch (e) {
                         ShowDialogHelper.showErrorMessage(
                             e.toString(), context);
@@ -331,7 +542,9 @@ class _UpdateDriverProfileViewState extends State<UpdateDriverProfileView> {
                           source: ImageSource.camera,
                         );
                         captainImagePath = pickedFile?.path ?? "";
-                        setState(() {});
+                        setState(() {
+                          enableUpdate = true;
+                        });
                       } catch (e) {
                         ShowDialogHelper.showErrorMessage(
                             e.toString(), context);

@@ -81,11 +81,11 @@ abstract class Repository {
   Future<Either<Failure, BaseResponse>> ratePassenger(
       int driverId, int tripId, double rate);
 
-  Future<Either<Failure, BaseResponse>> UpdateProfile(
-      UpdateProfileRequest updateProfileRequest);
+  Future<Either<Failure, BaseResponse>> UpdateDriverProfile(
+      UpdateDriverProfileRequest updateProfileRequest);
 
   Future<Either<Failure, BaseResponse>> UpdateBOProfile(
-      UpdateProfileRequest updateProfileRequest);
+      UpdateBoProfileRequest updateBoProfileRequest);
 
   Future<Either<Failure, LogoutModel>> logout(LogoutRequest logoutRequest);
 

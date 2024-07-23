@@ -19,13 +19,10 @@ import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
-import 'package:taxi_for_you/utils/ext/enums.dart';
 
 import '../../domain/model/country_lookup_model.dart';
 import '../../domain/model/driver_model.dart';
-import '../../domain/model/requested_drivers_response.dart';
 import '../../domain/model/trip_details_model.dart';
-import '../../domain/model/verify_otp_model.dart';
 import '../../domain/repository/repository.dart';
 import '../data_source/local_data_source.dart';
 import '../data_source/remote_data_source.dart';
@@ -559,19 +556,14 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, BaseResponse>> UpdateProfile(
-      UpdateProfileRequest updateProfileRequest) async {
+  Future<Either<Failure, BaseResponse>> UpdateDriverProfile(
+      UpdateDriverProfileRequest updateProfileRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response;
-        if (updateProfileRequest.profilePhoto != null) {
-          response =
-              await _remoteDataSource.updateProfile(updateProfileRequest);
-        } else {
-          response = await _remoteDataSource
-              .updateProfileWithoutPhoto(updateProfileRequest);
-        }
+        response =
+            await _remoteDataSource.updateDriverProfile(updateProfileRequest);
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
         } else {
@@ -590,18 +582,13 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, BaseResponse>> UpdateBOProfile(
-      UpdateProfileRequest updateProfileRequest) async {
+      UpdateBoProfileRequest updateBoProfileRequest) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response;
-        if (updateProfileRequest.profilePhoto != null) {
-          response =
-              await _remoteDataSource.updateBOProfile(updateProfileRequest);
-        } else {
-          response = await _remoteDataSource
-              .updateBOProfileWithoutPhoto(updateProfileRequest);
-        }
+        response =
+            await _remoteDataSource.updateBOProfile(updateBoProfileRequest);
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);
         } else {
@@ -627,9 +614,8 @@ class RepositoryImpl implements Repository {
         final response = await _remoteDataSource.getBODrivers(businessOwnerId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          List<Driver> driversList =
-              List<Driver>.from(response.result!
-                  .map((x) => Driver.fromJson(x)));
+          List<Driver> driversList = List<Driver>.from(
+              response.result!.map((x) => Driver.fromJson(x)));
           return Right(driversList);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
@@ -644,18 +630,19 @@ class RepositoryImpl implements Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+
   @override
   Future<Either<Failure, List<Driver>>> getBOPendingDrivers(
       int businessOwnerId) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.getBOPendingDrivers(businessOwnerId);
+        final response =
+            await _remoteDataSource.getBOPendingDrivers(businessOwnerId);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          List<Driver> driversList =
-          List<Driver>.from(response.result!
-              .map((x) => Driver.fromJson(x)));
+          List<Driver> driversList = List<Driver>.from(
+              response.result!.map((x) => Driver.fromJson(x)));
           return Right(driversList);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
@@ -670,6 +657,7 @@ class RepositoryImpl implements Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+
   @override
   Future<Either<Failure, List<Driver>>> searchDriversByMobile(
       int mobileNumber) async {
@@ -979,4 +967,6 @@ class RepositoryImpl implements Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+
+
 }

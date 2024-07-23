@@ -179,7 +179,6 @@ class Driver extends DriverBaseModel {
         "driverStatus": driverStatus,
         "gender": gender,
         "dateOfBirth": dateOfBirth,
-
         "isPending": isPending,
         "nationalId": nationalId,
         "nationalIdExpiryDate": nationalIdExpiryDate,
@@ -190,7 +189,6 @@ class Driver extends DriverBaseModel {
         "proceedFirstTimeApproval": proceedFirstTimeApproval,
         "disabled": disabled,
         "deleted": deleted,
-
         "serviceTypes": serviceTypes,
         "registrationStatus": registrationStatus,
         "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,

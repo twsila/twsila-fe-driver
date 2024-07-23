@@ -117,9 +117,9 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                           setState(() {});
                         }
                       } catch (e) {
-                        ToastHandler(context).showToast(
-                            AppStrings.error_while_adding_images.tr(),
-                            Toast.LENGTH_LONG);
+                        // ToastHandler(context).showToast(
+                        //     AppStrings.error_while_adding_images.tr(),
+                        //     Toast.LENGTH_LONG);
                       }
                       Navigator.pop(context);
                     },
@@ -169,9 +169,9 @@ class _MutliPickImageWidgetState extends State<MutliPickImageWidget> {
                         }
                         setState(() {});
                       } catch (e) {
-                        ToastHandler(context).showToast(
-                            AppStrings.error_while_adding_images.tr(),
-                            Toast.LENGTH_LONG);
+                        // ToastHandler(context).showToast(
+                        //     AppStrings.error_while_adding_images.tr(),
+                        //     Toast.LENGTH_LONG);
                       }
                       Navigator.pop(context);
                     },

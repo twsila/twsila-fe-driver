@@ -17,6 +17,9 @@ class BusinessOwnerModel extends DriverBaseModel {
   List<DriverImage>? imagesFromApi;
   UserDevice? userDevice;
   XFile? profileImage;
+  bool? proceedFirstTimeApproval;
+  bool? disabled;
+  bool? deleted;
   DocumentData? boNationalIdDocument;
   DocumentData? boCommercialRegistrationDocument;
 
@@ -38,6 +41,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.imagesFromApi,
     this.commercialNumber,
     this.userDevice,
+    this.proceedFirstTimeApproval,
+    this.disabled,
+    this.deleted,
     this.boNationalIdDocument,
     this.boCommercialRegistrationDocument,
   }) {
@@ -67,6 +73,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     nationalId = json['nationalId'];
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
+    proceedFirstTimeApproval = json['proceedFirstTimeApproval'];
+    disabled = json['disabled'];
+    deleted = json['deleted'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['commercialNumber'];
@@ -90,6 +99,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     nationalId = json['nationalId'];
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
+    proceedFirstTimeApproval = json['proceedFirstTimeApproval'];
+    disabled = json['disabled'];
+    deleted = json['deleted'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['commercialNumber'];
@@ -114,6 +126,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
     accessToken = json["accessToken"];
+    proceedFirstTimeApproval = json["proceedFirstTimeApproval"];
+    disabled = json["disabled"];
+    deleted = json["deleted"];
     refreshToken = json["refreshToken"];
     commercialNumber = json['commercialNumber'];
     imagesFromApi = List<DriverImage>.from(
@@ -138,6 +153,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     data['nationalIdExpiryDate'] = nationalIdExpiryDate;
     data['accessToken'] = accessToken;
     data['refreshToken'] = refreshToken;
+    data['proceedFirstTimeApproval'] = proceedFirstTimeApproval;
+    data['disabled'] = disabled;
+    data['deleted'] = deleted;
     data['images'] = imagesFromApi;
     data['entityName'] = entityName;
     data['commercialNumber'] = commercialNumber;

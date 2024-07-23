@@ -47,7 +47,7 @@ class Constants {
 class DriverImagesConstants{
 
   static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
-  static const String DRIVER_CAR_PHOTOS_IMAGE_STRING = 'driver-car-photo-.jpg';
+  static const String DRIVER_CAR_PHOTOS_IMAGE_STRING = 'driver-car-photo-';
   static const String CAR_DOCUMENT_FRONT_IMAGE_STRING = 'Documents.carDocument-front.jpg';
   static const String CAR_DOCUMENT_BACK_IMAGE_STRING = 'Documents.carDocument-back.jpg';
   static const String DRIVER_NATIONAL_ID_FRONT_IMAGE_STRING = 'Documents.driverId-front.jpg';
