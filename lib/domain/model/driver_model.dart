@@ -149,7 +149,7 @@ class Driver extends DriverBaseModel {
         proceedFirstTimeApproval: json["proceedFirstTimeApproval"],
         deleted: json["deleted"],
         disabled: json["disabled"],
-        isPending: json["isPending"],
+        isPending: json["isPending"] ?? false,
         canTransportFurniture: json["canTransportFurniture"],
         canTransportGoods: json["canTransportGoods"],
         canTransportFrozen: json["canTransportFrozen"],

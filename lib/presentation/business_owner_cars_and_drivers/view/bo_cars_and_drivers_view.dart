@@ -138,7 +138,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                   return Container(
                       margin: EdgeInsets.all(AppMargin.m8),
                       child: CustomCard(
-                        backgroundColor: driversList[i].isPending!
+                        backgroundColor: driversList[i].isPending ?? false
                             ? ColorManager.disableColor
                             : ColorManager.white,
                         onClick: () {},
@@ -156,7 +156,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                       ?.copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: FontSize.s18,
-                                          color: driversList[i].isPending!
+                                          color: driversList[i].isPending ?? false
                                               ? ColorManager
                                                   .disableCardTextColor
                                               : ColorManager.secondaryColor),
@@ -182,7 +182,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                       ?.copyWith(
                                           fontWeight: FontWeight.normal,
                                           fontSize: FontSize.s16,
-                                          color: driversList[i].isPending!
+                                          color: driversList[i].isPending ?? false
                                               ? ColorManager
                                                   .disableCardTextColor
                                               : ColorManager.secondaryColor),
