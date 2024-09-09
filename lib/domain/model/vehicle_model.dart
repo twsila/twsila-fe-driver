@@ -13,9 +13,9 @@ String vehicleModelToJson(VehicleModel data) => json.encode(data.toJson());
 
 class VehicleModel {
   int id;
-  String vehicleType;
+  String? vehicleType;
   String? vehicleTypeAr;
-  String serviceType;
+  String? serviceType;
   List<NumberOfPassenger>? numberOfPassengers;
   List<VehicleShape>? vehicleShapes;
   VehicleIcon? icon;
@@ -23,9 +23,9 @@ class VehicleModel {
 
   VehicleModel(
       {required this.id,
-      required this.vehicleType,
-      required this.vehicleTypeAr,
-      required this.serviceType,
+      this.vehicleType,
+      this.vehicleTypeAr,
+      this.serviceType,
       required this.numberOfPassengers,
       required this.vehicleShapes,
       this.icon,
@@ -33,9 +33,9 @@ class VehicleModel {
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) => VehicleModel(
         id: json["id"],
-        vehicleType: json["vehicleType"],
-    vehicleTypeAr: json["vehicleTypeAr"],
-        serviceType: json["serviceType"],
+        vehicleType: json["vehicleType"] ?? "",
+        vehicleTypeAr: json["vehicleTypeAr"],
+        serviceType: json["serviceType"] ?? "",
         numberOfPassengers: json["numberOfPassengers"] != null
             ? List<NumberOfPassenger>.from(json["numberOfPassengers"]
                 .map((x) => NumberOfPassenger.fromJson(x)))

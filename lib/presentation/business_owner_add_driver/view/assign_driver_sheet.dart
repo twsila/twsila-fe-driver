@@ -10,13 +10,11 @@ import 'package:taxi_for_you/utils/resources/values_manager.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../utils/dialogs/custom_dialog.dart';
-import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../common/widgets/custom_card.dart';
-import '../../common/widgets/custom_text_button.dart';
 
 class AssignDriverBottomSheetView extends StatefulWidget {
   int tripId;

@@ -184,18 +184,29 @@ class _MyTripsPageState extends State<MyTripsPage> {
 
   Widget _MyTripsTitlesTabsBar() {
     return Container(
-      height: AppSize.s39,
-      color: ColorManager.purpleFade,
-      alignment: Alignment.center,
-      child: ListView.builder(
+        height: AppSize.s39,
+        color: ColorManager.purpleFade,
+        alignment: Alignment.center,
+        child: GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           itemCount: items.length,
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (ctx, index) {
+          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            childAspectRatio: MediaQuery.of(context).size.width * 0.008,
+          ),
+          itemBuilder: (BuildContext context, int index) {
             return tabsTitleWidget(index);
-          }),
-    );
+          },
+        ));
+    //   child: ListView.builder(
+    //       physics: const NeverScrollableScrollPhysics(),
+    //       itemCount: items.length,
+    //       shrinkWrap: true,
+    //       scrollDirection: Axis.horizontal,
+    //       itemBuilder: (ctx, index) {
+    //         return tabsTitleWidget(index);
+    //       }),
+    // );
   }
 
   Widget tabsTitleWidget(int index) {

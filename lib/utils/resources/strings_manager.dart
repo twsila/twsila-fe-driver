@@ -15,11 +15,13 @@ class AppStrings {
   static const updateData = "updateData";
   static const cannotUpdateDataForNow = "cannotUpdateDataForNow";
   static const whatsYourNumber = "whats_your_number";
+  static const cannotOpenMaps = "cannotOpenMaps";
   static const letsGetStarted = "lets_get_started";
   static const goodAfternoon = "good_afternoon";
   static const uploadPhoto = "uploadPhoto";
   static const uploadPhotos = "uploadPhotos";
   static const complete = "complete";
+  static const arrivedAndCompleted = "arrivedAndCompleted";
   static const displayTrips = "displayTrips";
   static const enterRequiredPrice = "enter_required_price";
   static const later = "later";
@@ -423,6 +425,7 @@ class AppStrings {
       'thank_your_reg_with_twsila_message';
   static const backToMainScreen = 'back_to_main_screen';
   static const mainScreen = 'main_screen';
+  static const gettingEstimatedTime = 'gettingEstimatedTime';
 
   //trip status - disc
   static const stepper_driver_first_step_title =
@@ -548,6 +551,7 @@ class AppStrings {
   static const moveToClient = 'move_to_client';
   static const movedToClient = 'moved_to_client';
   static const tripStartedMoveNow = 'trip_started_move_now';
+  static const headingToDestinationPoint = 'headingToDestinationPoint';
   static const estimatedTimeToArrivePickupLocationIs =
       'estimated_time_to_arrive_pickup_location_is';
   static const minute = 'minute';

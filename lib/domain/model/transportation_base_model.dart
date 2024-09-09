@@ -19,7 +19,7 @@ class TransportationBaseModel {
   String? stringDate;
   String? notes;
   double? paymentValue;
-  List<ImageModel>? images;
+  List<String>? images; //will retrieve as list of image urls
   AcceptedOffer? acceptedOffer;
   List<Offer>? offers;
   Passenger? passenger;
@@ -46,8 +46,7 @@ class TransportationBaseModel {
     passengerRating = json['passengerRating'];
     driverRating = json['driverRating'];
     images = json['tripImages'] != null
-        ? List<ImageModel>.from(
-            json['tripImages'].map((x) => ImageModel.fromJson(x)))
+        ? List<String>.from(json['tripImages'].map((x) => (x)))
         : null;
     clientOffer =
         json["clientOffer"] != null ? json["clientOffer"]?.toDouble() : null;
@@ -160,7 +159,8 @@ class Passenger {
   });
 
   factory Passenger.fromJson(Map<String, dynamic> json) => Passenger(
-        id: json["passengerId"],
+        id: json["id"],
+        //change to "Id"
         firstName: json["firstName"] ?? "",
         lastName: json["lastName"] ?? " ",
         mobile: json["mobile"],

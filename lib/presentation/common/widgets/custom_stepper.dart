@@ -547,16 +547,18 @@ class _CustomStepperState extends State<CustomStepper>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          (widget.steps[index].continueButtonLabel != null)
-                              ? widget.steps[index].continueButtonLabel!
-                              : localizations.continueButtonLabel,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: ColorManager.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: FontSize.s14,
-                                  ),
+                        Expanded(
+                          child: Text(
+                            (widget.steps[index].continueButtonLabel != null)
+                                ? widget.steps[index].continueButtonLabel!
+                                : localizations.continueButtonLabel,
+                            style:
+                                Theme.of(context).textTheme.titleMedium?.copyWith(
+                                      color: ColorManager.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: FontSize.s14,
+                                    ),
+                          ),
                         ),
                         widget.steps[index].continueIconWidget != null
                             ? widget.steps[index].continueIconWidget!

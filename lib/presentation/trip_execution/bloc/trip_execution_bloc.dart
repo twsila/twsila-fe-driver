@@ -19,10 +19,11 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
   AppPreferences _appPreferences = instance<AppPreferences>();
 
   List<TripStatusStepModel> tripStatusSteps = [
-    TripStatusStepModel(0, TripStatus.WAIT_FOR_TAKEOFF.name),
-    TripStatusStepModel(1, TripStatus.TAKEOFF.name),
-    TripStatusStepModel(2, TripStatus.EXECUTED.name),
-    TripStatusStepModel(3, TripStatus.COMPLETED.name),
+    TripStatusStepModel(0, TripStatus.READY_FOR_TAKEOFF.name),
+    TripStatusStepModel(1, TripStatus.HEADING_TO_PICKUP_POINT.name),
+    TripStatusStepModel(2, TripStatus.ARRIVED_TO_PICKUP_POINT.name),
+    TripStatusStepModel(3, TripStatus.HEADING_TO_DESTINATION.name),
+    TripStatusStepModel(4, TripStatus.TRIP_COMPLETED.name),
   ];
 
   TripExecutionBloc() : super(TripExecutionInitial()) {
@@ -92,6 +93,23 @@ class TripExecutionBloc extends Bloc<TripExecutionEvent, TripExecutionState> {
             TripStatusStepModel(element.stepIndex, element.tripStatus);
       }
     });
+    // tripStatusSteps.forEach((element) async {
+    //   if (element.tripStatus == event.tripDetailsModel.tripDetails.tripStatus) {
+    //     var currentStepIndex = tripStatusSteps.indexWhere((status) {
+    //       return status.tripStatus == element.tripStatus;
+    //     });
+    //     if (element.stepIndex >= tripStatusSteps.length) {
+    //       tripStatusStepModel = tripStatusSteps.last;
+    //     } else {
+    //       if (currentStepIndex == tripStatusSteps.first.stepIndex) {
+    //         tripStatusStepModel =
+    //             TripStatusStepModel(element.stepIndex, element.tripStatus);
+    //       } else {
+    //         tripStatusStepModel = tripStatusSteps[currentStepIndex + 1];
+    //       }
+    //     }
+    //   }
+    // });
 
     if (tripStatusStepModel != null) {
       emit(TripCurrentStepSuccess(tripStatusStepModel!));

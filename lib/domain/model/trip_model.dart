@@ -200,12 +200,12 @@ class Offer {
   final double driverOffer;
   final String acceptanceStatus;
   final String creationDate;
-  final Driver driverModel;
+  // final Driver driverModel; //will change to driverId
   final bool? woman;
 
   Offer({
     required this.offerId,
-    required this.driverModel,
+    // required this.driverModel,
     required this.acceptanceStatus,
     required this.creationDate,
     required this.driverOffer,
@@ -214,7 +214,7 @@ class Offer {
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
         offerId: json['id'],
-        driverModel: Driver.fromJson(json['driver']),
+        // driverModel: Driver.fromJson(json['driver']),
         acceptanceStatus: json['acceptanceStatus'],
         creationDate: json['creationDate'] ?? "",
         driverOffer: json['driverOffer'],
@@ -361,15 +361,16 @@ class TankDetails {
 }
 
 final tripStatusValues = EnumValues({
-  "DRAFT": TripStatus.DRAFT,
-  "SUBMITTED": TripStatus.SUBMITTED,
-  "EVALUATION": TripStatus.EVALUATION,
-  "PAYMENT": TripStatus.PAYMENT,
-  "WAIT_FOR_TAKEOFF": TripStatus.WAIT_FOR_TAKEOFF,
-  "TAKEOFF": TripStatus.TAKEOFF,
-  "EXECUTED": TripStatus.EXECUTED,
-  "COMPLETED": TripStatus.COMPLETED,
-  "CANCELLED": TripStatus.CANCELLED
+  "DRAFTED": TripStatus.DRAFTED,
+  "TRIP_SUBMITTED": TripStatus.TRIP_SUBMITTED,
+  "TRIP_IN_NEGOTIATION": TripStatus.TRIP_IN_NEGOTIATION,
+  "WAITING_FOR_PAYMENT": TripStatus.WAITING_FOR_PAYMENT,
+  "READY_FOR_TAKEOFF": TripStatus.READY_FOR_TAKEOFF,
+  "HEADING_TO_PICKUP_POINT": TripStatus.HEADING_TO_PICKUP_POINT,
+  "ARRIVED_TO_PICKUP_POINT": TripStatus.ARRIVED_TO_PICKUP_POINT,
+  "HEADING_TO_DESTINATION": TripStatus.HEADING_TO_DESTINATION,
+  "TRIP_COMPLETED": TripStatus.TRIP_COMPLETED,
+  "TRIP_CANCELLED": TripStatus.TRIP_CANCELLED
 });
 final acceptanceStatusValues = EnumValues({
   "PROPOSED": AcceptanceType.PROPOSED,

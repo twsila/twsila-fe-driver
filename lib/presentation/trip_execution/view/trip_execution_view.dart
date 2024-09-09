@@ -7,8 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/domain/model/trip_status_step_model.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_stepper.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
+import 'package:taxi_for_you/presentation/location_bloc/location_bloc.dart';
 import 'package:taxi_for_you/presentation/trip_execution/helper/location_helper.dart';
-import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
@@ -32,7 +32,6 @@ import '../../google_maps/model/maps_repo.dart';
 import '../../rate_passenger/view/rate_passenger_view.dart';
 import '../../trip_details/view/more_details_widget/more_details_widget.dart';
 import '../bloc/trip_execution_bloc.dart';
-import 'navigation_tracking_view.dart';
 
 class TripExecutionView extends StatefulWidget {
   TripDetailsModel tripModel;
@@ -54,7 +53,8 @@ class _TripExecutionViewState extends State<TripExecutionView> {
   bool isUserArrivedSource = false;
   String driverServiceType = "";
   TripStatusStepModel tripStatusStepModel =
-      TripStatusStepModel(0, TripStatus.WAIT_FOR_TAKEOFF.name);
+      TripStatusStepModel(0, TripStatus.READY_FOR_TAKEOFF.name);
+  String currentEstimatedTime = AppStrings.gettingEstimatedTime.tr();
 
   // REQUIRED: USED TO CONTROL THE STEPPER.
   int activeStep = 0; // Initial step set to 0.
@@ -80,7 +80,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
     });
   }
 
-  void getCurrentLocation() async {
+  Future<void> getCurrentLocation() async {
     currentLocation = await mapsRepo.getUserCurrentLocation();
     distanceBetweenCurrentAndSource = LocationHelper()
         .distanceBetweenTwoLocationInMeters(
@@ -88,13 +88,6 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             long1: currentLocation!.longitude,
             lat2: widget.tripModel.tripDetails.pickupLocation.latitude!,
             long2: widget.tripModel.tripDetails.pickupLocation.longitude!);
-
-    if (distanceBetweenCurrentAndSource <= 100) {
-      ToastHandler(context).showToast("arrived pickup location", null);
-      isUserArrivedSource = true;
-      BlocProvider.of<TripExecutionBloc>(context).add(
-          changeTripStatus(widget.tripModel, TripStatus.TAKEOFF.name, true));
-    }
   }
 
   @override
@@ -106,9 +99,33 @@ class _TripExecutionViewState extends State<TripExecutionView> {
     BlocProvider.of<TripExecutionBloc>(context)
         .add(getTripStatusForStepper(tripDetailsModel: widget.tripModel));
     _timer = Timer.periodic(
-        Duration(seconds: Constants.refreshCurrentLocationSeconds),
-        (Timer t) async {});
+        Duration(seconds: Constants.refreshEstimatedTimeInSeconds),
+        (Timer t) async {
+      handleEstiamatedArrivalTime();
+    });
     super.initState();
+  }
+
+  void handleEstiamatedArrivalTime() async {
+    if (activeStep == 0 || activeStep == 1) {
+      currentLocation = await mapsRepo.getUserCurrentLocation();
+      if (currentLocation != null) {
+        currentEstimatedTime = await LocationHelper()
+            .getArrivalTimeFromCurrentToLocation(
+                currentLocation: currentLocation!,
+                destinationLocation: LocationModel(
+                    locationName: widget.tripModel.tripDetails.pickupLocation
+                            .locationName ??
+                        "",
+                    latitude:
+                        widget.tripModel.tripDetails.pickupLocation.latitude!,
+                    longitude: widget
+                        .tripModel.tripDetails.pickupLocation.longitude!));
+        setState(() {});
+      }
+    } else {
+      _timer.cancel();
+    }
   }
 
   @override
@@ -138,13 +155,8 @@ class _TripExecutionViewState extends State<TripExecutionView> {
 
         if (state is TripStatusChangedSuccess) {
           if (state.isLastStep) {
-            // Navigator.pop(context);
             Navigator.pushReplacementNamed(context, Routes.ratePassenger,
                 arguments: RatePassengerArguments(widget.tripModel));
-          } else if (state.openMapWidget) {
-            Navigator.pushNamed(context, Routes.locationTrackingPage,
-                arguments: NavigationTrackingArguments(widget.tripModel));
-            this.tripStatusStepModel.stepIndex++;
           } else {
             this.tripStatusStepModel.stepIndex++;
           }
@@ -189,9 +201,11 @@ class _TripExecutionViewState extends State<TripExecutionView> {
 
   Widget ShowTrackingWidget() {
     return Visibility(
-      visible: tripStatusStepModel.stepIndex == 1 ||
-          tripStatusStepModel.stepIndex == 2 ||
-          tripStatusStepModel.stepIndex == 3,
+      visible: true,
+      // visible: tripStatusStepModel.stepIndex == 1 ||
+      //     tripStatusStepModel.stepIndex == 2,
+      // ||
+      // tripStatusStepModel.stepIndex == 3,
       child: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -214,9 +228,35 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 Icons.map,
                 color: ColorManager.white,
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, Routes.locationTrackingPage,
-                    arguments: NavigationTrackingArguments(widget.tripModel));
+              onPressed: () async {
+                //navigate to pickup location
+                setState(() {
+                  startLoading();
+                });
+                await getCurrentLocation();
+                setState(() {
+                  stopLoading();
+                });
+                if (tripStatusStepModel.stepIndex == 0 ||
+                    tripStatusStepModel.stepIndex == 1) {
+                  MapsRepo.openGoogleMapsWithCoordinates(
+                      context: context,
+                      sLatitude: currentLocation!.latitude,
+                      sLongitude: currentLocation!.longitude,
+                      dLatitude:
+                          widget.tripModel.tripDetails.pickupLocation.latitude!,
+                      dLongitude: widget
+                          .tripModel.tripDetails.pickupLocation.longitude!);
+                } else {
+                  MapsRepo.openGoogleMapsWithCoordinates(
+                      context: context,
+                      sLatitude: currentLocation!.latitude,
+                      sLongitude: currentLocation!.longitude,
+                      dLatitude: widget
+                          .tripModel.tripDetails.destinationLocation.latitude!,
+                      dLongitude: widget.tripModel.tripDetails
+                          .destinationLocation.longitude!);
+                }
               },
             ),
           ],
@@ -406,26 +446,26 @@ class _TripExecutionViewState extends State<TripExecutionView> {
               case 0:
                 BlocProvider.of<TripExecutionBloc>(context).add(
                     changeTripStatus(widget.tripModel,
-                        TripStatus.WAIT_FOR_TAKEOFF.name, false,
+                        TripStatus.HEADING_TO_PICKUP_POINT.name, true,
                         openMapWidget: false));
                 break;
               case 1:
                 BlocProvider.of<TripExecutionBloc>(context).add(
-                    changeTripStatus(
-                        widget.tripModel, TripStatus.TAKEOFF.name, true,
-                        openMapWidget: true));
+                    changeTripStatus(widget.tripModel,
+                        TripStatus.ARRIVED_TO_PICKUP_POINT.name, true,
+                        openMapWidget: false));
 
                 break;
               case 2:
                 BlocProvider.of<TripExecutionBloc>(context).add(
-                    changeTripStatus(
-                        widget.tripModel, TripStatus.EXECUTED.name, true,
+                    changeTripStatus(widget.tripModel,
+                        TripStatus.HEADING_TO_DESTINATION.name, true,
                         openMapWidget: false));
                 break;
               case 3:
                 BlocProvider.of<TripExecutionBloc>(context).add(
                     changeTripStatus(
-                        widget.tripModel, TripStatus.COMPLETED.name, true,
+                        widget.tripModel, TripStatus.TRIP_COMPLETED.name, true,
                         isLastStep: true, openMapWidget: false));
                 break;
             }
@@ -439,7 +479,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 continueIconWidget: Image.asset(ImageAssets.driveIc),
                 title: Text(
                   tripStepperTitles(
-                      TripStatus.WAIT_FOR_TAKEOFF.name,
+                      TripStatus.READY_FOR_TAKEOFF.name,
                       driverServiceType.isNotEmpty
                           ? driverServiceType
                           : TripTypeConstants.personsType,
@@ -469,7 +509,64 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 continueIconWidget: Image.asset(ImageAssets.navigationIc),
                 title: Text(
                   tripStepperTitles(
-                      TripStatus.TAKEOFF.name,
+                      TripStatus.HEADING_TO_PICKUP_POINT.name,
+                      driverServiceType.isNotEmpty
+                          ? driverServiceType
+                          : TripTypeConstants.personsType,
+                      _appPreferences
+                          .getCachedDriver()!
+                          .captainType
+                          .toString()),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: widget.tripModel.tripDetails.date != null
+                          ? ColorManager.formHintTextColor
+                          : ColorManager.headersTextColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: FontSize.s14),
+                ),
+                content: widget.tripModel.tripDetails.date != null
+                    ? Container()
+                    : Container(
+                        child: Text(
+                          _appPreferences
+                                      .getCachedDriver()!
+                                      .captainType
+                                      .toString() ==
+                                  RegistrationConstants.captain
+                              ? currentEstimatedTime
+                              : tripStepperDisc(
+                                  TripStatus.HEADING_TO_PICKUP_POINT.name,
+                                  driverServiceType.isNotEmpty
+                                      ? driverServiceType
+                                      : TripTypeConstants.personsType,
+                                  _appPreferences
+                                      .getCachedDriver()!
+                                      .captainType
+                                      .toString()),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                  color: ColorManager.grey1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: FontSize.s12),
+                        ),
+                      ),
+                continueButtonLabel:
+                    widget.tripModel.tripDetails.date != null ||
+                            _appPreferences.getCachedDriver()!.captainType ==
+                                RegistrationConstants.businessOwner
+                        ? ''
+                        : AppStrings.youArrivedPickupLocation.tr(),
+                cancelButtonLabel: ''),
+            CustomStep(
+                isActive: widget.tripModel.tripDetails.date != null
+                    ? false
+                    : tripStatusStepModel.stepIndex == 2,
+                continueIconWidget: Image.asset(ImageAssets.driveIc),
+                title: Text(
+                  tripStepperTitles(
+                      TripStatus.ARRIVED_TO_PICKUP_POINT.name,
                       driverServiceType.isNotEmpty
                           ? driverServiceType
                           : TripTypeConstants.personsType,
@@ -489,7 +586,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     : Container(
                         child: Text(
                           tripStepperDisc(
-                              TripStatus.TAKEOFF.name,
+                              TripStatus.ARRIVED_TO_PICKUP_POINT.name,
                               driverServiceType.isNotEmpty
                                   ? driverServiceType
                                   : TripTypeConstants.personsType,
@@ -511,58 +608,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                             _appPreferences.getCachedDriver()!.captainType ==
                                 RegistrationConstants.businessOwner
                         ? ''
-                        : AppStrings.navigateToTrackingPage.tr(),
-                cancelButtonLabel: ''),
-            CustomStep(
-                isActive: widget.tripModel.tripDetails.date != null
-                    ? false
-                    : tripStatusStepModel.stepIndex == 2,
-                continueIconWidget: Image.asset(ImageAssets.driveIc),
-                title: Text(
-                  tripStepperTitles(
-                      TripStatus.EXECUTED.name,
-                      driverServiceType.isNotEmpty
-                          ? driverServiceType
-                            : TripTypeConstants.personsType,
-                      _appPreferences
-                          .getCachedDriver()!
-                          .captainType
-                          .toString()),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: widget.tripModel.tripDetails.date != null
-                          ? ColorManager.formHintTextColor
-                          : ColorManager.headersTextColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: FontSize.s14),
-                ),
-                content: widget.tripModel.tripDetails.date != null
-                    ? Container()
-                    : Container(
-                        child: Text(
-                          tripStepperDisc(
-                              TripStatus.EXECUTED.name,
-                              driverServiceType.isNotEmpty
-                                  ? driverServiceType
-                                  : TripTypeConstants.personsType,
-                              _appPreferences
-                                  .getCachedDriver()!
-                                  .captainType
-                                  .toString()),
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(
-                                  color: ColorManager.grey1,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: FontSize.s12),
-                        ),
-                      ),
-                continueButtonLabel:
-                    widget.tripModel.tripDetails.date != null ||
-                            _appPreferences.getCachedDriver()!.captainType ==
-                                RegistrationConstants.businessOwner
-                        ? ''
-                        : AppStrings.tripStartedMoveNow.tr(),
+                        : AppStrings.headingToDestinationPoint.tr(),
                 cancelButtonLabel: ''),
             CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
@@ -572,7 +618,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                 continueButtonBGColor: ColorManager.secondaryColor,
                 title: Text(
                   tripStepperTitles(
-                      TripStatus.COMPLETED.name,
+                      TripStatus.HEADING_TO_DESTINATION.name,
                       driverServiceType.isNotEmpty
                           ? driverServiceType
                           : TripTypeConstants.personsType,
@@ -592,7 +638,7 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                     : Container(
                         child: Text(
                           tripStepperDisc(
-                              TripStatus.COMPLETED.name,
+                              TripStatus.HEADING_TO_DESTINATION.name,
                               driverServiceType.isNotEmpty
                                   ? driverServiceType
                                   : TripTypeConstants.personsType,
@@ -609,12 +655,14 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                                   fontSize: FontSize.s12),
                         ),
                       ),
-                continueButtonLabel:
-                  widget.tripModel.tripDetails.tripStatus != TripStatus.COMPLETED.name ?  widget.tripModel.tripDetails.date != null ||
+                continueButtonLabel: widget.tripModel.tripDetails.tripStatus !=
+                        TripStatus.TRIP_COMPLETED.name
+                    ? widget.tripModel.tripDetails.date != null ||
                             _appPreferences.getCachedDriver()!.captainType ==
                                 RegistrationConstants.businessOwner
                         ? ''
-                        : AppStrings.complete.tr() : '',
+                        : AppStrings.arrivedAndCompleted.tr()
+                    : '',
                 cancelButtonLabel: ''),
           ],
         ),

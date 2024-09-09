@@ -105,7 +105,7 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
     );
   }
 
-  Widget tripImages(List<ImageModel> imageUrls) {
+  Widget tripImages(List<String> imageUrls) {
     return imageUrls.isNotEmpty
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +122,7 @@ class _MoreDetailsWidgetState extends State<MoreDetailsWidget> {
                 alignment: WrapAlignment.spaceBetween,
                 runSpacing: 5,
                 children: List.generate(imageUrls.length,
-                    (index) => TripImageItem(imageUrls[index].url)),
+                    (index) => TripImageItem(imageUrls[index])),
               ),
             ],
           )

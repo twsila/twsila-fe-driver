@@ -19,7 +19,7 @@ enum DriverServiceType { PROPOSED, ACCEPTED, EXPIRED }
 
 enum TankType { PROPOSED, ACCEPTED, EXPIRED }
 
-enum SubmitStatus { SUBMITTED, NOT_SUBMITTED }
+enum SubmitStatus { TRIP_SUBMITTED, NOT_SUBMITTED }
 
 enum RegistrationStatus { PENDING, APPROVED }
 
@@ -132,23 +132,25 @@ String getCurrency(String countryCode) {
 
 String getTripStatusDiscs(String tripStatus) {
   switch (tripStatus) {
-    case TripStatusConstants.DRAFT:
+    case TripStatusConstants.DRAFTED:
       return AppStrings.draft_disc.tr();
-    case TripStatusConstants.SUBMITTED:
+    case TripStatusConstants.TRIP_SUBMITTED:
       return AppStrings.submitted_disc.tr();
-    case TripStatusConstants.EVALUATION:
+    case TripStatusConstants.TRIP_IN_NEGOTIATION:
       return AppStrings.evaluated_disc.tr();
-    case TripStatusConstants.PAYMENT:
+    case TripStatusConstants.WAITING_FOR_PAYMENT:
       return AppStrings.payment_disc.tr();
-    case TripStatusConstants.WAIT_FOR_TAKEOFF:
+    case TripStatusConstants.READY_FOR_TAKEOFF:
       return AppStrings.startTripNowAndMoveToPickupLocation.tr();
-    case TripStatusConstants.TAKEOFF:
+    case TripStatusConstants.HEADING_TO_PICKUP_POINT:
       return AppStrings.tripStartedMoveNow.tr();
-    case TripStatusConstants.EXECUTED:
+    case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
       return AppStrings.youArrivedPickupLocation.tr();
-    case TripStatusConstants.COMPLETED:
+    case TripStatusConstants.HEADING_TO_DESTINATION:
+      return AppStrings.youArrivedPickupLocation.tr();
+    case TripStatusConstants.TRIP_COMPLETED:
       return AppStrings.youArrivedDestinationLocation.tr();
-    case TripStatusConstants.CANCELLED:
+    case TripStatusConstants.TRIP_CANCELLED:
       return AppStrings.canceled_disc.tr();
     default:
       return "";
@@ -157,23 +159,25 @@ String getTripStatusDiscs(String tripStatus) {
 
 String getTripStatusSubDis(String tripStatus) {
   switch (tripStatus) {
-    case TripStatusConstants.DRAFT:
+    case TripStatusConstants.DRAFTED:
       return "";
-    case TripStatusConstants.SUBMITTED:
+    case TripStatusConstants.TRIP_SUBMITTED:
       return "";
-    case TripStatusConstants.EVALUATION:
+    case TripStatusConstants.TRIP_IN_NEGOTIATION:
       return "";
-    case TripStatusConstants.PAYMENT:
+    case TripStatusConstants.WAITING_FOR_PAYMENT:
       return "";
-    case TripStatusConstants.WAIT_FOR_TAKEOFF:
+    case TripStatusConstants.READY_FOR_TAKEOFF:
       return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
-    case TripStatusConstants.TAKEOFF:
+    case TripStatusConstants.HEADING_TO_PICKUP_POINT:
       return '${AppStrings.pleaseShipGoodsAndMoveToDestinationLocation.tr()}';
-    case TripStatusConstants.EXECUTED:
-      return '${AppStrings.pleaseLeaveGoodsAndCloseTheTrip.tr()}';
-    case TripStatusConstants.COMPLETED:
+    case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
+      return '${AppStrings.pleaseShipGoodsAndMoveToDestinationLocation.tr()}';
+    case TripStatusConstants.HEADING_TO_DESTINATION:
+      return ' ';
+    case TripStatusConstants.TRIP_COMPLETED:
       return "";
-    case TripStatusConstants.CANCELLED:
+    case TripStatusConstants.TRIP_CANCELLED:
       return "";
     default:
       return "";
@@ -185,36 +189,42 @@ String tripStepperTitles(
   if (userType == RegistrationConstants.captain &&
       driverServiceType == "PERSONS") {
     switch (tripStatus) {
-      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+      case TripStatusConstants.READY_FOR_TAKEOFF:
         return '${AppStrings.stepper_driver_first_step_title.tr()}';
-      case TripStatusConstants.TAKEOFF:
+      case TripStatusConstants.HEADING_TO_PICKUP_POINT:
         return '${AppStrings.stepper_driver_second_step_title.tr()}';
-      case TripStatusConstants.EXECUTED:
+      case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
         return '${AppStrings.stepper_driver_third_step_title.tr()}';
-      case TripStatusConstants.COMPLETED:
+      case TripStatusConstants.HEADING_TO_DESTINATION:
+        return '${AppStrings.stepper_driver_forth_step_title.tr()}';
+      case TripStatusConstants.TRIP_COMPLETED:
         return '${AppStrings.stepper_driver_forth_step_title.tr()}';
     }
   } else if (userType == RegistrationConstants.captain &&
       driverServiceType != "PERSONS") {
     switch (tripStatus) {
-      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+      case TripStatusConstants.READY_FOR_TAKEOFF:
         return '${AppStrings.stepper_driver_first_step_title.tr()}';
-      case TripStatusConstants.TAKEOFF:
+      case TripStatusConstants.HEADING_TO_PICKUP_POINT:
         return '${AppStrings.stepper_driver_second_step_title.tr()}';
-      case TripStatusConstants.EXECUTED:
+      case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
         return '${AppStrings.stepper_driver_third_step_title.tr()}';
-      case TripStatusConstants.COMPLETED:
+      case TripStatusConstants.HEADING_TO_DESTINATION:
+        return '${AppStrings.stepper_driver_forth_step_title.tr()}';
+      case TripStatusConstants.TRIP_COMPLETED:
         return '${AppStrings.stepper_driver_forth_step_title.tr()}';
     }
   } else if (userType == RegistrationConstants.businessOwner) {
     switch (tripStatus) {
-      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+      case TripStatusConstants.READY_FOR_TAKEOFF:
         return '${AppStrings.stepper_bo_first_step_title.tr()}';
-      case TripStatusConstants.TAKEOFF:
+      case TripStatusConstants.HEADING_TO_PICKUP_POINT:
         return '${AppStrings.stepper_bo_second_step_title.tr()}';
-      case TripStatusConstants.EXECUTED:
+      case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
         return '${AppStrings.stepper_bo_third_step_title.tr()}';
-      case TripStatusConstants.COMPLETED:
+      case TripStatusConstants.HEADING_TO_DESTINATION:
+        return '${AppStrings.stepper_bo_forth_step_title.tr()}';
+      case TripStatusConstants.TRIP_COMPLETED:
         return '${AppStrings.stepper_bo_forth_step_title.tr()}';
     }
   }
@@ -226,36 +236,44 @@ String tripStepperDisc(
   if (userType == RegistrationConstants.captain &&
       driverServiceType == "PERSONS") {
     switch (tripStatus) {
-      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+      case TripStatusConstants.READY_FOR_TAKEOFF:
         return '${AppStrings.stepper_driver_first_step_disc.tr()}';
-      case TripStatusConstants.TAKEOFF:
-        return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
-      case TripStatusConstants.EXECUTED:
+      case TripStatusConstants.HEADING_TO_PICKUP_POINT:
+        // return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
+        return '';
+      case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
         return '${AppStrings.stepper_driver_third_step_disc.tr()}';
-      case TripStatusConstants.COMPLETED:
+      case TripStatusConstants.HEADING_TO_DESTINATION:
+        return '${AppStrings.stepper_driver_third_step_disc.tr()}';
+      case TripStatusConstants.TRIP_COMPLETED:
         return '${AppStrings.stepper_driver_forth_step_disc.tr()}';
     }
   } else if (userType == RegistrationConstants.captain &&
       driverServiceType != "PERSONS") {
     switch (tripStatus) {
-      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+      case TripStatusConstants.READY_FOR_TAKEOFF:
         return '';
-      case TripStatusConstants.TAKEOFF:
-        return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
-      case TripStatusConstants.EXECUTED:
+      case TripStatusConstants.HEADING_TO_PICKUP_POINT:
+        // return '${AppStrings.estimatedTimeToArrivePickupLocationIs.tr()} 15 ${AppStrings.minute.tr()}';
+        return '';
+      case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
         return '${AppStrings.stepper_driver_goods_third_step_disc.tr()}';
-      case TripStatusConstants.COMPLETED:
+      case TripStatusConstants.HEADING_TO_DESTINATION:
+        return '${AppStrings.stepper_driver_goods_third_step_disc.tr()}';
+      case TripStatusConstants.TRIP_COMPLETED:
         return '${AppStrings.stepper_driver_goods_forth_step_disc.tr()}';
     }
   } else if (userType == RegistrationConstants.businessOwner) {
     switch (tripStatus) {
-      case TripStatusConstants.WAIT_FOR_TAKEOFF:
+      case TripStatusConstants.READY_FOR_TAKEOFF:
         return '';
-      case TripStatusConstants.TAKEOFF:
+      case TripStatusConstants.HEADING_TO_PICKUP_POINT:
         return '';
-      case TripStatusConstants.EXECUTED:
+      case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
         return '${AppStrings.stepper_bo_third_step_disc.tr()}';
-      case TripStatusConstants.COMPLETED:
+      case TripStatusConstants.HEADING_TO_DESTINATION:
+        return '${AppStrings.stepper_bo_third_step_disc.tr()}';
+      case TripStatusConstants.TRIP_COMPLETED:
         return '${AppStrings.stepper_bo_third_step_disc.tr()}';
     }
   }
@@ -264,23 +282,25 @@ String tripStepperDisc(
 
 Color getTripStatusDisColor(String tripStatus) {
   switch (tripStatus) {
-    case TripStatusConstants.DRAFT:
+    case TripStatusConstants.DRAFTED:
       return ColorManager.supportTextColor;
-    case TripStatusConstants.SUBMITTED:
+    case TripStatusConstants.TRIP_SUBMITTED:
       return ColorManager.supportTextColor;
-    case TripStatusConstants.EVALUATION:
+    case TripStatusConstants.TRIP_IN_NEGOTIATION:
       return ColorManager.supportTextColor;
-    case TripStatusConstants.PAYMENT:
+    case TripStatusConstants.WAITING_FOR_PAYMENT:
       return ColorManager.supportTextColor;
-    case TripStatusConstants.WAIT_FOR_TAKEOFF:
+    case TripStatusConstants.READY_FOR_TAKEOFF:
       return ColorManager.primary;
-    case TripStatusConstants.TAKEOFF:
+    case TripStatusConstants.HEADING_TO_PICKUP_POINT:
       return ColorManager.accentTextColor;
-    case TripStatusConstants.EXECUTED:
+    case TripStatusConstants.ARRIVED_TO_PICKUP_POINT:
       return ColorManager.accentTextColor;
-    case TripStatusConstants.COMPLETED:
+    case TripStatusConstants.HEADING_TO_DESTINATION:
+      return ColorManager.accentTextColor;
+    case TripStatusConstants.TRIP_COMPLETED:
       return ColorManager.primary;
-    case TripStatusConstants.CANCELLED:
+    case TripStatusConstants.TRIP_CANCELLED:
       return ColorManager.error;
     default:
       return ColorManager.secondaryColor;
@@ -338,13 +358,14 @@ enum TripModelType {
 }
 
 enum TripStatus {
-  DRAFT,
-  SUBMITTED,
-  EVALUATION,
-  PAYMENT,
-  WAIT_FOR_TAKEOFF,
-  TAKEOFF,
-  EXECUTED,
-  COMPLETED,
-  CANCELLED
+  DRAFTED,
+  TRIP_SUBMITTED,
+  TRIP_IN_NEGOTIATION,
+  WAITING_FOR_PAYMENT,
+  READY_FOR_TAKEOFF,
+  HEADING_TO_PICKUP_POINT,
+  ARRIVED_TO_PICKUP_POINT,
+  HEADING_TO_DESTINATION,
+  TRIP_COMPLETED,
+  TRIP_CANCELLED
 }

@@ -30,6 +30,7 @@ class Constants {
   static const String dateFormatterString = "dd/MM/yyyy hh:mm:ss";
 
   static const int refreshCurrentLocationSeconds = 2;
+  static const int refreshEstimatedTimeInSeconds = 5;
   static const int MAXIMUM_MULTI_PIC_IMAGES = 4;
 
   static const int otpCountTime = 30;
@@ -117,15 +118,16 @@ class LookupKeys {
 }
 
 class TripStatusConstants {
-  static const String DRAFT = "DRAFT";
-  static const String SUBMITTED = "SUBMITTED";
-  static const String EVALUATION = "EVALUATION";
-  static const String PAYMENT = "PAYMENT";
-  static const String WAIT_FOR_TAKEOFF = "WAIT_FOR_TAKEOFF";
-  static const String TAKEOFF = "TAKEOFF";
-  static const String EXECUTED = "EXECUTED";
-  static const String COMPLETED = "COMPLETED";
-  static const String CANCELLED = "CANCELLED";
+  static const String DRAFTED = "DRAFTED";
+  static const String TRIP_SUBMITTED = "TRIP_SUBMITTED";
+  static const String TRIP_IN_NEGOTIATION = "TRIP_IN_NEGOTIATION";
+  static const String WAITING_FOR_PAYMENT = "WAITING_FOR_PAYMENT";
+  static const String READY_FOR_TAKEOFF = "READY_FOR_TAKEOFF";
+  static const String HEADING_TO_PICKUP_POINT = "HEADING_TO_PICKUP_POINT";
+  static const String ARRIVED_TO_PICKUP_POINT = "ARRIVED_TO_PICKUP_POINT";
+  static const String HEADING_TO_DESTINATION = "HEADING_TO_DESTINATION";
+  static const String TRIP_COMPLETED = "TRIP_COMPLETED";
+  static const String TRIP_CANCELLED = "TRIP_CANCELLED";
 }
 
 class EndPoints {
