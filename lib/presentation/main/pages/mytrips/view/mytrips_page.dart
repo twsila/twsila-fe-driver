@@ -92,7 +92,6 @@ class _MyTripsPageState extends State<MyTripsPage> {
           } else {
             _loadingTripsList = false;
           }
-
           if (state is MyTripsSuccess) {
             trips = state.trips;
           }
@@ -110,10 +109,8 @@ class _MyTripsPageState extends State<MyTripsPage> {
                 SizedBox(
                   height: AppSize.s20,
                 ),
-
                 /// CUSTOM TABBAR
                 _MyTripsTitlesTabsBar(),
-
                 /// MAIN BODY
                 _tripsListView(),
               ],

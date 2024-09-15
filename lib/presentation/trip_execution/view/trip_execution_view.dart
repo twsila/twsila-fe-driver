@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxi_for_you/domain/model/trip_status_step_model.dart';
-import 'package:taxi_for_you/presentation/common/widgets/custom_stepper.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_stepper.dart'
+    as stepper;
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
-import 'package:taxi_for_you/presentation/location_bloc/location_bloc.dart';
 import 'package:taxi_for_you/presentation/trip_execution/helper/location_helper.dart';
 import 'package:taxi_for_you/utils/ext/enums.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
@@ -432,12 +432,12 @@ class _TripExecutionViewState extends State<TripExecutionView> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: CustomStepper(
+        child: stepper.CustomStepper(
           // stepIndicatorAlignment is set to StepIndicatorAlignment.left by default if not configured
           stepIndicatorAlignment:
               _appPreferences.getAppLanguage() == LanguageType.ARABIC
-                  ? StepIndicatorAlignment.right
-                  : StepIndicatorAlignment.left,
+                  ? stepper.StepIndicatorAlignment.right
+                  : stepper.StepIndicatorAlignment.left,
           // dottedLine is set to false by default if not configured
           dottedLine: false,
           currentStep: tripStatusStepModel.stepIndex,
@@ -471,12 +471,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
             }
           },
           onStepTapped: (int index) {},
-          steps: <CustomStep>[
-            CustomStep(
+          steps: <stepper.CustomStep>[
+            stepper.CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
                     ? false
                     : tripStatusStepModel.stepIndex == 0,
                 continueIconWidget: Image.asset(ImageAssets.driveIc),
+                state: tripStatusStepModel.stepIndex > 0
+                    ? stepper.StepState.complete
+                    : stepper.StepState.indexed,
                 title: Text(
                   tripStepperTitles(
                       TripStatus.READY_FOR_TAKEOFF.name,
@@ -502,11 +505,14 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                         ? ''
                         : AppStrings.movedToClient.tr(),
                 cancelButtonLabel: ''),
-            CustomStep(
+            stepper. CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
                     ? false
                     : tripStatusStepModel.stepIndex == 1,
                 continueIconWidget: Image.asset(ImageAssets.navigationIc),
+                state: tripStatusStepModel.stepIndex > 1
+                    ? stepper.StepState.complete
+                    : stepper.StepState.indexed,
                 title: Text(
                   tripStepperTitles(
                       TripStatus.HEADING_TO_PICKUP_POINT.name,
@@ -559,11 +565,14 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                         ? ''
                         : AppStrings.youArrivedPickupLocation.tr(),
                 cancelButtonLabel: ''),
-            CustomStep(
+            stepper.CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
                     ? false
                     : tripStatusStepModel.stepIndex == 2,
                 continueIconWidget: Image.asset(ImageAssets.driveIc),
+                state: tripStatusStepModel.stepIndex > 2
+                    ? stepper.StepState.complete
+                    : stepper.StepState.indexed,
                 title: Text(
                   tripStepperTitles(
                       TripStatus.ARRIVED_TO_PICKUP_POINT.name,
@@ -610,12 +619,15 @@ class _TripExecutionViewState extends State<TripExecutionView> {
                         ? ''
                         : AppStrings.headingToDestinationPoint.tr(),
                 cancelButtonLabel: ''),
-            CustomStep(
+            stepper.CustomStep(
                 isActive: widget.tripModel.tripDetails.date != null
                     ? false
                     : tripStatusStepModel.stepIndex == 3,
                 continueIconWidget: Image.asset(ImageAssets.tripFinishIc),
                 continueButtonBGColor: ColorManager.secondaryColor,
+                state: tripStatusStepModel.stepIndex > 3
+                    ? stepper.StepState.complete
+                    : stepper.StepState.indexed,
                 title: Text(
                   tripStepperTitles(
                       TripStatus.HEADING_TO_DESTINATION.name,
