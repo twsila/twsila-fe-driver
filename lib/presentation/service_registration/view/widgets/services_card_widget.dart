@@ -387,7 +387,7 @@ class _ServiceCardState extends State<ServiceCard> {
           vehicleModel.vehicleShapes!.isNotEmpty) {
         vehicleModel.vehicleShapes!.forEach((vehicleShape) {
           thirdServiceLevel
-              .add(ThirdServiceLevel(vehicleShape.id, vehicleShape.shape));
+              .add(ThirdServiceLevel(vehicleShape.id, vehicleShape.value));
         });
       }
     } else {

@@ -23,6 +23,14 @@ class GetCarBrandAndModel extends ServiceRegistrationEvent {
   GetCarBrandAndModel();
 }
 
+class GetCarManufacture extends ServiceRegistrationEvent {
+  GetCarManufacture();
+}
+
+class GetYearsOfModel extends ServiceRegistrationEvent {
+  GetYearsOfModel();
+}
+
 class RegisterCaptainWithService extends ServiceRegistrationEvent {
   RegisterCaptainWithService();
 }
@@ -117,8 +125,16 @@ class SetCaptainData extends ServiceRegistrationEvent {
   String nationalIdNumber;
   String nationalIdExpiryDate;
 
-  SetCaptainData(this.captainPhoto, this.mobileNumber, this.firstName,
-      this.lastName, this.email, this.gender, this.birthDate,this.nationalIdNumber,this.nationalIdExpiryDate);
+  SetCaptainData(
+      this.captainPhoto,
+      this.mobileNumber,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.gender,
+      this.birthDate,
+      this.nationalIdNumber,
+      this.nationalIdExpiryDate);
 }
 
 class SetFirstStepData extends ServiceRegistrationEvent {
@@ -141,6 +157,7 @@ class SetFirstStepData extends ServiceRegistrationEvent {
 
 class SetSecondStepData extends ServiceRegistrationEvent {
   final String carManufacturerTypeId;
+  final String vehicleYearOfManufacture;
   final String carModelId;
   final String plateNumber;
   final String carNotes;
@@ -152,6 +169,7 @@ class SetSecondStepData extends ServiceRegistrationEvent {
 
   SetSecondStepData(
       this.carManufacturerTypeId,
+      this.vehicleYearOfManufacture,
       this.carModelId,
       this.plateNumber,
       this.carNotes,

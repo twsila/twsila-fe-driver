@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/presentation/common/widgets/CustomAutoFullSms.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/documents_helper.dart';
@@ -16,7 +17,10 @@ import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 
 import '../../../../app/constants.dart';
+import '../../../../app/di.dart';
 import '../../../../domain/model/car_brand_models_model.dart';
+import '../../../../domain/model/lookupValueModel.dart';
+import '../../../../domain/model/year_of_manufacture_model.dart';
 import '../../../../utils/helpers/keep_alive_widget.dart';
 import '../../../../utils/resources/color_manager.dart';
 import '../../../../utils/resources/font_manager.dart';
@@ -47,9 +51,15 @@ class ServiceRegistrationSecondStep extends StatefulWidget {
 class _ServiceRegistrationSecondStepState
     extends State<ServiceRegistrationSecondStep> {
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  AppPreferences _appPreferences = instance<AppPreferences>();
   bool _displayLoadingIndicator = false;
   bool _loadingCars = false;
-  List<CarModel>? carModelList;
+  bool _loadingCarManu = false;
+  bool _loadingYears = false;
+  List<CarModel>? AllCarModelList;
+  List<CarModel> carModelList = [];
+  List<CarManufacturerModel>? carManuList;
+  List<YearOfManufactureModel>? yearOfManufactureList;
   CarModel? selectedCarModel;
   String plateNumberValidation = "";
   TextEditingController _carNotesController = TextEditingController();
@@ -66,6 +76,8 @@ class _ServiceRegistrationSecondStepState
 
   String plateNumber = "";
   String carNotes = "";
+  String carManu = "";
+  String vehicleYearOfManufacture = "";
 
   String front = "";
   String back = "";
@@ -97,6 +109,8 @@ class _ServiceRegistrationSecondStepState
 
     BlocProvider.of<ServiceRegistrationBloc>(context)
         .add(GetCarBrandAndModel());
+    BlocProvider.of<ServiceRegistrationBloc>(context).add(GetCarManufacture());
+    BlocProvider.of<ServiceRegistrationBloc>(context).add(GetYearsOfModel());
     super.initState();
   }
 
@@ -177,7 +191,7 @@ class _ServiceRegistrationSecondStepState
 
   Widget _getContentWidget(BuildContext context) {
     return BlocConsumer<ServiceRegistrationBloc, ServiceRegistrationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is ServiceRegistrationLoading) {
           startLoading();
         } else {
@@ -185,11 +199,45 @@ class _ServiceRegistrationSecondStepState
         }
         if (state is CarBrandsAndModelsSuccess) {
           _loadingCars = false;
-          carModelList = state.carModelList;
+          AllCarModelList = state.carModelList;
+          // carModelList = state.carModelList;
           if (widget.registrationRequest.carModelId != null &&
               carModelList != null) {
             selectedCarModel = carModelList!.firstWhere((element) =>
                 element.id.toString() == widget.registrationRequest.carModelId);
+          }
+        }
+        if (state is CarsManuSuccess) {
+          _loadingCarManu = false;
+          carManuList = state.carManuList;
+
+          if (widget.registrationRequest.carManufacturerTypeId != null &&
+              carManuList != null &&
+              carManu.isNotEmpty) {
+            carManu = carManuList!
+                .firstWhere((CarManufacturerModel element) =>
+                    element.id.toString() ==
+                    widget.registrationRequest.carManufacturerTypeId)
+                .toString();
+          }
+        }
+        if (state is YearOfManuSuccess) {
+          List<YearOfManufactureModel> list = [];
+          await Future.forEach(state.yearOfManufactureList,
+              (LookupValueModel values) {
+            list.add(
+                YearOfManufactureModel(id: values.id, value: values.value));
+          });
+          _loadingYears = false;
+          yearOfManufactureList = list;
+
+          if (widget.registrationRequest.vehicleYearOfManufacture != null &&
+              yearOfManufactureList != null) {
+            vehicleYearOfManufacture = yearOfManufactureList!
+                .firstWhere((YearOfManufactureModel element) =>
+                    element.value.toString() ==
+                    widget.registrationRequest.vehicleYearOfManufacture)
+                .toString();
           }
         }
 
@@ -208,6 +256,7 @@ class _ServiceRegistrationSecondStepState
           widget.registrationRequest.carManufacturerTypeId = null;
           widget.registrationRequest.additionalServicesModel = null;
           widget.registrationRequest.carModelId = null;
+          widget.registrationRequest.vehicleYearOfManufacture = null;
           widget.registrationRequest.carNotes = null;
           widget.registrationRequest.plateNumber = null;
           widget.registrationRequest.countryCode = null;
@@ -334,12 +383,63 @@ class _ServiceRegistrationSecondStepState
                   fontSize: FontSize.s30,
                   color: ColorManager.headersTextColor),
             ),
+            SizedBox(
+              height: AppSize.s16,
+            ),
             GestureDetector(
               onTap: () {
                 setState(() {
-                  carModelList != null
+                  carManuList != null
+                      ? _showBottomCarManuSheet(carManuList ?? [])
+                      : _loadingCarManu;
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: ColorManager.borderColor, width: 1),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(AppPadding.p8),
+                  child: _loadingCarManu
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: ColorManager.primary,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              carManu.isNotEmpty
+                                  ? carManu
+                                  : "${AppStrings.carManuName.tr()} (${AppStrings.required.tr()})",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      fontSize: FontSize.s16,
+                                      color: ColorManager.titlesTextColor),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: ColorManager.primary,
+                            )
+                          ],
+                        ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: AppSize.s16,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  carModelList.isNotEmpty
                       ? _showBottomSheet(carModelList ?? [])
-                      : _loadingCars;
+                      : ToastHandler(context).showToast(
+                          AppStrings.pleaseSelectCarManuFirts.tr(),
+                          Toast.LENGTH_LONG);
                 });
               },
               child: Container(
@@ -358,9 +458,57 @@ class _ServiceRegistrationSecondStepState
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              selectedCarModel
-                                      ?.carManufacturerId.carManufacturer ??
-                                  "${AppStrings.carModelAndBrand.tr()} (${AppStrings.required.tr()})",
+                              selectedCarModel != null
+                                  ? _appPreferences.getAppLanguage() == "ar"
+                                      ? selectedCarModel!.modelNameAr
+                                      : selectedCarModel!.modelName
+                                  : "${AppStrings.carModelName.tr()} (${AppStrings.required.tr()})",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      fontSize: FontSize.s16,
+                                      color: ColorManager.titlesTextColor),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: ColorManager.primary,
+                            )
+                          ],
+                        ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: AppSize.s16,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  yearOfManufactureList != null
+                      ? _showYearsOfManuBottomSheet(yearOfManufactureList ?? [])
+                      : _loadingYears;
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: ColorManager.borderColor, width: 1),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(AppPadding.p8),
+                  child: _loadingYears
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: ColorManager.primary,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              vehicleYearOfManufacture.isNotEmpty
+                                  ? vehicleYearOfManufacture
+                                  : "${AppStrings.carModel.tr()} (${AppStrings.required.tr()})",
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -539,6 +687,7 @@ class _ServiceRegistrationSecondStepState
               onPressed: () {
                 if (selectedCarModel != null &&
                     plateNumber != "" &&
+                    vehicleYearOfManufacture != "" &&
                     plateNumberValidation.isEmpty &&
                     carPhotos.length != 0 &&
                     isCarDocumentValid &&
@@ -547,7 +696,8 @@ class _ServiceRegistrationSecondStepState
                     isOwnerIdValid) {
                   BlocProvider.of<ServiceRegistrationBloc>(context).add(
                       SetSecondStepData(
-                          selectedCarModel!.carManufacturerId.id.toString(),
+                          selectedCarModel!.carManufacturer.id.toString(),
+                          vehicleYearOfManufacture,
                           selectedCarModel!.id.toString(),
                           plateNumber,
                           carNotes,
@@ -878,6 +1028,7 @@ class _ServiceRegistrationSecondStepState
                       setState(() {
                         Navigator.pop(context);
                         selectedCarModel = carModelList[index];
+
                         widget.registrationRequest.carModelId =
                             selectedCarModel!.id.toString();
                       });
@@ -885,8 +1036,87 @@ class _ServiceRegistrationSecondStepState
                     child: ListTile(
                         title: Text(carModelList[index].modelName),
                         subtitle: Text(carModelList[index]
-                            .carManufacturerId
+                            .carManufacturer
                             .carManufacturer)),
+                  );
+                },
+              )
+            : CircularProgressIndicator(
+                color: ColorManager.primary,
+              ));
+  }
+
+  void _showBottomCarManuSheet(List<CarManufacturerModel> carManuList) {
+    showModalBottomSheet(
+        elevation: 10,
+        context: context,
+        backgroundColor: ColorManager.white,
+        builder: (ctx) => carManuList != null
+            ? ListView.builder(
+                itemCount: carManuList.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () async {
+                      carManu = _appPreferences.getAppLanguage() == "ar"
+                          ? carManuList[index].carManufacturerAr
+                          : carManuList[index].carManufacturer;
+                      widget.registrationRequest.carManufacturerTypeId =
+                          carManuList[index].id.toString();
+
+                      selectedCarModel = null;
+                      if (AllCarModelList != null) {
+                        carModelList.clear();
+                        await Future.forEach(AllCarModelList!,
+                            (CarModel carModel) {
+                          if (carModel.carManufacturer.id ==
+                              carManuList[index].id) {
+                            carModelList.add(carModel);
+                          }
+                        });
+                      }
+
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: ListTile(
+                      title: Text(_appPreferences.getAppLanguage() == "ar"
+                          ? carManuList[index].carManufacturerAr
+                          : carManuList[index].carManufacturer),
+                    ),
+                  );
+                },
+              )
+            : CircularProgressIndicator(
+                color: ColorManager.primary,
+              ));
+  }
+
+  void _showYearsOfManuBottomSheet(
+      List<YearOfManufactureModel> yearOfManufactureList) {
+    showModalBottomSheet(
+        elevation: 10,
+        context: context,
+        backgroundColor: ColorManager.white,
+        builder: (ctx) => yearOfManufactureList != null
+            ? ListView.builder(
+                itemCount: yearOfManufactureList.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        Navigator.pop(context);
+                        vehicleYearOfManufacture =
+                            yearOfManufactureList[index].value;
+                        widget.registrationRequest.vehicleYearOfManufacture =
+                            vehicleYearOfManufacture;
+                      });
+                    },
+                    child: ListTile(
+                      title: Text(yearOfManufactureList[index].value),
+                    ),
                   );
                 },
               )

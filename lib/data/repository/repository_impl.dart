@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/data/mapper/driver.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/add_request_model.dart';
+import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
 import 'package:taxi_for_you/domain/model/general_response.dart';
 import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
 import 'package:taxi_for_you/domain/model/lookupValueModel.dart';
@@ -218,7 +219,36 @@ class RepositoryImpl implements Repository {
         final response = await _remoteDataSource.carBrandAndModel();
 
         if (response.success == ApiInternalStatus.SUCCESS) {
-          return Right(response.result);
+          List<CarModel> carModelsList = List<CarModel>.from(
+              response.result.map((x) => CarModel.fromJson(x)));
+
+          return Right(carModelsList);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers() async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response = await _remoteDataSource.carManufacturers();
+
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<CarManufacturerModel> carManufacturerList =
+              List<CarManufacturerModel>.from(
+                  response.result.map((x) => CarManufacturerModel.fromJson(x)));
+          return Right(carManufacturerList);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,
               response.message ?? ResponseMessage.DEFAULT));
@@ -968,5 +998,31 @@ class RepositoryImpl implements Repository {
     }
   }
 
+  @override
+  Future<Either<Failure, List<AllowedServiceModel>>>
+      getAllowedServicesByUserType(String userType) async {
+    if (await _networkInfo.isConnected) {
+      // its connected to internet, its safe to call API
+      try {
+        final response =
+            await _remoteDataSource.getAllowedServicesByUserType(userType);
 
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          List<AllowedServiceModel> listOfAllowedServices =
+              List<AllowedServiceModel>.from(
+                  response.result.map((x) => AllowedServiceModel.fromJson(x)));
+          return Right(listOfAllowedServices);
+        } else {
+          return Left(Failure(ApiInternalStatus.FAILURE,
+              response.message ?? ResponseMessage.DEFAULT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      // return internet connection error
+      // return either left
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
 }

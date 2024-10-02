@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
+import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
@@ -37,6 +38,8 @@ abstract class Repository {
 
   Future<Either<Failure, List<CarModel>>> carBrandsAndModels();
 
+  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers();
+
   Future<Either<Failure, String>> forgotPassword(String email);
 
   Future<Either<Failure, RegistrationResponse>> register(
@@ -52,7 +55,6 @@ abstract class Repository {
       VerifyOTPRequest verifyOTPRequest);
 
   Future<Either<Failure, ServiceRegisterModel>> getServiceStatus(String userId);
-
 
   Future<Either<Failure, List<TripDetailsModel>>> getTrips(
       String endPoint,
@@ -96,8 +98,7 @@ abstract class Repository {
   Future<Either<Failure, List<LookupValueModel>>> getLookupByKey(
       String key, String lang);
 
-  Future<Either<Failure, List<Driver>>> getBODrivers(
-      int businessOwnerId);
+  Future<Either<Failure, List<Driver>>> getBODrivers(int businessOwnerId);
 
   Future<Either<Failure, List<Driver>>> searchDriversByMobile(int mobileNumber);
 
@@ -125,4 +126,7 @@ abstract class Repository {
 
   Future<Either<Failure, List<Driver>>> getBOPendingDrivers(
       int businessOwnerId);
+
+  Future<Either<Failure, List<AllowedServiceModel>>>
+      getAllowedServicesByUserType(String userType);
 }

@@ -61,16 +61,14 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
     //     .add(SendOtpEvent(widget.mobileNumberForApi));
     if (widget.registerAs == RegistrationConstants.captain) {
       BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-        /*'1234567890'*/
-        widget.mobileNumberForApi,
-        widget.countryCode
-      ));
+          /*'1234567890'*/
+          widget.mobileNumberForApi,
+          widget.countryCode));
     } else {
       BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
-        /*'1234567890'*/
-        widget.mobileNumberForApi,
-          widget.countryCode
-      ));
+          /*'1234567890'*/
+          widget.mobileNumberForApi,
+          widget.countryCode));
     }
     super.initState();
   }
@@ -113,20 +111,18 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
               } else {
                 stopLoading();
               }
+
+              if (state is LoginSuccessButDisabled) {
+                BlocProvider.of<LoginBloc>(context)
+                    .add(SaveUserAllowedList(state.driver));
+              }
               if (state is LoginSuccessState) {
-                _appPreferences.setUserLoggedIn();
-                DriverBaseModel cachedDriver = state.driver;
-                if (widget.registerAs == RegistrationConstants.captain) {
-                  cachedDriver.captainType = RegistrationConstants.captain;
-                } else {
-                  cachedDriver.captainType =
-                      RegistrationConstants.businessOwner;
-                }
-                await _appPreferences.setDriver(cachedDriver);
-                DriverBaseModel? driver = _appPreferences.getCachedDriver();
-                if (driver != null) {
-                  Navigator.pushReplacementNamed(context, Routes.mainRoute);
-                }
+                startLoading();
+                await LoginBloc().setUserInfoAndModelToCache(
+                    state.driver, widget.registerAs);
+
+                stopLoading();
+                Navigator.pushReplacementNamed(context, Routes.mainRoute);
               }
               if (state is LoginFailState) {
                 if ((state.errorCode == ResponseCode.NOT_FOUND.toString() ||
@@ -142,8 +138,8 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                 } else if (widget.registerAs ==
                     RegistrationConstants.businessOwner) {
                   Navigator.pushNamed(context, Routes.boRegistration,
-                      arguments:
-                          BoRegistrationArguments(widget.mobileNumberForApi,widget.countryCode));
+                      arguments: BoRegistrationArguments(
+                          widget.mobileNumberForApi, widget.countryCode));
                 } else {
                   CustomDialog(context).showErrorDialog('', '', state.message);
                 }
@@ -176,9 +172,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                     .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
                 if (widget.registerAs == RegistrationConstants.captain) {
                   BlocProvider.of<LoginBloc>(context).add(MakeLoginEvent(
-                    widget.mobileNumberForApi,
-                    widget.countryCode
-                  ));
+                      widget.mobileNumberForApi, widget.countryCode));
                 } else {
                   BlocProvider.of<LoginBloc>(context).add(MakeLoginBOEvent(
                     widget.mobileNumberForApi,
@@ -306,6 +300,6 @@ class VerifyArguments {
   String countryCode;
   String registerAs;
 
-  VerifyArguments(
-      this.mobileNumberForApi, this.mobileNumberForDisplay,this.countryCode, this.registerAs);
+  VerifyArguments(this.mobileNumberForApi, this.mobileNumberForDisplay,
+      this.countryCode, this.registerAs);
 }

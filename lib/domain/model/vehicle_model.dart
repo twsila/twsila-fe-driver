@@ -17,7 +17,7 @@ class VehicleModel {
   String? vehicleTypeAr;
   String? serviceType;
   List<NumberOfPassenger>? numberOfPassengers;
-  List<VehicleShape>? vehicleShapes;
+  List<TruckType>? vehicleShapes;
   VehicleIcon? icon;
   bool? isSelected;
 
@@ -41,8 +41,8 @@ class VehicleModel {
                 .map((x) => NumberOfPassenger.fromJson(x)))
             : null,
         vehicleShapes: json["vehicleShapes"] != null
-            ? List<VehicleShape>.from(
-                json["vehicleShapes"].map((x) => VehicleShape.fromJson(x)))
+            ? List<TruckType>.from(
+                json["truckType"].map((x) => TruckType.fromJson(x)))
             : null,
         icon: json["icon"] != null ? VehicleIcon.fromJson(json["icon"]) : null,
       );

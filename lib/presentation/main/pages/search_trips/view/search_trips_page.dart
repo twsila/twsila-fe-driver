@@ -615,7 +615,7 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
               fontWeight: FontWeight.bold));
     } else {
       return Text(
-          "${AppStrings.offerAccepted.tr()} (${offer.driverOffer} ${currency})",
+          "${AppStrings.offerAcceptedWithBudget.tr()} ${offer.driverOffer} ${currency} ${AppStrings.waitingClientAcceptance.tr()}",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorManager.primary,
               fontSize: FontSize.s16,

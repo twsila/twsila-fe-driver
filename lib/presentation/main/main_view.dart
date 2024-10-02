@@ -30,6 +30,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  List<int> activePages = [];
   List<Widget> pages = [
     SearchTripsPage(),
     MyTripsPage(),
@@ -47,6 +48,7 @@ class _MainViewState extends State<MainView> {
 
   @override
   void initState() {
+    BlocProvider.of<MapsBloc>(context).add(GetUserConfigAndPagesForUser());
     super.initState();
   }
 
@@ -87,6 +89,13 @@ class _MainViewState extends State<MainView> {
             } else if (state is CurrentLocationLoadedSuccessfully) {
               Provider.of<MapProvider>(context, listen: false).currentLocation =
                   state.currentLocation;
+            }
+
+            if (state is CurrentUserConfigAndPagesSuccess) {
+              setState(() {
+                activePages = state.activePageIndex;
+                _currentIndex = state.currentIndex;
+              });
             }
           },
           builder: (context, state) {
@@ -129,8 +138,12 @@ class _MainViewState extends State<MainView> {
 
   onTap(int index) {
     setState(() {
-      _currentIndex = index;
-      _title = titles[index];
+      if (activePages.contains(index)) {
+        _currentIndex = index;
+        _title = titles[index];
+      } else {
+        return;
+      }
     });
   }
 }

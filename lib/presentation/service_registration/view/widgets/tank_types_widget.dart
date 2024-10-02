@@ -79,7 +79,8 @@ class _TankTypesWidgetState extends State<TankTypesWidget> {
                           children: [
                             Text(
                               _appPreferences.getAppLanguage() == "ar"
-                                  ? widget.tankTypesList[index].valueAr
+                                  ? widget.tankTypesList[index].valueAr ??
+                                      widget.tankTypesList[index].value
                                   : widget.tankTypesList[index].value,
                               style: Theme.of(context)
                                   .textTheme

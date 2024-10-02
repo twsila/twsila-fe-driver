@@ -2,13 +2,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:meta/meta.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
+import 'package:taxi_for_you/domain/usecase/allowed_services_usecase.dart';
+import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import '../../../app/di.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../domain/usecase/login_usecase.dart';
+import '../../../utils/resources/constants_manager.dart';
 
 part 'login_event.dart';
 
@@ -21,6 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<CheckInputIsValidEvent>(_checkInputStatus);
     on<MakeLoginEvent>(_makeLogin);
     on<MakeLoginBOEvent>(_makeBOLogin);
+    on<SaveUserAllowedList>(_saveUserAllowedList);
   }
 
   FutureOr<void> _makeLogin(
@@ -44,10 +50,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // right -> data (success)
       // content
       // emit success state
-      // navigate to main screen
       setCountryCodeToCache(event.countryCode);
-      emit(LoginSuccessState(driver: driverModel));
-      // isUserLoggedInSuccessfullyStreamController.add(true);
+      if (driverModel.blocked != null && driverModel.blocked!) {
+        emit(LoginFailState(AppStrings.blockedUserErrorMessage.tr(), ""));
+      } else if (driverModel.disabled != null &&
+          driverModel.disabled! == false) {
+        emit(LoginSuccessButDisabled(driver: driverModel));
+      } else {
+        emit(LoginSuccessState(driver: driverModel));
+      }
     });
   }
 
@@ -72,10 +83,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // right -> data (success)
       // content
       // emit success state
-      // navigate to main screen
       setCountryCodeToCache(event.countryCode);
-      emit(LoginSuccessState(driver: driverModel));
-      // isUserLoggedInSuccessfullyStreamController.add(true);
+      if (driverModel.blocked != null && driverModel.blocked!) {
+        emit(LoginFailState(AppStrings.blockedUserErrorMessage.tr(), ""));
+      } else if (driverModel.disabled != null &&
+          driverModel.disabled! == false) {
+        emit(LoginSuccessButDisabled(driver: driverModel));
+      } else {
+        emit(LoginSuccessState(driver: driverModel));
+      }
+    });
+  }
+
+  FutureOr<void> _saveUserAllowedList(
+      SaveUserAllowedList event, Emitter<LoginState> emit) async {
+    emit(LoginLoadingState());
+    AllowedServicesUseCase allowedServicesUseCase =
+        instance<AllowedServicesUseCase>();
+    (await allowedServicesUseCase.execute(
+            AllowedServicesUseCaseInput(await appPreferences.getUserType()!)))
+        .fold((failure) {
+      emit(LoginFailState(failure.message, failure.code.toString()));
+    }, (allowedList) {
+      handleUserCurrentServiceList(allowedList);
+      emit(LoginSuccessState(driver: event.driverBaseModel));
     });
   }
 
@@ -111,7 +142,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     return userDevice;
   }
 
-  void setCountryCodeToCache(String countryCode) async{
+  void setCountryCodeToCache(String countryCode) async {
     appPreferences.setUserSelectedCountry(countryCode);
+  }
+
+  Future<void> setUserAllowedList(List<AllowedServiceModel> serviceList) async {
+    await appPreferences.saveAllowedServicesList(serviceList);
+  }
+
+  handleUserCurrentServiceList(List<AllowedServiceModel> servicesList) async {
+    await appPreferences.saveAllowedServicesList(servicesList);
+  }
+
+  Future<DriverBaseModel> setUserInfoAndModelToCache(
+      DriverBaseModel driverFromState, String registerAs) async {
+    await appPreferences.setUserLoggedIn();
+    DriverBaseModel cachedDriver = driverFromState;
+    if (registerAs == RegistrationConstants.captain) {
+      cachedDriver.captainType = RegistrationConstants.captain;
+    } else {
+      cachedDriver.captainType = RegistrationConstants.businessOwner;
+    }
+    await appPreferences.setDriver(cachedDriver);
+    DriverBaseModel? driver = appPreferences.getCachedDriver();
+    return driver!;
   }
 }

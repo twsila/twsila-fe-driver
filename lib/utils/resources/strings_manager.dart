@@ -9,6 +9,9 @@ class AppStrings {
   static const gender = "gender";
   static const username = "username_hint";
   static const password = "password_hint";
+  static const blockedUserErrorMessage = "blockedUserErrorMessage";
+  static const pleaseSelectCarManuFirts = "pleaseSelectCarManuFirts";
+  static const disabledUserCannotUseThisServiceForNow = "disabledUserCannotUseThisServiceForNow";
   static const usernameError = "username_error";
   static const passwordError = "password_error";
   static const continueBtn = "continue_button";
@@ -223,6 +226,8 @@ class AppStrings {
   static const String tripDetails = "trip_details";
   static const String navigateToTrackingPage = "navigate_to_tracking_page";
   static const String navigation = "navigation";
+  static const String offerAcceptedWithBudget = "offerAcceptedWithBudget";
+  static const String waitingClientAcceptance = "waitingClientAcceptance";
   static const String carDocumentsInfo = "car_document_info";
   static const String carDriverIdentityInfo = "car_driver_identity_info";
   static const String carDriverLicenseInfo = "car_driver_license_info";
@@ -402,6 +407,9 @@ class AppStrings {
 
   static const String plateNumber = "plate_number";
   static const String carModelAndBrand = "car_model_and_brand";
+  static const String carModelName = "carModelName";
+  static const String carManuName = "carManuName";
+  static const String carModel = "carModel";
   static const String carNotes = "car_notes";
   static const String carNotesHint = "car_notes_hint";
 

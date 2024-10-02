@@ -13,6 +13,12 @@ class LoginSuccessState extends LoginState {
   LoginSuccessState({required this.driver});
 }
 
+class LoginSuccessButDisabled extends LoginState {
+  final DriverBaseModel driver;
+
+  LoginSuccessButDisabled({required this.driver});
+}
+
 class LoginFailState extends LoginState {
   final String message;
   final String errorCode;

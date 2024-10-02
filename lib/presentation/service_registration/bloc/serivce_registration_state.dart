@@ -57,6 +57,18 @@ class CarBrandsAndModelsSuccess extends ServiceRegistrationState {
   CarBrandsAndModelsSuccess(this.carModelList);
 }
 
+class CarsManuSuccess extends ServiceRegistrationState {
+  final List<CarManufacturerModel> carManuList;
+
+  CarsManuSuccess(this.carManuList);
+}
+
+class YearOfManuSuccess extends ServiceRegistrationState {
+  final List<LookupValueModel> yearOfManufactureList;
+
+  YearOfManuSuccess(this.yearOfManufactureList);
+}
+
 class CarBrandsAndModelsFail extends ServiceRegistrationState {
   final String message;
 

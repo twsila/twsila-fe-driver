@@ -26,7 +26,7 @@ class GoodsServiceTypesWidget extends StatefulWidget {
   final List<LookupValueModel> tankTypesList;
   final Function(GoodsServiceTypeModel selectedService) selectedService;
   final Function(LookupValueModel? selectedTankType) onSelectTankType;
-  final Function(VehicleShape vehicleShape) selectedVehicleShape;
+  final Function(TruckType vehicleShape) selectedVehicleShape;
 
   GoodsServiceTypesWidget(
       {required this.lang,
@@ -45,7 +45,7 @@ class GoodsServiceTypesWidget extends StatefulWidget {
 class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
   int current = -1;
   GoodsServiceTypeModel? selectedGoodsServiceTypeModel;
-  VehicleShape? vehicleShape;
+  TruckType? vehicleShape;
 
   @override
   void didUpdateWidget(GoodsServiceTypesWidget oldWidget) {
@@ -66,16 +66,16 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
 
         if (widget.registrationRequest.vehicleTypeId != null &&
             selectedGoodsServiceTypeModel != null &&
-            selectedGoodsServiceTypeModel!.vehicleShapes.isNotEmpty) {
-          int vehicleIndex = selectedGoodsServiceTypeModel!.vehicleShapes
+            selectedGoodsServiceTypeModel!.truckTypes.isNotEmpty) {
+          int vehicleIndex = selectedGoodsServiceTypeModel!.truckTypes
               .indexWhere((element) =>
                   element.id.toString() ==
                   widget.registrationRequest.vehicleTypeId);
 
           if (vehicleIndex <
-              selectedGoodsServiceTypeModel!.vehicleShapes.length) {
+              selectedGoodsServiceTypeModel!.truckTypes.length) {
             vehicleShape =
-                selectedGoodsServiceTypeModel!.vehicleShapes[vehicleIndex];
+                selectedGoodsServiceTypeModel!.truckTypes[vehicleIndex];
           }
         }
         SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -189,7 +189,7 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
             lang: widget.lang,
             preselectedVehicle: this.vehicleShape,
             vehicleShapesList:
-                selectedGoodsServiceTypeModel?.vehicleShapes ?? [],
+                selectedGoodsServiceTypeModel?.truckTypes ?? [],
             selectedVehicle: (vehicleShapes) {
               widget.selectedVehicleShape(vehicleShapes);
             })

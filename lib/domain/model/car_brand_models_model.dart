@@ -4,27 +4,27 @@
 
 import 'dart:convert';
 
-CarBrandAndModelsModel carBrandAndModelsModelFromJson(String str) =>
-    CarBrandAndModelsModel.fromJson(json.decode(str));
+CarsResponseModel CarsResponseModelFromJson(String str) =>
+    CarsResponseModel.fromJson(json.decode(str));
 
-String carBrandAndModelsModelToJson(CarBrandAndModelsModel data) =>
+String CarsResponseModelToJson(CarsResponseModel data) =>
     json.encode(data.toJson());
 
-class CarBrandAndModelsModel {
+class CarsResponseModel {
   bool success;
   dynamic message;
   String dateTime;
   List<CarModel> result;
 
-  CarBrandAndModelsModel({
+  CarsResponseModel({
     required this.success,
     this.message,
     required this.dateTime,
     required this.result,
   });
 
-  factory CarBrandAndModelsModel.fromJson(Map<String, dynamic> json) =>
-      CarBrandAndModelsModel(
+  factory CarsResponseModel.fromJson(Map<String, dynamic> json) =>
+      CarsResponseModel(
         success: json["success"],
         message: json["message"],
         dateTime: json["dateTime"],
@@ -40,48 +40,110 @@ class CarBrandAndModelsModel {
       };
 }
 
+CarsManufacturerResponseModel CarsManufacturerResponseModelFromJson(
+        String str) =>
+    CarsManufacturerResponseModel.fromJson(json.decode(str));
+
+String CarsManufacturerResponseModelToJson(CarsResponseModel data) =>
+    json.encode(data.toJson());
+
+class CarsManufacturerResponseModel {
+  bool success;
+  dynamic message;
+  String dateTime;
+  List<CarManufacturerModel> result;
+
+  CarsManufacturerResponseModel({
+    required this.success,
+    this.message,
+    required this.dateTime,
+    required this.result,
+  });
+
+  factory CarsManufacturerResponseModel.fromJson(Map<String, dynamic> json) =>
+      CarsManufacturerResponseModel(
+        success: json["success"],
+        message: json["message"],
+        dateTime: json["dateTime"],
+        result: List<CarManufacturerModel>.from(
+            json["result"].map((x) => CarModel.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "message": message,
+        "dateTime": dateTime,
+        "result": List<dynamic>.from(result.map((x) => x.toJson())),
+      };
+}
+
+CarModel carModelFromJson(String str) => CarModel.fromJson(json.decode(str));
+
+String carModelToJson(CarModel data) => json.encode(data.toJson());
+
 class CarModel {
   int id;
-  CarManufacturerId carManufacturerId;
+  CarManufacturerModel carManufacturer;
   String modelName;
+  String modelNameAr;
 
   CarModel({
     required this.id,
-    required this.carManufacturerId,
+    required this.carManufacturer,
     required this.modelName,
+    required this.modelNameAr,
   });
 
   factory CarModel.fromJson(Map<String, dynamic> json) => CarModel(
         id: json["id"],
-        carManufacturerId:
-            CarManufacturerId.fromJson(json["carManufacturerId"]),
-    modelName: json["modelName"],
+        carManufacturer: CarManufacturerModel.fromJson(json["carManufacturer"]),
+        modelName: json["modelName"],
+        modelNameAr: json["modelNameAr"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "carManufacturerId": carManufacturerId.toJson(),
+        "carManufacturer": carManufacturer.toJson(),
         "modelName": modelName,
+        "modelNameAr": modelNameAr,
       };
 }
 
-class CarManufacturerId {
-  int id;
-  String carManufacturer;
+// To parse this JSON data, do
+//
+//     final carManufacturerModel = carManufacturerModelFromJson(jsonString);
 
-  CarManufacturerId({
+CarManufacturerModel carManufacturerModelFromJson(String str) =>
+    CarManufacturerModel.fromJson(json.decode(str));
+
+String carManufacturerModelToJson(CarManufacturerModel data) =>
+    json.encode(data.toJson());
+
+class CarManufacturerModel {
+  int id;
+  bool showInTwsila;
+  String carManufacturer;
+  String carManufacturerAr;
+
+  CarManufacturerModel({
     required this.id,
+    required this.showInTwsila,
     required this.carManufacturer,
+    required this.carManufacturerAr,
   });
 
-  factory CarManufacturerId.fromJson(Map<String, dynamic> json) =>
-      CarManufacturerId(
+  factory CarManufacturerModel.fromJson(Map<String, dynamic> json) =>
+      CarManufacturerModel(
         id: json["id"],
+        showInTwsila: json["showInTwsila"],
         carManufacturer: json["carManufacturer"],
+        carManufacturerAr: json["carManufacturerAr"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "showInTwsila": showInTwsila,
         "carManufacturer": carManufacturer,
+        "carManufacturerAr": carManufacturerAr,
       };
 }

@@ -31,7 +31,9 @@ abstract class RemoteDataSource {
 
   Future<RegistrationServicesTypesResponse> registrationServicesType();
 
-  Future<CarBrandAndModelsModel> carBrandAndModel();
+  Future<BaseResponse> carBrandAndModel();
+
+  Future<BaseResponse> carManufacturers();
 
   Future<RegistrationResponse> registerCaptainWithPersonsService(
       RegistrationRequest registrationRequest);
@@ -110,6 +112,8 @@ abstract class RemoteDataSource {
       int acquisitionId, String driverAcquisitionDecision);
 
   Future<BaseResponse> getBOPendingDrivers(int businessOwnerId);
+
+  Future<BaseResponse> getAllowedServicesByUserType(String userType);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -153,8 +157,13 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<CarBrandAndModelsModel> carBrandAndModel() async {
+  Future<BaseResponse> carBrandAndModel() async {
     return await _appServiceClient.carBrandsAndModels();
+  }
+
+  @override
+  Future<BaseResponse> carManufacturers() async {
+    return await _appServiceClient.carManufacturers();
   }
 
   @override
@@ -183,6 +192,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
         registrationRequest.carModelId!,
+        registrationRequest.vehicleYearOfManufacture!,
         registrationRequest.plateNumber!,
         registrationRequest.isAcknowledged!,
         registrationRequest.vehicleDocExpiryDate!,
@@ -210,6 +220,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         // registrationRequest.vehicleTypeId!,
         registrationRequest.carManufacturerTypeId!,
         registrationRequest.carModelId!,
+        registrationRequest.vehicleYearOfManufacture!,
         registrationRequest.tankType,
         registrationRequest.canTransportFurniture!,
         registrationRequest.canTransportGoods!,
@@ -429,5 +440,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> getBOPendingDrivers(int businessOwnerId) async {
     return await _appServiceClient.getBOPendingDrivers(businessOwnerId);
+  }
+
+  @override
+  Future<BaseResponse> getAllowedServicesByUserType(String userType) async {
+    return await _appServiceClient.getAllowedServiceByUserType(userType);
   }
 }

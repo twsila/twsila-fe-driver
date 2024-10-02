@@ -6,7 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:taxi_for_you/domain/model/goods_service_type_model.dart';
 import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
+import 'package:taxi_for_you/domain/model/year_of_manufacture_model.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/car_manufacturer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/goods_service_types_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/lookup_by_key_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/persons_vehicle_types_usecase.dart';
@@ -50,6 +52,8 @@ class ServiceRegistrationBloc
     on<GetTankTypes>(_getTankTypes);
     on<GetPersonsVehicleTypes>(_getPersonsVehicleTypes);
     on<GetCarBrandAndModel>(_getCarBrandsAndModels);
+    on<GetCarManufacture>(_getCarManufacture);
+    on<GetYearsOfModel>(_getYearsOfModel);
     on<NavigateToUploadDocument>(_setDocumentData);
     on<SelectToUploadEvent>(_selectToUpload);
     on<SetDocumentForView>(_setDocumentDataForView);
@@ -197,6 +201,51 @@ class ServiceRegistrationBloc
     });
   }
 
+  FutureOr<void> _getCarManufacture(
+      GetCarManufacture event, Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    CarManufacturerUseCase carManufacturerUseCase =
+        instance<CarManufacturerUseCase>();
+    (await carManufacturerUseCase.execute(CarManufacturerUseCaseInput())).fold(
+        (failure) => {
+              // left -> failure
+              //emit failure state
+
+              emit(CarBrandsAndModelsFail(failure.message))
+            }, (carManuList) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      // navigate to main screen
+      emit(CarsManuSuccess(carManuList));
+      // isUserLoggedInSuccessfullyStreamController.add(true);
+    });
+  }
+
+  FutureOr<void> _getYearsOfModel(
+      GetYearsOfModel event, Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    LookupByKeyUseCase lookupByKeyUseCase = instance<LookupByKeyUseCase>();
+    (await lookupByKeyUseCase.execute(
+            LookupByKeyUseCaseInput(LookupKeys.yearOfManufacture, "en")))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(CarBrandsAndModelsFail(failure.message))
+                }, (listOfYears) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      // navigate to main screen
+
+
+      emit(YearOfManuSuccess(listOfYears));
+      // isUserLoggedInSuccessfullyStreamController.add(true);
+    });
+  }
+
   FutureOr<void> _registerCaptainWithService(RegisterCaptainWithService event,
       Emitter<ServiceRegistrationState> emit) async {
     emit(ServiceRegistrationLoading());
@@ -214,6 +263,8 @@ class ServiceRegistrationBloc
             vehicleTypeId: registrationRequest.vehicleTypeId!,
             carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
             carModelId: registrationRequest.carModelId!,
+            vehicleYearOfManufacture:
+                registrationRequest.vehicleYearOfManufacture!,
             tankType: registrationRequest.tankType,
             carNotes: registrationRequest.carNotes!,
             canTransportFurniture: registrationRequest.canTransportFurniture,
@@ -475,6 +526,8 @@ class ServiceRegistrationBloc
 
     registrationRequest.carManufacturerTypeId = event.carManufacturerTypeId;
     registrationRequest.carModelId = event.carModelId;
+    registrationRequest.vehicleYearOfManufacture =
+        event.vehicleYearOfManufacture;
     registrationRequest.plateNumber = event.plateNumber;
     registrationRequest.carNotes = event.carNotes;
     registrationRequest.driverImages?.addAll(carPhotos);

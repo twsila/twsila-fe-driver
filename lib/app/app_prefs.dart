@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/constants.dart';
+import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
 import 'package:taxi_for_you/domain/model/country_lookup_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
@@ -24,6 +25,7 @@ const String DRIVER_MODEL = "DRIVER_MODEL";
 const String DRIVER_FCM_TOKEN = "DRIVER_FCM_TOKEN";
 const String USER_TYPE = "USER_TYPE";
 const String CURRENT_COUNTRY_CODE = "CURRENT_COUNTRY_CODE";
+const String ALLOWED_SERVICES_LIST_KEY = "ALLOWED_SERVICES_LIST_KEY";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -144,6 +146,27 @@ class AppPreferences {
 
   setCountries(List<CountryLookupModel> countries) {
     this.countries = countries;
+  }
+
+  saveAllowedServicesList(List<AllowedServiceModel> servicesList) async {
+    List<String> servicesListJson = servicesList
+        .map((AllowedServiceModel) => jsonEncode(AllowedServiceModel.toJson()))
+        .toList();
+    await _sharedPreferences.setStringList(
+        ALLOWED_SERVICES_LIST_KEY, servicesListJson);
+  }
+
+  Future<List<AllowedServiceModel>> getAllowedServicesList() async {
+    List<String>? jsonStringList =
+        _sharedPreferences.getStringList(ALLOWED_SERVICES_LIST_KEY);
+
+    if (jsonStringList != null) {
+      return await jsonStringList
+          .map((jsonString) =>
+              AllowedServiceModel.fromJson(jsonDecode(jsonString)))
+          .toList();
+    }
+    return [];
   }
 
   List<CountryLookupModel> getCountries() {

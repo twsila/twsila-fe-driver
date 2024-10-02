@@ -6,3 +6,7 @@ class MapsEvents extends Equatable {
 }
 
 class GetCurrentLocation extends MapsEvents {}
+
+class GetUserConfigAndPagesForUser extends MapsEvents {
+  GetUserConfigAndPagesForUser();
+}

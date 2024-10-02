@@ -18,8 +18,6 @@ extension LoginResponseMapper on LoginResponse? {
       isPending: this?.driver!.isPending ?? false,
       isChecked: this?.driver!.isChecked ?? false,
       proceedFirstTimeApproval: this?.driver!.proceedFirstTimeApproval ?? false,
-      disabled: this?.driver!.disabled ?? false,
-      deleted: this?.driver!.deleted ?? false,
       nationalId: this?.driver!.nationalId.orEmpty() ?? Constants.empty,
       accessToken:
           this?.driver!.nationalIdExpiryDate.orEmpty() ?? Constants.empty,
@@ -58,6 +56,9 @@ extension LoginResponseMapper on LoginResponse? {
       rating: this?.driver!.rating ?? 0.0,
       acknowledged: this?.driver!.acknowledged ?? false,
       driverStatus: this?.driver!.driverStatus.orEmpty() ?? Constants.empty,
+      deleted: this!.driver!.deleted,
+      blocked: this!.driver!.blocked,
+      disabled: this!.driver!.disabled,
     );
   }
 }

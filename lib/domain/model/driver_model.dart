@@ -23,6 +23,9 @@ abstract class DriverBaseModel {
   String? refreshToken;
   UserDevice? userDevice;
   String? tokenExpirationTime;
+  bool? deleted;
+  bool? disabled;
+  bool? blocked;
 }
 
 class Driver extends DriverBaseModel {
@@ -57,8 +60,7 @@ class Driver extends DriverBaseModel {
   String? vehicleOwnerNatIdExpiryDate;
   String? licenseExpiryDate;
   bool? proceedFirstTimeApproval;
-  bool? disabled;
-  bool? deleted;
+
 
   Driver(
       {required id,
@@ -98,11 +100,12 @@ class Driver extends DriverBaseModel {
       this.vehicleOwnerNatIdExpiryDate,
       this.licenseExpiryDate,
       this.proceedFirstTimeApproval,
-      this.disabled,
-      this.deleted,
       this.businessOwnerId,
       this.isPending = false,
       required tokenExpirationTime,
+      required deleted,
+      required disabled,
+      required blocked,
       this.isChecked = false}) {
     this.id = id;
     this.firstName = firstName;
@@ -115,6 +118,9 @@ class Driver extends DriverBaseModel {
     this.userDevice = userDevice;
     this.tokenExpirationTime = tokenExpirationTime;
     this.captainType = RegistrationConstants.captain;
+    this.disabled = disabled;
+    this.blocked = blocked;
+    this.deleted = deleted;
   }
 
   factory Driver.fromJson(Map<String, dynamic> json) => Driver(
@@ -147,8 +153,6 @@ class Driver extends DriverBaseModel {
         vehicleOwnerNatIdExpiryDate: json["vehicleOwnerNatIdExpiryDate"],
         licenseExpiryDate: json["licenseExpiryDate"],
         proceedFirstTimeApproval: json["proceedFirstTimeApproval"],
-        deleted: json["deleted"],
-        disabled: json["disabled"],
         isPending: json["isPending"] ?? false,
         canTransportFurniture: json["canTransportFurniture"],
         canTransportGoods: json["canTransportGoods"],
@@ -168,6 +172,9 @@ class Driver extends DriverBaseModel {
         refreshToken: json["refreshToken"],
         userDevice: json["userDevice"],
         tokenExpirationTime: json["tokenExpirationTime"] ?? "",
+        disabled: json["disabled"],
+        blocked: json["blocked"],
+        deleted: json["deleted"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -187,8 +194,6 @@ class Driver extends DriverBaseModel {
         "vehicleOwnerNatIdExpiryDate": vehicleOwnerNatIdExpiryDate,
         "licenseExpiryDate": licenseExpiryDate,
         "proceedFirstTimeApproval": proceedFirstTimeApproval,
-        "disabled": disabled,
-        "deleted": deleted,
         "serviceTypes": serviceTypes,
         "registrationStatus": registrationStatus,
         "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,
@@ -213,6 +218,9 @@ class Driver extends DriverBaseModel {
         "refreshToken": refreshToken,
         "userDevice": userDevice,
         "tokenExpirationTime": tokenExpirationTime,
+        "disabled": disabled,
+        "blocked": blocked,
+        "deleted": deleted,
       };
 }
 

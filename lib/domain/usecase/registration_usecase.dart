@@ -30,6 +30,7 @@ class RegistrationUseCase
         input.vehicleTypeId,
         input.carManufacturerTypeId,
         input.carModelId,
+        input.vehicleYearOfManufacture,
         input.tankType,
         input.carNotes,
         input.countryCode,
@@ -69,6 +70,7 @@ class RegistrationUseCaseInput {
   String vehicleTypeId;
   String carManufacturerTypeId;
   String carModelId;
+  String vehicleYearOfManufacture;
   String? tankType;
   String carNotes;
   String countryCode;
@@ -109,6 +111,7 @@ class RegistrationUseCaseInput {
       required this.vehicleTypeId,
       required this.carManufacturerTypeId,
       required this.carModelId,
+      required this.vehicleYearOfManufacture,
       this.tankType,
       required this.carNotes,
       required this.plateNumber,

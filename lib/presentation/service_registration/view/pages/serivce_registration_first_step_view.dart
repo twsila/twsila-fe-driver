@@ -60,7 +60,7 @@ class _ServiceRegistrationFirstStepViewState
   NumberOfPassenger? selectedNumberOfPassengers;
 
   GoodsServiceTypeModel? selectedGoodsServiceType;
-  VehicleShape? selectedVehicleShape;
+  TruckType? selectedVehicleShape;
 
   @override
   void initState() {
@@ -277,7 +277,7 @@ class _ServiceRegistrationFirstStepViewState
                   onPressed: ((this.selectedGoodsServiceType != null &&
                                   this
                                       .selectedGoodsServiceType!
-                                      .vehicleShapes
+                                      .truckTypes
                                       .isEmpty) ||
                               this.selectedGoodsServiceType != null &&
                                   this.selectedVehicleShape != null) ||

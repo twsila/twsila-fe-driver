@@ -18,10 +18,9 @@ class BusinessOwnerModel extends DriverBaseModel {
   UserDevice? userDevice;
   XFile? profileImage;
   bool? proceedFirstTimeApproval;
-  bool? disabled;
-  bool? deleted;
   DocumentData? boNationalIdDocument;
   DocumentData? boCommercialRegistrationDocument;
+
 
   BusinessOwnerModel({
     id,
@@ -42,8 +41,6 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.commercialNumber,
     this.userDevice,
     this.proceedFirstTimeApproval,
-    this.disabled,
-    this.deleted,
     this.boNationalIdDocument,
     this.boCommercialRegistrationDocument,
   }) {
@@ -58,6 +55,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     this.tokenExpirationTime = tokenExpirationTime;
     this.profileImage = profileImage;
     this.captainType = RegistrationConstants.businessOwner;
+    this.disabled = disabled;
+    this.blocked = blocked;
+    this.deleted = deleted;
   }
 
   BusinessOwnerModel.fromJson(Map<String, dynamic> json) {
@@ -74,8 +74,6 @@ class BusinessOwnerModel extends DriverBaseModel {
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
     proceedFirstTimeApproval = json['proceedFirstTimeApproval'];
-    disabled = json['disabled'];
-    deleted = json['deleted'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['commercialNumber'];
@@ -84,6 +82,9 @@ class BusinessOwnerModel extends DriverBaseModel {
         : null;
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
+    disabled = json["disabled"];
+    blocked = json["blocked"];
+    deleted = json["deleted"];
   }
 
   BusinessOwnerModel.fromJsonDirect(Map<String, dynamic> json) {
@@ -100,8 +101,6 @@ class BusinessOwnerModel extends DriverBaseModel {
     nationalIdExpiryDate = json['nationalIdExpiryDate'];
     entityName = json['entityName'];
     proceedFirstTimeApproval = json['proceedFirstTimeApproval'];
-    disabled = json['disabled'];
-    deleted = json['deleted'];
     imagesFromApi = List<DriverImage>.from(
         json["images"].map((x) => DriverImage.fromJson(x)));
     commercialNumber = json['commercialNumber'];
@@ -110,6 +109,9 @@ class BusinessOwnerModel extends DriverBaseModel {
         : null;
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
+    disabled = json["disabled"];
+    blocked = json["blocked"];
+    deleted = json["deleted"];
   }
 
   BusinessOwnerModel.fromCachedJson(Map<String, dynamic> json) {
@@ -127,8 +129,6 @@ class BusinessOwnerModel extends DriverBaseModel {
     entityName = json['entityName'];
     accessToken = json["accessToken"];
     proceedFirstTimeApproval = json["proceedFirstTimeApproval"];
-    disabled = json["disabled"];
-    deleted = json["deleted"];
     refreshToken = json["refreshToken"];
     commercialNumber = json['commercialNumber'];
     imagesFromApi = List<DriverImage>.from(
@@ -136,6 +136,9 @@ class BusinessOwnerModel extends DriverBaseModel {
     userDevice = json["userDevice"];
     tokenExpirationTime = json["tokenExpirationTime"];
     captainType = RegistrationConstants.businessOwner;
+    disabled = json["disabled"];
+    blocked = json["blocked"];
+    deleted = json["deleted"];
   }
 
   Map<String, dynamic> toJson() {
@@ -154,12 +157,13 @@ class BusinessOwnerModel extends DriverBaseModel {
     data['accessToken'] = accessToken;
     data['refreshToken'] = refreshToken;
     data['proceedFirstTimeApproval'] = proceedFirstTimeApproval;
-    data['disabled'] = disabled;
-    data['deleted'] = deleted;
     data['images'] = imagesFromApi;
     data['entityName'] = entityName;
     data['commercialNumber'] = commercialNumber;
     data['captainType'] = RegistrationConstants.businessOwner;
+    data['disabled'] = disabled;
+    data['blocked'] = blocked;
+    data['deleted'] = deleted;
     if (userDevice != null) data['userDevice'] = userDevice!.toJson();
     return data;
   }

@@ -50,7 +50,10 @@ abstract class AppServiceClient {
   Future<RegistrationServicesTypesResponse> registrationServices();
 
   @GET(EndPointsConstants.carModels)
-  Future<CarBrandAndModelsModel> carBrandsAndModels();
+  Future<BaseResponse> carBrandsAndModels();
+
+  @GET(EndPointsConstants.carManufacturers)
+  Future<BaseResponse> carManufacturers();
 
   @POST("/customers/forgotPassword")
   Future<ForgotPasswordResponse> forgotPassword(@Field("email") String email);
@@ -70,6 +73,7 @@ abstract class AppServiceClient {
       @Part(name: "vehicleType.id") String vehicleTypeId,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
+      @Part(name: "vehicleYearOfManufacture") String vehicleYearOfManufacture,
       @Part(name: "plateNumber") String plateNumber,
       @Part(name: "isAcknowledged") bool isAcknowledged,
       @Part(name: "vehicleDocExpiryDate") String vehicleDocExpiryDate,
@@ -96,6 +100,7 @@ abstract class AppServiceClient {
       @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
       @Part(name: "carModel.id") String carModelId,
+      @Part(name: "vehicleYearOfManufacture") String vehicleYearOfManufacture,
       @Part(name: "tankType") String? tankType,
       @Part(name: "canTransportFurniture") bool canTransportFurniture,
       @Part(name: "canTransportGoods") bool canTransportGoods,
@@ -229,8 +234,6 @@ abstract class AppServiceClient {
     @Part(name: "driverImages") List<File>? driverImages,
   );
 
-
-
   @POST("/bo/update-profile")
   @MultiPart()
   Future<BaseResponse> updateBOProfile(
@@ -312,5 +315,10 @@ abstract class AppServiceClient {
   Future<BaseResponse> changeRequestStatus(
     @Field("acquisitionId") int acquisitionId,
     @Field("driverAcquisitionDecision") String driverAcquisitionDecision,
+  );
+
+  @GET(EndPointsConstants.allowedServicesLookupUT)
+  Future<BaseResponse> getAllowedServiceByUserType(
+    @Path("userType") String userType,
   );
 }

@@ -7,11 +7,13 @@ import 'package:taxi_for_you/domain/usecase/accept_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_driver_bo_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/add_requests_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/allowed_services_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_accept_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_assign_driver_to_trip_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_get_pending_drivers_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/bo_suggest_new_offer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/car_manufacturer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/change_request_status.dart';
 import 'package:taxi_for_you/domain/usecase/change_trip_status_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/get_business_owner_drivers_usecase.dart';
@@ -97,6 +99,10 @@ initLoginModule() {
   if (!GetIt.I.isRegistered<LoginBOUseCase>()) {
     instance.registerFactory<LoginBOUseCase>(() => LoginBOUseCase(instance()));
   }
+  if (!GetIt.I.isRegistered<AllowedServicesUseCase>()) {
+    instance.registerFactory<AllowedServicesUseCase>(
+        () => AllowedServicesUseCase(instance()));
+  }
 }
 
 initVerifyOtpModule() {
@@ -128,6 +134,10 @@ initRegistrationServiceModule() {
   if (!GetIt.I.isRegistered<CarBrandsAndModelsUseCase>()) {
     instance.registerFactory<CarBrandsAndModelsUseCase>(
         () => CarBrandsAndModelsUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<CarManufacturerUseCase>()) {
+    instance.registerFactory<CarManufacturerUseCase>(
+        () => CarManufacturerUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<RegistrationUseCase>()) {
     instance.registerFactory<RegistrationUseCase>(
@@ -349,6 +359,7 @@ initUpdateDriverProfileModule() {
         () => UpdateDriverProfileUseCase(instance()));
   }
 }
+
 initUpdateBoProfileModule() {
   if (!GetIt.I.isRegistered<UpdateBoProfileUseCase>()) {
     instance.registerFactory<UpdateBoProfileUseCase>(

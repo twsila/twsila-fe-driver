@@ -179,25 +179,48 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<CarBrandAndModelsModel> carBrandsAndModels() async {
+  Future<BaseResponse> carBrandsAndModels() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CarBrandAndModelsModel>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/drivers/car-model',
+              '/lookups/car-models',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CarBrandAndModelsModel.fromJson(_result.data!);
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> carManufacturers() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/lookups/car-manufacturers',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -238,6 +261,7 @@ class _AppServiceClient implements AppServiceClient {
     vehicleTypeId,
     carManufacturerTypeId,
     carModelId,
+    vehicleYearOfManufacture,
     plateNumber,
     isAcknowledged,
     vehicleDocExpiryDate,
@@ -299,6 +323,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'carModel.id',
       carModelId,
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleYearOfManufacture',
+      vehicleYearOfManufacture,
     ));
     _data.fields.add(MapEntry(
       'plateNumber',
@@ -369,6 +397,7 @@ class _AppServiceClient implements AppServiceClient {
     serviceTypeParam,
     carManufacturerTypeId,
     carModelId,
+    vehicleYearOfManufacture,
     tankType,
     canTransportFurniture,
     canTransportGoods,
@@ -437,6 +466,10 @@ class _AppServiceClient implements AppServiceClient {
     _data.fields.add(MapEntry(
       'carModel.id',
       carModelId,
+    ));
+    _data.fields.add(MapEntry(
+      'vehicleYearOfManufacture',
+      vehicleYearOfManufacture,
     ));
     if (tankType != null) {
       _data.fields.add(MapEntry(
@@ -1480,6 +1513,29 @@ class _AppServiceClient implements AppServiceClient {
             .compose(
               _dio.options,
               '/driver-acquisition/driver-action',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = BaseResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BaseResponse> getAllowedServiceByUserType(userType) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/lookups/allowed-endpoints?ut=${userType}',
               queryParameters: queryParameters,
               data: _data,
             )
