@@ -34,12 +34,12 @@ class MapsBloc extends Bloc<MapsEvents, MapsState> {
     emit(CurrentLocationIsLoading());
     DriverBaseModel driverBaseModel = await appPreferences.getCachedDriver()!;
 
-    if (driverBaseModel.disabled != null && driverBaseModel.disabled == false) {
+    // if (driverBaseModel.disabled != null && driverBaseModel.disabled == false) {
       //user allowed to myprofile page only
-      emit(CurrentUserConfigAndPagesSuccess(2, [2]));
-    } else {
+    //   emit(CurrentUserConfigAndPagesSuccess(2, [2]));
+    // } else {
       //user allowed to use all pages
       emit(CurrentUserConfigAndPagesSuccess(0, [0, 1, 2]));
-    }
+    // }
   }
 }

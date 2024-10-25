@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:taxi_for_you/domain/model/car_brand_models_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
@@ -33,8 +34,8 @@ class Driver extends DriverBaseModel {
   List<String>? serviceTypes;
   RegistrationStatus registrationStatus;
   DriverVehicleType? vehicleType;
-  DriverCarManufacturer carManufacturerType;
-  DriverCarModel carModel;
+  CarManufacturerModel carManufacturerType;
+  CarModel carModel;
   bool canTransportFurniture;
   bool canTransportGoods;
   bool canTransportFrozen;
@@ -60,7 +61,6 @@ class Driver extends DriverBaseModel {
   String? vehicleOwnerNatIdExpiryDate;
   String? licenseExpiryDate;
   bool? proceedFirstTimeApproval;
-
 
   Driver(
       {required id,
@@ -143,8 +143,8 @@ class Driver extends DriverBaseModel {
             : null,
         captainType: RegistrationConstants.captain,
         carManufacturerType:
-            DriverCarManufacturer.fromJson(json["carManufacturerType"]),
-        carModel: DriverCarModel.fromJson(json["carModel"]),
+            CarManufacturerModel.fromJson(json["carManufacturerType"]),
+        carModel: CarModel.fromJson(json["carModel"]),
         businessOwnerId: json["businessOwnerId"],
         nationalId: json["nationalId"],
         nationalIdExpiryDate: json["nationalIdExpiryDate"],

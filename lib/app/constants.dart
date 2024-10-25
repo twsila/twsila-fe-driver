@@ -122,6 +122,7 @@ class TripTypeConstants {
 class LookupKeys {
   static const String serviceType = "ServiceType";
   static const String tankType = "TankType";
+  static const String tankSize = "TankSize";
   static const String yearOfManufacture = "YearOfManufacture";
 }
 

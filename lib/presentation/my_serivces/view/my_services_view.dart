@@ -25,7 +25,7 @@ class _MyServicesViewState extends State<MyServicesView> {
 
   @override
   void initState() {
-    BlocProvider.of<MyServicesBloc>(context).add(GetServiceStatus());
+    // BlocProvider.of<MyServicesBloc>(context).add(GetServiceStatus());
     super.initState();
   }
 
@@ -84,50 +84,52 @@ class _MyServicesViewState extends State<MyServicesView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                color: ColorManager.accentColor,
-                                borderRadius: BorderRadius.circular(3)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(AppSize.s6),
-                              child: Text(
-                                status == "PENDING"
-                                    ? AppStrings.pending.tr()
-                                    : status,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                        color: ColorManager.accentTextColor,
-                                        fontSize: FontSize.s12,
-                                        fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: ColorManager.accentColor,
+                                  borderRadius: BorderRadius.circular(3)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(AppSize.s6),
+                                child: Text(
+                                  status == "PENDING"
+                                      ? AppStrings.pending.tr()
+                                      : status,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.copyWith(
+                                          color: ColorManager.accentTextColor,
+                                          fontSize: FontSize.s12,
+                                          fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
-                          ),
-                          Text(
-                            'نوع الخدمة',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    color: ColorManager.headersTextColor,
-                                    fontSize: FontSize.s20,
-                                    fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'نوع المركبة',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                    color: ColorManager.headersTextColor,
-                                    fontSize: FontSize.s16,
-                                    fontWeight: FontWeight.normal),
-                          ),
-                        ],
+                            Text(
+                              'نوع الخدمة',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: ColorManager.headersTextColor,
+                                      fontSize: FontSize.s20,
+                                      fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'نوع المركبة',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                      color: ColorManager.headersTextColor,
+                                      fontSize: FontSize.s16,
+                                      fontWeight: FontWeight.normal),
+                            ),
+                          ],
+                        ),
                       ),
                       Image.asset(
                         ImageAssets.newAppBarLogo,

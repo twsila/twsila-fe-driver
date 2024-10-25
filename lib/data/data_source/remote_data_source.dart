@@ -222,6 +222,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.carModelId!,
         registrationRequest.vehicleYearOfManufacture!,
         registrationRequest.tankType,
+        registrationRequest.tankSize,
         registrationRequest.canTransportFurniture!,
         registrationRequest.canTransportGoods!,
         registrationRequest.canTransportFrozen!,

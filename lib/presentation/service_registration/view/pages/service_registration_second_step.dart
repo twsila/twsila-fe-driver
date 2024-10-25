@@ -237,7 +237,7 @@ class _ServiceRegistrationSecondStepState
                 .firstWhere((YearOfManufactureModel element) =>
                     element.value.toString() ==
                     widget.registrationRequest.vehicleYearOfManufacture)
-                .toString();
+                .value.toString();
           }
         }
 
@@ -1034,10 +1034,16 @@ class _ServiceRegistrationSecondStepState
                       });
                     },
                     child: ListTile(
-                        title: Text(carModelList[index].modelName),
-                        subtitle: Text(carModelList[index]
-                            .carManufacturer
-                            .carManufacturer)),
+                        title: Text(_appPreferences.getAppLanguage() == "ar"
+                            ? carModelList[index].modelNameAr
+                            : carModelList[index].modelName),
+                        subtitle: Text(_appPreferences.getAppLanguage() == "ar"
+                            ? carModelList[index]
+                                .carManufacturer
+                                .carManufacturerAr
+                            : carModelList[index]
+                                .carManufacturer
+                                .carManufacturer)),
                   );
                 },
               )

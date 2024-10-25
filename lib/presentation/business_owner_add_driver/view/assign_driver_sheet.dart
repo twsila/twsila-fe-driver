@@ -150,7 +150,7 @@ class _AssignDriverBottomSheetViewState
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "${driversList[i].carModel.carManufacturerId.carManufacturer} / ${driversList[i].carModel.modelName}",
+                                                "${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.modelNameAr : driversList[i].carModel.modelName} / ${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.carManufacturer.carManufacturerAr : driversList[i].carModel.carManufacturer.carManufacturer}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .displayLarge
@@ -158,7 +158,8 @@ class _AssignDriverBottomSheetViewState
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: FontSize.s18,
-                                                        color: driversList[i].isPending!
+                                                        color: driversList[i]
+                                                                .isPending!
                                                             ? ColorManager
                                                                 .disableCardTextColor
                                                             : ColorManager
@@ -173,7 +174,8 @@ class _AssignDriverBottomSheetViewState
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: FontSize.s18,
-                                                        color: driversList[i].isPending!
+                                                        color: driversList[i]
+                                                                .isPending!
                                                             ? ColorManager
                                                                 .disableCardTextColor
                                                             : ColorManager
@@ -188,7 +190,8 @@ class _AssignDriverBottomSheetViewState
                                                         fontWeight:
                                                             FontWeight.normal,
                                                         fontSize: FontSize.s16,
-                                                        color:  driversList[i].isPending!
+                                                        color: driversList[i]
+                                                                .isPending!
                                                             ? ColorManager
                                                                 .disableCardTextColor
                                                             : ColorManager

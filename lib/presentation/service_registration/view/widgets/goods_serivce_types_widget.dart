@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:taxi_for_you/domain/model/lookupValueModel.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_network_image_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
+import 'package:taxi_for_you/presentation/service_registration/view/widgets/tank_size_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/tank_types_widget.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/widgets/vehicle_shape_widget.dart';
 import 'package:taxi_for_you/utils/dialogs/toast_handler.dart';
@@ -24,17 +25,21 @@ class GoodsServiceTypesWidget extends StatefulWidget {
   final RegistrationRequest registrationRequest;
   final List<GoodsServiceTypeModel> goodsServiceTypesList;
   final List<LookupValueModel> tankTypesList;
+  final List<LookupValueModel> tankSizesList;
   final Function(GoodsServiceTypeModel selectedService) selectedService;
   final Function(LookupValueModel? selectedTankType) onSelectTankType;
+  final Function(LookupValueModel? selectedTankSize) onSelectTankSize;
   final Function(TruckType vehicleShape) selectedVehicleShape;
 
   GoodsServiceTypesWidget(
       {required this.lang,
       required this.registrationRequest,
       required this.tankTypesList,
+      required this.tankSizesList,
       required this.goodsServiceTypesList,
       required this.selectedService,
       required this.onSelectTankType,
+      required this.onSelectTankSize,
       required this.selectedVehicleShape});
 
   @override
@@ -72,8 +77,7 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
                   element.id.toString() ==
                   widget.registrationRequest.vehicleTypeId);
 
-          if (vehicleIndex <
-              selectedGoodsServiceTypeModel!.truckTypes.length) {
+          if (vehicleIndex < selectedGoodsServiceTypeModel!.truckTypes.length) {
             vehicleShape =
                 selectedGoodsServiceTypeModel!.truckTypes[vehicleIndex];
           }
@@ -118,7 +122,8 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
                     onTap: () {
                       current = index;
                       if (selectedGoodsServiceTypeModel != null &&
-                          selectedGoodsServiceTypeModel!.id != 4) {//OTHER TANK SERVICE ID
+                          selectedGoodsServiceTypeModel!.id != 4) {
+                        //OTHER TANK SERVICE ID
                         widget.onSelectTankType(null);
                       }
                       setState(() {
@@ -175,6 +180,7 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
                     ),
                   )),
         ),
+        //OTHER_TANK service type id is 4
         Visibility(
             visible: selectedGoodsServiceTypeModel != null &&
                 selectedGoodsServiceTypeModel!.id == 4 &&
@@ -185,11 +191,21 @@ class _GoodsServiceTypesWidgetState extends State<GoodsServiceTypesWidget> {
                 widget.onSelectTankType(tankType);
               },
             )),
+        // DRINK_WATER_TANK service type id is 5
+        Visibility(
+            visible: selectedGoodsServiceTypeModel != null &&
+                selectedGoodsServiceTypeModel!.id == 5 &&
+                widget.tankSizesList.isNotEmpty,
+            child: TankSizeWidget(
+              tankSizeList: widget.tankSizesList,
+              onSelectTankSize: (tankSize) {
+                widget.onSelectTankSize(tankSize);
+              },
+            )),
         VehicleShapeWidget(
             lang: widget.lang,
             preselectedVehicle: this.vehicleShape,
-            vehicleShapesList:
-                selectedGoodsServiceTypeModel?.truckTypes ?? [],
+            vehicleShapesList: selectedGoodsServiceTypeModel?.truckTypes ?? [],
             selectedVehicle: (vehicleShapes) {
               widget.selectedVehicleShape(vehicleShapes);
             })

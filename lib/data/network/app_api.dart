@@ -102,6 +102,7 @@ abstract class AppServiceClient {
       @Part(name: "carModel.id") String carModelId,
       @Part(name: "vehicleYearOfManufacture") String vehicleYearOfManufacture,
       @Part(name: "tankType") String? tankType,
+      @Part(name: "tankSize") String? tankSize,
       @Part(name: "canTransportFurniture") bool canTransportFurniture,
       @Part(name: "canTransportGoods") bool canTransportGoods,
       @Part(name: "canTransportFrozen") bool canTransportFrozen,

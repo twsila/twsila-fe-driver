@@ -50,6 +50,7 @@ class ServiceRegistrationBloc
     on<GetServiceTypes>(_getServicesTypes);
     on<GetGoodsServiceTypes>(_getGoodsServiceTypes);
     on<GetTankTypes>(_getTankTypes);
+    on<GetTankSizes>(_getTankSizes);
     on<GetPersonsVehicleTypes>(_getPersonsVehicleTypes);
     on<GetCarBrandAndModel>(_getCarBrandsAndModels);
     on<GetCarManufacture>(_getCarManufacture);
@@ -135,6 +136,28 @@ class ServiceRegistrationBloc
 
       emit(TankTypesSuccess(lookupValues));
       // isUserLoggedInSuccessfullyStreamController.add(true);
+    });
+  }
+
+  FutureOr<void> _getTankSizes(
+      GetTankSizes event, Emitter<ServiceRegistrationState> emit) async {
+    emit(ServiceRegistrationLoading());
+    LookupByKeyUseCase lookupByKeyUseCase = instance<LookupByKeyUseCase>();
+    (await lookupByKeyUseCase.execute(LookupByKeyUseCaseInput(
+            LookupKeys.tankSize, appPreferences.getAppLanguage())))
+        .fold(
+            (failure) => {
+                  // left -> failure
+                  //emit failure state
+
+                  emit(ServicesTypesFail(failure.message))
+                }, (lookupValues) async {
+      // right -> data (success)
+      // content
+      // emit success state
+      // navigate to main screen
+
+      emit(TankSizeSuccess(lookupValues));
     });
   }
 
@@ -240,7 +263,6 @@ class ServiceRegistrationBloc
       // emit success state
       // navigate to main screen
 
-
       emit(YearOfManuSuccess(listOfYears));
       // isUserLoggedInSuccessfullyStreamController.add(true);
     });
@@ -266,6 +288,7 @@ class ServiceRegistrationBloc
             vehicleYearOfManufacture:
                 registrationRequest.vehicleYearOfManufacture!,
             tankType: registrationRequest.tankType,
+            tankSize: registrationRequest.tankSize,
             carNotes: registrationRequest.carNotes!,
             canTransportFurniture: registrationRequest.canTransportFurniture,
             canTransportGoods: registrationRequest.canTransportGoods,
@@ -485,6 +508,7 @@ class ServiceRegistrationBloc
     registrationRequest.serviceTypeParam = event.serviceTypeParam;
     registrationRequest.vehicleTypeId = event.vehicleTypeId;
     registrationRequest.tankType = event.tankType;
+    registrationRequest.tankSize = event.tankSize;
     registrationRequest.canTransportFurniture =
         event.additionalServicesModel.canTransportFurniture;
     registrationRequest.canTransportGoods =

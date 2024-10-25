@@ -9,6 +9,8 @@ import 'package:taxi_for_you/utils/resources/assets_manager.dart';
 import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
+import '../../../app/app_prefs.dart';
+import '../../../app/di.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../utils/ext/enums.dart';
 import '../../../utils/resources/font_manager.dart';
@@ -36,10 +38,14 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
   List<Driver> pendingDriversList = [];
   List<String> driversMobileNumbers = [];
 
+  AppPreferences appPreferences = instance<AppPreferences>();
+
   @override
   void initState() {
-    BlocProvider.of<BoDriversCarsBloc>(context).add(GetActiveDriversAndCars(false));
-    BlocProvider.of<BoDriversCarsBloc>(context).add(GetPendingDriversAndCars(false));
+    BlocProvider.of<BoDriversCarsBloc>(context)
+        .add(GetActiveDriversAndCars(false));
+    BlocProvider.of<BoDriversCarsBloc>(context)
+        .add(GetPendingDriversAndCars(false));
     super.initState();
   }
 
@@ -149,14 +155,15 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${driversList[i].carModel.carManufacturerId.carManufacturer} / ${driversList[i].carModel.modelName}",
+                                  "${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.modelNameAr : driversList[i].carModel.modelName} / ${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.carManufacturer.carManufacturerAr : driversList[i].carModel.carManufacturer.carManufacturer}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .displayLarge
                                       ?.copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: FontSize.s18,
-                                          color: driversList[i].isPending ?? false
+                                          color: driversList[i].isPending ??
+                                                  false
                                               ? ColorManager
                                                   .disableCardTextColor
                                               : ColorManager.secondaryColor),
@@ -182,7 +189,8 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                                       ?.copyWith(
                                           fontWeight: FontWeight.normal,
                                           fontSize: FontSize.s16,
-                                          color: driversList[i].isPending ?? false
+                                          color: driversList[i].isPending ??
+                                                  false
                                               ? ColorManager
                                                   .disableCardTextColor
                                               : ColorManager.secondaryColor),

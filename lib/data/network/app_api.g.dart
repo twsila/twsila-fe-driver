@@ -399,6 +399,7 @@ class _AppServiceClient implements AppServiceClient {
     carModelId,
     vehicleYearOfManufacture,
     tankType,
+    tankSize,
     canTransportFurniture,
     canTransportGoods,
     canTransportFrozen,
@@ -475,6 +476,12 @@ class _AppServiceClient implements AppServiceClient {
       _data.fields.add(MapEntry(
         'tankType',
         tankType,
+      ));
+    }
+    if (tankSize != null) {
+      _data.fields.add(MapEntry(
+        'tankSize',
+        tankSize,
       ));
     }
     _data.fields.add(MapEntry(

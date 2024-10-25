@@ -19,6 +19,10 @@ class GetTankTypes extends ServiceRegistrationEvent {
   GetTankTypes();
 }
 
+class GetTankSizes extends ServiceRegistrationEvent {
+  GetTankSizes();
+}
+
 class GetCarBrandAndModel extends ServiceRegistrationEvent {
   GetCarBrandAndModel();
 }
@@ -142,6 +146,7 @@ class SetFirstStepData extends ServiceRegistrationEvent {
   final String vehicleTypeId;
   final String vehicleShapeId;
   String? tankType;
+  String? tankSize;
   final int serviceModelId;
   final AdditionalServicesModel additionalServicesModel;
 
@@ -152,6 +157,7 @@ class SetFirstStepData extends ServiceRegistrationEvent {
     this.serviceModelId,
     this.additionalServicesModel,
     this.tankType,
+    this.tankSize,
   );
 }
 

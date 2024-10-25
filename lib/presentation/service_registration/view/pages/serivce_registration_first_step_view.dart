@@ -52,7 +52,9 @@ class _ServiceRegistrationFirstStepViewState
   List<GoodsServiceTypeModel> goodsServiceTypesList = [];
   List<PersonsVehicleTypeModel> personsVehicleTypesList = [];
   List<LookupValueModel> tankTypes = [];
+  List<LookupValueModel> tankSizes = [];
   LookupValueModel? selectedTankType;
+  LookupValueModel? selectedTankSize;
 
   AdditionalServicesModel additionalServicesModel = AdditionalServicesModel();
 
@@ -65,6 +67,7 @@ class _ServiceRegistrationFirstStepViewState
   @override
   void initState() {
     BlocProvider.of<ServiceRegistrationBloc>(context).add(GetTankTypes());
+    BlocProvider.of<ServiceRegistrationBloc>(context).add(GetTankSizes());
     if (widget.requestModel.serviceModelId != null &&
         widget.requestModel.serviceModelId == 0) {
       BlocProvider.of<ServiceRegistrationBloc>(context)
@@ -121,6 +124,9 @@ class _ServiceRegistrationFirstStepViewState
         }
         if (state is TankTypesSuccess) {
           this.tankTypes = state.tankValues;
+        }
+        if (state is TankSizeSuccess) {
+          this.tankSizes = state.tankSizeValues;
         }
         if (state is PersonsVehicleTypesSuccess) {
           _showPersonsData = true;
@@ -230,10 +236,14 @@ class _ServiceRegistrationFirstStepViewState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           GoodsServiceTypesWidget(
-                            onSelectTankType: (tankType){
-                              this.selectedTankType = tankType;
-                            },
+                              onSelectTankType: (tankType) {
+                                this.selectedTankType = tankType;
+                              },
+                              onSelectTankSize: (tankSize) {
+                                this.selectedTankSize = tankSize;
+                              },
                               tankTypesList: tankTypes,
+                              tankSizesList: tankSizes,
                               lang: _appPrefs.getAppLanguage(),
                               registrationRequest: widget.requestModel,
                               goodsServiceTypesList: this.goodsServiceTypesList,
@@ -319,6 +329,9 @@ class _ServiceRegistrationFirstStepViewState
                                   additionalServicesModel,
                                   this.selectedTankType != null
                                       ? selectedTankType!.id.toString()
+                                      : null,
+                                  this.selectedTankSize != null
+                                      ? selectedTankSize!.id.toString()
                                       : null));
                         }
                       : null,
