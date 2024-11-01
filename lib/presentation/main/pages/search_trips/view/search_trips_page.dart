@@ -9,6 +9,8 @@ import 'package:taxi_for_you/domain/model/current_location_model.dart';
 import 'package:taxi_for_you/domain/model/location_filter_model.dart';
 import 'package:taxi_for_you/domain/model/sorting_model.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
+import 'package:taxi_for_you/presentation/coast_calculation/view/coast_caclulation_bottom_sheet.dart';
+import 'package:taxi_for_you/presentation/common/widgets/custom_bottom_sheet.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_card.dart';
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/main/pages/search_trips/search_trips_bloc/search_trips_bloc.dart';
@@ -427,38 +429,17 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     }
     return CustomCard(
       onClick: () {
+        // CustomBottomSheet.displayModalBottomSheetList(
+        //   context: context,
+        //   showCloseButton: true,
+        //   initialChildSize: 0.9,
+        //   customWidget: CoastCalculationBottomSheetView(),
+        // );
         if (trip.tripDetails.acceptedOffer != null)
           Navigator.pushNamed(context, Routes.tripExecution,
-                  arguments: TripExecutionArguments(trip))
+              arguments: TripExecutionArguments(trip))
               .then((value) =>
-                  BlocProvider.of<SearchTripsBloc>(context).add(GetTripsTripModuleId(
-                      tripTypeId: sortingModelList[currentSortingIndex]
-                          .tripModelType!
-                          .name
-                          .toString(),
-                      dateFilter: null,
-                      sortCriterion:
-                          currentLocation != null && currentLocationFilter == 1
-                              ? sortingModelList[1].id!.name.toString()
-                              : sortingModelList[currentSortingIndex]
-                                  .id!
-                                  .name
-                                  .toString(),
-                      currentLocation: currentLocation != null
-                          ? currentLocationFilter
-                          : null,
-                      serviceTypesSelectedByBusinessOwner:
-                          driver!.captainType == RegistrationConstants.businessOwner
-                              ? FiltrationHelper().serviceTypesList.join(",")
-                              : null,
-                      serviceTypesSelectedByDriver:
-                          driver!.captainType == RegistrationConstants.captain
-                              ? (driver as Driver).serviceTypes!.join(',')
-                              : null)));
-        else
-          Navigator.pushNamed(context, Routes.tripDetails,
-                  arguments: TripDetailsArguments(tripModel: trip))
-              .then((value) => BlocProvider.of<SearchTripsBloc>(context).add(
+              BlocProvider.of<SearchTripsBloc>(context).add(
                   GetTripsTripModuleId(
                       tripTypeId: sortingModelList[currentSortingIndex]
                           .tripModelType!
@@ -466,22 +447,51 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
                           .toString(),
                       dateFilter: null,
                       sortCriterion:
-                          currentLocation != null && currentLocationFilter == 1
-                              ? sortingModelList[1].id!.name.toString()
-                              : sortingModelList[currentSortingIndex]
-                                  .id!
-                                  .name
-                                  .toString(),
+                      currentLocation != null && currentLocationFilter == 1
+                          ? sortingModelList[1].id!.name.toString()
+                          : sortingModelList[currentSortingIndex]
+                          .id!
+                          .name
+                          .toString(),
                       currentLocation: currentLocation != null
                           ? currentLocationFilter
                           : null,
                       serviceTypesSelectedByBusinessOwner:
-                          driver!.captainType == RegistrationConstants.businessOwner
-                              ? FiltrationHelper().serviceTypesList.join(",")
-                              : null,
+                      driver!.captainType == RegistrationConstants.businessOwner
+                          ? FiltrationHelper().serviceTypesList.join(",")
+                          : null,
                       serviceTypesSelectedByDriver:
-                          driver!.captainType == RegistrationConstants.captain
-                              ? (driver as Driver).serviceTypes!.join(',')
+                      driver!.captainType == RegistrationConstants.captain
+                          ? (driver as Driver).serviceTypes!.join(',')
+                          : null)));
+        else
+          Navigator.pushNamed(context, Routes.tripDetails,
+              arguments: TripDetailsArguments(tripModel: trip))
+              .then((value) =>
+              BlocProvider.of<SearchTripsBloc>(context).add(
+                  GetTripsTripModuleId(
+                      tripTypeId: sortingModelList[currentSortingIndex]
+                          .tripModelType!
+                          .name
+                          .toString(),
+                      dateFilter: null,
+                      sortCriterion:
+                      currentLocation != null && currentLocationFilter == 1
+                          ? sortingModelList[1].id!.name.toString()
+                          : sortingModelList[currentSortingIndex]
+                          .id!
+                          .name
+                          .toString(),
+                      currentLocation: currentLocation != null
+                          ? currentLocationFilter
+                          : null,
+                      serviceTypesSelectedByBusinessOwner:
+                      driver!.captainType == RegistrationConstants.businessOwner
+                          ? FiltrationHelper().serviceTypesList.join(",")
+                          : null,
+                      serviceTypesSelectedByDriver:
+                      driver!.captainType == RegistrationConstants.captain
+                          ? (driver as Driver).serviceTypes!.join(',')
                               : null)));
       },
       bodyWidget: Container(
