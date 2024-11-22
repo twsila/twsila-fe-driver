@@ -22,6 +22,12 @@ class GenerateOtpFail extends VerifyOtpState {
 
 class VerifyOtpSuccess extends VerifyOtpState {}
 
+class gettingCoastCalculationsSuccess extends VerifyOtpState {
+  CoastCalculationModel calculationModel;
+
+  gettingCoastCalculationsSuccess({required this.calculationModel});
+}
+
 class VerifyOtpFail extends VerifyOtpState {
   final String message;
   final String code;

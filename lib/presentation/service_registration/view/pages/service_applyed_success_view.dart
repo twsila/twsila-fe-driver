@@ -70,6 +70,7 @@ class _ServiceAppliedSuccessViewState extends State<ServiceAppliedSuccessView> {
               padding: const EdgeInsets.all(AppPadding.p14),
               child: Text(
                 AppStrings.requestAppliedSuccessfully.tr(),
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: FontSize.s24,

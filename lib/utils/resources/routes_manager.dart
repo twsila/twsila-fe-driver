@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/presentation/bo_program_subscribtion/view/bo_subscription_benefits.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/register_business_owner_screen.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/view/welcome_to_twsila_view.dart';
@@ -181,7 +182,7 @@ class RouteGenerator {
             builder: (_) => UpdateDriverProfileView(
                   driver: args.driver,
                 ));
-        case Routes.updateBoProfile:
+      case Routes.updateBoProfile:
         initUpdateBoProfileModule();
         final args = settings.arguments as UpdateBoProfileArguments;
         return MaterialPageRoute(
@@ -240,5 +241,3 @@ class RouteGenerator {
             ));
   }
 }
-
-

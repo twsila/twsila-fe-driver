@@ -25,6 +25,7 @@ import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
 import '../../business_owner_add_driver/view/add_driver_sheet.dart';
+import '../../coast_calculation/view/coast_caclulation_bottom_sheet.dart';
 import '../../common/widgets/custom_bottom_sheet.dart';
 import '../../common/widgets/custom_scaffold.dart';
 import '../../common/widgets/custom_text_button.dart';
@@ -304,13 +305,24 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                     widget.tripModel.tripDetails.clientOffer != 0),
             child: CustomTextButton(
               text:
-                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
+                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}",
               onPressed: () {
-                BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                    _appPreferences.getCachedDriver()!.id!,
-                    widget.tripModel.tripDetails.tripId!,
-                    _appPreferences.getCachedDriver()!.captainType.toString(),
-                    driverId: assignedDriverToTrip!.id));
+                CustomBottomSheet.displayModalBottomSheetList(
+                  context: context,
+                  showCloseButton: true,
+                  initialChildSize: 0.9,
+                  customWidget: CoastCalculationBottomSheetView(
+                    isAcceptOffer: true,
+                    clientOfferAmount: widget.tripModel.tripDetails.clientOffer,
+                    assignedDriverToTrip: assignedDriverToTrip,
+                    tripId: widget.tripModel.tripDetails.tripId!,
+                  ),
+                );
+                // BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                //     _appPreferences.getCachedDriver()!.id!,
+                //     widget.tripModel.tripDetails.tripId!,
+                //     _appPreferences.getCachedDriver()!.captainType.toString(),
+                //     driverId: assignedDriverToTrip!.id));
               },
             ),
           ),
@@ -325,7 +337,16 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                 ? AppStrings.sendAnotherPrice.tr()
                 : AppStrings.enterRequiredPrice.tr(),
             onPressed: () {
-              _showAnotherOfferBottomSheet();
+              CustomBottomSheet.displayModalBottomSheetList(
+                context: context,
+                showCloseButton: true,
+                initialChildSize: 0.9,
+                customWidget: CoastCalculationBottomSheetView(
+                  tripId: widget.tripModel.tripDetails.tripId!,
+                  assignedDriverToTrip: assignedDriverToTrip,
+                ),
+              );
+              // _showAnotherOfferBottomSheet();
             },
           ),
         ],
@@ -450,7 +471,15 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                             ? AppStrings.sendAnotherPrice.tr()
                             : AppStrings.enterRequiredPrice.tr(),
                         onPressed: () {
-                          _showAnotherOfferBottomSheet();
+                          CustomBottomSheet.displayModalBottomSheetList(
+                            context: context,
+                            showCloseButton: true,
+                            initialChildSize: 0.9,
+                            customWidget: CoastCalculationBottomSheetView(
+                              tripId: widget.tripModel.tripDetails.tripId!,
+                            ),
+                          );
+                          // _showAnotherOfferBottomSheet();
                         },
                       ),
                     ],
@@ -476,13 +505,23 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                     text:
                         "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
                     onPressed: () {
-                      BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
-                          _appPreferences.getCachedDriver()!.id!,
-                          widget.tripModel.tripDetails.tripId!,
-                          _appPreferences
-                              .getCachedDriver()!
-                              .captainType
-                              .toString()));
+                      CustomBottomSheet.displayModalBottomSheetList(
+                        context: context,
+                        showCloseButton: true,
+                        initialChildSize: 0.9,
+                        customWidget: CoastCalculationBottomSheetView(
+                          isAcceptOffer: true,
+                          clientOfferAmount:widget.tripModel.tripDetails.clientOffer,
+                          tripId: widget.tripModel.tripDetails.tripId!,
+                        ),
+                      );
+                      // BlocProvider.of<TripDetailsBloc>(context).add(AcceptOffer(
+                      //     _appPreferences.getCachedDriver()!.id!,
+                      //     widget.tripModel.tripDetails.tripId!,
+                      //     _appPreferences
+                      //         .getCachedDriver()!
+                      //         .captainType
+                      //         .toString()));
                     },
                   ),
                 ),
@@ -497,7 +536,15 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                       ? AppStrings.sendAnotherPrice.tr()
                       : AppStrings.enterRequiredPrice.tr(),
                   onPressed: () {
-                    _showAnotherOfferBottomSheet();
+                    CustomBottomSheet.displayModalBottomSheetList(
+                      context: context,
+                      showCloseButton: true,
+                      initialChildSize: 0.9,
+                      customWidget: CoastCalculationBottomSheetView(
+                        tripId: widget.tripModel.tripDetails.tripId!,
+                      ),
+                    );
+                    // _showAnotherOfferBottomSheet();
                   },
                 ),
               ],

@@ -16,6 +16,7 @@ import 'package:taxi_for_you/domain/usecase/car_brands_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/car_manufacturer_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/change_request_status.dart';
 import 'package:taxi_for_you/domain/usecase/change_trip_status_usecase.dart';
+import 'package:taxi_for_you/domain/usecase/coast_calculation_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/get_business_owner_drivers_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/logout_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/lookup_by_key_usecase.dart';
@@ -113,6 +114,10 @@ initVerifyOtpModule() {
   if (!GetIt.I.isRegistered<GenerateOtpUseCase>()) {
     instance.registerFactory<GenerateOtpUseCase>(
         () => GenerateOtpUseCase(instance()));
+  }
+  if (!GetIt.I.isRegistered<CoastCalculationUseCase>()) {
+    instance.registerFactory<CoastCalculationUseCase>(
+        () => CoastCalculationUseCase(instance()));
   }
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
     instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));

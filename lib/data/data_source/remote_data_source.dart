@@ -114,6 +114,8 @@ abstract class RemoteDataSource {
   Future<BaseResponse> getBOPendingDrivers(int businessOwnerId);
 
   Future<BaseResponse> getAllowedServicesByUserType(String userType);
+
+  Future<BaseResponse> getCoastCalculationValues();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -446,5 +448,10 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   @override
   Future<BaseResponse> getAllowedServicesByUserType(String userType) async {
     return await _appServiceClient.getAllowedServiceByUserType(userType);
+  }
+
+  @override
+  Future<BaseResponse> getCoastCalculationValues() async {
+    return await _appServiceClient.getCoastCalculationValues();
   }
 }

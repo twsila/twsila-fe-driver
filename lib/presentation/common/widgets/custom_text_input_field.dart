@@ -153,6 +153,7 @@ class _CustomTextInputFieldState extends State<CustomTextInputField> {
                             .titleMedium
                             ?.copyWith(color: ColorManager.titlesTextColor)),
               ),
+              SizedBox(height: AppSize.s8,),
               _textFormField(),
             ],
           )

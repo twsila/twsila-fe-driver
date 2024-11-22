@@ -89,6 +89,7 @@ class EndPointsConstants {
   static const String allowedServicesLookupUT = "/lookups/allowed-endpoints?ut={userType}";
   static const String allowedServicesLookupDriver = "/lookups/allowed-endpoints?ut=DRIVER";
   static const String allowedServicesLookupBusinessOwner = "/lookups/allowed-endpoints?ut=BUSINESS_OWNER";
+  static const String coastCalculationLookupEndpoint = "/lookups/cost-calculations-config";
 
   static const List<String> cancelTokenApis = [
     logoutPath,
@@ -107,6 +108,7 @@ class EndPointsConstants {
     lookupByKey,
     allowedServicesLookupDriver,
     allowedServicesLookupBusinessOwner,
+    coastCalculationLookupEndpoint,
   ];
 }
 

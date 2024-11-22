@@ -570,5 +570,13 @@
   "boCommercialRegistrationDocumentFrontImage": "الصورة الاولى للسجل التجارى",
   "boCommercialRegistrationDocumentBackImage": "الصورة الثانية للسجل التجارى",
   "boNationalIdExpireDate": "تاريخ انتهاء الهوية",
-  "boCommercialRegistrationDocumentExpireDate": "تاريخ انتهاء السجل التجارى"
+  "boCommercialRegistrationDocumentExpireDate": "تاريخ انتهاء السجل التجارى",
+
+
+
+  "coastCalculation": "اجمالى تكلفة الرحلة",
+  "addedValueTax": "ضريبة القيمة المضافة",
+  "twsilaShareAmount": "حصة توصيلة",
+  "captainShareAmount": "حصة الكابتن",
+  "allTripCalculatedAmount": "إجمالى تكلفة الرحلة"
 }

@@ -7,6 +7,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/constants.dart';
 import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
+import 'package:taxi_for_you/domain/model/coast_calculation_model.dart';
 import 'package:taxi_for_you/domain/model/country_lookup_model.dart';
 import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
@@ -22,6 +23,7 @@ const String PREFS_KEY_ONBOARDING_SCREEN_VIEWED =
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String USER_SELECTED_COUNTRY = "USER_SELECTED_COUNTRY";
 const String DRIVER_MODEL = "DRIVER_MODEL";
+const String COAST_CALCULATION_DATA = "COAST_CALCULATION_DATA";
 const String DRIVER_FCM_TOKEN = "DRIVER_FCM_TOKEN";
 const String USER_TYPE = "USER_TYPE";
 const String CURRENT_COUNTRY_CODE = "CURRENT_COUNTRY_CODE";
@@ -45,6 +47,22 @@ class AppPreferences {
 
   bool isEnglish() {
     return getAppLanguage() == LanguageType.ENGLISH.getValue();
+  }
+
+  //set CoastCalculation Data
+  Future<bool> setCoastCalculationData(
+      CoastCalculationModel coastCalculation) async {
+    String coastCalculationStr = json.encode(coastCalculation);
+    await _sharedPreferences.setString(
+        COAST_CALCULATION_DATA, coastCalculationStr);
+    return true;
+  }
+
+  //get CoastCalculation Data
+  Future<CoastCalculationModel> getCoastCalculationData() async {
+    var coastStr =
+        jsonDecode(_sharedPreferences.getString(COAST_CALCULATION_DATA)!);
+    return CoastCalculationModel.fromJson(coastStr);
   }
 
   Future<void> changeAppLanguage() async {

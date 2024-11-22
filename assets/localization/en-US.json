@@ -374,7 +374,7 @@
   "car_driver_lic_photo": "car driver license photo",
   "apply_request": "apply",
   "request_applied_successfully": "Your request applied successfully",
-  "thank_your_reg_with_twsila_message": "We thank you for registering with Tawsila, and we would like to inform you that your application is under review and that an appointment has been set for an interview within 12 hours through one of the applications to ensure the validity of the data and activate your account.",
+  "thank_your_reg_with_twsila_message": "We thank you for registering with Twsila, and we would like to inform you that your application is under review and that an appointment has been set for an interview within 12 hours through one of our team to ensure the validity of the data and activate your account.",
   "back_to_main_screen": "Back to home",
   "my_profile": "Profile",
   "my_trips": "Trips",
@@ -507,7 +507,7 @@
   "no_added_drivers": "No Drivers Added",
   "no_added_drivcers_message": "You can link the drivers account to your account so that you can manage and follow up on flight trips through your phone",
   "important_note": "Important Note",
-  "no_added_driver_important_note": "The driver to be added to your account must already be registered in the Tawasla app.",
+  "no_added_driver_important_note": "The driver to be added to your account must already be registered in the Twsila app.",
   "add_driver": "Add Driver",
   "driver_mobile_number": "Driver mobile",
   "add_driver_mobile_number": "Enter driver mobile",
@@ -570,5 +570,12 @@
   "commercialExpiryDate": "Commercial registration expire date",
   "commercialExpiryDateHit": "Please enter commercial registration expire date",
   "car_photos": "Car photos",
-  "no_images": "No images uploaded"
+  "no_images": "No images uploaded",
+
+
+  "coastCalculation": "Total Trip Coast",
+  "addedValueTax": "Added Value Tax",
+  "twsilaShareAmount": "Tawsila Share",
+  "captainShareAmount": "Captin Share",
+  "allTripCalculatedAmount": "All Trip Coast"
 }

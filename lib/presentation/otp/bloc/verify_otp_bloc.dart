@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:taxi_for_you/domain/model/coast_calculation_model.dart';
+import 'package:taxi_for_you/domain/usecase/coast_calculation_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/generate_otp_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/login_usecase.dart';
 import 'package:taxi_for_you/domain/usecase/verify_otp_usecase.dart';
@@ -18,6 +20,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
     on<SendOtpEvent>(_sendOtp);
     on<ReSendOtpEvent>(_reSendOtp);
     on<VerifyOtpBEEvent>(_verifyOtp);
+    on<GetCoastCalculationsDataEvent>(_getCoastCalculationsDataEvent);
   }
 
   FutureOr<void> _sendOtp(
@@ -61,6 +64,19 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
                   emit(VerifyOtpFail(failure.message, failure.code.toString()))
                 }, (generateOtp) {
       emit(VerifyOtpSuccess());
+    });
+  }
+
+  FutureOr<void> _getCoastCalculationsDataEvent(
+      GetCoastCalculationsDataEvent event, Emitter<VerifyOtpState> emit) async {
+    CoastCalculationUseCase coastCalculationUseCase =
+        instance<CoastCalculationUseCase>();
+    emit(VerifyOtpLoading());
+    (await coastCalculationUseCase.execute("")).fold(
+        (failure) => {
+              emit(VerifyOtpFail(failure.message, failure.code.toString()))
+            }, (coastCalcModel) {
+      emit(gettingCoastCalculationsSuccess(calculationModel: coastCalcModel));
     });
   }
 }

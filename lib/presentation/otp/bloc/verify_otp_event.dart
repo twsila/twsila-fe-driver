@@ -20,5 +20,9 @@ class VerifyOtpBEEvent extends VerifyOtpEvent {
   final String otpCode;
   final String generatedOtp;
 
-  VerifyOtpBEEvent(this.mobileNumber, this.otpCode,this.generatedOtp);
+  VerifyOtpBEEvent(this.mobileNumber, this.otpCode, this.generatedOtp);
+}
+
+class GetCoastCalculationsDataEvent extends VerifyOtpEvent {
+  GetCoastCalculationsDataEvent();
 }

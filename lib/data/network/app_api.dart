@@ -322,4 +322,7 @@ abstract class AppServiceClient {
   Future<BaseResponse> getAllowedServiceByUserType(
     @Path("userType") String userType,
   );
+
+  @GET(EndPointsConstants.coastCalculationLookupEndpoint)
+  Future<BaseResponse> getCoastCalculationValues();
 }

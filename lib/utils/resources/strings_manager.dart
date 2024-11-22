@@ -673,4 +673,12 @@ class AppStrings {
   //Payment
   static const paymentSuccess = "payment_success";
   static const paymentFailed = "payment_failed";
+
+  //coast calculations
+
+  static const coastCalculation = "coastCalculation";
+  static const addedValueTax = "addedValueTax";
+  static const twsilaShareAmount = "twsilaShareAmount";
+  static const captainShareAmount = "captainShareAmount";
+  static const allTripCalculatedAmount = "allTripCalculatedAmount";
 }

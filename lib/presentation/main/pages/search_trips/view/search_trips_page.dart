@@ -429,12 +429,6 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
     }
     return CustomCard(
       onClick: () {
-        // CustomBottomSheet.displayModalBottomSheetList(
-        //   context: context,
-        //   showCloseButton: true,
-        //   initialChildSize: 0.9,
-        //   customWidget: CoastCalculationBottomSheetView(),
-        // );
         if (trip.tripDetails.acceptedOffer != null)
           Navigator.pushNamed(context, Routes.tripExecution,
               arguments: TripExecutionArguments(trip))

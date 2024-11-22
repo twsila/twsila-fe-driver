@@ -168,6 +168,13 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
                 });
               }
               if (state is VerifyOtpSuccess) {
+                BlocProvider.of<VerifyOtpBloc>(context)
+                    .add(GetCoastCalculationsDataEvent());
+              }
+
+              if (state is gettingCoastCalculationsSuccess) {
+                await _appPreferences
+                    .setCoastCalculationData(state.calculationModel);
                 ToastHandler(context)
                     .showToast(AppStrings.otpValidated.tr(), Toast.LENGTH_LONG);
                 if (widget.registerAs == RegistrationConstants.captain) {

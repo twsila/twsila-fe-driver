@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
+import 'package:taxi_for_you/domain/model/coast_calculation_model.dart';
 import 'package:taxi_for_you/domain/model/lookups_model.dart';
 import 'package:taxi_for_you/domain/model/persons_vehicle_type_model.dart';
 import 'package:taxi_for_you/domain/model/service_type_model.dart';
@@ -129,4 +130,6 @@ abstract class Repository {
 
   Future<Either<Failure, List<AllowedServiceModel>>>
       getAllowedServicesByUserType(String userType);
+
+  Future<Either<Failure, CoastCalculationModel>> getCostCalculationValues();
 }
