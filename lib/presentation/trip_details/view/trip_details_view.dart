@@ -24,7 +24,6 @@ import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/font_manager.dart';
 import '../../../utils/resources/strings_manager.dart';
 import '../../../utils/resources/values_manager.dart';
-import '../../business_owner_add_driver/view/add_driver_sheet.dart';
 import '../../coast_calculation/view/coast_caclulation_bottom_sheet.dart';
 import '../../common/widgets/custom_bottom_sheet.dart';
 import '../../common/widgets/custom_scaffold.dart';
@@ -511,7 +510,8 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                         initialChildSize: 0.9,
                         customWidget: CoastCalculationBottomSheetView(
                           isAcceptOffer: true,
-                          clientOfferAmount:widget.tripModel.tripDetails.clientOffer,
+                          clientOfferAmount:
+                              widget.tripModel.tripDetails.clientOffer,
                           tripId: widget.tripModel.tripDetails.tripId!,
                         ),
                       );

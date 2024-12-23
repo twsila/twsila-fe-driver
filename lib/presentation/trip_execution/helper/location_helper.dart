@@ -54,6 +54,6 @@ class LocationHelper {
   Future<String> getCityNameByCoordinates(double lat, double long) async {
     final coordinates = Coordinates(lat, long);
     var address = await geocoder.findAddressesFromCoordinates(coordinates);
-    return address[0].locality ?? address[0].adminArea ?? '';
+    return address.length > 0 ? address[0].locality ?? address[0].adminArea ?? '' : '';
   }
 }

@@ -5,12 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_for_you/app/extensions.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
-import 'package:taxi_for_you/utils/resources/routes_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 
 import '../../../app/app_prefs.dart';
 import '../../../app/di.dart';
-import '../../../app/functions.dart';
 import '../../../domain/model/coast_calculation_model.dart';
 import '../../../domain/model/driver_model.dart';
 import '../../../utils/dialogs/custom_dialog.dart';
@@ -62,24 +60,24 @@ class _CoastCalculationBottomSheetViewState
   // Method to load data from SharedPreferences
   Future<void> _loadDataFromSharedPreferences() async {
     coastCalculationModel = await _appPreferences.getCoastCalculationData();
+
     if (coastCalculationModel != null) {
+
       if (widget.isAcceptOffer != null && widget.isAcceptOffer == true) {
+
         _amountController.text = widget.clientOfferAmount.toString();
-        addedValueTax = double.parse(_amountController.text) *
-            coastCalculationModel!.vatForDriverAndBo;
+
+        captainShareAmount = double.parse(_amountController.text);
+
         tawsilaShareAmount = double.parse(_amountController.text) *
             coastCalculationModel!.twsilaCommissionForDriverAndBo;
-        captainShareAmount = double.parse(_amountController.text) -
-            (tawsilaShareAmount + addedValueTax);
-        allTripCalculatedAmount = double.parse(_amountController.text);
-      } else {
-        addedValueTax = coastCalculationModel!.vatForDriverAndBo;
-        tawsilaShareAmount =
-            coastCalculationModel!.twsilaCommissionForDriverAndBo;
-        captainShareAmount = (tawsilaShareAmount + addedValueTax);
-        allTripCalculatedAmount = _amountController.text.isNotEmpty
-            ? double.parse(_amountController.text)
-            : 0.0;
+
+        addedValueTax =
+            (double.parse(_amountController.text) + tawsilaShareAmount) *
+                coastCalculationModel!.vatForDriverAndBo;
+
+        allTripCalculatedAmount =
+            addedValueTax + tawsilaShareAmount + captainShareAmount;
       }
     }
     setState(() {});
@@ -179,17 +177,26 @@ class _CoastCalculationBottomSheetViewState
                       onChanged: (value) {
                         setState(() {
                           if (value.isEmpty) {
+                            resetValues();
                             return;
                           }
-                          addedValueTax =
-                              double.parse(_amountController.text) * .14;
-                          tawsilaShareAmount =
-                              double.parse(_amountController.text) * .25;
+
                           captainShareAmount =
-                              double.parse(_amountController.text) -
-                                  (tawsilaShareAmount - addedValueTax);
-                          allTripCalculatedAmount =
                               double.parse(_amountController.text);
+
+                          tawsilaShareAmount =
+                              double.parse(_amountController.text) *
+                                  coastCalculationModel!
+                                      .twsilaCommissionForDriverAndBo;
+
+                          addedValueTax =
+                              (double.parse(_amountController.text) +
+                                      tawsilaShareAmount) *
+                                  coastCalculationModel!.vatForDriverAndBo;
+
+                          allTripCalculatedAmount = (addedValueTax +
+                              tawsilaShareAmount +
+                              captainShareAmount).toPrecision(2);
                         });
                       },
                     ),
@@ -246,7 +253,7 @@ class _CoastCalculationBottomSheetViewState
                                     AddOffer(
                                         _appPreferences.getCachedDriver()!.id!,
                                         widget.tripId,
-                                        allTripCalculatedAmount,
+                                        allTripCalculatedAmount.toPrecision(2),
                                         _appPreferences
                                             .getCachedDriver()!
                                             .captainType
@@ -267,5 +274,13 @@ class _CoastCalculationBottomSheetViewState
         },
       ),
     );
+  }
+
+  void resetValues() {
+    _amountController.clear();
+    addedValueTax = 0.0;
+    tawsilaShareAmount = 0.0;
+    captainShareAmount = 0.0;
+    allTripCalculatedAmount = 0.0;
   }
 }

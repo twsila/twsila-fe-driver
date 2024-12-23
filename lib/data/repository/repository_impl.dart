@@ -1,8 +1,7 @@
-import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:taxi_for_you/data/mapper/driver.dart';
+import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/add_request_model.dart';
 import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
@@ -20,8 +19,10 @@ import 'package:taxi_for_you/domain/model/registration_response_model.dart';
 import 'package:taxi_for_you/domain/model/service_status_model.dart';
 import 'package:taxi_for_you/domain/model/vehicle_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
+import 'package:taxi_for_you/presentation/coast_calculation/helpers/coast_calculations_helper.dart';
 import 'package:taxi_for_you/presentation/service_registration/view/helpers/registration_request.dart';
 
+import '../../app/di.dart';
 import '../../domain/model/country_lookup_model.dart';
 import '../../domain/model/driver_model.dart';
 import '../../domain/model/trip_details_model.dart';
@@ -38,6 +39,7 @@ class RepositoryImpl implements Repository {
   final LocalDataSource _localDataSource;
   final NetworkInfo _networkInfo;
   final FirebaseAuth auth = FirebaseAuth.instance;
+  AppPreferences _appPreferences = instance<AppPreferences>();
 
   RepositoryImpl(
       this._remoteDataSource, this._networkInfo, this._localDataSource);
@@ -382,6 +384,9 @@ class RepositoryImpl implements Repository {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
+        CoastCalculationModel coastCalculationModel =
+            await instance<AppPreferences>().getCoastCalculationData();
+
         final response = await _remoteDataSource.tripsByModuleId(
             endPoint,
             tripTypeModuleId,
@@ -396,6 +401,12 @@ class RepositoryImpl implements Repository {
         if (response.success == ApiInternalStatus.SUCCESS) {
           List<TripDetailsModel> trips = List<TripDetailsModel>.from(
               response.result!.map((x) => TripDetailsModel.fromJson(x)));
+
+          await Future.forEach(trips, (TripDetailsModel trip) {
+            trip.tripDetails.clientOffer = CoastCalculationsHelper()
+                .getDriverShareFromAmount(
+                    coastCalculationModel, trip.tripDetails.clientOffer!);
+          });
 
           return Right(trips);
         } else {
