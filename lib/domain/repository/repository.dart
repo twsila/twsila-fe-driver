@@ -39,7 +39,7 @@ abstract class Repository {
 
   Future<Either<Failure, List<CarModel>>> carBrandsAndModels();
 
-  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers();
+  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers(String serviceType);
 
   Future<Either<Failure, String>> forgotPassword(String email);
 

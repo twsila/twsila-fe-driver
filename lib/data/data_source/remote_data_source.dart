@@ -33,7 +33,7 @@ abstract class RemoteDataSource {
 
   Future<BaseResponse> carBrandAndModel();
 
-  Future<BaseResponse> carManufacturers();
+  Future<BaseResponse> carManufacturers(String serviceType);
 
   Future<RegistrationResponse> registerCaptainWithPersonsService(
       RegistrationRequest registrationRequest);
@@ -164,8 +164,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> carManufacturers() async {
-    return await _appServiceClient.carManufacturers();
+  Future<BaseResponse> carManufacturers(String serviceType) async {
+    return await _appServiceClient.carManufacturers(serviceType);
   }
 
   @override

@@ -229,7 +229,7 @@ class ServiceRegistrationBloc
     emit(ServiceRegistrationLoading());
     CarManufacturerUseCase carManufacturerUseCase =
         instance<CarManufacturerUseCase>();
-    (await carManufacturerUseCase.execute(CarManufacturerUseCaseInput())).fold(
+    (await carManufacturerUseCase.execute(CarManufacturerUseCaseInput(serviceType: "BUS"))).fold(
         (failure) => {
               // left -> failure
               //emit failure state

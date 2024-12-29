@@ -155,7 +155,7 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.modelNameAr : driversList[i].carModel.modelName} / ${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.carManufacturer.carManufacturerAr : driversList[i].carModel.carManufacturer.carManufacturer}",
+                                  "${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.modelNameAr : driversList[i].carModel.modelName} / ${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.carManufacturer.carManufacturerAr : driversList[i].carModel.carManufacturer.carManufacturerEn}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .displayLarge

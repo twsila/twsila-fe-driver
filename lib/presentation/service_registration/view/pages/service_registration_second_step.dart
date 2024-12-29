@@ -237,36 +237,13 @@ class _ServiceRegistrationSecondStepState
                 .firstWhere((YearOfManufactureModel element) =>
                     element.value.toString() ==
                     widget.registrationRequest.vehicleYearOfManufacture)
-                .value.toString();
+                .value
+                .toString();
           }
         }
 
         if (state is ServiceRegistrationSuccess) {
-          widget.registrationRequest.driverImages = null;
-          widget.registrationRequest.firstName = null;
-          widget.registrationRequest.lastName = null;
-          widget.registrationRequest.email = null;
-          widget.registrationRequest.dateOfBirth = null;
-          widget.registrationRequest.gender = null;
-          widget.registrationRequest.mobile = null;
-          widget.registrationRequest.serviceTypeParam = null;
-          widget.registrationRequest.serviceModelId = null;
-          widget.registrationRequest.vehicleTypeId = null;
-          widget.registrationRequest.vehicleShapeId = null;
-          widget.registrationRequest.carManufacturerTypeId = null;
-          widget.registrationRequest.additionalServicesModel = null;
-          widget.registrationRequest.carModelId = null;
-          widget.registrationRequest.vehicleYearOfManufacture = null;
-          widget.registrationRequest.carNotes = null;
-          widget.registrationRequest.plateNumber = null;
-          widget.registrationRequest.countryCode = null;
-          widget.registrationRequest.driverImages = null;
-          widget.registrationRequest.carImages = null;
-          widget.registrationRequest.carImages = null;
-          widget.registrationRequest.carDriverNationalIdPhotosData = null;
-          widget.registrationRequest.carDriverLicensePhotosData = null;
-          widget.registrationRequest.carOwnerNationalIdPhotosData = null;
-          widget.registrationRequest.carDocumentPhotosData = null;
+          widget.registrationRequest = RegistrationRequest.empty();
           Navigator.pushReplacementNamed(
               context, Routes.serviceAppliedSuccessfullyView);
         }
@@ -1043,7 +1020,7 @@ class _ServiceRegistrationSecondStepState
                                 .carManufacturerAr
                             : carModelList[index]
                                 .carManufacturer
-                                .carManufacturer)),
+                                .carManufacturerEn)),
                   );
                 },
               )
@@ -1066,7 +1043,7 @@ class _ServiceRegistrationSecondStepState
                     onTap: () async {
                       carManu = _appPreferences.getAppLanguage() == "ar"
                           ? carManuList[index].carManufacturerAr
-                          : carManuList[index].carManufacturer;
+                          : carManuList[index].carManufacturerEn;
                       widget.registrationRequest.carManufacturerTypeId =
                           carManuList[index].id.toString();
 
@@ -1089,7 +1066,7 @@ class _ServiceRegistrationSecondStepState
                     child: ListTile(
                       title: Text(_appPreferences.getAppLanguage() == "ar"
                           ? carManuList[index].carManufacturerAr
-                          : carManuList[index].carManufacturer),
+                          : carManuList[index].carManufacturerEn),
                     ),
                   );
                 },

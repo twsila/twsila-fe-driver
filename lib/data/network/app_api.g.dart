@@ -202,7 +202,7 @@ class _AppServiceClient implements AppServiceClient {
   }
 
   @override
-  Future<BaseResponse> carManufacturers() async {
+  Future<BaseResponse> carManufacturers(serviceType) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -215,7 +215,7 @@ class _AppServiceClient implements AppServiceClient {
     )
             .compose(
               _dio.options,
-              '/lookups/car-manufacturers',
+              '/lookups/car-manufacturers?vc=${serviceType}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -259,7 +259,7 @@ class _AppServiceClient implements AppServiceClient {
     nationalIdExpiryDate,
     serviceTypeParam,
     vehicleTypeId,
-    carManufacturerTypeId,
+    carManufacturerId,
     carModelId,
     vehicleYearOfManufacture,
     plateNumber,
@@ -274,6 +274,7 @@ class _AppServiceClient implements AppServiceClient {
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry(
@@ -316,18 +317,24 @@ class _AppServiceClient implements AppServiceClient {
       'vehicleType.id',
       vehicleTypeId,
     ));
-    _data.fields.add(MapEntry(
-      'carManufacturerType.id',
-      carManufacturerTypeId,
-    ));
-    _data.fields.add(MapEntry(
-      'carModel.id',
-      carModelId,
-    ));
-    _data.fields.add(MapEntry(
-      'vehicleYearOfManufacture',
-      vehicleYearOfManufacture,
-    ));
+    if (carManufacturerId != null) {
+      _data.fields.add(MapEntry(
+        'carManufacturer.id',
+        carManufacturerId,
+      ));
+    }
+    if (carModelId != null) {
+      _data.fields.add(MapEntry(
+        'carModel.id',
+        carModelId,
+      ));
+    }
+    if (vehicleYearOfManufacture != null) {
+      _data.fields.add(MapEntry(
+        'vehicleYearOfManufacture',
+        vehicleYearOfManufacture,
+      ));
+    }
     _data.fields.add(MapEntry(
       'plateNumber',
       plateNumber,
@@ -395,7 +402,7 @@ class _AppServiceClient implements AppServiceClient {
     nationalId,
     nationalIdExpiryDate,
     serviceTypeParam,
-    carManufacturerTypeId,
+    carManufacturerId,
     carModelId,
     vehicleYearOfManufacture,
     tankType,
@@ -460,18 +467,24 @@ class _AppServiceClient implements AppServiceClient {
       'serviceTypes',
       serviceTypeParam,
     ));
-    _data.fields.add(MapEntry(
-      'carManufacturerType.id',
-      carManufacturerTypeId,
-    ));
-    _data.fields.add(MapEntry(
-      'carModel.id',
-      carModelId,
-    ));
-    _data.fields.add(MapEntry(
-      'vehicleYearOfManufacture',
-      vehicleYearOfManufacture,
-    ));
+    if (carManufacturerId != null) {
+      _data.fields.add(MapEntry(
+        'carManufacturer.id',
+        carManufacturerId,
+      ));
+    }
+    if (carModelId != null) {
+      _data.fields.add(MapEntry(
+        'carModel.id',
+        carModelId,
+      ));
+    }
+    if (vehicleYearOfManufacture != null) {
+      _data.fields.add(MapEntry(
+        'vehicleYearOfManufacture',
+        vehicleYearOfManufacture,
+      ));
+    }
     if (tankType != null) {
       _data.fields.add(MapEntry(
         'tankType',

@@ -45,24 +45,32 @@ class Constants {
   ];
 }
 
-class DriverImagesConstants{
-
+class DriverImagesConstants {
   static const String DRIVER_PHOTO_IMAGE_STRING = 'driver_photo.jpg';
   static const String DRIVER_CAR_PHOTOS_IMAGE_STRING = 'driver-car-photo-';
-  static const String CAR_DOCUMENT_FRONT_IMAGE_STRING = 'Documents.carDocument-front.jpg';
-  static const String CAR_DOCUMENT_BACK_IMAGE_STRING = 'Documents.carDocument-back.jpg';
-  static const String DRIVER_NATIONAL_ID_FRONT_IMAGE_STRING = 'Documents.driverId-front.jpg';
-  static const String DRIVER_NATIONAL_ID_BACK_IMAGE_STRING = 'Documents.driverId-back.jpg';
-  static const String DRIVER_LICENSE_FRONT_IMAGE_STRING = 'Documents.driverLicense-front.jpg';
-  static const String DRIVER_LICENSE_BACK_IMAGE_STRING = 'Documents.driverLicense-back.jpg';
-  static const String OWNER_NATIONAL_ID_FRONT_IMAGE_STRING = 'Documents.ownerId-front.jpg';
-  static const String OWNER_NATIONAL_ID_BACK_IMAGE_STRING = 'Documents.ownerId-back.jpg';
-
+  static const String CAR_DOCUMENT_FRONT_IMAGE_STRING =
+      'Documents.carDocument-front.jpg';
+  static const String CAR_DOCUMENT_BACK_IMAGE_STRING =
+      'Documents.carDocument-back.jpg';
+  static const String DRIVER_NATIONAL_ID_FRONT_IMAGE_STRING =
+      'Documents.driverId-front.jpg';
+  static const String DRIVER_NATIONAL_ID_BACK_IMAGE_STRING =
+      'Documents.driverId-back.jpg';
+  static const String DRIVER_LICENSE_FRONT_IMAGE_STRING =
+      'Documents.driverLicense-front.jpg';
+  static const String DRIVER_LICENSE_BACK_IMAGE_STRING =
+      'Documents.driverLicense-back.jpg';
+  static const String OWNER_NATIONAL_ID_FRONT_IMAGE_STRING =
+      'Documents.ownerId-front.jpg';
+  static const String OWNER_NATIONAL_ID_BACK_IMAGE_STRING =
+      'Documents.ownerId-back.jpg';
 }
-class PaymentConstants {
 
-  static const String TESTING_KEY = "pk_test_DhoknjKhJ1WgngxDP315TgCYBP3DvBtQA3LZc9Up";
-  static const String PRODUCTION_KEY = "pk_live_JLF3TS9GDjhLAUkW1bmrzpmLA2X1WZ7EW3tBKJLD";
+class PaymentConstants {
+  static const String TESTING_KEY =
+      "pk_test_DhoknjKhJ1WgngxDP315TgCYBP3DvBtQA3LZc9Up";
+  static const String PRODUCTION_KEY =
+      "pk_live_JLF3TS9GDjhLAUkW1bmrzpmLA2X1WZ7EW3tBKJLD";
 }
 
 class UserTypeConstants {
@@ -82,14 +90,23 @@ class EndPointsConstants {
   static const String goodsServiceTypes = "/drivers/service-types";
   static const String personsVehicleTypes = "/drivers/vehicle-types";
   static const String carModels = "/lookups/car-models";
-  static const String carManufacturers = "/lookups/car-manufacturers";
+  static const String carManufacturersByServiceType =
+      "/lookups/car-manufacturers?vc={serviceType}";
+  static const String carManufacturersByBUS =
+      "/lookups/car-manufacturers?vc=BUS";
+  static const String carManufacturersBySEDAN =
+      "/lookups/car-manufacturers?vc=SEDAN";
   static const String lookups = "/lookups";
   static const String countryLookup = "/lookups/country";
   static const String lookupByKey = "/lookups/by-key";
-  static const String allowedServicesLookupUT = "/lookups/allowed-endpoints?ut={userType}";
-  static const String allowedServicesLookupDriver = "/lookups/allowed-endpoints?ut=DRIVER";
-  static const String allowedServicesLookupBusinessOwner = "/lookups/allowed-endpoints?ut=BUSINESS_OWNER";
-  static const String coastCalculationLookupEndpoint = "/lookups/cost-calculations-config";
+  static const String allowedServicesLookupUT =
+      "/lookups/allowed-endpoints?ut={userType}";
+  static const String allowedServicesLookupDriver =
+      "/lookups/allowed-endpoints?ut=DRIVER";
+  static const String allowedServicesLookupBusinessOwner =
+      "/lookups/allowed-endpoints?ut=BUSINESS_OWNER";
+  static const String coastCalculationLookupEndpoint =
+      "/lookups/cost-calculations-config";
 
   static const List<String> cancelTokenApis = [
     logoutPath,
@@ -102,7 +119,9 @@ class EndPointsConstants {
     goodsServiceTypes,
     personsVehicleTypes,
     carModels,
-    carManufacturers,
+    carManufacturersByServiceType,
+    carManufacturersByBUS,
+    carManufacturersBySEDAN,
     lookups,
     countryLookup,
     lookupByKey,
@@ -121,6 +140,7 @@ class TripTypeConstants {
   static const String otherTankType = "OTHER_TANK";
   static const String personsType = "PERSONS";
 }
+
 class LookupKeys {
   static const String serviceType = "ServiceType";
   static const String tankType = "TankType";

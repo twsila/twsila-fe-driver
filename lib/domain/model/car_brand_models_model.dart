@@ -122,13 +122,13 @@ String carManufacturerModelToJson(CarManufacturerModel data) =>
 class CarManufacturerModel {
   int id;
   bool showInTwsila;
-  String carManufacturer;
+  String carManufacturerEn;
   String carManufacturerAr;
 
   CarManufacturerModel({
     required this.id,
     required this.showInTwsila,
-    required this.carManufacturer,
+    required this.carManufacturerEn,
     required this.carManufacturerAr,
   });
 
@@ -136,14 +136,14 @@ class CarManufacturerModel {
       CarManufacturerModel(
         id: json["id"],
         showInTwsila: json["showInTwsila"],
-        carManufacturer: json["carManufacturer"],
+        carManufacturerEn: json["carManufacturerEn"],
         carManufacturerAr: json["carManufacturerAr"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "showInTwsila": showInTwsila,
-        "carManufacturer": carManufacturer,
+        "carManufacturerEn": carManufacturerEn,
         "carManufacturerAr": carManufacturerAr,
       };
 }

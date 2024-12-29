@@ -360,7 +360,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
         Column(
           children: [
             Text(
-              "${driver.carManufacturerType.carManufacturer} / ${driver.carModel.modelName}",
+              "${driver.carManufacturerType.carManufacturerEn} / ${driver.carModel.modelName}",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: ColorManager.headersTextColor,
                   fontSize: FontSize.s16,

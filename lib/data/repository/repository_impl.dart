@@ -241,11 +241,11 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers() async {
+  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers(String serviceType) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
-        final response = await _remoteDataSource.carManufacturers();
+        final response = await _remoteDataSource.carManufacturers(serviceType);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           List<CarManufacturerModel> carManufacturerList =

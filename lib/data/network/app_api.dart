@@ -52,8 +52,9 @@ abstract class AppServiceClient {
   @GET(EndPointsConstants.carModels)
   Future<BaseResponse> carBrandsAndModels();
 
-  @GET(EndPointsConstants.carManufacturers)
-  Future<BaseResponse> carManufacturers();
+  @GET(EndPointsConstants.carManufacturersByServiceType)
+  Future<BaseResponse> carManufacturers(
+      @Path("serviceType") String serviceType);
 
   @POST("/customers/forgotPassword")
   Future<ForgotPasswordResponse> forgotPassword(@Field("email") String email);
@@ -71,9 +72,9 @@ abstract class AppServiceClient {
       @Part(name: "nationalIdExpiryDate") String nationalIdExpiryDate,
       @Part(name: "serviceTypes") String serviceTypeParam,
       @Part(name: "vehicleType.id") String vehicleTypeId,
-      @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
-      @Part(name: "carModel.id") String carModelId,
-      @Part(name: "vehicleYearOfManufacture") String vehicleYearOfManufacture,
+      @Part(name: "carManufacturer.id") String? carManufacturerId,
+      @Part(name: "carModel.id") String? carModelId,
+      @Part(name: "vehicleYearOfManufacture") String? vehicleYearOfManufacture,
       @Part(name: "plateNumber") String plateNumber,
       @Part(name: "isAcknowledged") bool isAcknowledged,
       @Part(name: "vehicleDocExpiryDate") String vehicleDocExpiryDate,
@@ -98,9 +99,9 @@ abstract class AppServiceClient {
       @Part(name: "nationalId") String nationalId,
       @Part(name: "nationalIdExpiryDate") String nationalIdExpiryDate,
       @Part(name: "serviceTypes") String serviceTypeParam,
-      @Part(name: "carManufacturerType.id") String carManufacturerTypeId,
-      @Part(name: "carModel.id") String carModelId,
-      @Part(name: "vehicleYearOfManufacture") String vehicleYearOfManufacture,
+      @Part(name: "carManufacturer.id") String? carManufacturerId,
+      @Part(name: "carModel.id") String? carModelId,
+      @Part(name: "vehicleYearOfManufacture") String? vehicleYearOfManufacture,
       @Part(name: "tankType") String? tankType,
       @Part(name: "tankSize") String? tankSize,
       @Part(name: "canTransportFurniture") bool canTransportFurniture,

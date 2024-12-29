@@ -20,10 +20,11 @@ class CarManufacturerUseCase
   @override
   Future<Either<Failure, List<CarManufacturerModel>>> execute(
       CarManufacturerUseCaseInput input) {
-    return _repository.carManufacturers();
+    return _repository.carManufacturers(input.serviceType);
   }
 }
 
 class CarManufacturerUseCaseInput {
-  CarManufacturerUseCaseInput();
+  String serviceType;
+  CarManufacturerUseCaseInput({required this.serviceType});
 }
