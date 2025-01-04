@@ -40,7 +40,7 @@ extension LoginResponseMapper on LoginResponse? {
       serviceTypes: this?.driver!.serviceTypes ?? [],
       registrationStatus: this!.driver!.registrationStatus,
       vehicleType: this!.driver!.vehicleType ?? null,
-      carManufacturerType: this!.driver!.carManufacturerType,
+      carManufacturer: this!.driver!.carManufacturer,
       carModel: this!.driver!.carModel,
       canTransportFurniture: this?.driver!.canTransportFurniture ?? false,
       canTransportGoods: this?.driver!.canTransportFurniture ?? false,

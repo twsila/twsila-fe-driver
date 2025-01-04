@@ -34,7 +34,7 @@ class Driver extends DriverBaseModel {
   List<String>? serviceTypes;
   RegistrationStatus registrationStatus;
   DriverVehicleType? vehicleType;
-  CarManufacturerModel carManufacturerType;
+  CarManufacturerModel carManufacturer;
   CarModel carModel;
   bool canTransportFurniture;
   bool canTransportGoods;
@@ -75,7 +75,7 @@ class Driver extends DriverBaseModel {
       required this.registrationStatus,
       this.vehicleType,
       this.driverStatus,
-      required this.carManufacturerType,
+      required this.carManufacturer,
       required this.carModel,
       required this.canTransportFurniture,
       required this.canTransportGoods,
@@ -142,8 +142,8 @@ class Driver extends DriverBaseModel {
             ? DriverVehicleType.fromJson(json["vehicleType"])
             : null,
         captainType: RegistrationConstants.captain,
-        carManufacturerType:
-            CarManufacturerModel.fromJson(json["carManufacturerType"]),
+    carManufacturer:
+            CarManufacturerModel.fromJson(json["carManufacturer"]),
         carModel: CarModel.fromJson(json["carModel"]),
         businessOwnerId: json["businessOwnerId"],
         nationalId: json["nationalId"],
@@ -197,7 +197,7 @@ class Driver extends DriverBaseModel {
         "serviceTypes": serviceTypes,
         "registrationStatus": registrationStatus,
         "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,
-        "carManufacturerType": carManufacturerType.toJson(),
+        "carManufacturer": carManufacturer.toJson(),
         "carModel": carModel.toJson(),
         "canTransportFurniture": canTransportFurniture,
         "canTransportGoods": canTransportGoods,

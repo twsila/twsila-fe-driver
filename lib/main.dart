@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:taxi_for_you/utils/local_notification/local_notification_helper.dart';
 import 'package:taxi_for_you/utils/push_notification/firebase_messaging_helper.dart';
 import 'package:taxi_for_you/utils/resources/langauge_manager.dart';
 
@@ -13,6 +14,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await initAppModule();
   await Firebase.initializeApp();
+  await NotificationHelper.initialize();
   runApp(EasyLocalization(
       child: Phoenix(child: MyApp()),
       supportedLocales: const [ARABIC_LOCAL, ENGLISH_LOCAL],

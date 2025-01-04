@@ -28,7 +28,9 @@ class GetCarBrandAndModel extends ServiceRegistrationEvent {
 }
 
 class GetCarManufacture extends ServiceRegistrationEvent {
-  GetCarManufacture();
+  String selectedServiceType;
+
+  GetCarManufacture({required this.selectedServiceType});
 }
 
 class GetYearsOfModel extends ServiceRegistrationEvent {
@@ -162,9 +164,9 @@ class SetFirstStepData extends ServiceRegistrationEvent {
 }
 
 class SetSecondStepData extends ServiceRegistrationEvent {
-  final String carManufacturerTypeId;
-  final String vehicleYearOfManufacture;
-  final String carModelId;
+  String? carManufacturerId;
+  String? vehicleYearOfManufacture;
+  String? carModelId;
   final String plateNumber;
   final String carNotes;
   final List<XFile> carPhotos;
@@ -174,7 +176,7 @@ class SetSecondStepData extends ServiceRegistrationEvent {
   DocumentData carOwnerIdPhotos;
 
   SetSecondStepData(
-      this.carManufacturerTypeId,
+      this.carManufacturerId,
       this.vehicleYearOfManufacture,
       this.carModelId,
       this.plateNumber,

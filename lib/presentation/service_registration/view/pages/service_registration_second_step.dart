@@ -96,6 +96,8 @@ class _ServiceRegistrationSecondStepState
 
   bool wantKeepAlive = true;
 
+  bool mustEnterCarManufactureAndModelData = false;
+
   final PageController _pageController = PageController(initialPage: 0);
 
   @override
@@ -109,7 +111,17 @@ class _ServiceRegistrationSecondStepState
 
     BlocProvider.of<ServiceRegistrationBloc>(context)
         .add(GetCarBrandAndModel());
-    BlocProvider.of<ServiceRegistrationBloc>(context).add(GetCarManufacture());
+
+    if (widget.registrationRequest.serviceTypeParam != null &&
+        widget.registrationRequest.serviceTypeParam!.isNotEmpty &&
+        (widget.registrationRequest.serviceTypeParam == "PERSONS" ||
+            widget.registrationRequest.serviceTypeParam == "BUS")) {
+      mustEnterCarManufactureAndModelData = true;
+      BlocProvider.of<ServiceRegistrationBloc>(context).add(GetCarManufacture(
+          selectedServiceType: widget.registrationRequest.serviceTypeParam!));
+    }
+    {}
+
     BlocProvider.of<ServiceRegistrationBloc>(context).add(GetYearsOfModel());
     super.initState();
   }
@@ -360,150 +372,169 @@ class _ServiceRegistrationSecondStepState
                   fontSize: FontSize.s30,
                   color: ColorManager.headersTextColor),
             ),
-            SizedBox(
-              height: AppSize.s16,
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  carManuList != null
-                      ? _showBottomCarManuSheet(carManuList ?? [])
-                      : _loadingCarManu;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorManager.borderColor, width: 1),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(AppPadding.p8),
-                  child: _loadingCarManu
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: ColorManager.primary,
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              carManu.isNotEmpty
-                                  ? carManu
-                                  : "${AppStrings.carManuName.tr()} (${AppStrings.required.tr()})",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                      fontSize: FontSize.s16,
-                                      color: ColorManager.titlesTextColor),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: ColorManager.primary,
-                            )
-                          ],
-                        ),
-                ),
+            Visibility(
+              visible: mustEnterCarManufactureAndModelData,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: AppSize.s16,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        carManuList != null
+                            ? _showBottomCarManuSheet(carManuList ?? [])
+                            : _loadingCarManu;
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: ColorManager.borderColor, width: 1),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(AppPadding.p8),
+                        child: _loadingCarManu
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: ColorManager.primary,
+                                ),
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    carManu.isNotEmpty
+                                        ? carManu
+                                        : "${AppStrings.carManuName.tr()} (${AppStrings.required.tr()})",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            fontSize: FontSize.s16,
+                                            color:
+                                                ColorManager.titlesTextColor),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: ColorManager.primary,
+                                  )
+                                ],
+                              ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: AppSize.s16,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        carModelList.isNotEmpty
+                            ? _showBottomSheet(carModelList ?? [])
+                            : ToastHandler(context).showToast(
+                                AppStrings.pleaseSelectCarManuFirts.tr(),
+                                Toast.LENGTH_LONG);
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: ColorManager.borderColor, width: 1),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(AppPadding.p8),
+                        child: _loadingCars
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: ColorManager.primary,
+                                ),
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    selectedCarModel != null
+                                        ? _appPreferences.getAppLanguage() ==
+                                                "ar"
+                                            ? selectedCarModel!.modelNameAr
+                                            : selectedCarModel!.modelName
+                                        : "${AppStrings.carModelName.tr()} (${AppStrings.required.tr()})",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            fontSize: FontSize.s16,
+                                            color:
+                                                ColorManager.titlesTextColor),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: ColorManager.primary,
+                                  )
+                                ],
+                              ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: AppSize.s16,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        yearOfManufactureList != null
+                            ? _showYearsOfManuBottomSheet(
+                                yearOfManufactureList ?? [])
+                            : _loadingYears;
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: ColorManager.borderColor, width: 1),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(AppPadding.p8),
+                        child: _loadingYears
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: ColorManager.primary,
+                                ),
+                              )
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    vehicleYearOfManufacture.isNotEmpty
+                                        ? vehicleYearOfManufacture
+                                        : "${AppStrings.carModel.tr()} (${AppStrings.required.tr()})",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                            fontSize: FontSize.s16,
+                                            color:
+                                                ColorManager.titlesTextColor),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: ColorManager.primary,
+                                  )
+                                ],
+                              ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: AppSize.s16,
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: AppSize.s16,
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  carModelList.isNotEmpty
-                      ? _showBottomSheet(carModelList ?? [])
-                      : ToastHandler(context).showToast(
-                          AppStrings.pleaseSelectCarManuFirts.tr(),
-                          Toast.LENGTH_LONG);
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorManager.borderColor, width: 1),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(AppPadding.p8),
-                  child: _loadingCars
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: ColorManager.primary,
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              selectedCarModel != null
-                                  ? _appPreferences.getAppLanguage() == "ar"
-                                      ? selectedCarModel!.modelNameAr
-                                      : selectedCarModel!.modelName
-                                  : "${AppStrings.carModelName.tr()} (${AppStrings.required.tr()})",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                      fontSize: FontSize.s16,
-                                      color: ColorManager.titlesTextColor),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: ColorManager.primary,
-                            )
-                          ],
-                        ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: AppSize.s16,
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  yearOfManufactureList != null
-                      ? _showYearsOfManuBottomSheet(yearOfManufactureList ?? [])
-                      : _loadingYears;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: ColorManager.borderColor, width: 1),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(AppPadding.p8),
-                  child: _loadingYears
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: ColorManager.primary,
-                          ),
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              vehicleYearOfManufacture.isNotEmpty
-                                  ? vehicleYearOfManufacture
-                                  : "${AppStrings.carModel.tr()} (${AppStrings.required.tr()})",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                      fontSize: FontSize.s16,
-                                      color: ColorManager.titlesTextColor),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: ColorManager.primary,
-                            )
-                          ],
-                        ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: AppSize.s16,
             ),
             Text(
               AppStrings.plateNumber.tr(),
@@ -662,9 +693,11 @@ class _ServiceRegistrationSecondStepState
             CustomTextButton(
               text: AppStrings.applyRequest.tr(),
               onPressed: () {
-                if (selectedCarModel != null &&
+                if ((mustEnterCarManufactureAndModelData &&
+                        selectedCarModel != null) &&
                     plateNumber != "" &&
-                    vehicleYearOfManufacture != "" &&
+                    (mustEnterCarManufactureAndModelData &&
+                        vehicleYearOfManufacture != "") &&
                     plateNumberValidation.isEmpty &&
                     carPhotos.length != 0 &&
                     isCarDocumentValid &&
@@ -673,9 +706,15 @@ class _ServiceRegistrationSecondStepState
                     isOwnerIdValid) {
                   BlocProvider.of<ServiceRegistrationBloc>(context).add(
                       SetSecondStepData(
-                          selectedCarModel!.carManufacturer.id.toString(),
-                          vehicleYearOfManufacture,
-                          selectedCarModel!.id.toString(),
+                          selectedCarModel != null
+                              ? selectedCarModel!.carManufacturer.id.toString()
+                              : null,
+                          selectedCarModel != null
+                              ? vehicleYearOfManufacture
+                              : null,
+                          selectedCarModel != null
+                              ? selectedCarModel!.id.toString()
+                              : null,
                           plateNumber,
                           carNotes,
                           carPhotos,

@@ -22,6 +22,7 @@ import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
 
+import '../../../../utils/local_notification/local_notification_helper.dart';
 import '../../../../utils/resources/assets_manager.dart';
 import '../../../../utils/resources/constants_manager.dart';
 import '../../../../utils/resources/langauge_manager.dart';
@@ -227,7 +228,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 MenuWidget(
                   menuImage: ImageAssets.walletAndRevenueIc,
                   menuLabel: AppStrings.WalletAndRevenue.tr(),
-                  onPressed: () {},
+                  onPressed: () async {
+                    // Fire a local notification
+                    await NotificationHelper.showNotification(
+                      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+                      title: 'Tawsila Notification',
+                      body: 'New Update',
+                    );
+                  },
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),

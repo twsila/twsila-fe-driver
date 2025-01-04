@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
 
+import '../local_notification/local_notification_helper.dart';
 import '../resources/global_key.dart';
 import '../resources/strings_manager.dart';
 
@@ -57,28 +58,38 @@ class FirebaseMessagingHelper extends ChangeNotifier {
       }
     });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       notificationCounter.value += 1;
       print(message);
-      if (message.notification != null) {
+
+      if (message.notification != null &&
+          NavigationService.navigatorKey.currentContext != null) {
         showDialog(
             context: NavigationService.navigatorKey.currentState!.context,
-            builder: (_) =>
-                AlertDialog(
+            builder: (_) => AlertDialog(
                   title: Text(message.notification!.title ?? ""),
                   content: Text(message.notification!.body ?? ""),
                   actions: [continueButton],
                 ));
-      } else if (message.data["title"] != null && message.data["title"] != "") {
+      } else if (message.data["title"] != null &&
+          message.data["title"] != "" &&
+          NavigationService.navigatorKey.currentContext != null) {
         showDialog(
             context: NavigationService.navigatorKey.currentState!.context,
-            builder: (_) =>
-                AlertDialog(
+            builder: (_) => AlertDialog(
                   title: Text(message.data["title"] ?? ""),
                   content: Text(message.data["body"] ?? ""),
                   actions: [continueButton],
                 ));
       }
+
+      // Fire a local notification
+      await NotificationHelper.showNotification(
+        id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        title: message.data["title"] ?? 'Tawsila Notification',
+        body: message.data["body"] ?? 'New Update',
+      );
+
       return;
     });
 

@@ -61,7 +61,7 @@ class AppPreferences {
   //get CoastCalculation Data
   Future<CoastCalculationModel> getCoastCalculationData() async {
     var coastStr =
-        jsonDecode(_sharedPreferences.getString(COAST_CALCULATION_DATA)!);
+       await jsonDecode(_sharedPreferences.getString(COAST_CALCULATION_DATA)!);
     return CoastCalculationModel.fromJson(coastStr);
   }
 

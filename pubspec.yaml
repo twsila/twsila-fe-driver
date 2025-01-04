@@ -98,6 +98,7 @@ dependencies:
   custom_radio_grouped_button: ^2.2.1
   full_screen_image: ^2.0.0
   moyasar: ^2.0.10
+  flutter_local_notifications: ^16.0.1
 
 dev_dependencies:
   flutter_test:

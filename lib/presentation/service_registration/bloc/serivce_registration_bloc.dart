@@ -548,7 +548,7 @@ class ServiceRegistrationBloc
 
     List<File> driverImages = await prepareDocumentsPhotosList(documents);
 
-    registrationRequest.carManufacturerTypeId = event.carManufacturerTypeId;
+    registrationRequest.carManufacturerTypeId = event.carManufacturerId;
     registrationRequest.carModelId = event.carModelId;
     registrationRequest.vehicleYearOfManufacture =
         event.vehicleYearOfManufacture;

@@ -43,6 +43,7 @@ class _PersonsVehicleTypesWidgetState extends State<PersonsVehicleTypesWidget> {
   @override
   void initState() {
     super.initState();
+    sortValuesList();
     checkSelectedValues();
   }
 
@@ -54,7 +55,8 @@ class _PersonsVehicleTypesWidgetState extends State<PersonsVehicleTypesWidget> {
           mounted) {
         int serviceIndex = widget.personsVehicleTypesList.indexWhere(
             (element) =>
-                element.id.toString() == widget.registrationRequest.vehicleTypeId);
+                element.id.toString() ==
+                widget.registrationRequest.vehicleTypeId);
         selectedPersonVehicle = widget.personsVehicleTypesList[serviceIndex];
 
         if (widget.registrationRequest.vehicleShapeId != null &&
@@ -82,6 +84,14 @@ class _PersonsVehicleTypesWidgetState extends State<PersonsVehicleTypesWidget> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void sortValuesList() {
+    widget.personsVehicleTypesList.forEach((personsVehicleType) {
+      personsVehicleType.numberOfPassengers.sort((a, b) {
+        return a.numberOfPassengers.compareTo(b.numberOfPassengers);
+      });
+    });
   }
 
   @override
