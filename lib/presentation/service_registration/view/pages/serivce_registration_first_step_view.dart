@@ -267,10 +267,15 @@ class _ServiceRegistrationFirstStepViewState
                           ),
                           Visibility(
                             visible: this.selectedGoodsServiceType != null &&
-                                this
-                                    .selectedGoodsServiceType!
-                                    .serviceTypeParam
-                                    .contains("GOODS, FURNITURE"),
+                                    this
+                                        .selectedGoodsServiceType!
+                                        .serviceTypeParam
+                                        .contains("GOODS, FURNITURE") ||
+                                this.selectedGoodsServiceType != null &&
+                                    this
+                                        .selectedGoodsServiceType!
+                                        .serviceTypeParam
+                                        .contains("FROZEN"),
                             child: AdditionalServicesWidget(
                                 additionalServicesModel:
                                     additionalServicesModel,
