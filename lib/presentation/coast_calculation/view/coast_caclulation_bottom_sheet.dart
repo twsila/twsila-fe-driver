@@ -100,178 +100,180 @@ class _CoastCalculationBottomSheetViewState
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          // Calculate column widths dynamically based on screen width
-          double screenWidth = constraints.maxWidth;
-          double firstColumnWidth =
-              screenWidth * 0.33; // 66% for the first column
-          double secondColumnWidth =
-              screenWidth * 0.66; // 33% for the second column
-          return Column(
-            crossAxisAlignment: _appPreferences.getAppLanguage() == 'ar'
-                ? CrossAxisAlignment.end
-                : CrossAxisAlignment.start,
-            children: [
-              Table(
-                border: TableBorder.all(
-                  color: Colors.black, // Color of the border
-                  width: 2, // Width of the border
-                  borderRadius: BorderRadius.circular(
-                      5), // Optional: to round the corners
+      child: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Calculate column widths dynamically based on screen width
+            double screenWidth = constraints.maxWidth;
+            double firstColumnWidth =
+                screenWidth * 0.33; // 66% for the first column
+            double secondColumnWidth =
+                screenWidth * 0.66; // 33% for the second column
+            return Column(
+              crossAxisAlignment: _appPreferences.getAppLanguage() == 'ar'
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: [
+                Table(
+                  border: TableBorder.all(
+                    color: Colors.black, // Color of the border
+                    width: 2, // Width of the border
+                    borderRadius: BorderRadius.circular(
+                        5), // Optional: to round the corners
+                  ),
+                  columnWidths: {
+                    0: FixedColumnWidth(firstColumnWidth),
+                    // First column with double width (adjust size here)
+                    1: FixedColumnWidth(secondColumnWidth),
+                    // Second column with normal width (adjust size here)
+                  },
+                  children: [
+                    // Row 1
+                    TableRow(
+                      children: [
+                        _buildTableCell(AppStrings.addedValueTax.tr()),
+                        _buildTableCell(addedValueTax.toPrecision(2).toString()),
+                      ],
+                    ),
+                    // Row 2
+                    TableRow(
+                      children: [
+                        _buildTableCell(AppStrings.twsilaShareAmount.tr()),
+                        _buildTableCell(
+                            tawsilaShareAmount.toPrecision(2).toString()),
+                      ],
+                    ),
+                    // Row 3
+                    TableRow(
+                      children: [
+                        _buildTableCell(AppStrings.captainShareAmount.tr()),
+                        _buildTableCell(
+                            captainShareAmount.toPrecision(2).toString()),
+                      ],
+                    ),
+                    // Row 4
+                    TableRow(
+                      children: [
+                        _buildTableCell(AppStrings.allTripCalculatedAmount.tr()),
+                        _buildTableCell(
+                            allTripCalculatedAmount.toPrecision(2).toString()),
+                      ],
+                    ),
+                  ],
                 ),
-                columnWidths: {
-                  0: FixedColumnWidth(firstColumnWidth),
-                  // First column with double width (adjust size here)
-                  1: FixedColumnWidth(secondColumnWidth),
-                  // Second column with normal width (adjust size here)
-                },
-                children: [
-                  // Row 1
-                  TableRow(
-                    children: [
-                      _buildTableCell(AppStrings.addedValueTax.tr()),
-                      _buildTableCell(addedValueTax.toPrecision(2).toString()),
-                    ],
-                  ),
-                  // Row 2
-                  TableRow(
-                    children: [
-                      _buildTableCell(AppStrings.twsilaShareAmount.tr()),
-                      _buildTableCell(
-                          tawsilaShareAmount.toPrecision(2).toString()),
-                    ],
-                  ),
-                  // Row 3
-                  TableRow(
-                    children: [
-                      _buildTableCell(AppStrings.captainShareAmount.tr()),
-                      _buildTableCell(
-                          captainShareAmount.toPrecision(2).toString()),
-                    ],
-                  ),
-                  // Row 4
-                  TableRow(
-                    children: [
-                      _buildTableCell(AppStrings.allTripCalculatedAmount.tr()),
-                      _buildTableCell(
-                          allTripCalculatedAmount.toPrecision(2).toString()),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              widget.isAcceptOffer != null && widget.isAcceptOffer == true
-                  ? Container()
-                  : CustomTextInputField(
-                      margin: EdgeInsets.zero,
-                      validateEmptyString: true,
-                      labelText: AppStrings.enterPriceThatYouWant.tr(),
-                      showLabelText: true,
-                      keyboardType: TextInputType.number,
-                      controller: _amountController,
-                      validateSpecialCharacter: true,
-                      hintText: AppStrings.enterRequiredPrice.tr(),
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            resetValues();
-                            return;
-                          }
+                SizedBox(
+                  height: 25,
+                ),
+                widget.isAcceptOffer != null && widget.isAcceptOffer == true
+                    ? Container()
+                    : CustomTextInputField(
+                        margin: EdgeInsets.zero,
+                        validateEmptyString: true,
+                        labelText: AppStrings.enterPriceThatYouWant.tr(),
+                        showLabelText: true,
+                        keyboardType: TextInputType.number,
+                        controller: _amountController,
+                        validateSpecialCharacter: true,
+                        hintText: AppStrings.enterRequiredPrice.tr(),
+                        onChanged: (value) {
+                          setState(() {
+                            if (value.isEmpty) {
+                              resetValues();
+                              return;
+                            }
 
-                          captainShareAmount =
-                              double.parse(_amountController.text);
+                            captainShareAmount =
+                                double.parse(_amountController.text);
 
-                          tawsilaShareAmount =
-                              double.parse(_amountController.text) *
-                                  coastCalculationModel!
-                                      .twsilaCommissionForDriverAndBo;
+                            tawsilaShareAmount =
+                                double.parse(_amountController.text) *
+                                    coastCalculationModel!
+                                        .twsilaCommissionForDriverAndBo;
 
-                          addedValueTax =
-                              (double.parse(_amountController.text) +
-                                      tawsilaShareAmount) *
-                                  coastCalculationModel!.vatForDriverAndBo;
+                            addedValueTax =
+                                (double.parse(_amountController.text) +
+                                        tawsilaShareAmount) *
+                                    coastCalculationModel!.vatForDriverAndBo;
 
-                          allTripCalculatedAmount = (addedValueTax +
-                              tawsilaShareAmount +
-                              captainShareAmount).toPrecision(2);
-                        });
-                      },
-                    ),
-              widget.isAcceptOffer != null && widget.isAcceptOffer == true
-                  ? CustomTextButton(
-                      text: AppStrings.confirm.tr(),
-                      isWaitToEnable: true,
-                      onPressed: () {
-                        CustomDialog(context).showCupertinoDialog(
-                            AppStrings.confirmSendOffer.tr(),
-                            AppStrings.areYouSureToSendNewOffer.tr(),
-                            AppStrings.confirm.tr(),
-                            AppStrings.cancel.tr(),
-                            ColorManager.primary, () {
-                          if (widget.assignedDriverToTrip != null) {
-                            BlocProvider.of<TripDetailsBloc>(context).add(
-                                AcceptOffer(
-                                    _appPreferences.getCachedDriver()!.id!,
-                                    widget.tripId,
-                                    _appPreferences
-                                        .getCachedDriver()!
-                                        .captainType
-                                        .toString(),
-                                    driverId: widget.assignedDriverToTrip!.id));
-                          } else {
-                            BlocProvider.of<TripDetailsBloc>(context).add(
-                                AcceptOffer(
-                                    _appPreferences.getCachedDriver()!.id!,
-                                    widget.tripId,
-                                    _appPreferences
-                                        .getCachedDriver()!
-                                        .captainType
-                                        .toString()));
-                          }
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        }, () {
-                          Navigator.pop(context);
-                        });
-                      })
-                  : CustomTextButton(
-                      text: AppStrings.confirm.tr(),
-                      isWaitToEnable: true,
-                      onPressed: _amountController.text.isEmpty
-                          ? null
-                          : () {
-                              CustomDialog(context).showCupertinoDialog(
-                                  AppStrings.confirmSendOffer.tr(),
-                                  AppStrings.areYouSureToSendNewOffer.tr(),
-                                  AppStrings.confirm.tr(),
-                                  AppStrings.cancel.tr(),
-                                  ColorManager.primary, () {
-                                BlocProvider.of<TripDetailsBloc>(context).add(
-                                    AddOffer(
-                                        _appPreferences.getCachedDriver()!.id!,
-                                        widget.tripId,
-                                        allTripCalculatedAmount.toPrecision(2),
-                                        _appPreferences
-                                            .getCachedDriver()!
-                                            .captainType
-                                            .toString(),
-                                        driverId: widget.assignedDriverToTrip !=
-                                                null
-                                            ? widget.assignedDriverToTrip!.id
-                                            : null));
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              }, () {
-                                Navigator.pop(context);
-                              });
-                            },
-                    ),
-            ],
-          );
-        },
+                            allTripCalculatedAmount = (addedValueTax +
+                                tawsilaShareAmount +
+                                captainShareAmount).toPrecision(2);
+                          });
+                        },
+                      ),
+                widget.isAcceptOffer != null && widget.isAcceptOffer == true
+                    ? CustomTextButton(
+                        text: AppStrings.confirm.tr(),
+                        isWaitToEnable: true,
+                        onPressed: () {
+                          CustomDialog(context).showCupertinoDialog(
+                              AppStrings.confirmSendOffer.tr(),
+                              AppStrings.areYouSureToSendNewOffer.tr(),
+                              AppStrings.confirm.tr(),
+                              AppStrings.cancel.tr(),
+                              ColorManager.primary, () {
+                            if (widget.assignedDriverToTrip != null) {
+                              BlocProvider.of<TripDetailsBloc>(context).add(
+                                  AcceptOffer(
+                                      _appPreferences.getCachedDriver()!.id!,
+                                      widget.tripId,
+                                      _appPreferences
+                                          .getCachedDriver()!
+                                          .captainType
+                                          .toString(),
+                                      driverId: widget.assignedDriverToTrip!.id));
+                            } else {
+                              BlocProvider.of<TripDetailsBloc>(context).add(
+                                  AcceptOffer(
+                                      _appPreferences.getCachedDriver()!.id!,
+                                      widget.tripId,
+                                      _appPreferences
+                                          .getCachedDriver()!
+                                          .captainType
+                                          .toString()));
+                            }
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          }, () {
+                            Navigator.pop(context);
+                          });
+                        })
+                    : CustomTextButton(
+                        text: AppStrings.confirm.tr(),
+                        isWaitToEnable: true,
+                        onPressed: _amountController.text.isEmpty
+                            ? null
+                            : () {
+                                CustomDialog(context).showCupertinoDialog(
+                                    AppStrings.confirmSendOffer.tr(),
+                                    AppStrings.areYouSureToSendNewOffer.tr(),
+                                    AppStrings.confirm.tr(),
+                                    AppStrings.cancel.tr(),
+                                    ColorManager.primary, () {
+                                  BlocProvider.of<TripDetailsBloc>(context).add(
+                                      AddOffer(
+                                          _appPreferences.getCachedDriver()!.id!,
+                                          widget.tripId,
+                                          allTripCalculatedAmount.toPrecision(2),
+                                          _appPreferences
+                                              .getCachedDriver()!
+                                              .captainType
+                                              .toString(),
+                                          driverId: widget.assignedDriverToTrip !=
+                                                  null
+                                              ? widget.assignedDriverToTrip!.id
+                                              : null));
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                }, () {
+                                  Navigator.pop(context);
+                                });
+                              },
+                      ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
