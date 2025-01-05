@@ -13,7 +13,6 @@ pool:
 
 variables:
   - group: pipeline secrets # Replace with your variable group name
-    flutterVersion: '3.22.0' # Replace with your Flutter version
 
 steps:
   # 1. Install Flutter SDK
