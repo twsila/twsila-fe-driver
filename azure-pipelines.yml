@@ -1,0 +1,64 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    exclude:
+      - "*"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: pipeline secrets # Replace with your variable group name
+
+steps:
+  # 1. Install Flutter SDK
+  - script: |
+      echo "Installing Flutter SDK..."
+      git clone https://github.com/flutter/flutter.git -b stable --depth 1
+      echo "Adding Flutter to PATH..."
+      export PATH="$(pwd)/flutter/bin:$PATH"
+      flutter --version
+    displayName: 'Install Flutter SDK'
+
+  # 2. Flutter Clean
+  - script: flutter clean
+    displayName: 'Flutter Clean'
+
+  # 3. Install Dependencies
+  - script: flutter pub get
+    displayName: 'Install Dependencies'
+
+  # 4. Run Unit Tests
+  - script: flutter test
+    displayName: 'Run Unit Tests'
+
+  # 5. Build APK (Android)
+  - script: flutter build apk --release
+    displayName: 'Build APK'
+
+  # 6. Upload Build to Firebase App Distribution
+  - script: |
+      echo "Installing Firebase CLI..."
+      curl -sL https://firebase.tools | bash
+      echo "Uploading build to Firebase App Distribution..."
+      firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+        --app $(firebaseAppId) \
+        --token $(firebaseToken) \
+        --groups "all-group"
+    displayName: 'Distribute to Firebase App Distribution'
+
+  # Uncomment the following steps for iOS builds if needed
+  # - script: flutter build ipa --release
+  #   displayName: 'Build IPA (iOS)'
+
+  # - script: |
+  #     echo "Uploading iOS build to Firebase App Distribution..."
+  #     firebase appdistribution:distribute build/ios/ipa/app.ipa \
+  #       --app $(firebaseAppId) \
+  #       --token $(firebaseToken) \
+  #       --groups "testers"
+  #   displayName: 'Distribute iOS Build to Firebase App Distribution'
