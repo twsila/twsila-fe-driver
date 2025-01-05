@@ -89,7 +89,7 @@ abstract class RemoteDataSource {
 
   Future<ForgotPasswordResponse> forgotPassword(String email);
 
-  Future<BaseResponse> addDriverForBO(int businessOwnerId, int driverId);
+  Future<BaseResponse> addDriverForBO(int businessOwnerId, List<int> driverIds);
 
   Future<BaseResponse> boAssignDriverForTrip(
       int businessOwnerId, int driverId, int tripId);
@@ -220,9 +220,9 @@ class RemoteDataSourceImpl implements RemoteDataSource {
         registrationRequest.nationalIdExpiryDate!,
         registrationRequest.serviceTypeParam!,
         // registrationRequest.vehicleTypeId!,
-        registrationRequest.carManufacturerTypeId!,
-        registrationRequest.carModelId!,
-        registrationRequest.vehicleYearOfManufacture!,
+        registrationRequest.carManufacturerTypeId,
+        registrationRequest.carModelId,
+        registrationRequest.vehicleYearOfManufacture,
         registrationRequest.tankType,
         registrationRequest.tankSize,
         registrationRequest.canTransportFurniture!,
@@ -378,8 +378,8 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }
 
   @override
-  Future<BaseResponse> addDriverForBO(int businessOwnerId, int driverId) async {
-    return await _appServiceClient.addDriverForBO(businessOwnerId, driverId);
+  Future<BaseResponse> addDriverForBO(int businessOwnerId, List<int> driverIds) async {
+    return await _appServiceClient.addDriverForBO(businessOwnerId, driverIds);
   }
 
   @override
@@ -430,7 +430,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<BaseResponse> getAddRequestsForDriver(int driverId) async {
-    return await _appServiceClient.getAddRequests(driverId);
+    return await _appServiceClient.getAddRequests(driverId.toString());
   }
 
   @override

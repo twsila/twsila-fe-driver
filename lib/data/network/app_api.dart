@@ -271,7 +271,7 @@ abstract class AppServiceClient {
   @POST("/driver-acquisition/add-driver")
   Future<BaseResponse> addDriverForBO(
     @Field("businessOwnerId") int businessOwnerId,
-    @Field("driverId") int driverId,
+    @Field("driverIds") List<int> driverIds,
   );
 
   @POST("/driver-acquisition/assign-driver")
@@ -308,9 +308,9 @@ abstract class AppServiceClient {
     @Field("language") String language,
   );
 
-  @POST("/driver-acquisition/get-acquisition-requests")
+  @GET("/driver-acquisition/requests/{driverId}")
   Future<BaseResponse> getAddRequests(
-    @Field("driverId") int driverId,
+    @Path("driverId") String driverId,
   );
 
   @POST("/driver-acquisition/driver-action")

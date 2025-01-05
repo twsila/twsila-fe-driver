@@ -28,9 +28,9 @@ class AddDriverBottomSheetView extends StatefulWidget {
 }
 
 class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   bool _displayLoadingIndicator = false;
   List<Driver> driversList = [];
+  List<int> selectedDriversToAddList = [];
   Driver? selectedDriver;
   AppPreferences appPreferences = instance();
   Timer? _debounce;
@@ -159,6 +159,15 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
                                         !driversList[i].isChecked;
 
                                     selectedDriver = driversList[i];
+
+                                    if (selectedDriver!.isChecked) {
+                                      selectedDriversToAddList
+                                          .add(selectedDriver!.id!);
+                                    } else {
+                                      selectedDriversToAddList
+                                          .remove(selectedDriver!);
+                                    }
+                                    print(selectedDriversToAddList.length);
                                   });
                                 },
                                 child: Container(
@@ -183,13 +192,15 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
                                                     color: ColorManager
                                                         .headersTextColor),
                                           ),
-                                          selectedDriver == driversList[i]
+                                          driversList[i].isChecked
                                               ? Icon(
-                                                  Icons.check_outlined,
-                                                  color: ColorManager
-                                                      .purpleMainTextColor,
+                                                  Icons.check_circle,
+                                                  color: ColorManager.primary,
                                                 )
-                                              : Container()
+                                              : Icon(
+                                                  Icons.check_circle,
+                                                  color: ColorManager.darkGrey,
+                                                )
                                         ],
                                       ),
                                       Text(
@@ -221,7 +232,7 @@ class _AddDriverBottomSheetViewState extends State<AddDriverBottomSheetView> {
                         BlocProvider.of<BoDriversCarsBloc>(context).add(
                             addDriverForBusinessOwner(
                                 appPreferences.getCachedDriver()!.id!,
-                                selectedDriver!.id!));
+                                selectedDriversToAddList));
                       }
                     : null,
                 text: AppStrings.addDriver.tr(),

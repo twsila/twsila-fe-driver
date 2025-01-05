@@ -104,7 +104,7 @@ abstract class Repository {
   Future<Either<Failure, List<Driver>>> searchDriversByMobile(int mobileNumber);
 
   Future<Either<Failure, BaseResponse>> addDriverForBO(
-      int businessOwnerId, int driverId);
+      int businessOwnerId, List<int> driverIds);
 
   Future<Either<Failure, BaseResponse>> boAssignDriverToTrip(
       int businessOwnerId, int driverId, int tripId);

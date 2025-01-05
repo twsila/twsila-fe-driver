@@ -693,11 +693,15 @@ class _ServiceRegistrationSecondStepState
             CustomTextButton(
               text: AppStrings.applyRequest.tr(),
               onPressed: () {
-                if ((mustEnterCarManufactureAndModelData &&
-                        selectedCarModel != null) &&
+                if (((mustEnterCarManufactureAndModelData &&
+                            selectedCarModel != null) ||
+                        (!mustEnterCarManufactureAndModelData &&
+                            selectedCarModel == null)) &&
                     plateNumber != "" &&
                     (mustEnterCarManufactureAndModelData &&
-                        vehicleYearOfManufacture != "") &&
+                            vehicleYearOfManufacture != "" ||
+                        (!mustEnterCarManufactureAndModelData &&
+                            vehicleYearOfManufacture == "")) &&
                     plateNumberValidation.isEmpty &&
                     carPhotos.length != 0 &&
                     isCarDocumentValid &&

@@ -15,13 +15,13 @@ class AddDriverForBOUseCase
   Future<Either<Failure, BaseResponse>> execute(
       AddDriverForBOUseCaseInput input) async {
     return await _repository.addDriverForBO(
-        input.businessOwnerId, input.driverId);
+        input.businessOwnerId, input.driverIds);
   }
 }
 
 class AddDriverForBOUseCaseInput {
   int businessOwnerId;
-  int driverId;
+  List<int> driverIds;
 
-  AddDriverForBOUseCaseInput(this.businessOwnerId, this.driverId);
+  AddDriverForBOUseCaseInput(this.businessOwnerId, this.driverIds);
 }

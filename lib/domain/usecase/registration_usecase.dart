@@ -69,9 +69,9 @@ class RegistrationUseCaseInput {
   String nationalIdExpiryDate;
   String driverServiceType;
   String vehicleTypeId;
-  String carManufacturerTypeId;
-  String carModelId;
-  String vehicleYearOfManufacture;
+  String? carManufacturerTypeId;
+  String? carModelId;
+  String? vehicleYearOfManufacture;
   String? tankType;
   String? tankSize;
   String carNotes;
@@ -111,9 +111,9 @@ class RegistrationUseCaseInput {
       required this.nationalIdExpiryDate,
       required this.driverServiceType,
       required this.vehicleTypeId,
-      required this.carManufacturerTypeId,
-      required this.carModelId,
-      required this.vehicleYearOfManufacture,
+       this.carManufacturerTypeId,
+       this.carModelId,
+       this.vehicleYearOfManufacture,
       this.tankType,
       this.tankSize,
       required this.carNotes,

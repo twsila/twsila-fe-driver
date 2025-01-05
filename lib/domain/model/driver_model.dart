@@ -34,8 +34,8 @@ class Driver extends DriverBaseModel {
   List<String>? serviceTypes;
   RegistrationStatus registrationStatus;
   DriverVehicleType? vehicleType;
-  CarManufacturerModel carManufacturer;
-  CarModel carModel;
+  CarManufacturerModel? carManufacturer;
+  CarModel? carModel;
   bool canTransportFurniture;
   bool canTransportGoods;
   bool canTransportFrozen;
@@ -75,8 +75,8 @@ class Driver extends DriverBaseModel {
       required this.registrationStatus,
       this.vehicleType,
       this.driverStatus,
-      required this.carManufacturer,
-      required this.carModel,
+      this.carManufacturer,
+      this.carModel,
       required this.canTransportFurniture,
       required this.canTransportGoods,
       required this.canTransportFrozen,
@@ -142,9 +142,12 @@ class Driver extends DriverBaseModel {
             ? DriverVehicleType.fromJson(json["vehicleType"])
             : null,
         captainType: RegistrationConstants.captain,
-    carManufacturer:
-            CarManufacturerModel.fromJson(json["carManufacturer"]),
-        carModel: CarModel.fromJson(json["carModel"]),
+        carManufacturer: json["carManufacturer"] != null
+            ? CarManufacturerModel.fromJson(json["carManufacturer"])
+            : null,
+        carModel: json["carModel"] != null
+            ? CarModel.fromJson(json["carModel"])
+            : null,
         businessOwnerId: json["businessOwnerId"],
         nationalId: json["nationalId"],
         nationalIdExpiryDate: json["nationalIdExpiryDate"],
@@ -197,8 +200,9 @@ class Driver extends DriverBaseModel {
         "serviceTypes": serviceTypes,
         "registrationStatus": registrationStatus,
         "vehicleType": vehicleType != null ? vehicleType!.toJson() : null,
-        "carManufacturer": carManufacturer.toJson(),
-        "carModel": carModel.toJson(),
+        "carManufacturer":
+            carManufacturer != null ? carManufacturer!.toJson() : null,
+        "carModel": carModel != null ? carModel!.toJson() : null,
         "canTransportFurniture": canTransportFurniture,
         "canTransportGoods": canTransportGoods,
         "canTransportFrozen": canTransportFrozen,

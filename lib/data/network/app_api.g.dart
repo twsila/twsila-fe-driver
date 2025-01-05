@@ -1293,14 +1293,14 @@ class _AppServiceClient implements AppServiceClient {
   @override
   Future<BaseResponse> addDriverForBO(
     businessOwnerId,
-    driverId,
+    driverIds,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
       'businessOwnerId': businessOwnerId,
-      'driverId': driverId,
+      'driverIds': driverIds,
     };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BaseResponse>(Options(

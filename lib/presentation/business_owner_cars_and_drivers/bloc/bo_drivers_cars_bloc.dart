@@ -155,7 +155,7 @@ class BoDriversCarsBloc extends Bloc<BoDriversCarsEvent, BoDriversCarsState> {
     AddDriverForBOUseCase addDriverForBOUseCase =
         instance<AddDriverForBOUseCase>();
     (await addDriverForBOUseCase.execute(
-      AddDriverForBOUseCaseInput(event.businessOwnerId, event.driverId),
+      AddDriverForBOUseCaseInput(event.businessOwnerId, event.driverIds),
     ))
         .fold(
             (failure) => {

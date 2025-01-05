@@ -154,19 +154,22 @@ class _BOCarsAndDriversViewState extends State<BOCarsAndDriversView> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.modelNameAr : driversList[i].carModel.modelName} / ${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel.carManufacturer.carManufacturerAr : driversList[i].carModel.carManufacturer.carManufacturerEn}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayLarge
-                                      ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: FontSize.s18,
-                                          color: driversList[i].isPending ??
-                                                  false
-                                              ? ColorManager
-                                                  .disableCardTextColor
-                                              : ColorManager.secondaryColor),
+                                Visibility(
+                                  visible: driversList[i].carModel != null,
+                                  child: Text(
+                                    "${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel?.modelNameAr ?? "" : driversList[i].carModel?.modelName ?? ""} / ${appPreferences.getAppLanguage() == "ar" ? driversList[i].carModel?.carManufacturer.carManufacturerAr ?? "" : driversList[i].carModel?.carManufacturer.carManufacturerEn ?? ""}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: FontSize.s18,
+                                            color: driversList[i].isPending ??
+                                                    false
+                                                ? ColorManager
+                                                    .disableCardTextColor
+                                                : ColorManager.secondaryColor),
+                                  ),
                                 ),
                                 Text(
                                   "${driversList[i].firstName} ${driversList[i].lastName}",

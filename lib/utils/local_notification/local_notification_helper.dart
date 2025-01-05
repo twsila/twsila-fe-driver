@@ -11,8 +11,11 @@ class NotificationHelper {
     const AndroidInitializationSettings androidInitialization =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin flutterLocalNotification =
         FlutterLocalNotificationsPlugin();
+
+    flutterLocalNotification.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
 
     const InitializationSettings settings = InitializationSettings(
       android: androidInitialization,
@@ -20,10 +23,6 @@ class NotificationHelper {
 
     await _notificationsPlugin.initialize(settings);
 
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
   }
 
   static Future<void> showNotification({

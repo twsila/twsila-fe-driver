@@ -730,12 +730,12 @@ class RepositoryImpl implements Repository {
 
   @override
   Future<Either<Failure, BaseResponse>> addDriverForBO(
-      int businessOwnerId, int driverId) async {
+      int businessOwnerId, List<int> driverIds) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
         final response =
-            await _remoteDataSource.addDriverForBO(businessOwnerId, driverId);
+            await _remoteDataSource.addDriverForBO(businessOwnerId, driverIds);
 
         if (response.success == ApiInternalStatus.SUCCESS) {
           return Right(response);

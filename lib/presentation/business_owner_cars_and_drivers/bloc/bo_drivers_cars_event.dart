@@ -29,9 +29,9 @@ class SearchDriversByMobile extends BoDriversCarsEvent {
 
 class addDriverForBusinessOwner extends BoDriversCarsEvent {
   final int businessOwnerId;
-  final int driverId;
+  final List<int> driverIds;
 
-  addDriverForBusinessOwner(this.businessOwnerId, this.driverId);
+  addDriverForBusinessOwner(this.businessOwnerId, this.driverIds);
 }
 
 class assignDriverForTrip extends BoDriversCarsEvent {

@@ -73,7 +73,7 @@ class _ServiceAppliedSuccessViewState extends State<ServiceAppliedSuccessView> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: FontSize.s24,
+                    fontSize: FontSize.s16,
                     color: ColorManager.headersTextColor),
               ),
             ),
@@ -88,7 +88,7 @@ class _ServiceAppliedSuccessViewState extends State<ServiceAppliedSuccessView> {
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium
-                    ?.copyWith(color: ColorManager.headersTextColor),
+                    ?.copyWith(color: ColorManager.headersTextColor,fontSize: FontSize.s14),
               ),
             ),
           ),

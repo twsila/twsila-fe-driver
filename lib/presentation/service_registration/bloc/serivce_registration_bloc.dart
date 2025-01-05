@@ -283,10 +283,10 @@ class ServiceRegistrationBloc
             nationalIdExpiryDate: registrationRequest.nationalIdExpiryDate!,
             driverServiceType: registrationRequest.serviceTypeParam!,
             vehicleTypeId: registrationRequest.vehicleTypeId!,
-            carManufacturerTypeId: registrationRequest.carManufacturerTypeId!,
-            carModelId: registrationRequest.carModelId!,
+            carManufacturerTypeId: registrationRequest.carManufacturerTypeId,
+            carModelId: registrationRequest.carModelId,
             vehicleYearOfManufacture:
-                registrationRequest.vehicleYearOfManufacture!,
+                registrationRequest.vehicleYearOfManufacture,
             tankType: registrationRequest.tankType,
             tankSize: registrationRequest.tankSize,
             carNotes: registrationRequest.carNotes!,

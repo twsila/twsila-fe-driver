@@ -62,26 +62,26 @@ class FirebaseMessagingHelper extends ChangeNotifier {
       notificationCounter.value += 1;
       print(message);
 
-      if (message.notification != null &&
-          NavigationService.navigatorKey.currentContext != null) {
-        showDialog(
-            context: NavigationService.navigatorKey.currentState!.context,
-            builder: (_) => AlertDialog(
-                  title: Text(message.notification!.title ?? ""),
-                  content: Text(message.notification!.body ?? ""),
-                  actions: [continueButton],
-                ));
-      } else if (message.data["title"] != null &&
-          message.data["title"] != "" &&
-          NavigationService.navigatorKey.currentContext != null) {
-        showDialog(
-            context: NavigationService.navigatorKey.currentState!.context,
-            builder: (_) => AlertDialog(
-                  title: Text(message.data["title"] ?? ""),
-                  content: Text(message.data["body"] ?? ""),
-                  actions: [continueButton],
-                ));
-      }
+      // if (message.notification != null &&
+      //     NavigationService.navigatorKey.currentContext != null) {
+      //   showDialog(
+      //       context: NavigationService.navigatorKey.currentState!.context,
+      //       builder: (_) => AlertDialog(
+      //             title: Text(message.notification!.title ?? ""),
+      //             content: Text(message.notification!.body ?? ""),
+      //             actions: [continueButton],
+      //           ));
+      // } else if (message.data["title"] != null &&
+      //     message.data["title"] != "" &&
+      //     NavigationService.navigatorKey.currentContext != null) {
+      //   showDialog(
+      //       context: NavigationService.navigatorKey.currentState!.context,
+      //       builder: (_) => AlertDialog(
+      //             title: Text(message.data["title"] ?? ""),
+      //             content: Text(message.data["body"] ?? ""),
+      //             actions: [continueButton],
+      //           ));
+      // }
 
       // Fire a local notification
       await NotificationHelper.showNotification(
