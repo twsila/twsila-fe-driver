@@ -5,8 +5,9 @@
 import 'dart:convert';
 
 import 'package:taxi_for_you/utils/ext/enums.dart';
+import 'package:taxi_for_you/app/extensions.dart';
 
-import 'driver_model.dart';
+
 
 TripModel tripModelFromJson(String str) => TripModel.fromJson(json.decode(str));
 
@@ -53,6 +54,7 @@ class TripModel {
   Passenger? passenger;
   String? notes;
   double? clientOffer;
+  String? clientOfferFormatted;
   List<Offer>? offers;
   AcceptedOffer? acceptedOffer;
   List<TripImage>? images;
@@ -81,6 +83,7 @@ class TripModel {
     this.passenger,
     this.notes,
     this.clientOffer,
+    this.clientOfferFormatted,
     this.images,
     this.containsPacking,
     this.containsLoading,
@@ -128,6 +131,9 @@ class TripModel {
         clientOffer: json["clientOffer"] != null
             ? json["clientOffer"]?.toDouble()
             : null,
+        clientOfferFormatted: json["clientOffer"] != null
+            ? (json["clientOffer"] as double).toCommaSeparated(decimalPlaces: 2)
+            : null,
         images: json["images"] != null && json["images"].isNotEmpty
             ? List<TripImage>.from(
                 json["images"].map((x) => TripImage.fromJson(x)))
@@ -166,6 +172,7 @@ class TripModel {
         "passenger": passenger!.toJson(),
         "notes": notes,
         "clientOffer": clientOffer,
+        "clientOfferFormatted": clientOfferFormatted,
         "images": List<dynamic>.from(images!.map((x) => x.toJson())),
         "containsPacking": containsPacking,
         "containsLoading": containsLoading,
@@ -198,14 +205,17 @@ class AcceptedOffer {
 class Offer {
   final int offerId;
   final double driverOffer;
+  final String? driverOfferFormatted;
   final String acceptanceStatus;
   final String creationDate;
+
   // final Driver driverModel; //will change to driverId
   final bool? woman;
 
   Offer({
     required this.offerId,
     // required this.driverModel,
+    this.driverOfferFormatted,
     required this.acceptanceStatus,
     required this.creationDate,
     required this.driverOffer,
@@ -218,6 +228,8 @@ class Offer {
         acceptanceStatus: json['acceptanceStatus'],
         creationDate: json['creationDate'] ?? "",
         driverOffer: json['driverOffer'],
+        driverOfferFormatted:
+        (json['driverOffer'] as double).toCommaSeparated(decimalPlaces: 2),
         woman: json['woman'],
       );
 }

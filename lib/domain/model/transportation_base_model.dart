@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:taxi_for_you/app/extensions.dart';
 import 'package:taxi_for_you/domain/model/trip_model.dart';
 
 import '../../utils/helpers/double_prase.dart';
@@ -24,6 +25,7 @@ class TransportationBaseModel {
   List<Offer>? offers;
   Passenger? passenger;
   double? clientOffer;
+  String? clientOfferFormatted;
   String? completionDate;
   double? passengerRating;
   double? driverRating;
@@ -50,6 +52,8 @@ class TransportationBaseModel {
         : null;
     clientOffer =
         json["clientOffer"] != null ? json["clientOffer"]?.toDouble() : null;
+    clientOfferFormatted =
+        json["clientOffer"] != null ? (json["clientOffer"] as double).toCommaSeparated(decimalPlaces: 2) : null;
     paymentValue = (json['clientOffer'] != null)
         ? dynamicToDouble(json['clientOffer'])
         : null;
@@ -86,6 +90,7 @@ class TransportationBaseModel {
     if (images != null) data['tripImages'] = images;
     if (countryCode != null) data['countryCode'] = countryCode;
     if (clientOffer != null) data['clientOffer'] = clientOffer;
+    if (clientOfferFormatted != null) data['clientOfferFormatted'] = clientOfferFormatted;
     if (paymentValue != null) data['clientOffer'] = paymentValue.toString();
     if (pickupLocation.latitude != null && pickupLocation.longitude != null) {
       data['pickupLocation'] = json.encode(pickupLocation.toJson());

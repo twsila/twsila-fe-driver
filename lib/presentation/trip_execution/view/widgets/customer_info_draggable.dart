@@ -79,7 +79,7 @@ class _CustomerInfoHeaderState extends State<CustomerInfoHeader> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "${widget.tripModel.tripDetails.clientOffer} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}",
+                "${widget.tripModel.tripDetails.clientOfferFormatted} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}",
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     color: ColorManager.headersTextColor,
                     fontSize: FontSize.s14,

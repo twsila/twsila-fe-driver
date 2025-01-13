@@ -99,7 +99,7 @@ dependencies:
   full_screen_image: ^2.0.0
   moyasar: ^2.0.10
   flutter_local_notifications: ^16.0.1
-
+  intl: ^0.19.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -132,7 +132,7 @@ class _CoastCalculationBottomSheetViewState
                     TableRow(
                       children: [
                         _buildTableCell(AppStrings.addedValueTax.tr()),
-                        _buildTableCell(addedValueTax.toPrecision(2).toString()),
+                        _buildTableCell(addedValueTax.toCommaSeparated(decimalPlaces: 2)),
                       ],
                     ),
                     // Row 2
@@ -140,7 +140,7 @@ class _CoastCalculationBottomSheetViewState
                       children: [
                         _buildTableCell(AppStrings.twsilaShareAmount.tr()),
                         _buildTableCell(
-                            tawsilaShareAmount.toPrecision(2).toString()),
+                            tawsilaShareAmount.toCommaSeparated(decimalPlaces: 2)),
                       ],
                     ),
                     // Row 3
@@ -148,7 +148,7 @@ class _CoastCalculationBottomSheetViewState
                       children: [
                         _buildTableCell(AppStrings.captainShareAmount.tr()),
                         _buildTableCell(
-                            captainShareAmount.toPrecision(2).toString()),
+                            captainShareAmount.toCommaSeparated(decimalPlaces: 2)),
                       ],
                     ),
                     // Row 4
@@ -156,7 +156,7 @@ class _CoastCalculationBottomSheetViewState
                       children: [
                         _buildTableCell(AppStrings.allTripCalculatedAmount.tr()),
                         _buildTableCell(
-                            allTripCalculatedAmount.toPrecision(2).toString()),
+                            allTripCalculatedAmount.toCommaSeparated(decimalPlaces: 2)),
                       ],
                     ),
                   ],
