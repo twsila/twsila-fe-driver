@@ -13,6 +13,7 @@ import 'package:taxi_for_you/domain/model/driver_model.dart';
 import 'package:taxi_for_you/presentation/business_owner/registration/model/Business_owner_model.dart';
 import 'package:taxi_for_you/utils/resources/constants_manager.dart';
 
+import '../presentation/main/pages/myprofile/my_profile_helper.dart';
 import '../utils/resources/assets_manager.dart';
 import '../utils/resources/langauge_manager.dart';
 import '../utils/resources/strings_manager.dart';
@@ -41,7 +42,7 @@ class AppPreferences {
       return language;
     } else {
       // return default lang
-      return LanguageType.ENGLISH.getValue();
+      return LanguageType.ARABIC.getValue();
     }
   }
 
@@ -61,30 +62,34 @@ class AppPreferences {
   //get CoastCalculation Data
   Future<CoastCalculationModel> getCoastCalculationData() async {
     var coastStr =
-       await jsonDecode(_sharedPreferences.getString(COAST_CALCULATION_DATA)!);
+        await jsonDecode(_sharedPreferences.getString(COAST_CALCULATION_DATA)!);
     return CoastCalculationModel.fromJson(coastStr);
   }
 
-  Future<void> changeAppLanguage() async {
+  Future<void> changeAppLanguage(BuildContext context) async {
     String currentLang = getAppLanguage();
 
     if (currentLang == LanguageType.ARABIC.getValue()) {
       // set english
-      _sharedPreferences.setString(
-          PREFS_KEY_LANG, LanguageType.ENGLISH.getValue());
+      MyProfileHelper()
+          .changeAppLanguage(context, LanguageType.ENGLISH.getValue());
     } else {
       // set arabic
-      _sharedPreferences.setString(
-          PREFS_KEY_LANG, LanguageType.ARABIC.getValue());
+      MyProfileHelper()
+          .changeAppLanguage(context, LanguageType.ARABIC.getValue());
     }
+
+    Phoenix.rebirth(context);
   }
 
   Future<Locale> getLocal() async {
     String currentLang = getAppLanguage();
 
     if (currentLang == LanguageType.ARABIC.getValue()) {
+      // MyProfileHelper().setAppLanguage(LanguageType.ARABIC.getValue());
       return ARABIC_LOCAL;
     } else {
+      // MyProfileHelper().setAppLanguage(LanguageType.ENGLISH.getValue());
       return ENGLISH_LOCAL;
     }
   }

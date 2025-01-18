@@ -157,13 +157,7 @@ class _VerifyOtpViewState extends State<VerifyOtpView> {
               if (state is GenerateOtpSuccess) {
                 ToastHandler(context).showToast(
                     "${AppStrings.otpIs.tr()} ${state.otp}", Toast.LENGTH_LONG);
-
                 this.generatedOtp = state.otp;
-
-                BlocProvider.of<VerifyOtpBloc>(context).add(
-                    VerifyOtpBEEvent(widget.mobileNumberForApi, state.otp,
-                        this.generatedOtp));
-
                 // ToastHandler(context)
                 //     .showToast(AppStrings.otpSent.tr(), Toast.LENGTH_LONG);
               }

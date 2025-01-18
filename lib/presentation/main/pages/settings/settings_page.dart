@@ -92,8 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _changeLanguage() {
     // i will implement it later
-    _appPreferences.changeAppLanguage();
-    Phoenix.rebirth(context);
+    _appPreferences.changeAppLanguage(context);
   }
 
   _contactUs() {

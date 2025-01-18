@@ -390,7 +390,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
             trip.tripDetails.offers![0].acceptanceStatus ==
                 AcceptanceType.ACCEPTED.name)
         ? Text(
-            "${AppStrings.offerAcceptedWithBudget.tr()} ${trip.tripDetails.offers![0].driverOfferFormatted} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")} ${AppStrings.waitingClientAcceptance.tr()}",
+            "${AppStrings.offerAccepted.tr()} ${AppStrings.waitingClientAcceptance.tr()}",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: ColorManager.primary,

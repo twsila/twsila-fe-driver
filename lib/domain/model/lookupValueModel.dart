@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final lookupValueModel = lookupValueModelFromJson(jsonString);
 
 import 'dart:convert';
 

@@ -38,10 +38,12 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
                 widget._onChange(newValue ?? false);
               });
             }),
-        Text(
-          widget._fieldName,
-          style: getRegularStyle(
-              color: ColorManager.headersTextColor, fontSize: 13),
+        Expanded(
+          child: Text(
+            widget._fieldName,
+            style: getRegularStyle(
+                color: ColorManager.headersTextColor, fontSize: 13),
+          ),
         ),
       ],
     );

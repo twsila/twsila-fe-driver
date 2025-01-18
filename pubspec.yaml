@@ -48,7 +48,6 @@ dependencies:
   shared_preferences: ^2.1.1
   freezed: ^2.3.4
   get_it: ^7.6.0
-  lottie: ^2.3.2
   image_picker: ^0.8.7+5
   rxdart: ^0.27.7
   carousel_slider: ^4.2.1
@@ -87,7 +86,7 @@ dependencies:
   im_stepper: ^1.0.1+1
   url_launcher: ^6.1.11
   location: ^4.4.0
-  flutter_compass: ^0.6.0
+#  flutter_compass: ^0.6.0
   flutter_rating_bar: ^4.0.1
   expandable_bottom_sheet: ^1.1.1+1
   flutter_animarker: ^3.2.0
@@ -98,8 +97,10 @@ dependencies:
   custom_radio_grouped_button: ^2.2.1
   full_screen_image: ^2.0.0
   moyasar: ^2.0.10
-  flutter_local_notifications: ^16.0.1
   intl: ^0.19.0
+  get: ^4.6.6
+  just_audio: ^0.9.43
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -129,9 +130,9 @@ flutter:
     - assets/drawable/
     - assets/fonts/arabic/
     - assets/fonts/english/
-    - assets/animation/
     - assets/images/
     - assets/json/
+    - assets/sound/
 
   fonts:
     - family: cairo

@@ -11,6 +11,7 @@ import 'package:taxi_for_you/presentation/business_owner/registration/model/Busi
 import 'package:taxi_for_you/presentation/common/widgets/custom_text_button.dart';
 import 'package:taxi_for_you/presentation/edit_user_profile/view/edit_profile_view.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/bloc/my_profile_bloc.dart';
+import 'package:taxi_for_you/presentation/main/pages/myprofile/my_profile_helper.dart';
 import 'package:taxi_for_you/presentation/main/pages/myprofile/widget/menu_widget.dart';
 import 'package:taxi_for_you/presentation/payment/view/payment_screen.dart';
 import 'package:taxi_for_you/presentation/update_bo_profile/view/update_bo_profile_view.dart';
@@ -21,8 +22,6 @@ import 'package:taxi_for_you/utils/resources/color_manager.dart';
 import 'package:taxi_for_you/utils/resources/font_manager.dart';
 import 'package:taxi_for_you/utils/resources/strings_manager.dart';
 import 'package:taxi_for_you/utils/resources/values_manager.dart';
-
-import '../../../../utils/local_notification/local_notification_helper.dart';
 import '../../../../utils/resources/assets_manager.dart';
 import '../../../../utils/resources/constants_manager.dart';
 import '../../../../utils/resources/langauge_manager.dart';
@@ -74,9 +73,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 children: [
                   InkWell(
                     onTap: () {
-                      _sharedPreferences.setString(
-                          PREFS_KEY_LANG, LanguageType.ENGLISH.getValue());
-                      Phoenix.rebirth(context);
+                      MyProfileHelper().changeAppLanguage(
+                          context, LanguageType.ENGLISH.getValue());
                     },
                     child: Text(
                       AppStrings.en.tr(),
@@ -87,9 +85,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const SizedBox(height: 32),
                   InkWell(
                     onTap: () {
-                      _sharedPreferences.setString(
-                          PREFS_KEY_LANG, LanguageType.ARABIC.getValue());
-                      Phoenix.rebirth(context);
+                      MyProfileHelper().changeAppLanguage(
+                          context, LanguageType.ARABIC.getValue());
                     },
                     child: Text(
                       AppStrings.ar.tr(),
@@ -228,14 +225,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 MenuWidget(
                   menuImage: ImageAssets.walletAndRevenueIc,
                   menuLabel: AppStrings.WalletAndRevenue.tr(),
-                  onPressed: () async {
-                    // Fire a local notification
-                    await NotificationHelper.showNotification(
-                      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-                      title: 'Tawsila Notification',
-                      body: 'New Update',
-                    );
-                  },
+                  onPressed: () async {},
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),

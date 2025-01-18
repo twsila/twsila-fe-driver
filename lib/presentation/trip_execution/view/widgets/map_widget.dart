@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
-import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:taxi_for_you/presentation/google_maps/model/location_model.dart';
 import 'package:taxi_for_you/presentation/trip_execution/helper/location_helper.dart';

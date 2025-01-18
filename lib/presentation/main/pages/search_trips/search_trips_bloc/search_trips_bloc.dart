@@ -14,7 +14,6 @@ import '../../../../../app/app_prefs.dart';
 import '../../../../../app/constants.dart';
 import '../../../../../app/di.dart';
 import '../../../../../domain/model/trip_details_model.dart';
-import '../../../../../domain/model/trip_model.dart';
 import '../../../../../domain/usecase/lookups_usecase.dart';
 import '../../../../../utils/ext/enums.dart';
 import '../../../../../utils/resources/constants_manager.dart';

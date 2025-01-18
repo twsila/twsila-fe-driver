@@ -10,6 +10,7 @@ import '../../../app/di.dart';
 import '../../../utils/resources/color_manager.dart';
 import '../../../utils/resources/langauge_manager.dart';
 import '../../../utils/resources/values_manager.dart';
+import '../../main/pages/myprofile/my_profile_helper.dart';
 
 class LanguageWidget extends StatefulWidget {
   const LanguageWidget({Key? key}) : super(key: key);
@@ -41,9 +42,8 @@ class _LanguageWidgetState extends State<LanguageWidget> {
                 children: [
                   InkWell(
                     onTap: () {
-                      _sharedPreferences.setString(
-                          PREFS_KEY_LANG, LanguageType.ENGLISH.getValue());
-                      Phoenix.rebirth(context);
+                      MyProfileHelper().changeAppLanguage(
+                          context, LanguageType.ENGLISH.getValue());
                     },
                     child: Text(
                       AppStrings.en.tr(),
@@ -54,9 +54,8 @@ class _LanguageWidgetState extends State<LanguageWidget> {
                   const SizedBox(height: 32),
                   InkWell(
                     onTap: () {
-                      _sharedPreferences.setString(
-                          PREFS_KEY_LANG, LanguageType.ARABIC.getValue());
-                      Phoenix.rebirth(context);
+                      MyProfileHelper().changeAppLanguage(
+                          context, LanguageType.ARABIC.getValue());
                     },
                     child: Text(
                       AppStrings.ar.tr(),

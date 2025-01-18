@@ -42,7 +42,7 @@ class TransportationBaseModel {
     creationDate = json['creationDate'];
     countryCode = json['countryCode'];
     stringDate = json['stringDate'];
-    date = json['launchDateTimestamp'];
+    date = json['launchDate'];
     notes = json['notes'];
     completionDate = json['completionDate'];
     passengerRating = json['passengerRating'];
