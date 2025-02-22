@@ -12,9 +12,7 @@ class _AppServiceClient implements AppServiceClient {
   _AppServiceClient(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://twsila-dev-service-f33wiujt7a-lm.a.run.app';
-  }
+  });
 
   final Dio _dio;
 

@@ -6,6 +6,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/constants.dart';
+import '../../flavors.dart';
 import '../../utils/resources/global_key.dart';
 import '../../utils/resources/routes_manager.dart';
 
@@ -36,7 +37,7 @@ class DioFactory {
     };
 
     dio.options = BaseOptions(
-        baseUrl: Constants.baseUrl,
+        baseUrl: F.baseUrl,
         headers: headers,
         receiveTimeout: Constants.apiTimeOut,
         sendTimeout: Constants.apiTimeOut);
@@ -103,7 +104,7 @@ class DioFactory {
         AUTHORIZATION: await _appPreferences.isUserLoggedIn()
             ? "Bearer " + (_appPreferences.getCachedDriver()?.accessToken ?? "")
             : "",
-      })).post(Constants.baseUrl + EndPointsConstants.refreshToken, data: {
+      })).post(F.baseUrl + EndPointsConstants.refreshToken, data: {
         "refreshToken": _appPreferences.getCachedDriver()?.refreshToken ?? ""
       });
       return response.data["result"]["accessToken"];

@@ -45,6 +45,7 @@ import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/mytrips_usecase.dart';
 import '../domain/usecase/persons_vehicle_types_usecase.dart';
 import '../domain/usecase/update_bo_profile_request.dart';
+import '../flavors.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -69,8 +70,10 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));
 
   Dio dio = await instance<DioFactory>().getDio();
+  String baseUrl = F.baseUrl;
   //app service client
-  instance.registerLazySingleton<AppServiceClient>(() => AppServiceClient(dio));
+  instance.registerLazySingleton<AppServiceClient>(
+      () => AppServiceClient(dio, baseUrl: baseUrl));
 
   // remote data source
   instance.registerLazySingleton<RemoteDataSource>(

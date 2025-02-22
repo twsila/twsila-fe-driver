@@ -19,6 +19,8 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 #BUILDING APK COMMANDS
 #flutter build apk --obfuscate --split-debug-info=driver/lib/main.dart
 #flutter build apk --no-tree-shake-icons
+#run with specific flavor: flutter run --flavor <flavorName> -t lib/main_<flavorName>.dart
+#flutter run --flavor development -t lib/main_development.dart
 version: 1.0.3
 
 environment:
@@ -107,6 +109,7 @@ dev_dependencies:
   retrofit_generator: ^4.2.0
   build_runner: ^2.3.3
   change_app_package_name: ^1.1.0
+  flutter_flavorizr: ^2.2.3
 
 flutter_launcher_icons:
   android: true
