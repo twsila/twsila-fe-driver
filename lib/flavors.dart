@@ -9,10 +9,10 @@ class F {
 
   static String get name => appFlavor?.name ?? '';
 
-  static const String awsBaseUrl =
-      'http://ec2-3-88-50-10.compute-1.amazonaws.com:8080';
-  static const String googleCloudBaseUrl =
-      'https://twsila-dev-service-f33wiujt7a-lm.a.run.app';
+  static const String awsDevBaseUrl =
+      'http://ec2-3-208-18-171.compute-1.amazonaws.com:8080';
+  static const String awsStagingBaseUrl =
+      'http://ec2-184-72-167-224.compute-1.amazonaws.com:8080';
 
   static String get title {
     switch (appFlavor) {
@@ -30,13 +30,13 @@ class F {
   static String get baseUrl {
     switch (appFlavor) {
       case Flavor.development:
-        return awsBaseUrl;
+        return awsDevBaseUrl;
       case Flavor.staging:
-        return awsBaseUrl;
+        return awsStagingBaseUrl;
       case Flavor.production:
-        return awsBaseUrl;
+        return awsStagingBaseUrl;
       default:
-        return awsBaseUrl;
+        return awsStagingBaseUrl;
     }
   }
 }

@@ -19,7 +19,10 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 #BUILDING APK COMMANDS
 #flutter build apk --obfuscate --split-debug-info=driver/lib/main.dart
 #flutter build apk --no-tree-shake-icons
-#run with specific flavor: flutter run --flavor <flavorName> -t lib/main_<flavorName>.dart
+#to generate build per flavour
+#flutter build apk --flavor development -t lib/main_development.dart --release
+#flutter build apk --flavor development -t lib/main_production.dart --release
+#flutter build apk --flavor development -t lib/main_staging.dart --release
 #flutter run --flavor development -t lib/main_development.dart
 version: 1.0.3
 
