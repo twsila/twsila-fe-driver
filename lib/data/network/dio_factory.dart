@@ -42,6 +42,7 @@ class DioFactory {
         receiveTimeout: Constants.apiTimeOut,
         sendTimeout: Constants.apiTimeOut);
 
+
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {

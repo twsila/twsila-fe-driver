@@ -10,9 +10,11 @@ class F {
   static String get name => appFlavor?.name ?? '';
 
   static const String awsDevBaseUrl =
-      'http://ec2-3-208-18-171.compute-1.amazonaws.com:8080';
+      // 'http://54.89.92.148:8080';
+      'http://54.83.124.254:8080';
   static const String awsStagingBaseUrl =
-      'http://ec2-184-72-167-224.compute-1.amazonaws.com:8080';
+      // 'http://54.89.92.148:8080';
+      'http://54.83.124.254:8080';
 
   static String get title {
     switch (appFlavor) {

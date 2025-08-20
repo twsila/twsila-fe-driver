@@ -9,7 +9,6 @@ class DriverRequestsLoading extends DriverRequestsState {}
 
 class DriverRequestsSuccess extends DriverRequestsState {
   final List<AddRequestModel> requests;
-
   DriverRequestsSuccess(this.requests);
 }
 
