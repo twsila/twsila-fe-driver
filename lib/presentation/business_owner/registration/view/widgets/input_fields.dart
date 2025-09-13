@@ -158,6 +158,7 @@ class _RegistartionBOInputFieldsState extends State<RegistartionBOInputFields> {
                   ?.copyWith(color: ColorManager.headersTextColor),
             ),
           ),
+          const SizedBox(height: 8),
           CustomCommercialExpiryDateWidget(),
           const SizedBox(height: 16),
           CustomTextInputField(

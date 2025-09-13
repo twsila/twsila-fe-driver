@@ -605,21 +605,21 @@ class _SearchTripsPageState extends State<SearchTripsPage> {
   Text handleOfferStatus(Offer offer, String currency) {
     if (offer.acceptanceStatus == AcceptanceType.PROPOSED.name) {
       return Text(
-          "${AppStrings.offerHasBeenSent.tr()} (${offer.driverOffer} ${currency})",
+          "${AppStrings.offerHasBeenSent.tr()} (${offer.driverOfferFormatted} ${currency})",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorManager.purpleMainTextColor,
               fontSize: FontSize.s16,
               fontWeight: FontWeight.bold));
     } else if (offer.acceptanceStatus == AcceptanceType.EXPIRED.name) {
       return Text(
-          "${AppStrings.clientRejectYourOffer.tr()} (${offer.driverOffer} ${currency})",
+          "${AppStrings.clientRejectYourOffer.tr()} (${offer.driverOfferFormatted} ${currency})",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorManager.error,
               fontSize: FontSize.s16,
               fontWeight: FontWeight.bold));
     } else {
       return Text(
-          "${AppStrings.offerAcceptedWithBudget.tr()} ${offer.driverOffer} ${currency} ${AppStrings.waitingClientAcceptance.tr()}",
+          "${AppStrings.offerAccepted.tr()} ${AppStrings.waitingClientAcceptance.tr()}",
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: ColorManager.primary,
               fontSize: FontSize.s16,

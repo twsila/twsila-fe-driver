@@ -1,34 +1,35 @@
 import 'dart:developer';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
 import 'package:taxi_for_you/app/di.dart';
 
-import '../local_notification/local_notification_helper.dart';
 import '../resources/global_key.dart';
-import '../resources/strings_manager.dart';
+import 'notification_popup.dart';
 
 class FirebaseMessagingHelper extends ChangeNotifier {
   static final _fbm = FirebaseMessaging.instance;
   static ValueNotifier<int> notificationCounter = ValueNotifier(0);
   static final AppPreferences appPreferences = instance<AppPreferences>();
+  final player = AudioPlayer(); // Create a player
 
-  // set up the buttons
-  Widget cancelButton = TextButton(
-    child: Text(AppStrings.cancel.tr()),
-    onPressed: () {
-      Navigator.pop(NavigationService.navigatorKey.currentState!.context);
-    },
-  );
-  Widget continueButton = TextButton(
-    child: Text(AppStrings.ok.tr()),
-    onPressed: () {
-      Navigator.pop(NavigationService.navigatorKey.currentState!.context);
-    },
-  );
+  // // set up the buttons
+  // Widget cancelButton = TextButton(
+  //   child: Text(AppStrings.cancel.tr()),
+  //   onPressed: () {
+  //     Navigator.pop(NavigationService.navigatorKey.currentState!.context);
+  //   },
+  // );
+  // Widget continueButton = TextButton(
+  //   child: Text(AppStrings.ok.tr()),
+  //   onPressed: () {
+  //     Navigator.pop(NavigationService.navigatorKey.currentState!.context);
+  //   },
+  // );
 
   Future<void> configure(BuildContext context) async {
     _fbm.requestPermission(
@@ -60,36 +61,16 @@ class FirebaseMessagingHelper extends ChangeNotifier {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       notificationCounter.value += 1;
-      print(message);
+      // if (Get.context == null) return;
 
-      // if (message.notification != null &&
-      //     NavigationService.navigatorKey.currentContext != null) {
-      //   showDialog(
-      //       context: NavigationService.navigatorKey.currentState!.context,
-      //       builder: (_) => AlertDialog(
-      //             title: Text(message.notification!.title ?? ""),
-      //             content: Text(message.notification!.body ?? ""),
-      //             actions: [continueButton],
-      //           ));
-      // } else if (message.data["title"] != null &&
-      //     message.data["title"] != "" &&
-      //     NavigationService.navigatorKey.currentContext != null) {
-      //   showDialog(
-      //       context: NavigationService.navigatorKey.currentState!.context,
-      //       builder: (_) => AlertDialog(
-      //             title: Text(message.data["title"] ?? ""),
-      //             content: Text(message.data["body"] ?? ""),
-      //             actions: [continueButton],
-      //           ));
-      // }
+      final duration = await player.setAsset(
+          'assets/sound/notification-sound.mp3'); // Schemes: (https: | file: | asset: )
+      player.play();
 
-      // Fire a local notification
-      await NotificationHelper.showNotification(
-        id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        title: message.data["title"] ?? 'Tawsila Notification',
-        body: message.data["body"] ?? 'New Update',
-      );
-
+      DialogUtils.showNotificationPopup(
+          NavigationService.navigatorKey.currentState!.context,
+          message.data["title"] ?? "Twsila Notification",
+          message.data["body"] ?? "there's a new update!");
       return;
     });
 
@@ -99,6 +80,7 @@ class FirebaseMessagingHelper extends ChangeNotifier {
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await setFcmToken();
+
   }
 
   static Future<void> navigateToNotifications(RemoteMessage message) async {
@@ -126,4 +108,76 @@ class FirebaseMessagingHelper extends ChangeNotifier {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print(message);
   FirebaseMessagingHelper.notificationCounter.value += 1;
+}
+
+void _showCustomNotification(
+    {required BuildContext context,
+    required String title,
+    required String body}) {
+  OverlayEntry overlayEntry = OverlayEntry(
+    builder: (context) {
+      return Positioned(
+        top: 50.0,
+        left: 20.0,
+        right: 20.0,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 6.0,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.notifications, color: Colors.white),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        body,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    // overlayEntry.remove(); // Remove the notification
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+
+  // Insert the overlay
+  Overlay.of(Get.context!).insert(overlayEntry);
+
+  // Automatically remove after 3 seconds
+  Future.delayed(Duration(seconds: 3), () {
+    overlayEntry.remove();
+  });
 }

@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 import '../../../utils/resources/assets_manager.dart';
 import '../../../utils/resources/color_manager.dart';
@@ -28,11 +27,10 @@ class StateRenderer extends StatelessWidget {
   String title;
   Function retryActionFunction;
 
-  StateRenderer(
-      {required this.stateRendererType,
-      this.message = AppStrings.loading,
-      this.title = "",
-      required this.retryActionFunction});
+  StateRenderer({required this.stateRendererType,
+    this.message = AppStrings.loading,
+    this.title = "",
+    required this.retryActionFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +110,8 @@ class StateRenderer extends StatelessWidget {
 
   Widget _getAnimatedImage(String animationName) {
     return SizedBox(
-        height: AppSize.s100,
-        width: AppSize.s100,
-        child: Lottie.asset(animationName));
+      height: AppSize.s100,
+      width: AppSize.s100,);
   }
 
   Widget _getMessage(String message) {

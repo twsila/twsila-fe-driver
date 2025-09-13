@@ -1,7 +1,7 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:taxi_for_you/app/app_prefs.dart';
+import 'package:taxi_for_you/app/extensions.dart';
 import 'package:taxi_for_you/data/response/responses.dart';
 import 'package:taxi_for_you/domain/model/add_request_model.dart';
 import 'package:taxi_for_you/domain/model/allowed_services_model.dart';
@@ -241,7 +241,8 @@ class RepositoryImpl implements Repository {
   }
 
   @override
-  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers(String serviceType) async {
+  Future<Either<Failure, List<CarManufacturerModel>>> carManufacturers(
+      String serviceType) async {
     if (await _networkInfo.isConnected) {
       // its connected to internet, its safe to call API
       try {
@@ -406,8 +407,10 @@ class RepositoryImpl implements Repository {
             trip.tripDetails.clientOffer = CoastCalculationsHelper()
                 .getDriverShareFromAmount(
                     coastCalculationModel, trip.tripDetails.clientOffer!);
+            trip.tripDetails.clientOfferFormatted =
+                (trip.tripDetails.clientOffer as double)
+                    .toCommaSeparated(decimalPlaces: 2).toString();
           });
-
           return Right(trips);
         } else {
           return Left(Failure(ApiInternalStatus.FAILURE,

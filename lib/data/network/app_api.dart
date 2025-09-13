@@ -15,13 +15,18 @@ import '../../domain/model/car_brand_models_model.dart';
 import '../../domain/model/logout_model.dart';
 import '../../domain/model/registration_services_response.dart';
 import '../../domain/model/service_status_model.dart';
+import '../../flavors.dart';
 import '../response/responses.dart';
 
 part 'app_api.g.dart';
 
-@RestApi(baseUrl: Constants.baseUrl)
+@RestApi(baseUrl: "")
 abstract class AppServiceClient {
-  factory AppServiceClient(Dio dio, {String baseUrl}) = _AppServiceClient;
+  // factory AppServiceClient(Dio dio, {String baseUrl}) = _AppServiceClient;
+
+  factory AppServiceClient(Dio dio, {required String baseUrl}) {
+    return _AppServiceClient(dio, baseUrl: F.baseUrl);
+  }
 
   @GET("/lookups/country")
   Future<BaseResponse> getCountriesLookup();

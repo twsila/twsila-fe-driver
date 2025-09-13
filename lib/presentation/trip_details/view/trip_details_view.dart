@@ -304,7 +304,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                     widget.tripModel.tripDetails.clientOffer != 0),
             child: CustomTextButton(
               text:
-                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}",
+                  "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOfferFormatted} ${getCurrency(widget.tripModel.tripDetails.passenger?.countryCode ?? "")}",
               onPressed: () {
                 CustomBottomSheet.displayModalBottomSheetList(
                   context: context,
@@ -390,7 +390,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
             trip.tripDetails.offers![0].acceptanceStatus ==
                 AcceptanceType.ACCEPTED.name)
         ? Text(
-            "${AppStrings.offerAcceptedWithBudget.tr()} ${trip.tripDetails.offers![0].driverOffer} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")} ${AppStrings.waitingClientAcceptance.tr()}",
+            "${AppStrings.offerAccepted.tr()} ${AppStrings.waitingClientAcceptance.tr()}",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: ColorManager.primary,
@@ -413,7 +413,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                         width: 7,
                       ),
                       Text(
-                          "${AppStrings.offerHasBeenSent.tr()} (${trip.tripDetails.offers![0].driverOffer} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")})",
+                          "${AppStrings.offerHasBeenSent.tr()} (${trip.tripDetails.offers![0].driverOfferFormatted} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")})",
                           style: Theme.of(context)
                               .textTheme
                               .bodySmall
@@ -446,7 +446,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                             width: 7,
                           ),
                           Text(
-                              "${AppStrings.clientRejectYourOffer.tr()} (${trip.tripDetails.offers![0].driverOffer} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")})",
+                              "${AppStrings.clientRejectYourOffer.tr()} (${trip.tripDetails.offers![0].driverOfferFormatted} ${getCurrency(trip.tripDetails.passenger?.countryCode ?? "")})",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -502,7 +502,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
                           widget.tripModel.tripDetails.clientOffer != 0),
                   child: CustomTextButton(
                     text:
-                        "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOffer} (${AppStrings.rs.tr()})",
+                        "${AppStrings.acceptRequestWith.tr()} ${widget.tripModel.tripDetails.clientOfferFormatted} (${AppStrings.rs.tr()})",
                     onPressed: () {
                       CustomBottomSheet.displayModalBottomSheetList(
                         context: context,
@@ -576,7 +576,7 @@ class _TripDetailsViewState extends State<TripDetailsView> {
               (widget.tripModel.tripDetails.clientOffer != 0.0 ||
                   widget.tripModel.tripDetails.clientOffer != 0),
           child: _IconTextDataWidget(
-              "${AppStrings.withBudget.tr()} ${widget.tripModel.tripDetails.clientOffer.toString()}",
+              "${AppStrings.withBudget.tr()} ${widget.tripModel.tripDetails.clientOfferFormatted.toString()}",
               ImageAssets.tripDetailsVisaIcon),
         ),
         SizedBox(

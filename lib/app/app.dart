@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:taxi_for_you/utils/resources/theme_manager.dart';
 
 import '../utils/resources/global_key.dart';
+import '../utils/resources/langauge_manager.dart';
 import '../utils/resources/routes_manager.dart';
 import 'app_prefs.dart';
 import 'bloc_providers.dart';
@@ -31,7 +33,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void didChangeDependencies() {
-    _appPreferences.getLocal().then((local) => {context.setLocale(local)});
+    _appPreferences.getLocal().then((local) => {
+          context.setLocale(local),
+          // Get.updateLocale(Locale(local.languageCode))
+        });
     super.didChangeDependencies();
   }
 
@@ -41,7 +46,8 @@ class _MyAppState extends State<MyApp> {
       providers: blocProviders(context),
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
+        supportedLocales: const [ARABIC_LOCAL, ENGLISH_LOCAL],
+        // fallbackLocale: context.locale,
         locale: context.locale,
         debugShowCheckedModeBanner: false,
         onGenerateRoute: RouteGenerator.getRoute,

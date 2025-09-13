@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taxi_for_you/domain/usecase/accept_offer_usecase.dart';
@@ -46,7 +45,7 @@ import '../domain/usecase/login_usecase.dart';
 import '../domain/usecase/mytrips_usecase.dart';
 import '../domain/usecase/persons_vehicle_types_usecase.dart';
 import '../domain/usecase/update_bo_profile_request.dart';
-import '../presentation/login/view/login_viewmodel.dart';
+import '../flavors.dart';
 import 'app_prefs.dart';
 
 final instance = GetIt.instance;
@@ -71,8 +70,10 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));
 
   Dio dio = await instance<DioFactory>().getDio();
+  String baseUrl = F.baseUrl;
   //app service client
-  instance.registerLazySingleton<AppServiceClient>(() => AppServiceClient(dio));
+  instance.registerLazySingleton<AppServiceClient>(
+      () => AppServiceClient(dio, baseUrl: baseUrl));
 
   // remote data source
   instance.registerLazySingleton<RemoteDataSource>(
